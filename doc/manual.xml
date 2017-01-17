@@ -1,0 +1,75 @@
+<?LaTeX ExtraPreamble="\usepackage[pdftex]{graphicx}"?>
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE Book SYSTEM "gapdoc.dtd"
+    [
+      <!ENTITY FSR "<Package>FSR</Package>">
+      <#Include Label="PKGVERSIONDATA">      
+    ] >
+
+<Book Name="fsr">
+
+<TitlePage>
+  <Title>&FSR;</Title>
+  <Subtitle>...</Subtitle>
+  <Version>Version &VERSION;</Version>
+
+  <Author>Nusa Zidaric
+          <Email>email</Email>
+	      <Homepage>http://</Homepage>
+  </Author>
+
+  <Date>&RELEASEDATE;</Date>
+
+<Abstract>
+
+<Index Key="FSR package">&FSR; package</Index> 
+
+The &GAP; package &FSR; ...
+
+</Abstract>
+
+<Copyright>
+  &copyright; 2017-&RELEASEYEAR; by Nusa Zidaric<P/>
+
+  &FSR; is free software; you can redistribute it and/or modify it 
+  under the terms of the GNU General Public License as published by 
+  the Free Software Foundation; either version 2 of the License, or 
+  (at your option) any later version. For details, see the FSF's own site
+  <URL>http://www.gnu.org/licenses/gpl.html</URL>.
+  <P/>
+
+  If you obtained &FSR;, we would be grateful for a short notification
+  sent to one of the authors.
+  <P/>
+
+  If you publish a result which was partially obtained with the usage of
+  &FSR;, please cite it in the following form:
+  <P/>
+
+  N. Zidaric.
+  ...
+</Copyright>
+  
+<Acknowledgements>
+...
+</Acknowledgements>
+
+</TitlePage>
+
+<TableOfContents/>
+
+<Body>
+
+<#Include SYSTEM "preface.xml">
+
+<#Include SYSTEM "outputs.xml">
+
+</Body>
+
+<Bibliography Databases="manual"/>
+
+<TheIndex/>
+
+</Book>

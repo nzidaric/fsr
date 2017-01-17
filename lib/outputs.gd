@@ -24,21 +24,24 @@
 ##  <Func Name=" IntMatFFExt" Arg="[B,]M"/>
 ##
 ##  <Description>
-##  <p>IntFFExt takes the <A>ffe</A> and writes it as an integer of the prime field
-##  if <A>ffe</A> is an element of the prime field (same as Int(<ffe>)),
+##  IntFFExt takes the <A>ffe</A> and writes it as an integer of the prime field
+##  if <A>ffe</A> is an element of the prime field (same as Int(ffe)),
 ##  or writes it as a vector of integers from the prime subfield
 ##  if <A>ffe</A> is an element of an extension field, using the given basis <A>B</A> or 
-##  canonical basis representation of <A>ffe</A>.</p>
-##  <p>IntVecFFExt takes the vector <A>vec</A> of FFEs and writes it as 
+##  canonical basis representation of <A>ffe</A>.
+##  <P/>
+##  IntVecFFExt takes the vector <A>vec</A> of FFEs and writes it as 
 ##  a vector of integers from the prime field if all components of <A>vec</A> belong to a prime field,
 ##  or as a vector of vectors of integers from the prime subfield, if the components belong to an 
 ##  extension field, using the given basis <A>B</A> or canonical basis representation of <A>ffe</A>.
-##  (note: all components are treated as elements of the largest field). </p>
-##  <p> IntMATFFExt takes a matrix <A>M</A> and returns a matrix of vectors of integers from the prime
+##  (note: all components are treated as elements of the largest field).
+##  <P/>
+##  IntMATFFExt takes a matrix <A>M</A> and returns a matrix of vectors of integers from the prime
 ##  field if all components of <A>M</A> belong to a prime field, or a vector of row vectors, whose 
 ##  elements are vectors of integers from the prime subfield, if the components belong to an extension
 ##  field, using the given basis <A>B</A> or canonical basis representation of <A>ffe</A>.
-##  <p> NOTE: the non-basis versions return a representation in the SMALLEST field that contains the element.
+##  <P/>
+##  NOTE: the non-basis versions return a representation in the SMALLEST field that contains the element.
 ##  for representation in a specific field, use the basis version with desired basis
 ##  </Description>
 ##  </ManSection>
@@ -70,7 +73,7 @@ DeclareOperation( "IntMatFFExt" , [IsFFECollColl]);# added to tstfsroutputs.tst
 ##  <Description>
 ##  writes a (FFE) verctor as string or list of strings using the given basis <A>B</A> or canonical 
 ##  basis representation of <A>ffe</A>. 
-##  <p> the list of strings is more practically useful: we wish to have the components as srings, which is what we want to use 
+##  The list of strings is more practically useful: we wish to have the components as srings, which is what we want to use 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
