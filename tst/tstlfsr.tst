@@ -105,3 +105,25 @@ with initial state  =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0
 with current state  =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
 after initialization
 with output from stage S_1
+gap> Display(t8);
+< empty LFSR given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)>
+gap> View(t8);
+< empty LFSR given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)>
+gap> Print(t8);
+Empty LFSR given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)
+gap> Print(B,t8);
+CanonicalBasis( GF(2^4) )Empty LFSR given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)
+gap> PrintAll(t8);
+Empty LFSR over GF(2^2) defined by FieldPoly=y^2+y+Z(2)^0 given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)
+with feedback coeff =[ 0*Z(2), 0*Z(2), Z(2^2), Z(2^2)^2, Z(2^2) ]
+with initial state  =[ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ]
+with current state  =[ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ]
+after initialization
+with output from stages S_[ 0, 3, 0 ]
+gap> PrintAll(B,t8);
+Empty LFSR over GF(2^2) defined by FieldPoly=y^2+y+Z(2)^0 given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)
+with feedback coeff =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 1, 0, 1 ], [ 0, 1, 0, 1 ], [ 1, 1, 0, 1 ] ]
+with initial state  =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
+with current state  =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
+after initialization
+with output from stages S_[ 0, 3, 0 ]
