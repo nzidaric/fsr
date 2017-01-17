@@ -1,0 +1,49 @@
+-----===========================-----
+3x3 matrix over GF(2)
+[ [ Z(2)^0, 0*Z(2), 0*Z(2) ], [ 0*Z(2), Z(2)^0, 0*Z(2) ], [ 0*Z(2), 0*Z(2), Z(2)^0 ] ]
+\begin{displaymath}\tiny 
+\left[ 
+\setcounter{MaxMatrixCols}{3} 
+\begin{matrix} 
+1&0&0\\
+0&1&0\\
+0&0&1\\
+\end{matrix} \right] 
+\end{displaymath} 
+-----===========================-----
+3x5 matrix over GF(2)
+[ [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0 ], [ 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2) ], 
+  [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2) ] ]
+\begin{displaymath}\tiny 
+\left[ 
+\setcounter{MaxMatrixCols}{5} 
+\begin{matrix} 
+1&1&0&0&1\\
+0&1&0&0&0\\
+1&1&0&1&0\\
+\end{matrix} \right] 
+\end{displaymath} 
+-----===========================-----
+3x3 matrix over GF(5)
+[ [ Z(5)^0, 0*Z(5), 0*Z(5) ], [ 0*Z(5), Z(5)^0, 0*Z(5) ], [ 0*Z(5), 0*Z(5), Z(5)^0 ] ]
+\begin{displaymath}\tiny 
+\left[ 
+\setcounter{MaxMatrixCols}{3} 
+\begin{matrix} 
+1&0&0\\
+0&1&0\\
+0&0&1\\
+\end{matrix} \right] 
+\end{displaymath} 
+-----===========================-----
+3x2 matrix over GF(5)
+[ [ Z(5)^0, Z(5)^2 ], [ 0*Z(5), 0*Z(5) ], [ Z(5)^3, Z(5)^0 ] ]
+\begin{displaymath}\tiny 
+\left[ 
+\setcounter{MaxMatrixCols}{2} 
+\begin{matrix} 
+1&4\\
+0&0\\
+3&1\\
+\end{matrix} \right] 
+\end{displaymath} 

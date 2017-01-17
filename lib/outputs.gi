@@ -196,95 +196,127 @@ end);
 
 #############################################################################
 ##
-#F  WriteVector( <output>, <vec> ) . . . . . . . . write vector
+#F  WriteVector( <output>,<B>, <vec> ) . . . . . . . . write vector
 ##
 
+# removed outputstream check coz GAP will do that anyway (AppendTo will)
+# basis version
+InstallGlobalFunction( WriteVector,  function(output, B, vec)
+local j, m, str;
+	if IsBasis(B) then 
+		if (IsRowVector(vec) or IsFFE(vec) or IsInt(vec) or IsFFECollColl(vec)) then 
+			if IsFFE(vec) then  # zech log in whatever field 
+				vec := IntFFExt(B, vec);
+			fi;
+			if IsInt(vec) then # prime subfield 
+				AppendTo(output, vec); #
+				return;
+			fi;
+			str := VecToString(B,vec);
+			if IsString(str) then 	AppendTo(output, str); # 
+			else 
+				for j in [1.. Length(str)-1] do 
+					AppendTo(output, str[j], ", ");  
+				od;
+				AppendTo(output, str[Length(str)], " ");
+			fi;
+		else 
+		Error("argument elm is not a row vector nor a FFE nor integer !!!!\n");
+		AppendTo(output, "ERROR: elm is not a vector nor a FFE nor integer!!!! \n", vec, "\n");
+		fi;
+	else 
+	  Error("B is not a basis !!!! \n");
+	fi;
+return;
+end);
+
+########### METHODS REMOVED, KEPT FUNCTIONS FOR COMPATIBILITY
 # -----------------------------------#
 # for element (happens if called IntFFExt was called first and it was  from the  prime subfield)
 # i think i can remove this one 
-InstallMethod( WriteVector, "write human friendly version of the FFE to a file", [IsOutputStream, IsInt] , function(output, vec)
-#	Print("WriteVector: IsInt ....", vec, "\n");
-	AppendTo(output, vec);  
-return;
-end);
+#InstallMethod( WriteVector, "write human friendly version of the FFE to a file", [IsOutputStream, IsInt] , function(output, vec)
+##	Print("WriteVector: IsInt ....", vec, "\n");
+#	AppendTo(output, vec);  
+#return;
+#end);
 # -----------------------------------#
-InstallMethod( WriteVector, "write human friendly version of the FFE to a file", [IsOutputStream, IsBasis, IsFFE] , function(output,B, vec)
-local j, m, str;
-#	Print("WriteVector: IsFFE basis version....", vec, "\n");
-#	str := VecToString(IntFFExt(B,vec));
-	str := VecToString(B,vec);
-	if IsString(str) then 	AppendTo(output, str);  
-	else 
-		for j in [1.. Length(str)-1] do 
-			AppendTo(output, str[j], ", ");  
-		od;
-		AppendTo(output, str[Length(str)], " ");
-	fi;
-return;
-end);
+#InstallMethod( WriteVector, "write human friendly version of the FFE to a file", [IsOutputStream, IsBasis, IsFFE] , function(output,B, vec)
+#local j, m, str;
+##	Print("WriteVector: IsFFE basis version....", vec, "\n");
+##	str := VecToString(IntFFExt(B,vec));
+#	str := VecToString(B,vec);
+#	if IsString(str) then 	AppendTo(output, str);  
+#	else 
+#		for j in [1.. Length(str)-1] do 
+#			AppendTo(output, str[j], ", ");  
+#		od;
+#		AppendTo(output, str[Length(str)], " ");
+#	fi;
+#return;
+#end);
 
-# calling the basis version
-InstallMethod( WriteVector, "write human friendly version of the FFE to a file", [IsOutputStream, IsFFE] , function(output, vec)
-local B;
-#	Print("WriteVectorM: IsFFE ....", vec, "\n");
-	B := Basis(DefaultField( vec));
-	WriteVector(output, B, vec);	
+## calling the basis version
+#InstallMethod( WriteVector, "write human friendly version of the FFE to a file", [IsOutputStream, IsFFE] , function(output, vec)
+#local B;
+##	Print("WriteVectorM: IsFFE ....", vec, "\n");
+#	B := Basis(DefaultField( vec));
+#	WriteVector(output, B, vec);	
+#
+##
+#return;
+#end);
+
+## -----------------------------------#
+## for vector
+
+#InstallMethod( WriteVector, "write human friendly version of the FFE vector to a file", [IsOutputStream, IsBasis, IsRowVector],  function(output, B, vec)
+#local j,  str;
+##	Print("WriteVector: IsRowVector basis version....", vec, "\n");
+#	str := VecToString(B, vec);
+#	if IsString(str) then 	AppendTo(output, str); # 
+#	else 
+#		for j in [1.. Length(str)-1] do 
+#	AppendTo(output, str[j], ", ");  
+#		od;
+#		AppendTo(output, str[Length(str)], " ");
+#	fi;
+#return;
+#end);
+#
+## calling the basis version
+#InstallMethod( WriteVector, "write human friendly version of the FFE vector to a file", [IsOutputStream, IsRowVector],  function(output, vec)
+#local B;
+##	Print("WriteVector: IsRowVector ....", vec, "\n");
+#	B := Basis(DefaultField( vec));
+#	WriteVector(output, B, vec);	
+#return;
+#end);
+
+## -----------------------------------#
+## for row vestors (like the thing returned by Basis)
+#InstallMethod( WriteVector, "write human friendly version of FFE matrix to a file", [IsOutputStream, IsBasis, IsFFECollColl],  function(output, B, M)
+#local j, str;
+##	Print("WriteVector: IsFFECollColl basis version ....", M, "\n");
+#	str := VecToString(B, M);
+#	if IsString(str) then 	AppendTo(output, str); # 
+#	else 
+#		for j in [1.. Length(str)-1] do 
+#			AppendTo(output, str[j], ", ");  
+#		od;
+#		AppendTo(output, str[Length(str)], " ");
+#	fi;
+#return;
+#end);
 
 
-return;
-end);
-
-# -----------------------------------#
-# for vector
-
-InstallMethod( WriteVector, "write human friendly version of the FFE vector to a file", [IsOutputStream, IsBasis, IsRowVector],  function(output, B, vec)
-local j,  str;
-#	Print("WriteVector: IsRowVector basis version....", vec, "\n");
-	str := VecToString(B, vec);
-	if IsString(str) then 	AppendTo(output, str); # 
-	else 
-		for j in [1.. Length(str)-1] do 
-			AppendTo(output, str[j], ", ");  
-		od;
-		AppendTo(output, str[Length(str)], " ");
-	fi;
-return;
-end);
-
-# calling the basis version
-InstallMethod( WriteVector, "write human friendly version of the FFE vector to a file", [IsOutputStream, IsRowVector],  function(output, vec)
-local B;
-#	Print("WriteVector: IsRowVector ....", vec, "\n");
-	B := Basis(DefaultField( vec));
-	WriteVector(output, B, vec);	
-return;
-end);
-
-# -----------------------------------#
-# for row vestors (like the thing returned by Basis)
-InstallMethod( WriteVector, "write human friendly version of FFE matrix to a file", [IsOutputStream, IsBasis, IsFFECollColl],  function(output, B, M)
-local j, str;
-#	Print("WriteVector: IsFFECollColl basis version ....", M, "\n");
-	str := VecToString(B, M);
-	if IsString(str) then 	AppendTo(output, str); # 
-	else 
-		for j in [1.. Length(str)-1] do 
-			AppendTo(output, str[j], ", ");  
-		od;
-		AppendTo(output, str[Length(str)], " ");
-	fi;
-return;
-end);
-
-
-# calling the basis version
-InstallMethod( WriteVector, "write human friendly version of FFE matrix to a file", [IsOutputStream, IsFFECollColl],  function(output, M)
-local B;
-#	Print("WriteVector: IsFFECollColl ....", M, "\n");
-		B := Basis(DefaultField(M));
-	  	WriteVector(output, B, M);
-return;
-end);
+## calling the basis version
+#InstallMethod( WriteVector, "write human friendly version of FFE matrix to a file", [IsOutputStream, IsFFECollColl],  function(output, M)
+#local B;
+##	Print("WriteVector: IsFFECollColl ....", M, "\n");
+#		B := Basis(DefaultField(M));
+#	  	WriteVector(output, B, M);
+#return;
+#end);
 
 #############################################################################
 ##
@@ -295,44 +327,85 @@ end);
 
 
 
-InstallMethod( WriteMatrix, "write human friendly version of FFE matrix to a file - formatted (rows x cols)", [IsOutputStream, IsBasis, IsMatrix],  function(output, B, M)
-local d, str, i, j, row;
-#	Print("WriteMatrixM:  IsMatrix basis version ....", M, "\n");
-	d := DimensionsMat(M);
-	str := VecToString(B,M);
-	if IsPrimeField(DefaultFieldOfMatrix(M)) then 
-		for i in [1..d[1]] do # rows
-			row := str[i];
-			AppendTo(output, row);
-			if i<>d[1] then AppendTo(output,"\n");
-			fi; # dont want a newline at the end of the last row
-		od;			
-	else
-		for i in [1..d[1]] do # rows
-			row := str[i];
-			for j in [1.. Length(row)-1] do 	 		
-				AppendTo(output, row[j], ", ");  
-			od;
-			AppendTo(output, row[Length(row)]);
-			if i<>d[1] then AppendTo(output,"\n");
-			fi; # dont want a newline at the end of the last row
-		od;
-	fi;
+# basis version
+# removed outputstream check coz GAP will do that anyway (AppendTo will)
+InstallGlobalFunction( WriteMatrix, function(output, B, M)
+local i,j,d,str, row, F;
+	
+	 if IsBasis(B) then 
+		 if (IsMatrix(M)) then 
+			d := DimensionsMat(M);
+			str := VecToString(B, M);
+			F :=  DefaultFieldOfMatrix(M);
+			if IsPrimeField(F) then 
+				for i in [1..d[1]] do # rows
+					row := str[i];
+					AppendTo(output, row);
+					if i<>d[1] then AppendTo(output,"\n");
+					fi; # dont want a newline at the end of the last row
+				od;			
+			else
+				for i in [1..d[1]] do # rows
+					row := str[i];
+					for j in [1.. Length(row)-1] do 	 		
+						AppendTo(output, row[j], ", ");  
+					od;
+					AppendTo(output, row[Length(row)]);
+					if i<>d[1] then AppendTo(output,"\n");
+					fi; # dont want a newline at the end of the last row
+				od;
+			fi;
+		  else 
+		    Error("M is not a matrix !!!! \n");
+		    AppendTo(output, "ERROR: M is not a matrix !!!! \n", M, "\n");
+		  fi;
+	  else 
+	    Error("B is not a basis !!!! \n");
+	  fi;
+
 return;
 end);
+
+
+
+
+#InstallMethod( WriteMatrix, "write human friendly version of FFE matrix to a file - formatted (rows x cols)", [IsOutputStream, IsBasis, IsMatrix],  function(output, B, M)
+#local d, str, i, j, row;
+##	Print("WriteMatrixM:  IsMatrix basis version ....", M, "\n");
+#	d := DimensionsMat(M);
+#	str := VecToString(B,M);
+#	if IsPrimeField(DefaultFieldOfMatrix(M)) then 
+#		for i in [1..d[1]] do # rows
+#			row := str[i];
+#			AppendTo(output, row);
+#			if i<>d[1] then AppendTo(output,"\n");
+#			fi; # dont want a newline at the end of the last row
+#		od;			
+#	else
+#		for i in [1..d[1]] do # rows
+#			row := str[i];
+#			for j in [1.. Length(row)-1] do 	 		
+#				AppendTo(output, row[j], ", ");  
+#			od;
+#			AppendTo(output, row[Length(row)]);
+#			if i<>d[1] then AppendTo(output,"\n");
+#			fi; # dont want a newline at the end of the last row
+#		od;
+#	fi;
+#return;
+#end);
 
 
 
 
 #non-basis version calling the basis version
-
-InstallMethod( WriteMatrix, "write human friendly version of FFE matrix to a file - formatted (rows x cols)", [IsOutputStream, IsMatrix],  function(output, M)
-local B;
-#	Print("WriteMatrix:  IsMatrix ....", M, "\n");
-	B := Basis(DefaultFieldOfMatrix(M));
-	WriteMatrix(output, B, M);
-return;
-end);
+#InstallMethod( WriteMatrix, "write human friendly version of FFE matrix to a file - formatted (rows x cols)", [IsOutputStream, IsMatrix],  function(output, M)
+#local B;
+##	Print("WriteMatrix:  IsMatrix ....", M, "\n");
+#	B := Basis(DefaultFieldOfMatrix(M));
+#	WriteMatrix(output, B, M);
+#return;
+#end);
 
 #############################################################################
 ##
@@ -344,7 +417,6 @@ end);
 InstallGlobalFunction( WriteMatrixTEX, function(output, M)
 local d, drows, dcols, i, j, row,  F;
 
-if (IsOutputStream( output )) then
  if (IsMatrix(M) or IsFFECollColl(M)) then 
 	if (IsPrimeField(DefaultFieldOfMatrix(M))) then 
 		d := DimensionsMat(M);
@@ -367,7 +439,7 @@ if (IsOutputStream( output )) then
 		AppendTo(output, "\\end{matrix} \\right] \n");
 		AppendTo(output, "\\end{displaymath} \n");
 	else 
-	    Error("M is not over GF(2) !!!! \n");
+	    Error("M is not over a prime field !!!! \n");
 	    AppendTo(output, "ERROR: M is not over a prime field !!!! \n", M, "\n");
 	  fi;	
 	
@@ -376,9 +448,6 @@ if (IsOutputStream( output )) then
 	    Error("M is not a matrix !!!! \n");
 	    AppendTo(output, "ERROR: M is not a matrix !!!! \n", M, "\n");
 	  fi;
-	else 
-	Error("outputstream not valid !!!!\n");
-	fi;
 return;
 end);
 

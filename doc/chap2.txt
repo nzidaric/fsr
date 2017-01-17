@@ -1,0 +1,48 @@
+  
+  [1X2 [33X[0;0YOutput formatting functions[133X[101X
+  
+  [33X[0;0YThis is some intro...[133X
+  
+  
+  [1X2.1 [33X[0;0YFormatting ...[133X[101X
+  
+  [33X[0;0YSome intro ...[133X
+  
+  [1X2.1-1  IntFFExt[101X
+  
+  [29X[2X IntFFExt[102X( [[3XB[103X, ][3Xffe[103X ) [32X function
+  [29X[2X IntVecFFExt[102X( [[3XB[103X, ][3Xvec[103X ) [32X function
+  [29X[2X IntMatFFExt[102X( [[3XB[103X, ][3XM[103X ) [32X function
+  
+  [33X[0;0YIntFFExt takes the [3Xffe[103X and writes it as an integer of the prime field if [3Xffe[103X
+  is  an  element  of  the  prime  field (same as Int(ffe)), or writes it as a
+  vector  of  integers  from  the  prime  subfield  if [3Xffe[103X is an element of an
+  extension  field,  using the given basis [3XB[103X or canonical basis representation
+  of [3Xffe[103X.[133X
+  
+  [33X[0;0YIntVecFFExt  takes  the  vector  [3Xvec[103X  of  FFEs  and writes it as a vector of
+  integers  from  the  prime  field if all components of [3Xvec[103X belong to a prime
+  field, or as a vector of vectors of integers from the prime subfield, if the
+  components  belong  to  an  extension  field,  using  the  given  basis [3XB[103X or
+  canonical  basis representation of [3Xffe[103X. (note: all components are treated as
+  elements of the largest field).[133X
+  
+  [33X[0;0YIntMATFFExt  takes  a  matrix  [3XM[103X and returns a matrix of vectors of integers
+  from  the  prime  field if all components of [3XM[103X belong to a prime field, or a
+  vector of row vectors, whose elements are vectors of integers from the prime
+  subfield,  if  the  components belong to an extension field, using the given
+  basis [3XB[103X or canonical basis representation of [3Xffe[103X.[133X
+  
+  [33X[0;0YNOTE:  the  non-basis versions return a representation in the SMALLEST field
+  that  contains  the element. for representation in a specific field, use the
+  basis version with desired basis[133X
+  
+  [1X2.1-2 VecToString[101X
+  
+  [29X[2XVecToString[102X( [[3XB[103X, ][3Xvec[103X ) [32X function
+  
+  [33X[0;0Ywrites  a (FFE) verctor as string or list of strings using the given basis [3XB[103X
+  or  canonical  basis  representation  of  [3Xffe[103X.  The  list of strings is more
+  practically  useful: we wish to have the components as srings, which is what
+  we want to use[133X
+  

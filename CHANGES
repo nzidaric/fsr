@@ -2,6 +2,10 @@
 -------===========-------
 Version 1.0.3: 16.01.2017
 * modifying outputs.gi/gd
+* test for outputs.gi/gd
+* change methods for writing to file (back) to global functions
+* added tests for the output file writing functions, however, testing is not automatic!!!
+* edited the GAPDoc text 
 
 
 -------===========-------

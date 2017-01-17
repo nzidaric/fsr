@@ -1,0 +1,64 @@
+  
+  
+                                      [1X[5XFSR[105X[101X
+  
+  
+                                      [1X...[101X
+  
+  
+                                 Version 1.0.3
+  
+  
+                                16 January 2017
+  
+  
+                                  Nusa Zidaric
+  
+  
+  
+  Nusa Zidaric
+      Email:    [7Xmailto:email[107X
+      Homepage: [7Xhttp://[107X
+  
+  -------------------------------------------------------
+  [1XAbstract[101X
+  [33X[0;0YThe [5XGAP[105X package [5XFSR[105X ...[133X
+  
+  
+  -------------------------------------------------------
+  [1XCopyright[101X
+  [33X[0;0Y© 2017-2017 by Nusa Zidaric[133X
+  
+  [33X[0;0Y[5XFSR[105X  is  free  software;  you can redistribute it and/or modify it under the
+  terms  of  the  GNU General Public License as published by the Free Software
+  Foundation;  either  version 2 of the License, or (at your option) any later
+  version.      For      details,      see      the     FSF's     own     site
+  [7Xhttp://www.gnu.org/licenses/gpl.html[107X.[133X
+  
+  [33X[0;0YIf  you  obtained [5XFSR[105X, we would be grateful for a short notification sent to
+  one of the authors.[133X
+  
+  [33X[0;0YIf  you publish a result which was partially obtained with the usage of [5XFSR[105X,
+  please cite it in the following form:[133X
+  
+  [33X[0;0YN. Zidaric. ...[133X
+  
+  
+  -------------------------------------------------------
+  [1XAcknowledgements[101X
+  [33X[0;0Y...[133X
+  
+  
+  -------------------------------------------------------
+  
+  
+  [1XContents (fsr)[101X
+  
+  1 [33X[0;0YPreface[133X
+  2 [33X[0;0YOutput formatting functions[133X
+    2.1 [33X[0;0YFormatting ...[133X
+      2.1-1  IntFFExt
+      2.1-2 VecToString
+  
+  
+  [32X
