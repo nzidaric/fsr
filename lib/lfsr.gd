@@ -43,26 +43,10 @@ DeclareGlobalFunction( "LFSR" );
 ##  <#/GAPDoc>
 ##
 DeclareAttribute( "CharPoly", IsFSR );
-DeclareAttribute( "FeedbackVec", IsFSR );
+DeclareAttribute( "FeedbackVec", IsFSR ); # should be IsLFSR , the equivalent for IsNLFSR will be CoeffVec ... maybe can have the same name coz theyre both coefficients  
 DeclareAttribute( "FieldPoly", IsFSR );
 DeclareAttribute( "OutputTap", IsFSR );
 
-#############################################################################
-##
-#A  Length( <lfsr> )
-#A  InternalStateSize( <lfsr> )
-##
-##  <#GAPDoc Label="Length">
-##  <ManSection>
-##  <Attr Name="Length" Arg='lfsr' Label="for an LFSR"/>
-##
-##  <Description>
-##  </Description>
-##  </ManSection>
-##  <#/GAPDoc>
-##
-DeclareAttribute( "Length", IsFSR );
-DeclareAttribute( "InternalStateSize", IsFSR );
 
 
 #############################################################################
@@ -122,21 +106,7 @@ DeclareOperation("PrintObj", [IsBasis, IsLFSR]);
 DeclareOperation("PrintAll", [IsLFSR]);
 DeclareOperation("PrintAll", [IsBasis, IsLFSR]);
 
-#############################################################################
-##
-#O  LoadLFSR( <lfsr>, <ist> )
-##
-##  <#GAPDoc Label="StepLFSR">
-##  <ManSection>
-##  <Attr Name="StepLFSR" Arg='lfsr' Label="for an LFSR"/>
-##
-##  <Description>
-##  </Description>
-##  </ManSection>
-##  <#/GAPDoc>
-##
-DeclareOperation("LoadLFSR", [IsLFSR,  IsFFECollection]);
-#DeclareProperty("IsEmpty", IsFSR); DONT coz once set cant change again
+
 
 #############################################################################
 ##
@@ -154,43 +124,6 @@ DeclareOperation("LoadLFSR", [IsLFSR,  IsFFECollection]);
 ##
 DeclareOperation("StepLFSR", [IsLFSR]);
 DeclareOperation("StepLFSR", [IsLFSR, IsFFE]);
-
-#############################################################################
-##
-#O  RunLFSR( <lfsr> , <num>, <pr> ) ......... I.   run for num steps with/without print to shell
-#O  RunLFSR( <lfsr> , <num> ) ............... II.  run for num steps without print to shell
-#O  RunLFSR( <lfsr> , <pr> ) ................ III. run with/without print to shell
-#O  RunLFSR( <lfsr> ) ....................... IV.  run without print to shell
-#O  RunLFSR( <lfsr> , <ist>, <num>, <pr>) ... V.   load new initial state then run for num-1 steps with/without print to shell
-#O  RunLFSR( <lfsr> , <ist>, <num>) ......... VI.  load new initial state then run for num-1 steps without print to shell
-#O  RunLFSR( <lfsr> , <ist>) ................ VII. load new initial state then run without print to shell
-## nonlinear versions 
-#O  RunLFSR(<lfsr>, <elm>, <num>, <pr>) ...... VIII. run for num steps with the same nonlinear input on each step and with/without print to shell
-#O  RunLFSR(<lfsr>, <elm>, <num>) ............ IX.   run for num steps with the same nonlinear input on each step without print to shell
-#O  RunLFSR(<lfsr>, <ist>, <elmvec>, <pr> ) .. X.    run for num steps with the different nonlinear input on each step with/without print to shell
-##
-##  <#GAPDoc Label="RunLFSR">
-##  <ManSection>
-##  <Attr Name="RunLFSR" Arg='lfsr' Label="for an LFSR"/>
-##
-##  <Description>
-##  </Description>
-##  </ManSection>
-##  <#/GAPDoc>
-##
-
-DeclareOperation("RunLFSR", [IsLFSR, IsPosInt, IsBool]); #I.   run for num steps with/without print to shell
-DeclareOperation("RunLFSR", [IsLFSR, IsPosInt]);	 #II.  run for num steps without print to shell
-DeclareOperation("RunLFSR", [IsLFSR, IsBool]);		 #III. run with/without print to shell
-DeclareOperation("RunLFSR", [IsLFSR]);			 #IV.  run without print to shell
-DeclareOperation("RunLFSR", [IsLFSR, IsFFECollection, IsPosInt, IsBool]); #V. load new initial state then run for num-1 steps with/without print to shell
-DeclareOperation("RunLFSR", [IsLFSR, IsFFECollection, IsPosInt]);         #VI.  load new initial state then run for num-1 steps without print to shell
-DeclareOperation("RunLFSR", [IsLFSR, IsFFECollection]);                   #VII. load new initial state then run without print to shell
-
-## nonlinear versions 
-DeclareOperation("RunLFSR", [IsLFSR, IsFFE, IsPosInt, IsBool]);		  #VIII. run for num steps with the same nonlinear input on each step and with/without print to shell
-DeclareOperation("RunLFSR", [IsLFSR, IsFFE]);				  #IX.   run with the same nonlinear input on each step without print to shell
-DeclareOperation("RunLFSR", [IsLFSR, IsFFECollection, IsFFECollection, IsBool]);# X. run for num steps with the different nonlinear input on each step with/without print to shell
 
 
 

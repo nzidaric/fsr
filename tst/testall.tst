@@ -6,6 +6,7 @@ pkgdir := DirectoriesPackageLibrary( pkgname, "tst" );
 # Arrange chapters as required
 testfiles := [ 
 "tstfsroutputs.tst",
+"tstlfsr.tst",
 ];
 
 testresult:=true;
