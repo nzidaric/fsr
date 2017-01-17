@@ -78,5 +78,3 @@ gap> IntFFExt(B1,elm);
 [ 1, 1, 0, 1 ]
 gap> IntFFExt(B2,elm);
 [ 0, 1, 1, 0 ]
-
-

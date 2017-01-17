@@ -112,16 +112,18 @@ local  vec, i, j, d, F , elm, hfv, str, tmp, temp, H;
 	elif IsFFECollection(x) then 
 		F := DefaultField(x);
 		if IsPrimeField(F) then 
-			hfv := IntVecFFE(B,x);
+			hfv := IntVecFFE(x);
 			tmp := List(hfv, String);
 			str := JoinStringsWithSeparator(hfv, "");	
+#			Print(" i ended up IsFFECollection(x) PrimeField ....", x, " with string", str, "and ",tmp,"\n");
+
 		else 
 			hfv := IntVecFFExt(B, x);
 			for i in [1..Length(hfv)] do	
 				tmp := List(hfv[i], String);
 				str[i] := JoinStringsWithSeparator(tmp, "");
 			 od;
-#			Print(" i ended up IsFFECollection(x) ....", x, " with string", str, "\n");
+#			Print(" i ended up IsFFECollection(x) ....", x, " with string", str,"and ",tmp,"\n");
 #if i want a true string (but thats not practical !!!  i want to be able to get a string for each component ... thats something i can use, if i have a true string i have to parse it at the commas AGAIN )
 #						hfv := IntVecFFExt(B, x);
 #						tmp := List(hfv[1], String);
@@ -137,7 +139,7 @@ local  vec, i, j, d, F , elm, hfv, str, tmp, temp, H;
 		F := DefaultFieldOfMatrix(x);
 		if IsPrimeField(F) then 		
 			for i in [1..Length(x)] do	
-				elm := IntVecFFExt(B,x[i]);
+				elm := IntVecFFE(x[i]);
 				tmp := List(elm, String);
 				str[i] := JoinStringsWithSeparator(tmp, "");
 			od;
