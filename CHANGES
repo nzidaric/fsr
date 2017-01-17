@@ -1,0 +1,20 @@
+
+-------===========-------
+Version 1.0.3: 16.01.2017
+* modifying outputs.gi/gd
+
+
+-------===========-------
+Version 1.0.2: 11.10.2016
+* added basis and non-basis versions for outputs.gi/gd
+
+-------===========-------
+Version 1.0.1: 05.05.2016
+* added the Print and PrintAll with given basis 
+* added the output-formatting funtions with given basis 
+* added the LFSR specific outputs
+* added the drawing funtions
+
+-------===========-------
+Version 1.0.0: 31.03.2016
+* starting the LFSR

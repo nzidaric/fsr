@@ -1,0 +1,25 @@
+                             The FSR package - TODO list  
+                             
+ver 1.0.2
+* start NLFSR 
+* MOVED TO GAP4.8.5 !!! (from GAP 4.8.3)
+
+- period for reducible charPoly (for attribute Period , see lfsr.gi)
+                             
+
+ver 1.0.1 (05.05.2016) 
+LFSR - TO DOs
+* Valid check: the current state must come from initial state in num steps !!! 
+think about whether to give that  in terms of the LFSR internal state or as sequence ? \\
+why we like cycles: the dont care which was the initial  state
+- number of cycles (2 or more)
+-length of cycles = number of different internal states in individual cycles
+-cycles = return each cycle as a list of internal states in the cycle ? 
+
+ 
+ver 1.0.0 (31.03.2016) 
+* figure out the menthods we want 
+
+* SixFile   := "doc/manual.six" !!!!!!
+
+
