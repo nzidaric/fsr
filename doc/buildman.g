@@ -55,7 +55,7 @@ path:=Concatenation(
                GAPInfo.PackagesInfo.("fsr")[1].InstallationPath,"/doc/");
 main:="manual.xml";
 bookname:="fsr";
-MakeGAPDocDoc( path, main, FSRMANUALFILES, bookname, "../../.." );  
+MakeGAPDocDoc( path, main, FSRMANUALFILES, bookname, "../../..", "MathJax" );  
 CopyHTMLStyleFiles( path );
 GAPDocManualLab( "fsr" );; 
 ExtractMyManualExamples( "fsr", main, FSRMANUALFILES);
