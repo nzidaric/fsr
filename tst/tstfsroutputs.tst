@@ -1,5 +1,5 @@
 # tstfsroutputs.tst: testing outputs.gd/gi
-# variants of IntFFExt, IntMatFFExt, IntVecFFE, VecToString basis and non basis versions
+# variants of IntFFExt, IntMatFFExt, IntVecFFExt, VecToString basis and non basis versions
 gap> elm := Z(2^2);;
 gap> IntFFExt(elm);
 [ 0, 1 ]
