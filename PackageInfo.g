@@ -7,6 +7,11 @@ PackageName := "FSR",
 Subtitle := "FSR - Feedback Shift Register Package",
 Version := "1.0.3",
 Date := "16/01/2017",
+##  <#GAPDoc Label="PKGVERSIONDATA">
+##  <!ENTITY VERSION "1.0.3">
+##  <!ENTITY RELEASEDATE "16 January 2017">
+##  <!ENTITY RELEASEYEAR "2017">
+##  <#/GAPDoc>
 
 Persons := [
   rec( 

@@ -1,0 +1,16 @@
+<Chapter Label="Outputs">
+<Heading>Output formatting functions</Heading>    
+
+This is some intro...
+
+<Section Label="Formatting">
+<Heading>Formatting ...</Heading>
+
+Some intro ...
+
+<#Include Label="IntFFExt">
+<#Include Label="VecToString">
+
+</Section>
+
+</Chapter>
