@@ -108,22 +108,7 @@ DeclareOperation("PrintAll", [IsBasis, IsLFSR]);
 
 
 
-#############################################################################
-##
-#O  StepLFSR( <lfsr>)
-#O  StepLFSR( <lfsr>, <elm>)
-##
-##  <#GAPDoc Label="StepLFSR">
-##  <ManSection>
-##  <Attr Name="StepLFSR" Arg='lfsr' Label="for an LFSR"/>
-##
-##  <Description>
-##  </Description>
-##  </ManSection>
-##  <#/GAPDoc>
-##
-DeclareOperation("StepLFSR", [IsLFSR]);
-DeclareOperation("StepLFSR", [IsLFSR, IsFFE]);
+
 
 
 

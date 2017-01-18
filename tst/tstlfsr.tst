@@ -95,7 +95,7 @@ with initial state  =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0
 with current state  =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
 after initialization
 with output from stage S_0
-gap> F := FieldExtension(K, f);; B := Basis(F);; tap := 1;;
+gap> F := FieldExtension(K, f);; B := Basis(F);; tap := 1;; l := y^4 + y + Z(2^4);;
 gap> t7 := LFSR(F, l, tap);
 < empty LFSR given by CharPoly = y^4+y+Z(2^4)>
 gap> PrintAll(B,t7);
@@ -105,25 +105,26 @@ with initial state  =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0
 with current state  =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
 after initialization
 with output from stage S_1
-gap> Display(t8);
-< empty LFSR given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)>
-gap> View(t8);
-< empty LFSR given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)>
-gap> Print(t8);
-Empty LFSR given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)
-gap> Print(B,t8);
-CanonicalBasis( GF(2^4) )Empty LFSR given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)
-gap> PrintAll(t8);
-Empty LFSR over GF(2^2) defined by FieldPoly=y^2+y+Z(2)^0 given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)
-with feedback coeff =[ 0*Z(2), 0*Z(2), Z(2^2), Z(2^2)^2, Z(2^2) ]
-with initial state  =[ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ]
-with current state  =[ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ]
-after initialization
-with output from stages S_[ 0, 3, 0 ]
-gap> PrintAll(B,t8);
-Empty LFSR over GF(2^2) defined by FieldPoly=y^2+y+Z(2)^0 given by CharPoly = y^5+Z(2^2)*y^2+Z(2^2)^2*y+Z(2^2)
-with feedback coeff =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 1, 0, 1 ], [ 0, 1, 0, 1 ], [ 1, 1, 0, 1 ] ]
-with initial state  =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
-with current state  =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
-after initialization
-with output from stages S_[ 0, 3, 0 ]
+gap> Display(t7);
+< empty LFSR given by CharPoly = y^4+y+Z(2^4)>
+gap> View(t7);
+< empty LFSR given by CharPoly = y^4+y+Z(2^4)>
+gap> Print(t7);
+Empty LFSR given by CharPoly = y^4+y+Z(2^4)
+gap> Print(B,t7);
+CanonicalBasis( GF(2^4) )Empty LFSR given by CharPoly = y^4+y+Z(2^4)
+gap> K := GF(2);; x := X(K, "x");;
+gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
+gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
+gap> t9 := LFSR(K, f, l);
+< empty LFSR given by CharPoly = y^4+y+Z(2^4)>
+gap> ist := [  Z(2^4) ,  0*Z(2) ,  Z(2^4)^3 ,  Z(2^4)^8  ];;
+gap> LoadFSR(t9,ist);
+Z(2^4)^8
+gap> sequence :=[];; K := GF(2);; y := X(K, "y");; l := y^3 + y + 1;;
+gap> t1 :=  LFSR(K, l);; ist1 :=[0*Z(2), 0*Z(2), Z(2)^0 ];;
+gap> Add(sequence,LoadFSR(t1,ist1));; sequence;
+[ Z(2)^0 ]
+gap> for i in [1..9] do Add(sequence,StepFSR(t1)); od; sequence;
+[ Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2) ]
+

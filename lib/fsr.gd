@@ -57,4 +57,23 @@ DeclareAttribute( "InternalStateSize", IsFSR );
 DeclareOperation("LoadFSR", [IsFSR,  IsFFECollection]);
 #DeclareProperty("IsEmpty", IsFSR); DONT coz once set cant change again
 
+#############################################################################
+##
+#O  StepLFSR( <fsr>)
+#O  StepLFSR( <fsr>, <elm>)
+##
+##  <#GAPDoc Label="StepFSR">
+##  <ManSection>
+##  <Attr Name="StepFSR" Arg='fsr' Label="for an FSR"/>
+##
+##  <Description>
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+##
+DeclareOperation("StepFSR", [IsFSR]);
+DeclareOperation("StepFSR", [IsFSR, IsFFE]);
+
+
+
 Print("fsr.gd OK,\t");
