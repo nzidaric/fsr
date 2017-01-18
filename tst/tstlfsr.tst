@@ -127,4 +127,6 @@ gap> Add(sequence,LoadFSR(t1,ist1));; sequence;
 [ Z(2)^0 ]
 gap> for i in [1..9] do Add(sequence,StepFSR(t1)); od; sequence;
 [ Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2) ]
-
+gap> sequence :=[];; Add(sequence,LoadFSR(t1,ist1));;
+gap> for i in [1..10] do  Add(sequence,StepFSR(t1,Z(2)^0)); od;  sequence;
+[ Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2) ]

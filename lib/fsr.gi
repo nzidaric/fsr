@@ -185,5 +185,219 @@ end);
 
 
 
+#############################################################################
+##
+#O  RunFSR( <FSR> , <num>, <pr> ) ......... I.   run for num steps with/without print to shell
+#O  RunFSR( <FSR> , <num> ) ............... II.  run for num steps without print to shell
+#O  RunFSR( <FSR> , <pr> ) ................ III. run with/without print to shell
+#O  RunFSR( <FSR> ) ....................... IV.  run without print to shell
+#O  RunFSR( <FSR> , <ist>, <num>, <pr>) ... V.   load new initial state then run for num-1 steps with/without print to shell
+#O  RunFSR( <FSR> , <ist>, <num>) ......... VI.  load new initial state then run for num-1 steps without print to shell
+#O  RunFSR( <FSR> , <ist>) ................ VII. load new initial state then run without print to shell
+## nonlinear versions 
+#O RunFSR(<FSR>, <elm>, <num>, <pr>) ...... VIII. run for num steps with the same nonlinear input on each step and with/without print to shell
+#O RunFSR(<FSR>, <elm>, <num> ) ........... IX.   run for num steps with the same nonlinear input on each step without print to shell
+#O RunFSR(<FSR>, <ist>, <elmvec>, <pr> ) .. X.    run for num steps with the different nonlinear input on each step with/without print to shell
+
+
+# I. run for num steps with/without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt, IsBool], function(x, num, pr)
+local seq, sequence, nrsteps, treshold, i; 
+# check num
+	treshold := Period(x) + Length(x); #(if primitive thats one period plus one length of FSR)
+	if num > treshold then 
+		Print("over the treshold, will only output the first ",treshold,"elements of the sequence");
+		nrsteps := treshold;
+	else 	nrsteps := num;
+	fi;
+#start run
+	sequence := [];		
+	for i in [1.. nrsteps] do 
+		seq := StepFSR(x);
+		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
+#print on every step 
+		if pr then 
+			Print(IntVecFFExt(x!.state));  				# NOT reversed !!!! 
+			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(seq) , "\n");
+			else  	Print("\t\t",  IntVecFFExt(seq) , "\n");
+			fi;			
+		fi;
+	od; 
+
+	return sequence;
+end);
+
+# II. run for num steps without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt], function(x, num)
+	return  RunFSR(x, num, false);	
+end);
+
+# III. run with/without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsBool], function(x, pr)		
+	return RunFSR(x, Period(x) + Length(x), pr);
+end);
+
+# IV. run without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR], function(x)		
+	return RunFSR(x, Period(x) + Length(x), false);
+end);
+
+
+# PRIMARY METHOD FOR ALL PRACTICAL PURPOSES: because otherwise u need to handle the seq_0 elm urself 
+# load with <ist> then call   RunFSR( FSR, num-1 , pr)
+# V. load new initial state then run for num-1 steps with/without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsPosInt, IsBool], function(x, ist, num, pr)
+local  i, sequence,  seq, taps; 
+# load FSR 
+	seq := LoadFSR(x,ist); # the seq_0 element 
+# print header, init state and seq_0
+	if pr then 
+		Print( "[ ",Length(x)-1,",");
+		for i in [2.. Length(x)-1] do
+			Print("...");
+		od;
+		Print(",0 ]");
+		Print( "  with taps  ",OutputTap(x),"\n");		
+		Print((IntVecFFExt(x!.state)));  				# NOT reversed !!!! 
+		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(seq) , "\n");
+		else  Print("\t\t",  IntVecFFExt(seq) , "\n");
+		fi;			
+	fi;
+# start run
+	sequence := RunFSR(x, num-1, pr);		
+	Add(sequence,seq,1);	# seq_0 at the beginning	
+
+	return sequence;
+end);
+
+# VI. load new initial state then run for num-1 steps without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR,IsFFECollection, IsPosInt], function(x, ist, num)
+	return RunFSR(x,ist, num, false);
+end);
+
+# VII. load new initial state then run without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR,IsFFECollection], function(x, ist )
+	return RunFSR(x,ist,Period(x) + Length(x), false);
+end);
+
+
+# NONLINEAR STEP 
+
+# VIII. run for num steps with the same nonlinear input on each step and with/without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt, IsBool], function(x, elm, num, pr)
+local seq, sequence, nrsteps, treshold, i; 
+# check num
+	treshold := Period(x) + Length(x); #(if primitive thats one period plus one length of FSR)
+	if num > treshold then 
+		Print("over the treshold, will only output the first ",treshold,"elements of the sequence");
+		nrsteps := treshold;
+	else 	nrsteps := num;
+	fi;
+#start run
+	sequence := [];		
+	for i in [1.. nrsteps] do 
+		seq := StepFSR(x,elm);
+		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
+#print on every step 
+		if pr then 
+			Print(IntVecFFExt(x!.state));  				# NOT reversed !!!! 
+			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(seq) , "\n");
+			else  	Print("\t\t",  IntVecFFExt(seq) , "\n");
+			fi;			
+		fi;
+	od; 
+
+	return sequence;
+end);
+
+# IX. run for num steps with the same nonlinear input on each step without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE], function(x, elm)
+	return RunFSR(x,elm, Period(x) + Length(x), false);
+end);
+
+#PROBLEM : method dselection cant decide between this and  VII. RunFSR( <FSR> , <ist>, <pr> ) 
+#InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection], function(x,  elmvec, pr)
+#local  sequence,  treshold, num, nrsteps, seq , i; 
+# check num NOTE: nonlinear can be much much longer , FIX THRESHOLD
+#	treshold := Period(x) + Length(x);  
+#	num := Length(elmvec);
+#	if num > treshold then 
+#		Print("over the treshold, will only output the first ",treshold,"elements of the sequence");
+#		nrsteps := treshold;
+#	else 	nrsteps := num;
+#	fi;
+#start run
+#	sequence := [];		
+#	for i in [1.. nrsteps] do 
+#		seq := StepFSR(x,elmvec[i]);
+#		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
+#print on every step 
+#		if pr then 
+#			Print(IntFFExt(elmvec[i]),"\t\t");  				# NOT reversed !!!! 		
+#			Print(IntVecFFExt(x!.state));  				# NOT reversed !!!! 
+#			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(seq) , "\n");
+#			else  	Print("\t\t",  IntVecFFExt(seq) , "\n");
+#			fi;			
+#		fi;
+#	od; 
+#
+#	return sequence;
+#end);
+
+
+
+# X. run for num steps with the different nonlinear input on each step with/without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR,  IsFFECollection, IsFFECollection, IsBool], function(x, ist, elmvec, pr)
+local  sequence,  treshold, num, nrsteps, seq , i; 
+# load FSR 
+	seq := LoadFSR(x,ist); # the seq_0 element 
+# print header, init state and seq_0
+	if pr then 
+		Print("elm \t\t");
+		Print( "[ ",Length(x)-1,",");
+		for i in [2.. Length(x)-1] do
+			Print("...");
+		od;
+		Print(",0 ]");
+		Print( "  with taps  ",OutputTap(x),"\n");	
+		Print(" \t\t");
+		Print((IntVecFFExt(x!.state)));  				# NOT reversed !!!! 
+		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(seq) , "\n");
+		else  Print("\t\t",  IntVecFFExt(seq) , "\n");
+		fi;			
+	fi;
+
+
+# check num NOTE: nonlinear can be much much longer , FIX THRESHOLD
+	treshold := Period(x) + Length(x);  
+	num := Length(elmvec);
+	if num > treshold then 
+		Print("over the treshold, will only output the first ",treshold,"elements of the sequence");
+		nrsteps := treshold;
+	else 	nrsteps := num;
+	fi;
+#start run
+	sequence := [];		
+	for i in [1.. nrsteps] do 
+		seq := StepFSR(x,elmvec[i]);
+		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
+#print on every step 
+		if pr then 
+			Print(IntFFExt(elmvec[i]),"\t\t");  				# NOT reversed !!!! 		
+			Print(IntVecFFExt(x!.state));  				# NOT reversed !!!! 
+			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(seq) , "\n");
+			else  	Print("\t\t",  IntVecFFExt(seq) , "\n");
+			fi;			
+		fi;
+	od; 
+
+
+
+	Add(sequence,seq,1);	# seq_0 at the beginning
+	return sequence;
+end);
+
+
+
 
 Print("fsr.gi OK,\t");
