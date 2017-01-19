@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  test.gd                   GAP Library                   nusa zidaric
+#W  lfsr.gd                   GAP Library                   nusa zidaric
 ##
 ##
 
@@ -23,31 +23,6 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 #F  LFSR( <p>, <m>, <n>, <tap>  )					# len 4
 DeclareGlobalFunction( "LFSR" );
 
-#############################################################################
-##
-#A  CharPoly( <lfsr> )
-#A  FeedbackVec(<lfsr>)
-#A  FieldPoly(<lfsr>)
-#A  OutputTap(<lfsr>)
-##
-##  <#GAPDoc Label="CharPoly">
-##  <ManSection>
-##  <Attr Name="CharPoly" Arg='lfsr' Label="for an LFSR"/>
-##  <Attr Name="FeedbackVec" Arg='lfsr' Label="for an LFSR"/>
-##
-##  <Description>
-##  holds the characteristic polynomial (the feedback polynomial)
-##  and the same in form of a vector but with the leading coefficient removed and with MSB first
-##  </Description>
-##  </ManSection>
-##  <#/GAPDoc>
-##
-DeclareAttribute( "CharPoly", IsFSR );
-DeclareAttribute( "FeedbackVec", IsFSR ); # should be IsLFSR , the equivalent for IsNLFSR will be CoeffVec ... maybe can have the same name coz theyre both coefficients  
-DeclareAttribute( "FieldPoly", IsFSR );
-DeclareAttribute( "OutputTap", IsFSR );
-
-
 
 #############################################################################
 ##
@@ -64,6 +39,32 @@ DeclareAttribute( "OutputTap", IsFSR );
 ##
 DeclareProperty( "IsLinearFeedback", IsFSR );
 DeclareSynonym( "IsLFSR", IsFSR and IsLinearFeedback);
+
+#############################################################################
+##
+#A  CharPoly( <lfsr> )
+#A  FeedbackVec(<lfsr>) # declared in fsr.gd!!!
+#A  FieldPoly(<lfsr>) # declared in fsr.gd!!!
+#A  OutputTap(<lfsr>) # declared in fsr.gd!!!
+##
+##  <#GAPDoc Label="CharPoly">
+##  <ManSection>
+##  <Attr Name="CharPoly" Arg='lfsr' Label="for an LFSR"/>
+##
+##  <Description>
+##  holds the characteristic polynomial (the feedback polynomial)
+##  and the same in form of a vector but with the leading coefficient removed and with MSB first,
+## called the FeedbackVec, to compute the new elm 
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+##
+DeclareAttribute( "CharPoly", IsLFSR );
+
+
+
+
+
 
 
 #############################################################################

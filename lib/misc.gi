@@ -73,6 +73,37 @@ return Length(tlist);
 end);
 
 
+InstallMethod( DegreeOfPolynomial, "degree of polynomial",  [IsPolynomial], function(mon)
+local lmlist, d, i;
+
+	lmlist := LeadingMonomial(mon);
+	d := 0;
+	for i in [1..Length(lmlist)] do 
+		if IsEvenInt(i) then 
+			d := d + lmlist[i];
+		fi;
+	od;
+
+return d;
+end);
+
+InstallMethod( DegreeOfPolynomial, "degree of polynomial",  [IsField, IsPolynomial], function(K, mon)
+local lmlist, d, i, m;
+	m := Size(K) - 1;
+	lmlist := LeadingMonomial(mon);
+	d := 0;
+	for i in [1..Length(lmlist)] do 
+		if IsEvenInt(i) then 
+			d := d + ( lmlist[i] mod m );
+		fi;
+	od;
+
+return d;
+end);
+
+
+
+
 Print("misc.gi OK,\t");
 
 

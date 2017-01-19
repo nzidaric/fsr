@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  test.gi                   GAP Library                   nusa zidaric
+#W  lfsr.gi                   GAP Library                   nusa zidaric
 ##
 ##
 

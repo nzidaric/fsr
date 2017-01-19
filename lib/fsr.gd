@@ -24,6 +24,20 @@ DeclareGlobalFunction( "FSRFamily" );
 
 #############################################################################
 ##
+#F  ChooseField( <F> )
+##
+##  choose the underlying finite field for the NLFSR
+##
+DeclareGlobalFunction( "ChooseField" );
+
+
+DeclareAttribute( "FeedbackVec", IsFSR ); 
+# should be IsLFSR , the equivalent for IsNLFSR will be CoeffVec ... maybe can have the same name coz theyre both coefficients  
+DeclareAttribute( "FieldPoly", IsFSR );
+DeclareAttribute( "OutputTap", IsFSR );
+
+#############################################################################
+##
 #A  Length( <fsr> )
 #A  InternalStateSize( <fsr> )
 ##

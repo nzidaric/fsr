@@ -4,6 +4,43 @@
 ##
 ##
 
+#############################################################################
+##
+##
+#F  ChooseField( <F> )
+##
+##  choose the underlying finite field for the NLFSR
+##  needed to create the indeterminates !!!!
+##
+InstallGlobalFunction( ChooseField, function( F )
+    local x, i , str, MaxNLFSRLen, MaxNrOfPresentMonomials ;
+
+	if(IsField(F)) then
+		x := X(F, "x");
+		MaxNLFSRLen := 100;
+		MaxNrOfPresentMonomials := 100;
+		BindGlobal("MaxNLFSRLen" , 100);
+		BindGlobal("MaxNrOfPresentMonomials" , 100);
+
+		#xlist := [];
+		for i in [1..MaxNLFSRLen] do  
+			str :=  Concatenation("x_",String(i-1)); 
+			SetIndeterminateName(FamilyObj(x), 1000+i, str); 
+			BindGlobal(str,Indeterminate(F,1000+i));
+		#	Add(xlist, str );
+		od;
+		Print("You can now create an NLFSR with up to ", MaxNLFSRLen ," stages\n");
+		Print("with up to  ", MaxNrOfPresentMonomials ," nonzero terms\n");
+	else 	
+	    Error("F is not a field !!!! \n");
+	  fi;
+return;
+end );
+
+
+
+
+
 
 
 #############################################################################
