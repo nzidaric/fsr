@@ -19,15 +19,39 @@ InstallGlobalFunction( ChooseField, function( F )
 		x := X(F, "x");
 		MaxNLFSRLen := 100;
 		MaxNrOfPresentMonomials := 100;
-		BindGlobal("MaxNLFSRLen" , 100);
-		BindGlobal("MaxNrOfPresentMonomials" , 100);
+		if not IsBoundGlobal("MaxNLFSRLen") then 
+			BindGlobal("MaxNLFSRLen" , 100);
+			BindGlobal("MaxNrOfPresentMonomials" , 100);
+			MakeReadWriteGlobal("MaxNLFSRLen");
+			MakeReadWriteGlobal("MaxNrOfPresentMonomials");
+		fi;
 
 		#xlist := [];
+#		for i in [1..MaxNLFSRLen] do		
+#			str :=  Concatenation("x_",String(i-1)); 
+#			SetIndeterminateName(FamilyObj(x), 1000+i, str); 
+#			Unbind(str);
+#		od;
 		for i in [1..MaxNLFSRLen] do  
 			str :=  Concatenation("x_",String(i-1)); 
-			SetIndeterminateName(FamilyObj(x), 1000+i, str); 
-			BindGlobal(str,Indeterminate(F,1000+i));
-		#	Add(xlist, str );
+#			if IsBoundGlobal(str) then 
+#				Print("unbinding: ",str," \n");
+#				Unbind(str);
+#			fi;
+			if IsBoundGlobal(str) then 
+				Print("changing: ",str," \n");
+				str := Indeterminate(F,1000+(i-1));
+			else
+
+
+#			str :=  Concatenation("x_",String(i-1)); 
+#			if not IsBoundGlobal(str) then 
+				Print("binding: ",str," \n");			
+				SetIndeterminateName(FamilyObj(x), 1000+i, str); 
+				BindGlobal(str,Indeterminate(F,1000+i));
+				MakeReadWriteGlobal(str);
+			fi;
+			#	Add(xlist, str );
 		od;
 		Print("You can now create an NLFSR with up to ", MaxNLFSRLen ," stages\n");
 		Print("with up to  ", MaxNrOfPresentMonomials ," nonzero terms\n");
@@ -92,9 +116,10 @@ local i, F, tap, seq, scist;
 	if Length(ist) <> Length(x) then
 		Error( "initial state length doesnt match" );		return fail;
 	fi;
-	if FieldPoly(x)=1 then F := GF(Characteristic(x));
-	else F := FieldExtension(GF(Characteristic(x)), FieldPoly(x));
-	fi;
+#	if FieldPoly(x)=1 then F := GF(Characteristic(x));
+#	else F := FieldExtension(GF(Characteristic(x)), FieldPoly(x));
+#	fi;
+	F := UnderlyingField(x);
 	for i in [1..Length(ist)] do 
 		if not (\in(ist[i], F)) then
 			Error( "initial state element at index=",i,"is not an element of the underlying field !!!" );
@@ -141,7 +166,7 @@ local fb, st, new, tap,i, seq, n;
 		Error( "the LFSR is NOT loaded !!!" );
 				return fail;
 	fi;		
-
+	F := UnderlyingField(x);
 	n := Length(x);
 	fb := FeedbackVec(x); 
 	st := x!.state; 
@@ -149,11 +174,17 @@ local fb, st, new, tap,i, seq, n;
 # add for NLFSR
 # the step
 	new := fb * st; 
+	if not(\in(new,F)) then
+		Error( "computed feedback is not an element of the underlying field !!!" );		return fail;
+	fi;
+	
+	
 	RightShiftRowVector(st,1,new);	# NOT reversed !!!!  -> hence right shift to get rid of the lowst one
 	Remove(st, n+1);
 # if we didnt use the downto notation then:
 #	LeftShiftRowVector(st,1);
 #	st[n] := new;
+	
 
 
 # sequence starts with seq_0, seq_1, ...
@@ -183,9 +214,7 @@ local fb, st, new, tap,i, seq, F, n;
 		Error( "the FSR is NOT loaded !!!" );
 		return fail;
 	fi;		
-	if FieldPoly(x)=1 then F := GF(Characteristic(x));
-	else F := FieldExtension(GF(Characteristic(x)), FieldPoly(x));
-	fi;
+	F := UnderlyingField(x);
 	if not (\in(elm, F)) then
 		Error( "second argument ",elm,"is not an element of the underlying field !!!" );
 		return fail;
@@ -197,6 +226,10 @@ local fb, st, new, tap,i, seq, F, n;
 
 # the step
 	new := (fb * st) + elm; 
+	if not(\in(new,F)) then
+		Error( "computed feedback is not an element of the underlying field !!!" );		return fail;
+	fi;
+
 	RightShiftRowVector(st,1,new);	# NOT reversed !!!!  -> hence right shift to get rid of the lowst one
 	Remove(st, n+1);
 	

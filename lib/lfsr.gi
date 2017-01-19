@@ -27,7 +27,7 @@ local K, F, charpol, fieldpol, p, m, n, tap,y,	# for args
 if Length(arg)=2 and IsUnivariatePolynomial( arg[2]) then  
  	if  IsPrimeField(arg[1])  then				
  		#F  LFSR( <K>, <charpol> )				#correct functionality :) 
-		K := arg[1]; fieldpol := 1; charpol := arg[2]; tap := [0];
+		K := arg[1]; F := arg[1]; fieldpol := 1; charpol := arg[2]; tap := [0];
 	elif IsField(arg[1]) then  		
 		#F  LFSR( <F>, <charpol>) 
 		F := arg[1]; K := PrimeField(F); fieldpol := DefiningPolynomial(F); charpol := arg[2]; tap := [0];
@@ -39,7 +39,7 @@ elif  Length(arg)=3 then
 	if (IsInt(arg[1]) and IsPosInt(arg[2]) and IsPosInt(arg[3])) then 	
 			#F  LFSR( <p>, <m>, <n>  ) 
 			# we dont allow anything thats not a prime here, primepower is already an extension
-			if IsPrimeInt(arg[1]) then K:= GF(arg[1]); 
+			if IsPrimeInt(arg[1]) then K:= GF(arg[1]);  
 			else Error("arg p must be a prime!!\n");	return fail;
 			fi;
 			F := GF(arg[1],arg[2]); fieldpol := DefiningPolynomial(F); y := X(F, "y");
@@ -52,6 +52,7 @@ elif  Length(arg)=3 then
 			if not IsIrreducibleRingElement(PolynomialRing(K),  fieldpol) then 
 				Error("defining polynomial of the extension field must be irreducible!!!");		return fail;
 			fi;
+			F := ExtensionField(K,fieldpol);
 			charpol := arg[3]; tap := [0];
 	elif IsPrimeField(arg[1]) and IsUnivariatePolynomial( arg[2])  then 		#new
 
@@ -100,6 +101,7 @@ elif  Length(arg)=4 then
 				Error("defining polynomial of the extension field must be irreducible!!!");
 						return fail;
 			fi;
+			F := ExtensionField(K,fieldpol);
 			charpol := arg[3];
 			if 	IsPosInt(arg[4]) or IsZero(arg[4]) then		tap := [arg[4]];
 			elif  	IsRowVector(arg[4]) then 			tap := arg[4];
@@ -131,6 +133,7 @@ fi;
 	lfsr := Objectify(NewType(fam, IsLFSRRep),   rec(init:=st, state:= st, numsteps := -1));
 
 	SetFieldPoly(lfsr,fieldpol);
+	SetUnderlyingField(lfsr,F);
 	SetCharPoly(lfsr,charpol);  
 	SetIsLinearFeedback(lfsr,IsUnivariatePolynomial(charpol));  
 	SetFeedbackVec(lfsr,fb);    
@@ -192,17 +195,18 @@ local  f,  period, candidates, c, i , poly,  y;
  	return period;
 end);
 InstallMethod(Period, "period of the LFSR", [IsLFSR], function(x)
-local n, m, p, q, f, l, period, candidates, c, i , poly, F, y; 
+local n, m, q,  l, period, candidates, c, i , poly, F, y; 
 
 	period := -1;
  
-	p := Characteristic(x);
+#	p := Characteristic(x);
 	n := Length(x); 
-	f := FieldPoly(x); 
+#	f := FieldPoly(x); 
 	l := CharPoly(x);
-	if f=1 then m := 1; F := GF(p);
-	else m:= Degree(f); F := FieldExtension(GF(p), f);
-	fi;
+	F := UnderlyingField(x);
+#	if f=1 then m := 1; F := GF(p);
+#	else m:= Degree(f); F := FieldExtension(GF(p), f);
+#	fi;
 	q := p^m;
 	y := X(F, "y");
 	if IsPrimitivePolynomial(F,l) then 
@@ -224,14 +228,14 @@ local n, m, p, q, f, l, F, a;
 
 	
  
-	p := Characteristic(x);
+#	p := Characteristic(x);
 	n := Length(x); 
-	f := FieldPoly(x); 
+#	f := FieldPoly(x); 
 	l := CharPoly(x);
-	if f=1 then m := 1; F := GF(p);
-	else m:= Degree(f); F := FieldExtension(GF(p), f);
-	fi;
-
+#	if f=1 then m := 1; F := GF(p);
+#	else m:= Degree(f); F := FieldExtension(GF(p), f);
+#	fi;
+	F := UnderlyingField(x);
 	if IsPrimitivePolynomial(F,l) then 
 		a := true;
 	else a:= false;
