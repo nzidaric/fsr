@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  misc.gd                   GAP Library                   nusa zidaric
+#W  misc.gd                   GAP Package                   nusa zidaric
 ##
 ##
 

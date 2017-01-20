@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  fsr.gi                   GAP Library                   nusa zidaric
+#W  fsr.gi                   GAP Package                   nusa zidaric
 ##
 ##
 
@@ -13,7 +13,7 @@
 ##  needed to create the indeterminates !!!!
 ##
 InstallGlobalFunction( ChooseField, function( F )
-    local x, i , str, MaxNLFSRLen, MaxNrOfPresentMonomials ;
+    local x, i , str, MaxNLFSRLen, MaxNrOfPresentMonomials, xlist ;
 
 	if(IsField(F)) then
 		x := X(F, "x");
@@ -26,33 +26,24 @@ InstallGlobalFunction( ChooseField, function( F )
 			MakeReadWriteGlobal("MaxNrOfPresentMonomials");
 		fi;
 
-		#xlist := [];
-#		for i in [1..MaxNLFSRLen] do		
-#			str :=  Concatenation("x_",String(i-1)); 
-#			SetIndeterminateName(FamilyObj(x), 1000+i, str); 
-#			Unbind(str);
-#		od;
+		xlist := [];
 		for i in [1..MaxNLFSRLen] do  
 			str :=  Concatenation("x_",String(i-1)); 
-#			if IsBoundGlobal(str) then 
-#				Print("unbinding: ",str," \n");
-#				Unbind(str);
-#			fi;
 			if IsBoundGlobal(str) then 
 				Print("changing: ",str," \n");
 				str := Indeterminate(F,1000+(i-1));
 			else
 
-
-#			str :=  Concatenation("x_",String(i-1)); 
-#			if not IsBoundGlobal(str) then 
 				Print("binding: ",str," \n");			
-				SetIndeterminateName(FamilyObj(x), 1000+i, str); 
-				BindGlobal(str,Indeterminate(F,1000+i));
+				SetIndeterminateName(FamilyObj(x), 1000+(i-1), str); 
+				BindGlobal(str,Indeterminate(F,1000+(i-1)));
 				MakeReadWriteGlobal(str);
 			fi;
-			#	Add(xlist, str );
+			Add(xlist, str );
 		od;
+		if not IsBoundGlobal("xlist") then 
+			BindGlobal("xlist" , xlist);
+		fi;
 		Print("You can now create an NLFSR with up to ", MaxNLFSRLen ," stages\n");
 		Print("with up to  ", MaxNrOfPresentMonomials ," nonzero terms\n");
 	else 	
@@ -160,7 +151,7 @@ end);
 ## so whats faster: GAP calling the next menthod with elm = 0 
 ## or having an almost identical copy of the method (difference is only in the computation of new)
 InstallMethod(StepFSR, "one step of FSR", [IsFSR], function(x )
-local fb, st, new, tap,i, seq, n; 
+local fb, st, new, tap,i, seq, n, F; 
 
 	if x!.numsteps < 0 then 
 		Error( "the LFSR is NOT loaded !!!" );

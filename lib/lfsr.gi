@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  lfsr.gi                   GAP Library                   nusa zidaric
+#W  lfsr.gi                   GAP Package                   nusa zidaric
 ##
 ##
 
@@ -52,7 +52,7 @@ elif  Length(arg)=3 then
 			if not IsIrreducibleRingElement(PolynomialRing(K),  fieldpol) then 
 				Error("defining polynomial of the extension field must be irreducible!!!");		return fail;
 			fi;
-			F := ExtensionField(K,fieldpol);
+			F := FieldExtension(K,fieldpol);
 			charpol := arg[3]; tap := [0];
 	elif IsPrimeField(arg[1]) and IsUnivariatePolynomial( arg[2])  then 		#new
 
@@ -101,7 +101,7 @@ elif  Length(arg)=4 then
 				Error("defining polynomial of the extension field must be irreducible!!!");
 						return fail;
 			fi;
-			F := ExtensionField(K,fieldpol);
+			F := FieldExtension(K,fieldpol);
 			charpol := arg[3];
 			if 	IsPosInt(arg[4]) or IsZero(arg[4]) then		tap := [arg[4]];
 			elif  	IsRowVector(arg[4]) then 			tap := arg[4];
@@ -195,11 +195,11 @@ local  f,  period, candidates, c, i , poly,  y;
  	return period;
 end);
 InstallMethod(Period, "period of the LFSR", [IsLFSR], function(x)
-local n, m, q,  l, period, candidates, c, i , poly, F, y; 
+local n, m, q, p, l, period, candidates, c, i , poly, F, y; 
 
 	period := -1;
  
-#	p := Characteristic(x);
+	p := Characteristic(x);
 	n := Length(x); 
 #	f := FieldPoly(x); 
 	l := CharPoly(x);
@@ -252,7 +252,7 @@ end);
 ##
 #M  ViewObj( <lfsr> ) . . . . . . . . . . . . . . . 
 ##
-InstallMethod( ViewObj,    "for LFSR",    true,    [ IsFSR ],    0,  function( x )
+InstallMethod( ViewObj,    "for LFSR",    true,    [ IsLFSR ],    0,  function( x )
 	if x!.numsteps=-1 then 
 		Print("< empty LFSR given by CharPoly = ", CharPoly(x), ">");
 	else 	

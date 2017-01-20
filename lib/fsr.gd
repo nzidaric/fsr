@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  fsr.gd                   GAP Library                   nusa zidaric
+#W  fsr.gd                   GAP Package                   nusa zidaric
 ##
 ##
 
@@ -34,6 +34,7 @@ DeclareGlobalFunction( "ChooseField" );
 DeclareAttribute( "FeedbackVec", IsFSR ); 
 # should be IsLFSR , the equivalent for IsNLFSR will be CoeffVec ... maybe can have the same name coz theyre both coefficients  
 DeclareAttribute( "FieldPoly", IsFSR );
+DeclareAttribute( "UnderlyingField", IsFSR );
 DeclareAttribute( "OutputTap", IsFSR );
 
 #############################################################################
