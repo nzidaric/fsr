@@ -11,7 +11,7 @@
 ##
 ##  choose the underlying finite field for the NLFSR
 ##  needed to create the indeterminates !!!!
-##
+##  :(
 InstallGlobalFunction( ChooseField, function( F )
     local x, i , str, MaxNLFSRLen, MaxNrOfPresentMonomials, xlist ;
 
@@ -126,6 +126,7 @@ local i, F, tap, seq, scist;
 	x!.numsteps := 0;
 	
 ## TO DO : UPDATE THE BoolState field for NLFSR 
+# not having BoolState for NLFSR anymore !!! 
 	
 # sequence starts with seq_0, seq_1, ...
 	tap := OutputTap(x); 

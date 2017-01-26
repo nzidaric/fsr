@@ -15,7 +15,7 @@
 InstallGlobalFunction( NLFSR,  function(arg)
 
 local K, F, multpol, fieldpol, clist, mlist, m, n, tap, y,	# for args
-    fam, fb, st, coefs, nlfsr, d, i, j , indlist, nonlin;	# for constructor
+    fam, fb, st, coefs, nlfsr, d, i, j , idx, indlist, nonlin;	# for constructor
 
 # figure out which constructor is being used
 
@@ -70,7 +70,7 @@ fi;
 			if IsOddInt(j) then 
 				idx := m[j] - 1000;
 				if idx >= d then 
-					Error("Feedback contains an indeterminate thats out of range!!!"); 	return fail;
+					Error("Feedback needs an element from a stage that does not exist ( out of range) !!!"); 	return fail;
 				fi;
 				Add(indlist, m[j] - 1000 ); # get all the indeterminates in this monomial
 			fi;
@@ -125,6 +125,132 @@ end);
 
 
 
+
+
+
+#############################################################################
+##
+#M  ViewObj( <nlfsr> ) . . . . . . . . . . . . . . . 
+##
+InstallMethod( ViewObj,    "for NLFSR",    true,    [ IsNLFSR ],    0,  function( x )
+	if x!.numsteps=-1 then 
+		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+	else 	
+	Print("< NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "\n>");
+	fi;
+end );
+
+InstallMethod( Display,
+    "for NLFSR",	    true,    [ IsNLFSR ],        0,    function( x )
+    ViewObj(x);
+end );
+
+#############################################################################
+##
+#M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .
+##
+InstallOtherMethod( PrintObj,     "for NLFSR",    true,    [ IsNLFSR ],    0,  function( x )
+	if x!.numsteps=-1 then 
+		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+	else 	
+		Print("< NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "\n>");
+		Print("\nwith initial state =");
+		Print(((x!.init))); # NOT reversed !!!! 
+		Print("\nwith current state =");
+		Print(((x!.state)));# NOT reversed !!!! 
+		Print("\nafter  ",x!.numsteps," steps\n");
+	fi;
+end );
+
+
+#############################################################################
+##
+#M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .
+##
+InstallMethod( PrintObj,     "for nLFSR",    true,    [IsBasis, IsNLFSR ],    0,  function( B, x )
+	if x!.numsteps=-1 then 
+		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+	else 	
+		Print("< NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+		Print("\nwith initial state =");
+		Print((IntVecFFExt(B, x!.init))); # NOT reversed !!!! 
+		Print("\nwith current state =");
+		Print((IntVecFFExt(B, x!.state)));# NOT reversed !!!! 
+		Print("\nafter  ",x!.numsteps," steps\n");
+	fi;
+end );
+
+#############################################################################
+##
+#M  PrintAll( <nlfsr> ) . . . . . . . using GAP native representation of field elms
+##
+InstallMethod( PrintAll,     "for NLFSR",    true,    [ IsNLFSR ],    0,  function( x )
+local uf, tap, i;
+
+	uf := UnderlyingField(x);
+	if x!.numsteps=-1 then 
+		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+	else 	
+		Print("< NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+	fi;
+	Print("with feedback coeff =");
+	Print((FeedbackVec(x))); # NOT reversed !!!!
+	Print("\nwith initial state  =");
+	Print(((x!.init))); # NOT reversed !!!!
+	Print("\nwith current state  =");
+	Print(((x!.state)));# NOT reversed !!!!
+	Print("\nafter ");
+	if x!.numsteps>0 then 
+		Print(x!.numsteps," steps\n");
+	elif x!.numsteps=0 then 
+		Print("loading\n");
+	else 	Print("initialization \n");
+	fi;
+	
+	tap := OutputTap(x); 
+	if Length(tap)=1 then 
+		Print("with output from stage S_",tap[1],"\n");
+	else 
+		Print("with output from stages S_",tap,"\n");
+	fi;
+	
+end );
+
+#############################################################################
+##
+#M  PrintAll( <B>,<nlfsr> ) . . . . . . . as binary vectors in a given basis
+##
+InstallMethod( PrintAll,     "for NLFSR",    true,    [ IsBasis, IsNLFSR ],    0,  function( B , x )
+local uf, tap, i;
+
+	uf := UnderlyingField(x);	
+	if x!.numsteps=-1 then 
+		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+	else 	
+		Print("< NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+	fi;
+	Print("with feedback coeff =");
+	Print(IntVecFFExt(B, FeedbackVec(x))); # NOT reversed !!!!
+	Print("\nwith initial state  =");
+	Print((IntVecFFExt(B, x!.init))); # NOT reversed !!!!
+	Print("\nwith current state  =");
+	Print((IntVecFFExt(B, x!.state)));# NOT reversed !!!!
+	Print("\nafter ");
+	if x!.numsteps>0 then 
+		Print(x!.numsteps," steps\n");
+	elif x!.numsteps=0 then 
+		Print("loading\n");
+	else 	Print("initialization \n");
+	fi;
+	
+	tap := OutputTap(x); 
+	if Length(tap)=1 then 
+		Print("with output from stage S_",tap[1],"\n");
+	else 
+		Print("with output from stages S_",tap,"\n");
+	fi;
+	
+end );
 
 
 

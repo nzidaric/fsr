@@ -9,6 +9,17 @@
 ##
 #C  IsFSR( <obj> )
 ##
+##  <#GAPDoc Label="IsFSR">
+##  
+##  <ManSection>
+##  <Filt Name="IsFSR" />
+##  <Description>
+##  This is the category of &FSR; objects.
+##  Objects in this category are created 
+##  using functions <Ref Func="LFSR" /> or <Ref Func="LFSR" />.
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
 DeclareCategory( "IsFSR",  IsObject ); 
  
 
@@ -16,7 +27,18 @@ DeclareCategory( "IsFSR",  IsObject );
 ##
 #F  FSRFamily( <p> )
 ##
-##  is the family of finite field elements in characteristic <p>.
+##
+##  <#GAPDoc Label="FSRFamily">
+##  
+##  <ManSection>
+##  <Fam Name="FSRFamily" />
+##  <Description>
+##  This is the family of FSRs with characteristic <p>.
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+#
+##  
 ##
 DeclareGlobalFunction( "FSRFamily" );
 
@@ -31,10 +53,34 @@ DeclareGlobalFunction( "FSRFamily" );
 DeclareGlobalFunction( "ChooseField" );
 
 
-DeclareAttribute( "FeedbackVec", IsFSR ); 
-# should be IsLFSR , the equivalent for IsNLFSR will be CoeffVec ... maybe can have the same name coz theyre both coefficients  
+#############################################################################
+##
+#A  FieldPoly( <fsr> )
+#A  UnderlyingField( <fsr> )
+#A  FeedbackVec( <fsr> )
+#A  OutputTap( <fsr> )
+##
+##  <#GAPDoc Label="FieldPoly">
+##  <ManSection>
+##  <Attr Name="FieldPoly" Arg='fsr' Label="for an FSR"/>
+##  <Attr Name="UnderlyingField" Arg='fsr' Label="for an FSR"/>
+##  <Attr Name="FeedbackVec" Arg='fsr' Label="for an FSR"/>
+##  <Attr Name="OutputTap" Arg='fsr' Label="for an FSR"/>
+##  <Description>
+##  <C>FieldPoly</C> of the FSR stores the irreducible polynomial used to construct the extension field or 1 in case of a prime field.<P/>
+##  <C>UnderlyingField</C> of the FSR is the finite field over which the FSR is defined (all indeterminates and constants are from this field). 
+##  <C>FeedbackVec</C> of the FSR stores the coefficients of the <C>CharPoly</C> without its leading term in case of LFSR, 
+##  and coefficients of the nonzero monomials present in the multivariate function defining the feedback in case of NLFSR .<P/>
+##  <C>OutputTap</C> holds the output tap position(s): the sequence elements are taken from the stage(s) listed in <C>OutputTap</C>.
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+
 DeclareAttribute( "FieldPoly", IsFSR );
 DeclareAttribute( "UnderlyingField", IsFSR );
+DeclareAttribute( "FeedbackVec", IsFSR ); 
+# should be IsLFSR , the equivalent for IsNLFSR will be CoeffVec ...
+# maybe can have the same name coz theyre both coefficients  and belong to the feedback
 DeclareAttribute( "OutputTap", IsFSR );
 
 #############################################################################
@@ -45,8 +91,11 @@ DeclareAttribute( "OutputTap", IsFSR );
 ##  <#GAPDoc Label="Length">
 ##  <ManSection>
 ##  <Attr Name="Length" Arg='fsr' Label="for an FSR"/>
+##  <Attr Name="InternalStateSize" Arg='fsr' Label="for an FSR"/>
 ##
 ##  <Description>
+##  <C>Length</C> of the FSR is the number of its stages.<P/>
+##  <C>InternalStateSize</C> of the FSR is size in bits needed to store the state (length * width) 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -58,13 +107,17 @@ DeclareAttribute( "InternalStateSize", IsFSR );
 
 #############################################################################
 ##
-#O  LoadFSR( <fsr>, <ist> )
+#M  LoadFSR( <fsr>, <ist> )
 ##
 ##  <#GAPDoc Label="LoadFSR">
 ##  <ManSection>
-##  <Attr Name="LoadFSR" Arg='fsr' Label="for an FSR"/>
+##  <Meth Name="LoadFSR" Arg='fsr' Label="for an FSR"/>
 ##
 ##  <Description>
+##  Loading the FSR <A>fsr</A> with the initial state <A>ist</A>, which is a FFE vector
+##  of same length as the FSR and with elements from the underlying finite field. If either of those two
+##  requirements is violated, loading fails and error message appears. At the time of loading 
+##  the initial sequence elements (ie zeroth elements) are obtained and <C>numsteps</C> is set to 0.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -74,15 +127,16 @@ DeclareOperation("LoadFSR", [IsFSR,  IsFFECollection]);
 
 #############################################################################
 ##
-#O  StepFSR( <fsr>)
-#O  StepFSR( <fsr>, <elm>)
+#M  StepFSR( <fsr>)
+#M  StepFSR( <fsr>, <elm>)
 ##
 ##  <#GAPDoc Label="StepFSR">
 ##  <ManSection>
-##  <Attr Name="StepFSR" Arg='fsr' Label="for an FSR"/>
+##  <Meth Name="StepFSR" Arg='fsr' Label="for an FSR"/>
 ##
 ##  <Description>
 ##  </Description>
+## TO DO FOR NLFSR !!!!
 ##  </ManSection>
 ##  <#/GAPDoc>
 ##

@@ -10,46 +10,47 @@
 ##
 ##  <#GAPDoc Label="outputs">
 ##  <ManSection>
-##
 ##  <Description>
 ##  There are two types of functions: ones that return the input 
 ##  in a human friendly version (as strings or list of strings), 
 ##  and ones that write the human friendly version of the input into a file (txt or tex)
 ##  <P/>
 ##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
 
 
 #############################################################################
 ##
-#O  IntFFExt( [<B>,] <ffe> )    . . . . . . . . write ffe as integer / vector of integers from the prime subfield
-#O  IntVecFFExt( [<B>,] <vec> ) . . . . . . . . write vector of integers from the prime subfield
-#O  IntMatFFExt( [<B>,] <M> )   . . . . . . . . write matrix of integers from the prime subfield
+#M  IntFFExt( [<B>,] <ffe> )    . . . . . . . . write ffe as integer / vector of integers from the prime subfield
+#M  IntVecFFExt( [<B>,] <vec> ) . . . . . . . . write vector of integers from the prime subfield
+#M  IntMatFFExt( [<B>,] <M> )   . . . . . . . . write matrix of integers from the prime subfield
 ##
 ##  <#GAPDoc Label="IntFFExt">
 ##  <ManSection>
-##  <Func Name=" IntFFExt" Arg="[B,]ffe"/>
-##  <Func Name=" IntVecFFExt" Arg="[B,]vec"/>
-##  <Func Name=" IntMatFFExt" Arg="[B,]M"/>
+##  <Meth Name=" IntFFExt" Arg="[B,]ffe"/>
+##  <Meth Name=" IntVecFFExt" Arg="[B,]vec"/>
+##  <Meth Name=" IntMatFFExt" Arg="[B,]M"/>
 ##
 ##  <Description>
-##  IntFFExt takes the <A>ffe</A> and writes it as an integer of the prime field 
+##  <C>IntFFExt</C> takes the <A>ffe</A> and writes it as an integer of the prime field 
 ##  if <A>ffe</A> is an element of the prime field (same as Int(ffe)),
 ##  or writes it as a vector of integers from the prime subfield
 ##  if <A>ffe</A> is an element of an extension field, using the given basis <A>B</A> or 
 ##  canonical basis representation of <A>ffe</A> if no basis is provided.
 ##  <P/>
-##  IntVecFFExt takes the vector <A>vec</A> of FFEs and writes it in a human friendly version: as 
+##  <C>IntVecFFExt</C> takes the vector <A>vec</A> of FFEs and writes it in a human friendly version: as 
 ##  a vector of integers from the prime field if all components of <A>vec</A> belong to a prime field,
 ##  or as a vector of vectors of integers from the prime subfield, if the components belong to an 
 ##  extension field, using the given basis <A>B</A> or canonical basis representation of <A>ffe</A>, 
 ##  if no basis is provided.
 ##  (note: all components are treated as elements of the largest field).
 ##  <P/>
-##  IntMatFFExt takes a matrix <A>M</A> and returns its human friendly version:
+##  <C>IntMatFFExt</C> takes a matrix <A>M</A> and returns its human friendly version:
 ##  a matrix of vectors of integers from the prime
 ##  field if all components of <A>M</A> belong to a prime field, or a vector of row vectors, whose 
 ##  elements are vectors of integers from the prime subfield, if the components belong to an extension
-##  field, using the given basis <A>B</A> or canonical basis representation of <A>ffe</A>.
+##  field, using the given basis <A>B</A> or canonical basis representation of components of <A>M</A>.
 ##  <P/>
 ##  NOTE: the non-basis versions return a representation in the smallest field that contains the element.
 ##  for representation in a specific field, use the basis version with desired basis
@@ -78,16 +79,17 @@ DeclareOperation( "IntMatFFExt" , [IsFFECollColl]);# added to tstfsroutputs.tst
 ##
 ##  <#GAPDoc Label="VecToString">
 ##  <ManSection>
-##  <Func Name="VecToString" Arg="[B,] vec"/>
+##  <Meth Name="VecToString" Arg="[B,] vec"/>
 ##
 ##  <Description>
-##  writes a (FFE) verctor  or matrix as string or list of strings using the given basis <A>B</A> or canonical 
-##  basis representation of <A>ffe</A> if no basis is provided. This mathod calls methods IntFFExt, IntVecFFExt and IntMatFFExt ADDLINK.
+##  Writes a FFE verctor or matrix as string or list of strings using the given basis <A>B</A> or canonical 
+##  basis representation of <A>ffe</A> if no basis is provided. This mathod calls methods <C>IntFFExt</C>, <C>IntVecFFExt</C> and <C>IntMatFFExt</C>  from section  LINK.
 ##  The list of strings is more practically useful: we wish to have the components as srings, therefore 
-##  the human friendly version of a matrix is nor an actual string.
+##  the human friendly version of a matrix is not an actual string.
 ##  <P/>
-##  NOTE: the non-basis versions return a representation in the smallest field that contains the element.
-##  for representation in a specific field, use the basis version with desired basis
+##  NOTE: the non-basis versions return a representation in the cononical basis of the
+##  smallest field that contains the element. 
+##  For representation in a specific field, use the basis version with desired basis
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -108,10 +110,7 @@ DeclareOperation( "VecToString" ,[IsBasis, IsVector] ); # added to tstfsroutputs
 ##
 ##  <Description>
 ##  Writes the human friendly version of vector <A>vec</A> represented in basis <A>B</A>,
-##  whose components are elms of a prime field to
-##  the output file <A>output</A>. Also works if the element is an integer or FFE. 
-##  If the element is a FFE, it will be written as a vector of elements of the 
-##  prime subfield using the given basis <A>B</A>.
+##  to the output file <A>output</A>. Also works if <A>vec</A> is an integer or FFE. 
 ##  <P/>
 ##  NOTE: the basis MUST be provided.
 ##  <P/>
@@ -138,8 +137,8 @@ DeclareGlobalFunction( "WriteVector" );
 ##  <Func Name="WriteMatrix" Arg="output, B, M"/>
 ##
 ##  <Description>
-##  Writes the human friendly version of matrix <A>M</A> represented in basis <A>B</A> whose components are FFEs to
-##  the output file <A>output</A> nicely formatted (each row in a new line).
+##  Writes the human friendly version of matrix <A>M</A> represented in basis <A>B</A> to
+##  the output file <A>output</A> nicely formatted (rectangular, each row in a new line).
 ##  <P/>
 ##  NOTE: the basis MUST be provided.
 ##  </Description>

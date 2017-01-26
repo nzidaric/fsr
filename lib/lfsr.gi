@@ -151,21 +151,12 @@ end);
 #P  IsPeriodic( <lfsr> )
 ##
 InstallMethod(IsPeriodic, "periodic or not", [IsLFSR], function(x)
-#local p,n,m, f, F,  ct, a, b, c, d; 
 local ct, flag; 
-		#p := Characteristic(x);
-		#n := Length(x); 
-		#f := FieldPoly(x); 
-		#if f=1 then m := 1; F := GF(p);
-		#	else m:= Degree(f); F := FieldExtension(GF(p), f);
-		#fi;
-	
-	
+	# must check if CharPoly must be irr or primitive, but i think not
 	ct := FeedbackVec(x)[Length(x)]; # constant term of CharPoly
 	flag := ( ct <> Zero(GF(Characteristic(x))) ); 	#CITE is periodic (8.11 lidl, niederreiter)			
 
 	SetIsPeriodic(x, flag);
-
 	return flag;
 end);
 
@@ -174,47 +165,52 @@ end);
 ##
 #A  Period( <lfsr> )
 ##
-InstallMethod(PeriodIrr, "period of the LFSR", [IsField, IsUnivariatePolynomial, IsPosInt], function(F, l, m)
-local  f,  period, candidates, c, i , poly,  y; 
+InstallMethod(PeriodIrreducible, "period of the LFSR", [IsField, IsUnivariatePolynomial, IsPosInt], function(F, l, m)
+local   period, candidates, c, i , poly,  y; 
 
-	period := -1;
-	y := X(F, "y");
-
+## MUST CHECK !!!
 	if IsIrreducibleRingElement(PolynomialRing(F),  l) then 
+		y := X(F, "y");
+		# candidates are in ascending order 
+		# check if u really need the smallest one 
 		candidates := DivisorsInt(m);
 		for i in [1.. Length(candidates)] do 
 			c := candidates[i];
 			poly := y^c + 1;
 			
 			if Gcd(l, poly ) = l then 
-				period := c; break;
+				period := c; return period;
 			fi;
 		od;
-	else Print("l not irreducible, why are u here ?!?");
+	else 	Error("l not irreducible, why are u here ?!?"); 
+		return fail;
 	fi;
- 	return period;
 end);
-InstallMethod(Period, "period of the LFSR", [IsLFSR], function(x)
-local n, m, q, p, l, period, candidates, c, i , poly, F, y; 
 
-	period := -1;
+InstallMethod(PeriodReducible, "period of the LFSR", [IsField, IsUnivariatePolynomial, IsPosInt], function(F, l, m)
+# to do !!!!!!!!!!!
+	return -1;
+end);
+
+InstallMethod(Period, "period of the LFSR", [IsLFSR], function(x)
+local n, q, l, period,  F; 
+
+
  
-	p := Characteristic(x);
+
 	n := Length(x); 
-#	f := FieldPoly(x); 
 	l := CharPoly(x);
 	F := UnderlyingField(x);
-#	if f=1 then m := 1; F := GF(p);
-#	else m:= Degree(f); F := FieldExtension(GF(p), f);
-#	fi;
-	q := p^m;
-	y := X(F, "y");
+	q := Characteristic(x)^DegreeOverPrimeField(F);
+
 	if IsPrimitivePolynomial(F,l) then 
-		period := q^n -1; SetIsMaxSeqLFSR(x,true);
+		period := q^n -1; 
+		SetIsMaxSeqLFSR(x,true);
 	elif IsIrreducibleRingElement(PolynomialRing(F),  l) then 
-		period := PeriodIrr(F, l, q^n -1);
+		period := PeriodIrreducible(F, l, q^n -1);
 	else 
 		Print("l is reducible, TO DO ");
+		period := PeriodReducible(F, l, q^n -1);
 	
 	fi;
  
@@ -224,24 +220,10 @@ end);
 
 
 InstallMethod(IsMaxSeqLFSR, "is m-sequence for LFSR", [IsLFSR], function(x)
-local n, m, p, q, f, l, F, a; 
-
-	
- 
-#	p := Characteristic(x);
-	n := Length(x); 
-#	f := FieldPoly(x); 
-	l := CharPoly(x);
-#	if f=1 then m := 1; F := GF(p);
-#	else m:= Degree(f); F := FieldExtension(GF(p), f);
-#	fi;
-	F := UnderlyingField(x);
-	if IsPrimitivePolynomial(F,l) then 
-		a := true;
-	else a:= false;
-	fi;
-	SetIsMaxSeqLFSR(x,a);
-	return a;
+local  tmp; 
+	tmp := IsPrimitivePolynomial( UnderlyingField(x), CharPoly(x));
+	SetIsMaxSeqLFSR(x,tmp);
+	return tmp;
 end);
 
 
@@ -261,7 +243,7 @@ InstallMethod( ViewObj,    "for LFSR",    true,    [ IsLFSR ],    0,  function( 
 end );
 
 InstallMethod( Display,
-    "for LFSR",	    true,    [ IsFSR ],        0,    function( x )
+    "for LFSR",	    true,    [ IsLFSR ],        0,    function( x )
     ViewObj(x);
 end );
 
@@ -307,11 +289,7 @@ end );
 InstallMethod( PrintAll,     "for LFSR",    true,    [ IsLFSR ],    0,  function( x )
 local uf, tap, i;
 
-	if FieldPoly(x) = 1 then 
-		uf := Concatenation("GF(",String(Characteristic(x)),")");
-	else 
-		uf := Concatenation("GF(",String(Characteristic(x)),"^",String(Degree(FieldPoly(x))),") defined by FieldPoly=",String(FieldPoly(x)));
-	fi;
+	uf := UnderlyingField(x);
 	
 	if x!.numsteps=-1 then 
 		Print("Empty LFSR over ",uf," given by CharPoly = ", CharPoly(x), "\n");
