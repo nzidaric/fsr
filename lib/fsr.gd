@@ -29,20 +29,15 @@ DeclareCategory( "IsFSR",  IsObject );
 ##
 ##
 ##  <#GAPDoc Label="FSRFamily">
-##  
 ##  <ManSection>
 ##  <Fam Name="FSRFamily" />
 ##  <Description>
-##  This is the family of FSRs with characteristic <p>.
+##  This is the family of FSRs with characteristic <P/>.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
 #
-##  
-##
 DeclareGlobalFunction( "FSRFamily" );
-
-
 
 #############################################################################
 ##
@@ -50,6 +45,17 @@ DeclareGlobalFunction( "FSRFamily" );
 ##
 ##  choose the underlying finite field for the NLFSR
 ##
+##
+##  <#GAPDoc Label="ChooseField">
+##  <ManSection>
+##  <Func Name="ChooseField" />
+##  <Description>
+##  Choose the underlying finite field and prepare indeterminated in the chosen field. 
+##  The indeterminates will be used for the multivariable polynomial, which will define the NLFSR feedback.
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+#
 DeclareGlobalFunction( "ChooseField" );
 
 
@@ -81,6 +87,7 @@ DeclareAttribute( "UnderlyingField", IsFSR );
 DeclareAttribute( "FeedbackVec", IsFSR ); 
 # should be IsLFSR , the equivalent for IsNLFSR will be CoeffVec ...
 # maybe can have the same name coz theyre both coefficients  and belong to the feedback
+# maybe rename to FeedbackCoeffs
 DeclareAttribute( "OutputTap", IsFSR );
 
 #############################################################################
@@ -103,8 +110,6 @@ DeclareAttribute( "OutputTap", IsFSR );
 DeclareAttribute( "Length", IsFSR );
 DeclareAttribute( "InternalStateSize", IsFSR );
 
-
-
 #############################################################################
 ##
 #M  LoadFSR( <fsr>, <ist> )
@@ -125,6 +130,11 @@ DeclareAttribute( "InternalStateSize", IsFSR );
 DeclareOperation("LoadFSR", [IsFSR,  IsFFECollection]);
 #DeclareProperty("IsEmpty", IsFSR); DONT coz once set cant change again
 
+
+# TO DO : from initial state and number of steps , knowing the feedback polynomial, we can check if current state is
+# VALID (if we can get it from initial state in num of steps), and if not valid then reset the LFSR
+# is it the same for both ????
+
 #############################################################################
 ##
 #M  StepFSR( <fsr>)
@@ -135,8 +145,13 @@ DeclareOperation("LoadFSR", [IsFSR,  IsFFECollection]);
 ##  <Meth Name="StepFSR" Arg='fsr' Label="for an FSR"/>
 ##
 ##  <Description>
+##  Perform one step the FSR <A>fsr</A>, ie. compute the new <C>state</C> and update the <C>numsteps</C>, then output the
+##  elements denoted by <C>OutputTap</C>. If the optional parameter <A>elm</A> is used then the new element is computed as 
+##  a sum of computed feedback and <A>elm</A>. Elemen <A>elm</A> must be an element of the underlying finite field. <P/>
+##  An error is triggered if <C>StepFSR</C> is called for an empty FSR. As this is a way to destroy the linearity of an LFSR, 
+##  we refer to StepFSR with the optiomal nonzero <A>elm</A> as <C>nonlinear step</C><P/>.
+##  NOTE: TO DO for the NLFSR !!!!!!
 ##  </Description>
-## TO DO FOR NLFSR !!!!
 ##  </ManSection>
 ##  <#/GAPDoc>
 ##
@@ -160,7 +175,7 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 ##
 ##  <#GAPDoc Label="RunFSR">
 ##  <ManSection>
-##  <Attr Name="RunFSR" Arg='fsr' Label="for an FSR"/>
+##  <Meth Name="RunFSR" Arg='fsr' Label="for an FSR"/>
 ##
 ##  <Description>
 ##  </Description>

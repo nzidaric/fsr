@@ -1,6 +1,7 @@
 -------===========-------
 Version 1.0.4: 17.01.2017
-* starting to migrate some functions to fsr.gd/gi
+* starting to migrate some methods/attributes/properties to fsr.gd/gi:
+- FeedbackVec, FieldPoly, OutputTap moved OK
 
 -------===========-------
 Version 1.0.3: 16.01.2017

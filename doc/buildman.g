@@ -43,7 +43,11 @@ end;
 FSRMANUALFILES:=[ 
 "../PackageInfo.g",
 "../lib/outputs.gd",
+"../lib/fsr.gd",
+"../lib/lfsr.gd",
+"../lib/nlfsr.gd",
 ];
+Print(FSRMANUALFILES,"\n");
 
 ###########################################################################
 ##
@@ -56,9 +60,10 @@ path:=Concatenation(
 main:="manual.xml";
 bookname:="fsr";
 MakeGAPDocDoc( path, main, FSRMANUALFILES, bookname, "../../..", "MathJax" );  
+#MakeGAPDocDoc( path, main, FSRMANUALFILES, bookname ); 
 CopyHTMLStyleFiles( path );
 GAPDocManualLab( "fsr" );; 
-ExtractMyManualExamples( "fsr", main, FSRMANUALFILES);
+#ExtractMyManualExamples( "fsr", main, FSRMANUALFILES);
 end;
 
 

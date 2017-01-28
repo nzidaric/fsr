@@ -6,12 +6,13 @@
 
 #############################################################################
 ##
-##
 #F  ChooseField( <F> )
 ##
 ##  choose the underlying finite field for the NLFSR
 ##  needed to create the indeterminates !!!!
 ##  :(
+## ugly, take a second look at it !!!!
+##
 InstallGlobalFunction( ChooseField, function( F )
     local x, i , str, MaxNLFSRLen, MaxNrOfPresentMonomials, xlist ;
 
@@ -53,15 +54,10 @@ return;
 end );
 
 
-
-
-
-
-
 #############################################################################
 ##
 #F  FSRFamily( <p> ) 
-##  copied from FFEFamily
+##  copied from FFEFamily :)
 ##
 InstallGlobalFunction( FSRFamily, function( p )
     local fam;
@@ -107,9 +103,6 @@ local i, F, tap, seq, scist;
 	if Length(ist) <> Length(x) then
 		Error( "initial state length doesnt match" );		return fail;
 	fi;
-#	if FieldPoly(x)=1 then F := GF(Characteristic(x));
-#	else F := FieldExtension(GF(Characteristic(x)), FieldPoly(x));
-#	fi;
 	F := UnderlyingField(x);
 	for i in [1..Length(ist)] do 
 		if not (\in(ist[i], F)) then
@@ -127,6 +120,7 @@ local i, F, tap, seq, scist;
 	
 ## TO DO : UPDATE THE BoolState field for NLFSR 
 # not having BoolState for NLFSR anymore !!! 
+# which makes it the same for LFSR and NLFSR :)
 	
 # sequence starts with seq_0, seq_1, ...
 	tap := OutputTap(x); 
