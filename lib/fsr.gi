@@ -253,14 +253,17 @@ end);
 ## nonlinear versions 
 #O RunFSR(<FSR>, <elm>, <num>, <pr>) ...... VIII. run for num steps with the same nonlinear input on each step and with/without print to shell
 #O RunFSR(<FSR>, <elm>, <num> ) ........... IX.   run for num steps with the same nonlinear input on each step without print to shell
-#O RunFSR(<FSR>, <ist>, <elmvec>, <pr> ) .. X.    run for num steps with the different nonlinear input on each step with/without print to shell
+#O RunFSR(<FSR>, <elm> ) ........... X.   run for threshold steps with the same nonlinear input on each step without print to shell
+#O RunFSR(<FSR>, <ist>, <elmvec>, <pr> ) .. XI.    run for num steps with the different nonlinear input on each step with/without print to shell
 
 
 # I. run for num steps with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt, IsBool], function(x, num, pr)
 local seq, sequence, nrsteps, treshold, i; 
 # check num
-	treshold := Period(x) + Length(x); #(if primitive thats one period plus one length of FSR)
+	treshold := 2^Length(x) + Length(x); 
+#(if LFSR and primitive thats one period plus one length of FSR + 1)
+#(if NLFSR and primitive thats one max possible period plus one length of FSR )
 	if num > treshold then 
 		Print("over the treshold, will only output the first ",treshold,"elements of the sequence");
 		nrsteps := treshold;
@@ -290,12 +293,12 @@ end);
 
 # III. run with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsBool], function(x, pr)		
-	return RunFSR(x, Period(x) + Length(x), pr);
+	return RunFSR(x, 2^Length(x) + Length(x), pr);
 end);
 
 # IV. run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR], function(x)		
-	return RunFSR(x, Period(x) + Length(x), false);
+	return RunFSR(x, 2^Length(x) + Length(x), false);
 end);
 
 
@@ -328,22 +331,23 @@ end);
 
 # VI. load new initial state then run for num-1 steps without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR,IsFFECollection, IsPosInt], function(x, ist, num)
-	return RunFSR(x,ist, num, false);
+	return RunFSR(x, ist, num, false);
 end);
 
 # VII. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR,IsFFECollection], function(x, ist )
-	return RunFSR(x,ist,Period(x) + Length(x), false);
+	return RunFSR(x, ist, 2^Length(x) + Length(x), false);
 end);
 
 
 # NONLINEAR STEP 
+# rationale behind copied code is speed: could be a very long sequence, dont want to many functions calling eachother 
 
 # VIII. run for num steps with the same nonlinear input on each step and with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt, IsBool], function(x, elm, num, pr)
 local seq, sequence, nrsteps, treshold, i; 
 # check num
-	treshold := Period(x) + Length(x); #(if primitive thats one period plus one length of FSR)
+	treshold := 2^Length(x) + Length(x); #(if primitive thats one period plus one length of FSR)
 	if num > treshold then 
 		Print("over the treshold, will only output the first ",treshold,"elements of the sequence");
 		nrsteps := treshold;
@@ -366,16 +370,22 @@ local seq, sequence, nrsteps, treshold, i;
 	return sequence;
 end);
 
+
 # IX. run for num steps with the same nonlinear input on each step without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt], function(x, elm, num)
+	return RunFSR(x,elm, num, false);
+end);
+
+
+# X. run for num steps with the same nonlinear input on each step without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE], function(x, elm)
-	return RunFSR(x,elm, Period(x) + Length(x), false);
+	return RunFSR(x,elm, 2^Length(x) + Length(x), false);
 end);
 
 #PROBLEM : method dselection cant decide between this and  VII. RunFSR( <FSR> , <ist>, <pr> ) 
 #InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection], function(x,  elmvec, pr)
 #local  sequence,  treshold, num, nrsteps, seq , i; 
-# check num NOTE: nonlinear can be much much longer , FIX THRESHOLD
-#	treshold := Period(x) + Length(x);  
+#	treshold := 2^Length(x) + Length(x);  
 #	num := Length(elmvec);
 #	if num > treshold then 
 #		Print("over the treshold, will only output the first ",treshold,"elements of the sequence");
@@ -402,7 +412,7 @@ end);
 
 
 
-# X. run for num steps with the different nonlinear input on each step with/without print to shell
+# XI. run for num steps with the different nonlinear input on each step with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR,  IsFFECollection, IsFFECollection, IsBool], function(x, ist, elmvec, pr)
 local  sequence,  treshold, num, nrsteps, seq , i; 
 # load FSR 
@@ -424,8 +434,7 @@ local  sequence,  treshold, num, nrsteps, seq , i;
 	fi;
 
 
-# check num NOTE: nonlinear can be much much longer , FIX THRESHOLD
-	treshold := Period(x) + Length(x);  
+	treshold := 2^Length(x) + Length(x);  
 	num := Length(elmvec);
 	if num > treshold then 
 		Print("over the treshold, will only output the first ",treshold,"elements of the sequence");

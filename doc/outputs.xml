@@ -1,16 +1,27 @@
 <Chapter Label="Outputs">
-<Heading>Output formatting functions</Heading>    
+<Heading>Output formatting functions and TEX drawing functions</Heading>    
 
-This is some intro...
+
 
 <Section Label="Formatting">
-<Heading>Formatting ...</Heading>
+<Heading>Output formatting functions</Heading>
 
-Some intro ...
+<#Include Label="outputs">
 
 <#Include Label="IntFFExt">
 <#Include Label="VecToString">
+<#Include Label="WriteVector">
+<#Include Label="WriteMatrix">
+<#Include Label="WriteMatrixTEX">
 
 </Section>
+
+
+
+<Section Label="Drawing">
+<Heading>TEX drawing functions</Heading>
+
+</Section>
+
 
 </Chapter>

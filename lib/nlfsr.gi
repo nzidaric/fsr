@@ -87,7 +87,7 @@ fi;
 	 multpol := clist * mlist; 
 	 nonlin := (DegreeOfPolynomial(F,multpol)>1);
 	 if not nonlin then 
-		Error("Feedback is NOT linear, create an LFSR instead!!!"); 		return fail;
+		Error("Feedback is linear, create an LFSR instead!!!"); 		return fail;
 	 fi;
 
 # set state to all 0 

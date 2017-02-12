@@ -1,0 +1,108 @@
+\begin{theindex}
+
+  \item \texttt  { IntFFExt}, \hyperpage{5}
+  \item \texttt  { IntMatFFExt}, \hyperpage{5}
+  \item \texttt  { IntVecFFExt}, \hyperpage{5}
+
+  \indexspace
+
+  \item \texttt  {CharPoly}
+    \subitem for an LFSR, \hyperpage{10}
+  \item \texttt  {ChooseField}
+    \subitem for a given field, \hyperpage{11}
+
+  \indexspace
+
+  \item \texttt  {FeedbackVec}
+    \subitem for an FSR, \hyperpage{7}
+  \item \texttt  {FieldPoly}
+    \subitem for an FSR, \hyperpage{7}
+  \item fsr, \hyperpage{7}
+  \item \textsf{FSR} package, \hyperpage{2}
+
+  \indexspace
+
+  \item \texttt  {IndetList}
+    \subitem for an NLFSR, \hyperpage{12}
+  \item \texttt  {InternalStateSize}
+    \subitem for an FSR, \hyperpage{8}
+  \item \texttt  {IsFSR}, \hyperpage{7}
+  \item \texttt  {IsLFSR}
+    \subitem for an LFSR, \hyperpage{10}
+  \item \texttt  {IsLinearFeedback}
+    \subitem for an LFSR, \hyperpage{10}
+  \item \texttt  {IsMaxSeqLFSR}
+    \subitem for an LFSR, \hyperpage{10}
+  \item \texttt  {IsNLFSR}
+    \subitem for an NLFSR, \hyperpage{12}
+  \item \texttt  {IsNonLinearFeedback}
+    \subitem for an NLFSR, \hyperpage{12}
+  \item \texttt  {IsPeriodic}
+    \subitem for an LFSR, \hyperpage{10}
+  \item \texttt  {IsUltPeriodic}
+    \subitem for an LFSR, \hyperpage{10}
+
+  \indexspace
+
+  \item \texttt  {Length}
+    \subitem for an FSR, \hyperpage{8}
+  \item \texttt  {LFSR}, \hyperpage{9}
+  \item \texttt  {LoadFSR}
+    \subitem for an FSR, \hyperpage{8}
+
+  \indexspace
+
+  \item \texttt  {MultivarPoly}
+    \subitem for an NLFSR, \hyperpage{12}
+
+  \indexspace
+
+  \item \texttt  {NLFSR}, \hyperpage{11}
+
+  \indexspace
+
+  \item outputs, \hyperpage{5}
+  \item \texttt  {OutputTap}
+    \subitem for an FSR, \hyperpage{7}
+
+  \indexspace
+
+  \item \texttt  {PeriodIrreducible}
+    \subitem for an LFSR, \hyperpage{10}
+  \item \texttt  {PeriodReducible}
+    \subitem for an LFSR, \hyperpage{10}
+  \item \texttt  {PrintAll}
+    \subitem for an NLFSR, \hyperpage{11}, \hyperpage{13}
+  \item \texttt  {PrintObj}
+    \subitem for an NLFSR, \hyperpage{11}, \hyperpage{13}
+
+  \indexspace
+
+  \item \texttt  {RunFSR}
+    \subitem for an FSR, \hyperpage{8}
+
+  \indexspace
+
+  \item \texttt  {StepFSR}
+    \subitem for an FSR, \hyperpage{8}
+
+  \indexspace
+
+  \item \texttt  {UnderlyingField}
+    \subitem for an FSR, \hyperpage{7}
+
+  \indexspace
+
+  \item \texttt  {VecToString}, \hyperpage{5}
+  \item \texttt  {ViewObj}
+    \subitem for an NLFSR, \hyperpage{11}, \hyperpage{13}
+
+  \indexspace
+
+  \item \texttt  {WriteMatrix}
+    \subitem for a matrix of FFE and given basis, \hyperpage{6}
+  \item \texttt  {WriteMatrixTEX}, \hyperpage{6}
+  \item \texttt  {WriteVector}
+    \subitem for a FFE and given basis, \hyperpage{6}
+
+\end{theindex}

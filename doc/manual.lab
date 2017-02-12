@@ -1,0 +1,63 @@
+\GAPDocLabFile{fsr}
+\makelabel{fsr:Title page}{}{X7D2C85EC87DD46E5}
+\makelabel{fsr:Abstract}{}{X7AA6C5737B711C89}
+\makelabel{fsr:Copyright}{}{X81488B807F2A1CF1}
+\makelabel{fsr:Acknowledgements}{}{X82A988D47DFAFCFA}
+\makelabel{fsr:Table of Contents}{}{X8537FEB07AF2BEC8}
+\makelabel{fsr:Preface}{1}{X874E1D45845007FE}
+\makelabel{fsr:Output formatting functions and TEX drawing functions}{2}{X7F7E555B782ECF45}
+\makelabel{fsr:Output formatting functions}{2.1}{X7EB095598359B4B3}
+\makelabel{fsr:TEX drawing functions}{2.2}{X84E367F97DBA31D2}
+\makelabel{fsr:FSR (Feedback Shift Register)}{3}{X7D2B014884E6D3D8}
+\makelabel{fsr:Common functionality}{3.1}{X7D5E0FF97CA51E2E}
+\makelabel{fsr:LFSR specific funcionality}{3.2}{X7A98C0FE855337A7}
+\makelabel{fsr:NLFSR specific funcionality}{3.3}{X797E9B3381339AB2}
+\makelabel{fsr:Bibliography}{Bib}{X7A6F98FD85F02BFE}
+\makelabel{fsr:References}{Bib}{X7A6F98FD85F02BFE}
+\makelabel{fsr:Index}{Ind}{X83A0356F839C696F}
+\makelabel{fsr:FSR package}{}{X7AA6C5737B711C89}
+\makelabel{fsr:outputs}{2.1}{X7EB095598359B4B3}
+\makelabel{fsr: IntFFExt}{2.1.1}{X7C848712781083D5}
+\makelabel{fsr: IntVecFFExt}{2.1.1}{X7C848712781083D5}
+\makelabel{fsr: IntMatFFExt}{2.1.1}{X7C848712781083D5}
+\makelabel{fsr:VecToString}{2.1.2}{X78387B8B7940F96C}
+\makelabel{fsr:WriteVector (for a FFE and given basis)}{2.1.3}{X7F4DA7FE7C10E782}
+\makelabel{fsr:WriteMatrix (for a matrix of FFE and given basis)}{2.1.4}{X7FB7643986FE0503}
+\makelabel{fsr:WriteMatrixTEX}{2.1.5}{X7C88DF8385B5C384}
+\makelabel{fsr:fsr}{3.1}{X7D5E0FF97CA51E2E}
+\makelabel{fsr:IsFSR}{3.1.1}{X867B95117FAEC3E6}
+\makelabel{fsr:FieldPoly (for an FSR)}{3.1.2}{X786E842E78537AA0}
+\makelabel{fsr:UnderlyingField (for an FSR)}{3.1.2}{X786E842E78537AA0}
+\makelabel{fsr:FeedbackVec (for an FSR)}{3.1.2}{X786E842E78537AA0}
+\makelabel{fsr:OutputTap (for an FSR)}{3.1.2}{X786E842E78537AA0}
+\makelabel{fsr:Length (for an FSR)}{3.1.3}{X8246C2AF80A0F0E9}
+\makelabel{fsr:InternalStateSize (for an FSR)}{3.1.3}{X8246C2AF80A0F0E9}
+\makelabel{fsr:LoadFSR (for an FSR)}{3.1.4}{X81B15596784EC6D5}
+\makelabel{fsr:StepFSR (for an FSR)}{3.1.5}{X87B3D9AD878A0C32}
+\makelabel{fsr:RunFSR (for an FSR)}{3.1.6}{X7926D97381213BB2}
+\makelabel{fsr:LFSR}{3.2.1}{X8099A9DC86E0B078}
+\makelabel{fsr:LFSR}{3.2.1}{X8099A9DC86E0B078}
+\makelabel{fsr:LFSR}{3.2.1}{X8099A9DC86E0B078}
+\makelabel{fsr:LFSR}{3.2.1}{X8099A9DC86E0B078}
+\makelabel{fsr:IsLinearFeedback (for an LFSR)}{3.2.2}{X838DA9E4839822E6}
+\makelabel{fsr:IsLFSR (for an LFSR)}{3.2.2}{X838DA9E4839822E6}
+\makelabel{fsr:CharPoly (for an LFSR)}{3.2.3}{X7DC75BE47BA3F4BE}
+\makelabel{fsr:IsPeriodic (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
+\makelabel{fsr:IsUltPeriodic (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
+\makelabel{fsr:IsMaxSeqLFSR (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
+\makelabel{fsr:IsMaxSeqLFSR (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
+\makelabel{fsr:PeriodIrreducible (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
+\makelabel{fsr:PeriodReducible (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
+\makelabel{fsr:ViewObj (for an NLFSR)}{3.2.5}{X836CA53B872FD8B6}
+\makelabel{fsr:PrintObj (for an NLFSR)}{3.2.5}{X836CA53B872FD8B6}
+\makelabel{fsr:PrintAll (for an NLFSR)}{3.2.5}{X836CA53B872FD8B6}
+\makelabel{fsr:ChooseField (for a given field)}{3.3.1}{X8040B069804A223A}
+\makelabel{fsr:NLFSR}{3.3.2}{X7DDE3CAC7A9D2A55}
+\makelabel{fsr:NLFSR}{3.3.2}{X7DDE3CAC7A9D2A55}
+\makelabel{fsr:IsNonLinearFeedback (for an NLFSR)}{3.3.3}{X8567C55480B968AB}
+\makelabel{fsr:IsNLFSR (for an NLFSR)}{3.3.3}{X8567C55480B968AB}
+\makelabel{fsr:MultivarPoly (for an NLFSR)}{3.3.4}{X840B27137E4B68C9}
+\makelabel{fsr:IndetList (for an NLFSR)}{3.3.4}{X840B27137E4B68C9}
+\makelabel{fsr:ViewObj (for an NLFSR)}{3.3.5}{X836CA53B872FD8B6}
+\makelabel{fsr:PrintObj (for an NLFSR)}{3.3.5}{X836CA53B872FD8B6}
+\makelabel{fsr:PrintAll (for an NLFSR)}{3.3.5}{X836CA53B872FD8B6}

@@ -66,6 +66,10 @@ The &GAP; package &FSR; ...
 
 <#Include SYSTEM "outputs.xml">
 
+<#Include SYSTEM "fsr.xml">
+
+
+
 </Body>
 
 <Bibliography Databases="manual"/>

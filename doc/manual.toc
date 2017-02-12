@@ -1,0 +1,31 @@
+\contentsline {chapter}{\numberline {1}\leavevmode {\color {Chapter }Preface}}{4}{chapter.1}
+\contentsline {chapter}{\numberline {2}\leavevmode {\color {Chapter }Output formatting functions and TEX drawing functions}}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}\leavevmode {\color {Chapter }Output formatting functions}}{5}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}\leavevmode {\color {Chapter } IntFFExt}}{5}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}\leavevmode {\color {Chapter }VecToString}}{5}{subsection.2.1.2}
+\contentsline {subsection}{\numberline {2.1.3}\leavevmode {\color {Chapter }WriteVector (for a FFE and given basis)}}{6}{subsection.2.1.3}
+\contentsline {subsection}{\numberline {2.1.4}\leavevmode {\color {Chapter }WriteMatrix (for a matrix of FFE and given basis)}}{6}{subsection.2.1.4}
+\contentsline {subsection}{\numberline {2.1.5}\leavevmode {\color {Chapter }WriteMatrixTEX}}{6}{subsection.2.1.5}
+\contentsline {section}{\numberline {2.2}\leavevmode {\color {Chapter }TEX drawing functions}}{6}{section.2.2}
+\contentsline {chapter}{\numberline {3}\leavevmode {\color {Chapter }FSR (Feedback Shift Register)}}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}\leavevmode {\color {Chapter }Common functionality}}{7}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}\leavevmode {\color {Chapter }IsFSR}}{7}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}\leavevmode {\color {Chapter }FieldPoly (for an FSR)}}{7}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}\leavevmode {\color {Chapter }Length (for an FSR)}}{8}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}\leavevmode {\color {Chapter }LoadFSR (for an FSR)}}{8}{subsection.3.1.4}
+\contentsline {subsection}{\numberline {3.1.5}\leavevmode {\color {Chapter }StepFSR (for an FSR)}}{8}{subsection.3.1.5}
+\contentsline {subsection}{\numberline {3.1.6}\leavevmode {\color {Chapter }RunFSR (for an FSR)}}{8}{subsection.3.1.6}
+\contentsline {section}{\numberline {3.2}\leavevmode {\color {Chapter }LFSR specific funcionality}}{9}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}\leavevmode {\color {Chapter }LFSR}}{9}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}\leavevmode {\color {Chapter }IsLinearFeedback (for an LFSR)}}{10}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}\leavevmode {\color {Chapter }CharPoly (for an LFSR)}}{10}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.4}\leavevmode {\color {Chapter }IsPeriodic (for an LFSR)}}{10}{subsection.3.2.4}
+\contentsline {subsection}{\numberline {3.2.5}\leavevmode {\color {Chapter }ViewObj (for an NLFSR)}}{11}{subsection.3.2.5}
+\contentsline {section}{\numberline {3.3}\leavevmode {\color {Chapter }NLFSR specific funcionality}}{11}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}\leavevmode {\color {Chapter }ChooseField (for a given field)}}{11}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}\leavevmode {\color {Chapter }NLFSR}}{11}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}\leavevmode {\color {Chapter }IsNonLinearFeedback (for an NLFSR)}}{12}{subsection.3.3.3}
+\contentsline {subsection}{\numberline {3.3.4}\leavevmode {\color {Chapter }MultivarPoly (for an NLFSR)}}{12}{subsection.3.3.4}
+\contentsline {subsection}{\numberline {3.3.5}\leavevmode {\color {Chapter }ViewObj (for an NLFSR)}}{13}{subsection.3.3.5}
+\contentsline {chapter}{References}{14}{chapter*.5}
+\contentsline {chapter}{Index}{15}{section*.6}

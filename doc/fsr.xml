@@ -1,0 +1,49 @@
+<Chapter Label="FSR">
+<Heading>FSR (Feedback Shift Register)</Heading>    
+
+
+
+<Section Label="fsrcommon">
+<Heading>Common functionality</Heading>
+
+<#Include Label="fsr">
+
+<#Include Label="IsFSR">
+<#Include Label="FieldPoly">
+<#Include Label="Length">
+<#Include Label="LoadFSR">
+<#Include Label="StepFSR">
+<#Include Label="RunFSR">
+
+
+
+
+</Section>
+
+
+
+<Section Label="lfsr">
+<Heading>LFSR specific funcionality</Heading>
+
+<#Include Label="LFSR">
+<#Include Label="IsLinearFeedback">
+<#Include Label="CharPoly">
+<#Include Label="IsPeriodic">
+<#Include Label="ViewObj">
+
+
+
+</Section>
+
+
+<Section Label="nlfsr">
+<Heading>NLFSR specific funcionality</Heading>
+<#Include Label="ChooseField">
+<#Include Label="NLFSR">
+<#Include Label="IsNonLinearFeedback">
+<#Include Label="MultivarPoly">
+<#Include Label="ViewObj">
+</Section>
+
+
+</Chapter>

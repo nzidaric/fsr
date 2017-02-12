@@ -5,8 +5,49 @@
   [2X IntFFExt[102X  2.1-1
   [2X IntMatFFExt[102X  2.1-1
   [2X IntVecFFExt[102X  2.1-1
+  [2XCharPoly[102X (for an LFSR)  3.2-3
+  [2XChooseField[102X (for a given field)  3.3-1
+  [2XFeedbackVec[102X (for an FSR)  3.1-2
+  [2XFieldPoly[102X (for an FSR)  3.1-2
+  fsr  3.1
   [5XFSR[105X package  .-1
+  [2XIndetList[102X (for an NLFSR)  3.3-4
+  [2XInternalStateSize[102X (for an FSR)  3.1-3
+  [2XIsFSR[102X  3.1-1
+  [2XIsLFSR[102X (for an LFSR)  3.2-2
+  [2XIsLinearFeedback[102X (for an LFSR)  3.2-2
+  [2XIsMaxSeqLFSR[102X (for an LFSR)  3.2-4
+  [2XIsMaxSeqLFSR[102X (for an LFSR)  3.2-4
+  [2XIsNLFSR[102X (for an NLFSR)  3.3-3
+  [2XIsNonLinearFeedback[102X (for an NLFSR)  3.3-3
+  [2XIsPeriodic[102X (for an LFSR)  3.2-4
+  [2XIsUltPeriodic[102X (for an LFSR)  3.2-4
+  [2XLength[102X (for an FSR)  3.1-3
+  [2XLFSR[102X  3.2-1
+  [2XLFSR[102X  3.2-1
+  [2XLFSR[102X  3.2-1
+  [2XLFSR[102X  3.2-1
+  [2XLoadFSR[102X (for an FSR)  3.1-4
+  [2XMultivarPoly[102X (for an NLFSR)  3.3-4
+  [2XNLFSR[102X  3.3-2
+  [2XNLFSR[102X  3.3-2
+  outputs  2.1
+  [2XOutputTap[102X (for an FSR)  3.1-2
+  [2XPeriodIrreducible[102X (for an LFSR)  3.2-4
+  [2XPeriodReducible[102X (for an LFSR)  3.2-4
+  [2XPrintAll[102X (for an NLFSR)  3.2-5
+  [2XPrintAll[102X (for an NLFSR)  3.3-5
+  [2XPrintObj[102X (for an NLFSR)  3.2-5
+  [2XPrintObj[102X (for an NLFSR)  3.3-5
+  [2XRunFSR[102X (for an FSR)  3.1-6
+  [2XStepFSR[102X (for an FSR)  3.1-5
+  [2XUnderlyingField[102X (for an FSR)  3.1-2
   [2XVecToString[102X  2.1-2
+  [2XViewObj[102X (for an NLFSR)  3.2-5
+  [2XViewObj[102X (for an NLFSR)  3.3-5
+  [2XWriteMatrix[102X (for a matrix of FFE and given basis)  2.1-4
+  [2XWriteMatrixTEX[102X  2.1-5
+  [2XWriteVector[102X (for a FFE and given basis)  2.1-3
   
   
   -------------------------------------------------------

@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>GAP (fsr) - Chapter 3: FSR (Feedback Shift Register)</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
+</head>
+<body class="chap3"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap2.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapBib.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chap3_mj.html">[MathJax on]</a></p>
+<p><a id="X7D2B014884E6D3D8" name="X7D2B014884E6D3D8"></a></p>
+<div class="ChapSects"><a href="chap3.html#X7D2B014884E6D3D8">3 <span class="Heading">FSR (Feedback Shift Register)</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3.html#X7D5E0FF97CA51E2E">3.1 <span class="Heading">Common functionality</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X867B95117FAEC3E6">3.1-1 IsFSR</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X786E842E78537AA0">3.1-2 FieldPoly</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8246C2AF80A0F0E9">3.1-3 Length</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X81B15596784EC6D5">3.1-4 LoadFSR</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X87B3D9AD878A0C32">3.1-5 StepFSR</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7926D97381213BB2">3.1-6 RunFSR</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3.html#X7A98C0FE855337A7">3.2 <span class="Heading">LFSR specific funcionality</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8099A9DC86E0B078">3.2-1 LFSR</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X838DA9E4839822E6">3.2-2 IsLinearFeedback</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7DC75BE47BA3F4BE">3.2-3 CharPoly</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X823B75F984A72E7A">3.2-4 IsPeriodic</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X836CA53B872FD8B6">3.2-5 ViewObj</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3.html#X797E9B3381339AB2">3.3 <span class="Heading">NLFSR specific funcionality</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8040B069804A223A">3.3-1 ChooseField</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7DDE3CAC7A9D2A55">3.3-2 NLFSR</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8567C55480B968AB">3.3-3 IsNonLinearFeedback</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X840B27137E4B68C9">3.3-4 MultivarPoly</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X836CA53B872FD8B6">3.3-5 ViewObj</a></span>
+</div></div>
+</div>
+
+<h3>3 <span class="Heading">FSR (Feedback Shift Register)</span></h3>
+
+<p><a id="X7D5E0FF97CA51E2E" name="X7D5E0FF97CA51E2E"></a></p>
+
+<h4>3.1 <span class="Heading">Common functionality</span></h4>
+
+<p>We define an object <strong class="pkg">FSR</strong> (Feedback Shift Register), which can come in two flavours: with linear feedback <code class="func">LFSR</code> (<a href="chap3.html#X8099A9DC86E0B078"><span class="RefLink">3.2-1</span></a>) and nonlinear feedback <code class="func">NLFSR</code> (<a href="chap3.html#X7DDE3CAC7A9D2A55"><span class="RefLink">3.3-2</span></a>). Because of many similarities between the two, the basic common functionality can be found here, while specialized functions (such as UNKNOWNEntity(LFSR) and UNKNOWNEntity(NLFSR) object creation) in corresponding sections.</p>
+
+<p><a id="X867B95117FAEC3E6" name="X867B95117FAEC3E6"></a></p>
+
+<h5>3.1-1 IsFSR</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsFSR</code></td><td class="tdright">( filter )</td></tr></table></div>
+<p>This is the category of <strong class="pkg">FSR</strong> objects. Objects in this category are created using functions <code class="func">LFSR</code> (<a href="chap3.html#X8099A9DC86E0B078"><span class="RefLink">3.2-1</span></a>) or <code class="func">NLFSR</code> (<a href="chap3.html#X7DDE3CAC7A9D2A55"><span class="RefLink">3.3-2</span></a>).</p>
+
+<p><a id="X786E842E78537AA0" name="X786E842E78537AA0"></a></p>
+
+<h5>3.1-2 FieldPoly</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; FieldPoly</code>( <var class="Arg">fsr</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; UnderlyingField</code>( <var class="Arg">fsr</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; FeedbackVec</code>( <var class="Arg">fsr</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutputTap</code>( <var class="Arg">fsr</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p><code class="code">FieldPoly</code> of the <strong class="pkg">FSR</strong> stores the irreducible polynomial used to construct the extension field or 1 in case of a prime field.</p>
+
+<p><code class="code">UnderlyingField</code> of the <strong class="pkg">FSR</strong> is the finite field over which the <strong class="pkg">FSR</strong> is defined (all indeterminates and constants are from this field).</p>
+
+<p><code class="code">FeedbackVec</code> of the <strong class="pkg">FSR</strong> stores the coefficients of the <code class="code">CharPoly</code> without its leading term in case of UNKNOWNEntity(LFSR), and coefficients of the nonzero monomials present in the multivariate function defining the feedback in case of UNKNOWNEntity(NLFSR).</p>
+
+<p><code class="code">OutputTap</code> holds the output tap position(s): the sequence elements are taken from the stage(s) listed in <code class="code">OutputTap</code>.</p>
+
+<p><a id="X8246C2AF80A0F0E9" name="X8246C2AF80A0F0E9"></a></p>
+
+<h5>3.1-3 Length</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Length</code>( <var class="Arg">fsr</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InternalStateSize</code>( <var class="Arg">fsr</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p><code class="code">Length</code> of the <strong class="pkg">FSR</strong> is the number of its stages.</p>
+
+<p><code class="code">InternalStateSize</code> of the <strong class="pkg">FSR</strong> is size in bits needed to store the state (length * width)</p>
+
+<p><a id="X81B15596784EC6D5" name="X81B15596784EC6D5"></a></p>
+
+<h5>3.1-4 LoadFSR</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; LoadFSR</code>( <var class="Arg">fsr</var> )</td><td class="tdright">( method )</td></tr></table></div>
+<p>Loading the <strong class="pkg">FSR</strong> <var class="Arg">fsr</var> with the initial state <var class="Arg">ist</var>, which is a UNKNOWNEntity(FFE) vector of same length as the <strong class="pkg">FSR</strong> and with elements from the underlying finite field. If either of those two requirements is violated, loading fails and error message appears. At the time of loading the initial sequence elements (ie zeroth elements) are obtained and <code class="code">numsteps</code> is set to 0.</p>
+
+<p><a id="X87B3D9AD878A0C32" name="X87B3D9AD878A0C32"></a></p>
+
+<h5>3.1-5 StepFSR</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; StepFSR</code>( <var class="Arg">fsr</var>[, <var class="Arg">elm</var>] )</td><td class="tdright">( method )</td></tr></table></div>
+<p>Perform one step the <strong class="pkg">FSR</strong> <var class="Arg">fsr</var>, ie. compute the new <code class="code">state</code> and update the <code class="code">numsteps</code>, then output the elements denoted by <code class="code">OutputTap</code>. If the optional parameter <var class="Arg">elm</var> is used then the new element is computed as a sum of computed feedback and <var class="Arg">elm</var>. Elemen <var class="Arg">elm</var> must be an element of the underlying finite field.</p>
+
+<p>An error is triggered if <code class="code">StepFSR</code> is called for an empty <strong class="pkg">FSR</strong>. As this is a way to destroy the linearity of an UNKNOWNEntity(LFSR), we refer to <code class="code">StepFSR</code> with the optiomal nonzero <var class="Arg">elm</var> as <code class="code">nonlinear step</code>. Similarly, the UNKNOWNEntity(NLFSR) can also have an extra element added to the (already nonlinear) feedback.</p>
+
+<p>Returns an error if the <strong class="pkg">FSR</strong> is not loaded!</p>
+
+<p>NOTE: TO DO for the NLFSR !!!!!!</p>
+
+<p><a id="X7926D97381213BB2" name="X7926D97381213BB2"></a></p>
+
+<h5>3.1-6 RunFSR</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; RunFSR</code>( <var class="Arg">fsr</var>[, <var class="Arg">ist</var>][, <var class="Arg">num</var>][, <var class="Arg">pr</var>] )</td><td class="tdright">( method )</td></tr></table></div>
+<p>The UNKNOWNEntity(FSR will be run for a certain (<var class="Arg">num</var> or <var class="Arg">threshold</var>) number of steps: there is a threshold value, currently set to 2^<em>Length(<var class="Arg">fsr</var>)</em> + <em>Length(<var class="Arg">fsr</var>)</em>, which is used by all versions without explicit <var class="Arg">num</var> and enforced when <var class="Arg">num</var> exceeds <var class="Arg">threshold</var>. There is an optional printing switch <var class="Arg">pr</var>, with default set to <em>false</em>) if <em>true</em> then the state and the output sequence element(s) are printed in <strong class="pkg">GAP</strong> shell on every step of the <strong class="pkg">FSR</strong> (we call this output for <code class="code">RunFSR</code>).</p>
+
+
+<ul>
+<li><p><code class="code">RunLFSR(<var class="Arg"> fsr[, num, pr] </var>)</code> - run <var class="Arg">fsr</var> for <var class="Arg">num</var>/<var class="Arg">threshold</var> steps with/without output</p>
+
+</li>
+<li><p><code class="code">RunLFSR(<var class="Arg"> fsr, ist[, num, pr] </var>)</code> - load <var class="Arg">fsr</var> with <var class="Arg">ist</var>, then run <var class="Arg">fsr</var> for <var class="Arg">num</var>/<var class="Arg">threshold</var> steps with/without output (ie. <em>linear</em> version)</p>
+
+</li>
+<li><p><code class="code">RunLFSR(<var class="Arg"> fsr, elm[, num, pr] </var>)</code> - load <var class="Arg">fsr</var> with <var class="Arg">ist</var>, then run <var class="Arg">fsr</var> for <var class="Arg">num</var>/<var class="Arg">threshold</var> steps, whereby the SAME element <var class="Arg">elm</var> is added to the feedback at each step, with/without output (ie. <em>non-linear</em> version)</p>
+
+</li>
+<li><p><code class="code">RunLFSR(<var class="Arg"> fsr, ist, elmvec[, num, pr] </var>)</code> - load <var class="Arg">fsr</var> with <var class="Arg">ist</var>, then run <var class="Arg">fsr</var> for <em>Length(<var class="Arg">fsr</var>)</em> steps,, whereby one element of <var class="Arg">elmvec</var> is added to the feedback at each step (starting with elmvec[1]), with/without output (ie. <em>non-linear</em> version)</p>
+
+</li>
+</ul>
+<p>NOTE: for the load and run versions, element <var class="Arg">seq$_0$</var> is a part of the output sequence The ouput of <code class="code">RunLFSR</code> is:</p>
+
+
+<ul>
+<li><p>sequence of UNKNOWNEntity(FFE)s : seq$_0$, seq$_1$, seq$_2$, \dots for <em>Length</em>(<em>OutputTap</em>)=1</p>
+
+</li>
+<li><p>sequence of vectors, each of them with $t$ FFEs : seq$_0$, seq$_1$, seq$_2$, \dots, where seq$_i=($ seq$_{i1}$, \dots ,$ seq$_{it}$) for <em>Length</em>(<em>OutputTap</em>)=t</p>
+
+</li>
+</ul>
+<p><a id="X7A98C0FE855337A7" name="X7A98C0FE855337A7"></a></p>
+
+<h4>3.2 <span class="Heading">LFSR specific funcionality</span></h4>
+
+<p><a id="X8099A9DC86E0B078" name="X8099A9DC86E0B078"></a></p>
+
+<h5>3.2-1 LFSR</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; LFSR</code>( <var class="Arg">F</var>, <var class="Arg">charpol</var>[, <var class="Arg">tap</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; LFSR</code>( <var class="Arg">K</var>, <var class="Arg">fieldpol</var>, <var class="Arg">charpol</var>[, <var class="Arg">tap</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; LFSR</code>( <var class="Arg">F</var>, <var class="Arg">charpol</var>[, <var class="Arg">tap</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; LFSR</code>( <var class="Arg">p</var>, <var class="Arg">m</var>, <var class="Arg">n</var>[, <var class="Arg">tap</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: An empty UNKNOWNEntity(LFSR) with components <code class="code">init</code>, <code class="code">state</code> and <code class="code">numsteps</code></p>
+
+<p>Different ways to create an UNKNOWNEntity(LFSR) oblject, main difference is in creation of the underlying finite field.</p>
+
+<p>Inputs:</p>
+
+
+<ul>
+<li><p><var class="Arg">F</var> - the underlying finite field (either an extension field or a prime field)</p>
+
+</li>
+<li><p><var class="Arg">charpol</var> - UNKNOWNEntity(LFSR) dfining polynomial</p>
+
+</li>
+<li><p><var class="Arg">fieldpol</var> - defifning polynomial of the extension field (must be irreducible)</p>
+
+</li>
+<li><p><var class="Arg">p</var> - characteeristic</p>
+
+</li>
+<li><p><var class="Arg">m</var> - degree of extension (degree of <var class="Arg">fieldpol</var>)</p>
+
+</li>
+<li><p><var class="Arg">n</var> - length of UNKNOWNEntity(LFSR) (degree of <var class="Arg">charpoly</var>)</p>
+
+</li>
+<li><p><var class="Arg">tap</var> - optional parameter: the output tap (must be a positive integer or a list of positive integers) and will be changed to the default S_0 if the specified integer is out of LFSR range.</p>
+
+</li>
+</ul>
+<p>Compoents:</p>
+
+
+<ul>
+<li><p><code class="code">init</code> - UNKNOWNEntity(FFE) vector of length n=deg(charpol), storing the initial state of the UNKNOWNEntity(LFSR), with indeces from n-1, ..., 0</p>
+
+</li>
+<li><p><code class="code">state</code> - UNKNOWNEntity(FFE) vector of length n=deg(charpol), storing the current state of the UNKNOWNEntity(LFSR), with indeces from n-1, ..., 0</p>
+
+</li>
+<li><p><code class="code">numsteps</code> - the number of steps performed thus far (initialized to -1 when created, set to 0 when loaded using <code class="func">LoadFSR</code> (<span class="RefLink">???</span>) and incremented by 1 with each step (using <code class="func">StepFSR</code> (<span class="RefLink">???</span>)))</p>
+
+</li>
+</ul>
+<p>Attributes <code class="func">FieldPoly</code> (<span class="RefLink">???</span>), <code class="func">UnderlyingFied</code> (<span class="RefLink">???</span>), <code class="code">CharPoly</code>, <code class="func">FeedbackVec</code> (<span class="RefLink">???</span>), <code class="func">Length</code> (<span class="RefLink">???</span>) and <code class="func">OutputTap</code> (<span class="RefLink">???</span>) and the property <code class="code">IsLinearFeedback</code> are set during the construction of an UNKNOWNEntity(LFSR).</p>
+
+<p>If there is something wrong with the arguments (e.g. attempting to create an extension field using a reducible poynomial), an error message appears and the function returns <code class="code">fail</code>.</p>
+
+<p><a id="X838DA9E4839822E6" name="X838DA9E4839822E6"></a></p>
+
+<h5>3.2-2 IsLinearFeedback</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLinearFeedback</code>( <var class="Arg">lfsr</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLFSR</code>( <var class="Arg">lfsr</var> )</td><td class="tdright">( filter )</td></tr></table></div>
+<p>If we were to represent the UNKNOWNEntity(LFSR) with a multivariate polynomial, DegreeOfPolynomial would return 1 - the feedback polynomial is linear and <code class="code">IsLinearFeedback</code> is set to <em>true</em>. (ie. only linear terms are present: monomials with only one variable )</p>
+
+<p>Filter <code class="code">IsLFSR</code> is defined as and-filter of <code class="code">IsFSR</code> and <code class="code">IsLinearFeedback</code>.</p>
+
+<p><a id="X7DC75BE47BA3F4BE" name="X7DC75BE47BA3F4BE"></a></p>
+
+<h5>3.2-3 CharPoly</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CharPoly</code>( <var class="Arg">lfsr</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Attribute holding the characteristic polynomial (the feedback polynomial).</p>
+
+<p><a id="X823B75F984A72E7A" name="X823B75F984A72E7A"></a></p>
+
+<h5>3.2-4 IsPeriodic</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPeriodic</code>( <var class="Arg">lfsr</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsUltPeriodic</code>( <var class="Arg">lfsr</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaxSeqLFSR</code>( <var class="Arg">lfsr</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaxSeqLFSR</code>( <var class="Arg">lfsr</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PeriodIrreducible</code>( <var class="Arg">lfsr</var> )</td><td class="tdright">( method )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PeriodReducible</code>( <var class="Arg">lfsr</var> )</td><td class="tdright">( method )</td></tr></table></div>
+<p>Properties, attributes and methods concerning the periodicity of the output sequence(s), generated by the UNKNOWNEntity(LFSR).</p>
+
+<p>Properties:</p>
+
+
+<ul>
+<li><p><code class="code">IsPeriodic</code>: true if constant term of <code class="code">CharPoly</code> != 0 (8.11 lidl, niederreiter)</p>
+
+</li>
+<li><p><code class="code">IsUltPeriodic</code>: true if UNKNOWNEntity(LFSR) (8.7 lidl, niederreiter)</p>
+
+</li>
+<li><p><code class="code">IsMaxSeqLFSR</code>: true if <code class="code">CharPoly</code> is primitive (ref???)</p>
+
+</li>
+</ul>
+<p>Attributes:</p>
+
+
+<ul>
+<li><p><code class="code">Period</code>: holds the period of the UNKNOWNEntity(LFSR)</p>
+
+</li>
+</ul>
+<p>Methods to compute the period:</p>
+
+
+<ul>
+<li><p><code class="code">PeriodIrreducible</code>:</p>
+
+</li>
+<li><p><code class="code">PeriodReducible</code>:</p>
+
+</li>
+</ul>
+<p><a id="X836CA53B872FD8B6" name="X836CA53B872FD8B6"></a></p>
+
+<h5>3.2-5 ViewObj</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ViewObj</code>( [<var class="Arg">B</var>, ]<var class="Arg">nlfsr</var> )</td><td class="tdright">( method )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PrintObj</code>( [<var class="Arg">B</var>, ]<var class="Arg">nlfsr</var> )</td><td class="tdright">( method )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PrintAll</code>( [<var class="Arg">B</var>, ]<var class="Arg">nlfsr</var> )</td><td class="tdright">( method )</td></tr></table></div>
+<p>Different detail on the UNKNOWNEntity(NLFSR) created by <code class="func">NLFSR</code> (<a href="chap3.html#X7DDE3CAC7A9D2A55"><span class="RefLink">3.3-2</span></a>):</p>
+
+
+<ul>
+<li><p><code class="code">Display/View</code>: show the <code class="code">MultivarPoly</code> and wheter or not the UNKNOWNEntity(NLFSR) is empty</p>
+
+</li>
+<li><p><code class="code">Print</code>: same as <code class="code">Display/View</code> if UNKNOWNEntity(NLFSR) is empty, otherwise it also shows the values of the three components <code class="code">init</code>, <code class="code">state</code> and <code class="code">numsteps</code></p>
+
+</li>
+<li><p><code class="code">PrintAll</code>: same as <code class="code">Print</code> if UNKNOWNEntity(NLFSR) is empty, otherwise it also shows the values of the three components <code class="code">init</code>, <code class="code">state</code> and <code class="code">numsteps</code> with additional information about the underlying field and the tap positions</p>
+
+</li>
+</ul>
+<p>Can be used with optional parameter basis <var class="Arg">B</var> for desiered output format.</p>
+
+<p><a id="X797E9B3381339AB2" name="X797E9B3381339AB2"></a></p>
+
+<h4>3.3 <span class="Heading">NLFSR specific funcionality</span></h4>
+
+<p><a id="X8040B069804A223A" name="X8040B069804A223A"></a></p>
+
+<h5>3.3-1 ChooseField</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ChooseField</code>( <var class="Arg">F</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Workaround for the UNKNOWNEntity(NLFSR) object definition: we need to fix the chosen underlying finite field and prepare indeterminates in the chosen field. The indeterminates will be used for the multivariable polynomial, which will define the UNKNOWNEntity(NLFSR) feedback. Current threshold is set by global <code class="code">MaxNLFSRLen</code> = 100.</p>
+
+<p><a id="X7DDE3CAC7A9D2A55" name="X7DDE3CAC7A9D2A55"></a></p>
+
+<h5>3.3-2 NLFSR</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NLFSR</code>( <var class="Arg">K</var>, <var class="Arg">clist</var>, <var class="Arg">mlist</var>, <var class="Arg">len</var>[, <var class="Arg">tap</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NLFSR</code>( <var class="Arg">K</var>, <var class="Arg">fieldpol</var>, <var class="Arg">clist</var>, <var class="Arg">mlist</var>, <var class="Arg">len</var>[, <var class="Arg">tap</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: An empty UNKNOWNEntity(NLFSR) with components <code class="code">init</code>, <code class="code">state</code> and <code class="code">numsteps</code></p>
+
+<p>Different ways to create an UNKNOWNEntity(NLFSR) oblject, main difference is in creation of the underlying finite field.</p>
+
+<p>Inputs:</p>
+
+
+<ul>
+<li><p><var class="Arg">F</var> - the underlying finite field (either an extension field or a prime field)</p>
+
+</li>
+<li><p><var class="Arg">fieldpol</var> - defifning polynomial of the extension field (must be irreducible) TO DO</p>
+
+</li>
+<li><p><var class="Arg">clist</var> - list of coefficients for the monomials in <var class="Arg">mlist</var></p>
+
+</li>
+<li><p><var class="Arg">mlist</var> - list of monomials</p>
+
+</li>
+<li><p><var class="Arg">len</var> - length of UNKNOWNEntity(NLFSR)</p>
+
+</li>
+<li><p><var class="Arg">tap</var> - optional parameter: the output tap (must be a positive integer or a list of positive integers) and will be changed to the default S_0 if the specified integer is out of UNKNOWNEntity(NLFSR) range.</p>
+
+</li>
+</ul>
+<p>NOTE: <var class="Arg">clist</var> and <var class="Arg">mlist</var> must be of same length, all elements in <var class="Arg">clist</var> must belong to the underlying field. Monomials in <var class="Arg">mlist</var> must not include any indeterminates that are out of range specified by <var class="Arg">len</var>: stages of UNKNOWNEntity(NLFSR) are represented by indeterminants and the feedback is not allowed to use a stage that doesnt exist. A second constraint on <var class="Arg">mlist</var> requires that it must contain at least one monomial of degree $&gt;$ 1, otherwise we must create an UNKNOWNEntity(LFSR).</p>
+
+<p>Compoents:</p>
+
+
+<ul>
+<li><p><code class="code">init</code> - UNKNOWNEntity(FFE) vector of length n=deg(charpol), storing the initial state of the UNKNOWNEntity(NLFSR), with indeces from n-1, ..., 0</p>
+
+</li>
+<li><p><code class="code">state</code> - UNKNOWNEntity(FFE) vector of length n=deg(charpol), storing the current state of the UNKNOWNEntity(NLFSR), with indeces from n-1, ..., 0</p>
+
+</li>
+<li><p><code class="code">numsteps</code> - the number of steps performed thus far (initialized to -1 when created, set to 0 when loaded using <code class="func">LoadFSR</code> (<span class="RefLink">???</span>) and incremented by 1 with each step (using <code class="func">StepFSR</code> (<span class="RefLink">???</span>)))</p>
+
+</li>
+</ul>
+<p>Attributes <code class="func">FieldPoly</code> (<span class="RefLink">???</span>), <code class="func">UnderlyingFied</code> (<span class="RefLink">???</span>), <code class="code">MultivarPoly</code>, <code class="func">FeedbackVec</code> (<span class="RefLink">???</span>), <code class="func">IndetList</code> (<span class="RefLink">???</span>), <code class="func">Length</code> (<span class="RefLink">???</span>) and <code class="func">OutputTap</code> (<span class="RefLink">???</span>) and the property <code class="code">IsNonLinearFeedback</code> are set during the construction of an UNKNOWNEntity(NLFSR).</p>
+
+<p>If there is something wrong with the arguments (e.g. attempting to create an extension field using a reducible poynomial), an error message appears and the function returns <code class="code">fail</code>.</p>
+
+<p><a id="X8567C55480B968AB" name="X8567C55480B968AB"></a></p>
+
+<h5>3.3-3 IsNonLinearFeedback</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsNonLinearFeedback</code>( <var class="Arg">nlfsr</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsNLFSR</code>( <var class="Arg">nlfsr</var> )</td><td class="tdright">( filter )</td></tr></table></div>
+<p>For the multivariate polynomial given by <var class="Arg">clist</var> and <var class="Arg">mlist</var>, DegreeOfPolynomial greter than 1 sets <code class="code">IsNonLinearFeedback</code> to <em>true</em>. otherwise it prints out a warning that you need to use the UNKNOWNEntity(LFSR) constructor instead.</p>
+
+<p>Filter <code class="code">IsNLFSR</code> is defined as and-filter of <code class="code">IsFSR</code> and <code class="code">IsNonLinearFeedback</code>.</p>
+
+<p><a id="X840B27137E4B68C9" name="X840B27137E4B68C9"></a></p>
+
+<h5>3.3-4 MultivarPoly</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; MultivarPoly</code>( <var class="Arg">nlfsr</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IndetList</code>( <var class="Arg">nlfsr</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p><code class="code">MultivarPoly</code> holds the multivariate function defining the feedback of the UNKNOWNEntity(NLFSR). <code class="code">IndetList</code> holds all the indeterminates that are present in <code class="code">MultivarPoly</code> and <code class="code">FeedbackVec</code> holds only the nonzero coefficients (as opposed to the LFSR, where this field holds coefficients for all stages of the <strong class="pkg">FSR</strong>). The feedback element is computed from <code class="code">MultivarPoly</code>, <code class="code">IndetList</code> and <code class="code">state</code>, and not from <code class="code">FeedbackVec</code>.</p>
+
+<p><a id="X836CA53B872FD8B6" name="X836CA53B872FD8B6"></a></p>
+
+<h5>3.3-5 ViewObj</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ViewObj</code>( [<var class="Arg">B</var>, ]<var class="Arg">nlfsr</var> )</td><td class="tdright">( method )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PrintObj</code>( [<var class="Arg">B</var>, ]<var class="Arg">nlfsr</var> )</td><td class="tdright">( method )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PrintAll</code>( [<var class="Arg">B</var>, ]<var class="Arg">nlfsr</var> )</td><td class="tdright">( method )</td></tr></table></div>
+<p>Different detail on the UNKNOWNEntity(NLFSR) created by <code class="func">NLFSR</code> (<a href="chap3.html#X7DDE3CAC7A9D2A55"><span class="RefLink">3.3-2</span></a>):</p>
+
+
+<ul>
+<li><p><code class="code">Display/View</code>: show the <code class="code">MultivarPoly</code> and wheter or not the UNKNOWNEntity(NLFSR) is empty</p>
+
+</li>
+<li><p><code class="code">Print</code>: same as <code class="code">Display/View</code> if UNKNOWNEntity(NLFSR) is empty, otherwise it also shows the values of the three components <code class="code">init</code>, <code class="code">state</code> and <code class="code">numsteps</code></p>
+
+</li>
+<li><p><code class="code">PrintAll</code>: same as <code class="code">Print</code> if UNKNOWNEntity(NLFSR) is empty, otherwise it also shows the values of the three components <code class="code">init</code>, <code class="code">state</code> and <code class="code">numsteps</code> with additional information about the underlying field and the tap positions</p>
+
+</li>
+</ul>
+<p>Can be used with optional parameter basis <var class="Arg">B</var> for desiered output format.</p>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap2.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapBib.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>

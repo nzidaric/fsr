@@ -3,20 +3,18 @@
 ##
 #W  output.gd          FSR Package                  Nusa
 ##
-##  Declaration file 
 ##
 #Y  
-#Y                          
+#Y          
+
+                
+###############################################################################
 ##
 ##  <#GAPDoc Label="outputs">
-##  <ManSection>
-##  <Description>
+##  <Index>outputs</Index>
 ##  There are two types of functions: ones that return the input 
 ##  in a human friendly version (as strings or list of strings), 
 ##  and ones that write the human friendly version of the input into a file (txt or tex)
-##  <P/>
-##  </Description>
-##  </ManSection>
 ##  <#/GAPDoc>
 
 
@@ -28,9 +26,9 @@
 ##
 ##  <#GAPDoc Label="IntFFExt">
 ##  <ManSection>
-##  <Meth Name=" IntFFExt" Arg="[B,]ffe"/>
-##  <Meth Name=" IntVecFFExt" Arg="[B,]vec"/>
-##  <Meth Name=" IntMatFFExt" Arg="[B,]M"/>
+##  <Meth Name=" IntFFExt" Arg="[B,] ffe"/>
+##  <Meth Name=" IntVecFFExt" Arg="[B,] vec"/>
+##  <Meth Name=" IntMatFFExt" Arg="[B,] M"/>
 ##
 ##  <Description>
 ##  <C>IntFFExt</C> takes the <A>ffe</A> and writes it as an integer of the prime field 
@@ -53,7 +51,7 @@
 ##  field, using the given basis <A>B</A> or canonical basis representation of components of <A>M</A>.
 ##  <P/>
 ##  NOTE: the non-basis versions return a representation in the smallest field that contains the element.
-##  for representation in a specific field, use the basis version with desired basis
+##  for representation in a specific field, use the basis version with desired basis.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -89,7 +87,7 @@ DeclareOperation( "IntMatFFExt" , [IsFFECollColl]);# added to tstfsroutputs.tst
 ##  <P/>
 ##  NOTE: the non-basis versions return a representation in the cononical basis of the
 ##  smallest field that contains the element. 
-##  For representation in a specific field, use the basis version with desired basis
+##  For representation in a specific field, use the basis version with desired basis.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -106,7 +104,7 @@ DeclareOperation( "VecToString" ,[IsBasis, IsVector] ); # added to tstfsroutputs
 ##
 ##  <#GAPDoc Label="WriteVector">
 ##  <ManSection>
-##  <Func Name="WriteVector" Arg="output, B, vec"/>
+##  <Func Arg="output, B, vec" Name="WriteVector"  Label="for a FFE and given basis" />
 ##
 ##  <Description>
 ##  Writes the human friendly version of vector <A>vec</A> represented in basis <A>B</A>,
@@ -134,7 +132,7 @@ DeclareGlobalFunction( "WriteVector" );
 ##
 ##  <#GAPDoc Label="WriteMatrix">
 ##  <ManSection>
-##  <Func Name="WriteMatrix" Arg="output, B, M"/>
+##  <Func Name="WriteMatrix" Arg="output, B, M" Label="for a matrix of FFE and given basis" />
 ##
 ##  <Description>
 ##  Writes the human friendly version of matrix <A>M</A> represented in basis <A>B</A> to

@@ -98,8 +98,8 @@
 {\Huge \textbf{...\mbox{}}}\\
 \vfill
 
-{\Huge Version 1.0.3\mbox{}}\\[1cm]
-{16 January 2017\mbox{}}\\[1cm]
+{\Huge Version 1.0.4\mbox{}}\\[1cm]
+{17 January 2017\mbox{}}\\[1cm]
 \mbox{}\\[2cm]
 {\Large \textbf{Nusa Zidaric   \mbox{}}}\\
 \hypersetup{pdfauthor=Nusa Zidaric   }
@@ -150,47 +150,50 @@ details, see the FSF's own site \href{http://www.gnu.org/licenses/gpl.html} {\te
   The \textsf{GAP} package \textsf{FSR} implements ... }
 
  
-\chapter{\textcolor{Chapter }{Output formatting functions}}\label{Outputs}
+\chapter{\textcolor{Chapter }{Output formatting functions and TEX drawing functions}}\label{Outputs}
 \logpage{[ 2, 0, 0 ]}
+\hyperdef{L}{X7F7E555B782ECF45}{}
+{
+  
+\section{\textcolor{Chapter }{Output formatting functions}}\label{Formatting}
+\logpage{[ 2, 1, 0 ]}
 \hyperdef{L}{X7EB095598359B4B3}{}
 {
-  This is some intro... 
-\section{\textcolor{Chapter }{Formatting ...}}\label{Formatting}
-\logpage{[ 2, 1, 0 ]}
-\hyperdef{L}{X866C354883562E3D}{}
-{
-  Some intro ... 
+  \index{outputs} There are two types of functions: ones that return the input in a human
+friendly version (as strings or list of strings), and ones that write the
+human friendly version of the input into a file (txt or tex) 
 
 \subsection{\textcolor{Chapter }{ IntFFExt}}
 \logpage{[ 2, 1, 1 ]}\nobreak
 \hyperdef{L}{X7C848712781083D5}{}
 {\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{ IntFFExt({\mdseries\slshape [B, ]ffe})\index{ IntFFExt@\texttt{ IntFFExt}}
 \label{ IntFFExt}
-}\hfill{\scriptsize (function)}}\\
+}\hfill{\scriptsize (method)}}\\
 \noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{ IntVecFFExt({\mdseries\slshape [B, ]vec})\index{ IntVecFFExt@\texttt{ IntVecFFExt}}
 \label{ IntVecFFExt}
-}\hfill{\scriptsize (function)}}\\
+}\hfill{\scriptsize (method)}}\\
 \noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{ IntMatFFExt({\mdseries\slshape [B, ]M})\index{ IntMatFFExt@\texttt{ IntMatFFExt}}
 \label{ IntMatFFExt}
-}\hfill{\scriptsize (function)}}\\
+}\hfill{\scriptsize (method)}}\\
 
 
- IntFFExt takes the \mbox{\texttt{\mdseries\slshape ffe}} and writes it as an integer of the prime field if \mbox{\texttt{\mdseries\slshape ffe}} is an element of the prime field (same as Int(ffe)), or writes it as a vector
-of integers from the prime subfield if \mbox{\texttt{\mdseries\slshape ffe}} is an element of an extension field, using the given basis \mbox{\texttt{\mdseries\slshape B}} or canonical basis representation of \mbox{\texttt{\mdseries\slshape ffe}}. 
+ \texttt{IntFFExt} takes the \mbox{\texttt{\mdseries\slshape ffe}} and writes it as an integer of the prime field if \mbox{\texttt{\mdseries\slshape ffe}} is an element of the prime field (same as Int(ffe)), or writes it as a vector
+of integers from the prime subfield if \mbox{\texttt{\mdseries\slshape ffe}} is an element of an extension field, using the given basis \mbox{\texttt{\mdseries\slshape B}} or canonical basis representation of \mbox{\texttt{\mdseries\slshape ffe}} if no basis is provided. 
 
- IntVecFFExt takes the vector \mbox{\texttt{\mdseries\slshape vec}} of FFEs and writes it as a vector of integers from the prime field if all
-components of \mbox{\texttt{\mdseries\slshape vec}} belong to a prime field, or as a vector of vectors of integers from the prime
+ \texttt{IntVecFFExt} takes the vector \mbox{\texttt{\mdseries\slshape vec}} of FFEs and writes it in a human friendly version: as a vector of integers
+from the prime field if all components of \mbox{\texttt{\mdseries\slshape vec}} belong to a prime field, or as a vector of vectors of integers from the prime
 subfield, if the components belong to an extension field, using the given
-basis \mbox{\texttt{\mdseries\slshape B}} or canonical basis representation of \mbox{\texttt{\mdseries\slshape ffe}}. (note: all components are treated as elements of the largest field). 
+basis \mbox{\texttt{\mdseries\slshape B}} or canonical basis representation of \mbox{\texttt{\mdseries\slshape ffe}}, if no basis is provided. (note: all components are treated as elements of
+the largest field). 
 
- IntMATFFExt takes a matrix \mbox{\texttt{\mdseries\slshape M}} and returns a matrix of vectors of integers from the prime field if all
-components of \mbox{\texttt{\mdseries\slshape M}} belong to a prime field, or a vector of row vectors, whose elements are
+ \texttt{IntMatFFExt} takes a matrix \mbox{\texttt{\mdseries\slshape M}} and returns its human friendly version: a matrix of vectors of integers from
+the prime field if all components of \mbox{\texttt{\mdseries\slshape M}} belong to a prime field, or a vector of row vectors, whose elements are
 vectors of integers from the prime subfield, if the components belong to an
-extension field, using the given basis \mbox{\texttt{\mdseries\slshape B}} or canonical basis representation of \mbox{\texttt{\mdseries\slshape ffe}}. 
+extension field, using the given basis \mbox{\texttt{\mdseries\slshape B}} or canonical basis representation of components of \mbox{\texttt{\mdseries\slshape M}}. 
 
- NOTE: the non-basis versions return a representation in the SMALLEST field
+ NOTE: the non-basis versions return a representation in the smallest field
 that contains the element. for representation in a specific field, use the
-basis version with desired basis }
+basis version with desired basis. }
 
  
 
@@ -199,11 +202,511 @@ basis version with desired basis }
 \hyperdef{L}{X78387B8B7940F96C}{}
 {\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{VecToString({\mdseries\slshape [B, ]vec})\index{VecToString@\texttt{VecToString}}
 \label{VecToString}
+}\hfill{\scriptsize (method)}}\\
+
+
+ Writes a FFE verctor or matrix as string or list of strings using the given
+basis \mbox{\texttt{\mdseries\slshape B}} or canonical basis representation of \mbox{\texttt{\mdseries\slshape ffe}} if no basis is provided. This mathod calls methods \texttt{IntFFExt}, \texttt{IntVecFFExt} and \texttt{IntMatFFExt} from section LINK. The list of strings is more practically useful: we wish to
+have the components as srings, therefore the human friendly version of a
+matrix is not an actual string. 
+
+ NOTE: the non-basis versions return a representation in the cononical basis of
+the smallest field that contains the element. For representation in a specific
+field, use the basis version with desired basis. }
+
+ 
+
+\subsection{\textcolor{Chapter }{WriteVector (for a FFE and given basis)}}
+\logpage{[ 2, 1, 3 ]}\nobreak
+\hyperdef{L}{X7F4DA7FE7C10E782}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{WriteVector({\mdseries\slshape output, B, vec})\index{WriteVector@\texttt{WriteVector}!for a FFE and given basis}
+\label{WriteVector:for a FFE and given basis}
 }\hfill{\scriptsize (function)}}\\
 
 
- writes a (FFE) verctor as string or list of strings using the given basis \mbox{\texttt{\mdseries\slshape B}} or canonical basis representation of \mbox{\texttt{\mdseries\slshape ffe}}. The list of strings is more practically useful: we wish to have the
-components as srings, which is what we want to use }
+ Writes the human friendly version of vector \mbox{\texttt{\mdseries\slshape vec}} represented in basis \mbox{\texttt{\mdseries\slshape B}}, to the output file \mbox{\texttt{\mdseries\slshape output}}. Also works if \mbox{\texttt{\mdseries\slshape vec}} is an integer or FFE. 
+
+ NOTE: the basis MUST be provided. 
+
+ Also works for writing matrices, but writes them as a row vector, not as a
+rectangle. }
+
+ 
+
+\subsection{\textcolor{Chapter }{WriteMatrix (for a matrix of FFE and given basis)}}
+\logpage{[ 2, 1, 4 ]}\nobreak
+\hyperdef{L}{X7FB7643986FE0503}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{WriteMatrix({\mdseries\slshape output, B, M})\index{WriteMatrix@\texttt{WriteMatrix}!for a matrix of FFE and given basis}
+\label{WriteMatrix:for a matrix of FFE and given basis}
+}\hfill{\scriptsize (function)}}\\
+
+
+ Writes the human friendly version of matrix \mbox{\texttt{\mdseries\slshape M}} represented in basis \mbox{\texttt{\mdseries\slshape B}} to the output file \mbox{\texttt{\mdseries\slshape output}} nicely formatted (rectangular, each row in a new line). 
+
+ NOTE: the basis MUST be provided. }
+
+ 
+
+\subsection{\textcolor{Chapter }{WriteMatrixTEX}}
+\logpage{[ 2, 1, 5 ]}\nobreak
+\hyperdef{L}{X7C88DF8385B5C384}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{WriteMatrixTEX({\mdseries\slshape output, M})\index{WriteMatrixTEX@\texttt{WriteMatrixTEX}}
+\label{WriteMatrixTEX}
+}\hfill{\scriptsize (function)}}\\
+
+
+ Writes the TEX code for matrix \mbox{\texttt{\mdseries\slshape M}} over a prime field to the output file \mbox{\texttt{\mdseries\slshape output}}. 
+
+ NOTE: Only works for matrices over a prime field !!! }
+
+ }
+
+ 
+\section{\textcolor{Chapter }{TEX drawing functions}}\label{Drawing}
+\logpage{[ 2, 2, 0 ]}
+\hyperdef{L}{X84E367F97DBA31D2}{}
+{
+  }
+
+ }
+
+ 
+\chapter{\textcolor{Chapter }{FSR (Feedback Shift Register)}}\label{FSR}
+\logpage{[ 3, 0, 0 ]}
+\hyperdef{L}{X7D2B014884E6D3D8}{}
+{
+  
+\section{\textcolor{Chapter }{Common functionality}}\label{fsrcommon}
+\logpage{[ 3, 1, 0 ]}
+\hyperdef{L}{X7D5E0FF97CA51E2E}{}
+{
+  \index{fsr} We define an object \textsf{FSR} (Feedback Shift Register), which can come in two flavours: with linear
+feedback \texttt{LFSR} (\ref{LFSR}) and nonlinear feedback \texttt{NLFSR} (\ref{NLFSR}). Because of many similarities between the two, the basic common functionality
+can be found here, while specialized functions (such as UNKNOWNEntity(LFSR)
+and UNKNOWNEntity(NLFSR) object creation) in corresponding sections. 
+
+\subsection{\textcolor{Chapter }{IsFSR}}
+\logpage{[ 3, 1, 1 ]}\nobreak
+\hyperdef{L}{X867B95117FAEC3E6}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{IsFSR\index{IsFSR@\texttt{IsFSR}}
+\label{IsFSR}
+}\hfill{\scriptsize (filter)}}\\
+
+
+ This is the category of \textsf{FSR} objects. Objects in this category are created using functions \texttt{LFSR} (\ref{LFSR}) or \texttt{NLFSR} (\ref{NLFSR}). }
+
+ 
+
+\subsection{\textcolor{Chapter }{FieldPoly (for an FSR)}}
+\logpage{[ 3, 1, 2 ]}\nobreak
+\hyperdef{L}{X786E842E78537AA0}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{FieldPoly({\mdseries\slshape fsr})\index{FieldPoly@\texttt{FieldPoly}!for an FSR}
+\label{FieldPoly:for an FSR}
+}\hfill{\scriptsize (attribute)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{UnderlyingField({\mdseries\slshape fsr})\index{UnderlyingField@\texttt{UnderlyingField}!for an FSR}
+\label{UnderlyingField:for an FSR}
+}\hfill{\scriptsize (attribute)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{FeedbackVec({\mdseries\slshape fsr})\index{FeedbackVec@\texttt{FeedbackVec}!for an FSR}
+\label{FeedbackVec:for an FSR}
+}\hfill{\scriptsize (attribute)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{OutputTap({\mdseries\slshape fsr})\index{OutputTap@\texttt{OutputTap}!for an FSR}
+\label{OutputTap:for an FSR}
+}\hfill{\scriptsize (attribute)}}\\
+
+
+ \texttt{FieldPoly} of the \textsf{FSR} stores the irreducible polynomial used to construct the extension field or 1
+in case of a prime field.
+
+ \texttt{UnderlyingField} of the \textsf{FSR} is the finite field over which the \textsf{FSR} is defined (all indeterminates and constants are from this field). 
+
+ \texttt{FeedbackVec} of the \textsf{FSR} stores the coefficients of the \texttt{CharPoly} without its leading term in case of UNKNOWNEntity(LFSR), and coefficients of
+the nonzero monomials present in the multivariate function defining the
+feedback in case of UNKNOWNEntity(NLFSR).
+
+ \texttt{OutputTap} holds the output tap position(s): the sequence elements are taken from the
+stage(s) listed in \texttt{OutputTap}. }
+
+ 
+
+\subsection{\textcolor{Chapter }{Length (for an FSR)}}
+\logpage{[ 3, 1, 3 ]}\nobreak
+\hyperdef{L}{X8246C2AF80A0F0E9}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{Length({\mdseries\slshape fsr})\index{Length@\texttt{Length}!for an FSR}
+\label{Length:for an FSR}
+}\hfill{\scriptsize (attribute)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{InternalStateSize({\mdseries\slshape fsr})\index{InternalStateSize@\texttt{InternalStateSize}!for an FSR}
+\label{InternalStateSize:for an FSR}
+}\hfill{\scriptsize (attribute)}}\\
+
+
+ \texttt{Length} of the \textsf{FSR} is the number of its stages.
+
+ \texttt{InternalStateSize} of the \textsf{FSR} is size in bits needed to store the state (length * width) }
+
+ 
+
+\subsection{\textcolor{Chapter }{LoadFSR (for an FSR)}}
+\logpage{[ 3, 1, 4 ]}\nobreak
+\hyperdef{L}{X81B15596784EC6D5}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{LoadFSR({\mdseries\slshape fsr})\index{LoadFSR@\texttt{LoadFSR}!for an FSR}
+\label{LoadFSR:for an FSR}
+}\hfill{\scriptsize (method)}}\\
+
+
+ Loading the \textsf{FSR} \mbox{\texttt{\mdseries\slshape fsr}} with the initial state \mbox{\texttt{\mdseries\slshape ist}}, which is a UNKNOWNEntity(FFE) vector of same length as the \textsf{FSR} and with elements from the underlying finite field. If either of those two
+requirements is violated, loading fails and error message appears. At the time
+of loading the initial sequence elements (ie zeroth elements) are obtained and \texttt{numsteps} is set to 0.
+
+ }
+
+ 
+
+\subsection{\textcolor{Chapter }{StepFSR (for an FSR)}}
+\logpage{[ 3, 1, 5 ]}\nobreak
+\hyperdef{L}{X87B3D9AD878A0C32}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{StepFSR({\mdseries\slshape fsr[, elm]})\index{StepFSR@\texttt{StepFSR}!for an FSR}
+\label{StepFSR:for an FSR}
+}\hfill{\scriptsize (method)}}\\
+
+
+ Perform one step the \textsf{FSR} \mbox{\texttt{\mdseries\slshape fsr}}, ie. compute the new \texttt{state} and update the \texttt{numsteps}, then output the elements denoted by \texttt{OutputTap}. If the optional parameter \mbox{\texttt{\mdseries\slshape elm}} is used then the new element is computed as a sum of computed feedback and \mbox{\texttt{\mdseries\slshape elm}}. Elemen \mbox{\texttt{\mdseries\slshape elm}} must be an element of the underlying finite field. 
+
+ An error is triggered if \texttt{StepFSR} is called for an empty \textsf{FSR}. As this is a way to destroy the linearity of an UNKNOWNEntity(LFSR), we
+refer to \texttt{StepFSR} with the optiomal nonzero \mbox{\texttt{\mdseries\slshape elm}} as \texttt{nonlinear step}. Similarly, the UNKNOWNEntity(NLFSR) can also have an extra element added to
+the (already nonlinear) feedback.
+
+ Returns an error if the \textsf{FSR} is not loaded!
+
+ NOTE: TO DO for the NLFSR !!!!!! }
+
+ 
+
+\subsection{\textcolor{Chapter }{RunFSR (for an FSR)}}
+\logpage{[ 3, 1, 6 ]}\nobreak
+\hyperdef{L}{X7926D97381213BB2}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{RunFSR({\mdseries\slshape fsr[, ist][, num][, pr]})\index{RunFSR@\texttt{RunFSR}!for an FSR}
+\label{RunFSR:for an FSR}
+}\hfill{\scriptsize (method)}}\\
+
+
+ The UNKNOWNEntity(FSR will be run for a certain (\mbox{\texttt{\mdseries\slshape num}} or \mbox{\texttt{\mdseries\slshape threshold}}) number of steps: there is a threshold value, currently set to
+2\texttt{\symbol{94}}\emph{Length(\mbox{\texttt{\mdseries\slshape fsr}})} + \emph{Length(\mbox{\texttt{\mdseries\slshape fsr}})}, which is used by all versions without explicit \mbox{\texttt{\mdseries\slshape num}} and enforced when \mbox{\texttt{\mdseries\slshape num}} exceeds \mbox{\texttt{\mdseries\slshape threshold}}. There is an optional printing switch \mbox{\texttt{\mdseries\slshape pr}}, with default set to \emph{false}) if \emph{true} then the state and the output sequence element(s) are printed in \textsf{GAP} shell on every step of the \textsf{FSR} (we call this output for \texttt{RunFSR}). 
+\begin{itemize}
+\item  \texttt{RunLFSR(\mbox{\texttt{\mdseries\slshape  fsr[, num, pr] }})} - run \mbox{\texttt{\mdseries\slshape fsr}} for \mbox{\texttt{\mdseries\slshape num}}/\mbox{\texttt{\mdseries\slshape threshold}} steps with/without output
+\item  \texttt{RunLFSR(\mbox{\texttt{\mdseries\slshape  fsr, ist[, num, pr] }})} - load \mbox{\texttt{\mdseries\slshape fsr}} with \mbox{\texttt{\mdseries\slshape ist}}, then run \mbox{\texttt{\mdseries\slshape fsr}} for \mbox{\texttt{\mdseries\slshape num}}/\mbox{\texttt{\mdseries\slshape threshold}} steps with/without output (ie. \emph{linear} version)
+\item  \texttt{RunLFSR(\mbox{\texttt{\mdseries\slshape  fsr, elm[, num, pr] }})} - load \mbox{\texttt{\mdseries\slshape fsr}} with \mbox{\texttt{\mdseries\slshape ist}}, then run \mbox{\texttt{\mdseries\slshape fsr}} for \mbox{\texttt{\mdseries\slshape num}}/\mbox{\texttt{\mdseries\slshape threshold}} steps, whereby the SAME element \mbox{\texttt{\mdseries\slshape elm}} is added to the feedback at each step, with/without output (ie. \emph{non-linear} version)
+\item  \texttt{RunLFSR(\mbox{\texttt{\mdseries\slshape  fsr, ist, elmvec[, num, pr] }})} - load \mbox{\texttt{\mdseries\slshape fsr}} with \mbox{\texttt{\mdseries\slshape ist}}, then run \mbox{\texttt{\mdseries\slshape fsr}} for \emph{Length(\mbox{\texttt{\mdseries\slshape fsr}})} steps,, whereby one element of \mbox{\texttt{\mdseries\slshape elmvec}} is added to the feedback at each step (starting with elmvec[1]), with/without
+output (ie. \emph{non-linear} version)
+\end{itemize}
+ NOTE: for the load and run versions, element \mbox{\texttt{\mdseries\slshape seq\${\textunderscore}0\$}} is a part of the output sequence The ouput of \texttt{RunLFSR} is: 
+\begin{itemize}
+\item  sequence of UNKNOWNEntity(FFE)s : seq\${\textunderscore}0\$,
+seq\${\textunderscore}1\$, seq\${\textunderscore}2\$, \texttt{\symbol{92}}dots
+for \emph{Length}(\emph{OutputTap})=1
+\item  sequence of vectors, each of them with \$t\$ FFEs : seq\${\textunderscore}0\$,
+seq\${\textunderscore}1\$, seq\${\textunderscore}2\$,
+\texttt{\symbol{92}}dots, where seq\${\textunderscore}i=(\$
+seq\${\textunderscore}\texttt{\symbol{123}}i1\texttt{\symbol{125}}\$,
+\texttt{\symbol{92}}dots ,\$
+seq\${\textunderscore}\texttt{\symbol{123}}it\texttt{\symbol{125}}\$) for \emph{Length}(\emph{OutputTap})=t
+\end{itemize}
+ }
+
+ }
+
+ 
+\section{\textcolor{Chapter }{LFSR specific funcionality}}\label{lfsr}
+\logpage{[ 3, 2, 0 ]}
+\hyperdef{L}{X7A98C0FE855337A7}{}
+{
+  
+
+\subsection{\textcolor{Chapter }{LFSR}}
+\logpage{[ 3, 2, 1 ]}\nobreak
+\hyperdef{L}{X8099A9DC86E0B078}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{LFSR({\mdseries\slshape F, charpol[, tap]})\index{LFSR@\texttt{LFSR}}
+\label{LFSR}
+}\hfill{\scriptsize (function)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{LFSR({\mdseries\slshape K, fieldpol, charpol[, tap]})\index{LFSR@\texttt{LFSR}}
+\label{LFSR}
+}\hfill{\scriptsize (function)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{LFSR({\mdseries\slshape F, charpol[, tap]})\index{LFSR@\texttt{LFSR}}
+\label{LFSR}
+}\hfill{\scriptsize (function)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{LFSR({\mdseries\slshape p, m, n[, tap]})\index{LFSR@\texttt{LFSR}}
+\label{LFSR}
+}\hfill{\scriptsize (function)}}\\
+\textbf{\indent Returns:\ }
+ An empty UNKNOWNEntity(LFSR) with components \texttt{init}, \texttt{state} and \texttt{numsteps} 
+
+
+
+ Different ways to create an UNKNOWNEntity(LFSR) oblject, main difference is in
+creation of the underlying finite field. 
+
+ Inputs: 
+\begin{itemize}
+\item  \mbox{\texttt{\mdseries\slshape F}} - the underlying finite field (either an extension field or a prime field)
+\item  \mbox{\texttt{\mdseries\slshape charpol}} - UNKNOWNEntity(LFSR) dfining polynomial 
+\item  \mbox{\texttt{\mdseries\slshape fieldpol}} - defifning polynomial of the extension field (must be irreducible)
+\item  \mbox{\texttt{\mdseries\slshape p}} - characteeristic 
+\item  \mbox{\texttt{\mdseries\slshape m}} - degree of extension (degree of \mbox{\texttt{\mdseries\slshape fieldpol}}) 
+\item  \mbox{\texttt{\mdseries\slshape n}} - length of UNKNOWNEntity(LFSR) (degree of \mbox{\texttt{\mdseries\slshape charpoly}})
+\item  \mbox{\texttt{\mdseries\slshape tap}} - optional parameter: the output tap (must be a positive integer or a list of
+positive integers) and will be changed to the default S{\textunderscore}0 if
+the specified integer is out of LFSR range.
+\end{itemize}
+ Compoents: 
+\begin{itemize}
+\item  \texttt{init} - UNKNOWNEntity(FFE) vector of length n=deg(charpol), storing the initial
+state of the UNKNOWNEntity(LFSR), with indeces from n-1, ..., 0
+\item  \texttt{state} - UNKNOWNEntity(FFE) vector of length n=deg(charpol), storing the current
+state of the UNKNOWNEntity(LFSR), with indeces from n-1, ..., 0
+\item  \texttt{numsteps} - the number of steps performed thus far (initialized to -1 when created, set
+to 0 when loaded using \texttt{LoadFSR} (\ref{LoadFSR}) and incremented by 1 with each step (using \texttt{StepFSR} (\ref{StepFSR}))) 
+\end{itemize}
+ Attributes \texttt{FieldPoly} (\ref{FieldPoly}), \texttt{UnderlyingFied} (\ref{UnderlyingFied}), \texttt{CharPoly}, \texttt{FeedbackVec} (\ref{FeedbackVec}), \texttt{Length} (\ref{Length}) and \texttt{OutputTap} (\ref{OutputTap}) and the property \texttt{IsLinearFeedback} are set during the construction of an UNKNOWNEntity(LFSR). 
+
+ If there is something wrong with the arguments (e.g. attempting to create an
+extension field using a reducible poynomial), an error message appears and the
+function returns \texttt{fail}. }
+
+ 
+
+\subsection{\textcolor{Chapter }{IsLinearFeedback (for an LFSR)}}
+\logpage{[ 3, 2, 2 ]}\nobreak
+\hyperdef{L}{X838DA9E4839822E6}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{IsLinearFeedback({\mdseries\slshape lfsr})\index{IsLinearFeedback@\texttt{IsLinearFeedback}!for an LFSR}
+\label{IsLinearFeedback:for an LFSR}
+}\hfill{\scriptsize (property)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{IsLFSR({\mdseries\slshape lfsr})\index{IsLFSR@\texttt{IsLFSR}!for an LFSR}
+\label{IsLFSR:for an LFSR}
+}\hfill{\scriptsize (filter)}}\\
+
+
+ If we were to represent the UNKNOWNEntity(LFSR) with a multivariate
+polynomial, DegreeOfPolynomial would return 1 - the feedback polynomial is
+linear and \texttt{IsLinearFeedback} is set to \emph{true}. (ie. only linear terms are present: monomials with only one variable )
+
+ Filter \texttt{IsLFSR} is defined as and-filter of \texttt{IsFSR} and \texttt{IsLinearFeedback}. }
+
+ 
+
+\subsection{\textcolor{Chapter }{CharPoly (for an LFSR)}}
+\logpage{[ 3, 2, 3 ]}\nobreak
+\hyperdef{L}{X7DC75BE47BA3F4BE}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{CharPoly({\mdseries\slshape lfsr})\index{CharPoly@\texttt{CharPoly}!for an LFSR}
+\label{CharPoly:for an LFSR}
+}\hfill{\scriptsize (attribute)}}\\
+
+
+ Attribute holding the characteristic polynomial (the feedback polynomial). }
+
+ 
+
+\subsection{\textcolor{Chapter }{IsPeriodic (for an LFSR)}}
+\logpage{[ 3, 2, 4 ]}\nobreak
+\hyperdef{L}{X823B75F984A72E7A}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{IsPeriodic({\mdseries\slshape lfsr})\index{IsPeriodic@\texttt{IsPeriodic}!for an LFSR}
+\label{IsPeriodic:for an LFSR}
+}\hfill{\scriptsize (property)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{IsUltPeriodic({\mdseries\slshape lfsr})\index{IsUltPeriodic@\texttt{IsUltPeriodic}!for an LFSR}
+\label{IsUltPeriodic:for an LFSR}
+}\hfill{\scriptsize (property)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{IsMaxSeqLFSR({\mdseries\slshape lfsr})\index{IsMaxSeqLFSR@\texttt{IsMaxSeqLFSR}!for an LFSR}
+\label{IsMaxSeqLFSR:for an LFSR}
+}\hfill{\scriptsize (property)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{IsMaxSeqLFSR({\mdseries\slshape lfsr})\index{IsMaxSeqLFSR@\texttt{IsMaxSeqLFSR}!for an LFSR}
+\label{IsMaxSeqLFSR:for an LFSR}
+}\hfill{\scriptsize (attribute)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{PeriodIrreducible({\mdseries\slshape lfsr})\index{PeriodIrreducible@\texttt{PeriodIrreducible}!for an LFSR}
+\label{PeriodIrreducible:for an LFSR}
+}\hfill{\scriptsize (method)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{PeriodReducible({\mdseries\slshape lfsr})\index{PeriodReducible@\texttt{PeriodReducible}!for an LFSR}
+\label{PeriodReducible:for an LFSR}
+}\hfill{\scriptsize (method)}}\\
+
+
+ Properties, attributes and methods concerning the periodicity of the output
+sequence(s), generated by the UNKNOWNEntity(LFSR). 
+
+ Properties: 
+\begin{itemize}
+\item  \texttt{IsPeriodic}: true if constant term of \texttt{CharPoly} != 0 (8.11 lidl, niederreiter) 
+\item  \texttt{IsUltPeriodic}: true if UNKNOWNEntity(LFSR) (8.7 lidl, niederreiter) 
+\item  \texttt{IsMaxSeqLFSR}: true if \texttt{CharPoly} is primitive (ref???) 
+\end{itemize}
+ Attributes: 
+\begin{itemize}
+\item  \texttt{Period}: holds the period of the UNKNOWNEntity(LFSR) 
+\end{itemize}
+ Methods to compute the period: 
+\begin{itemize}
+\item  \texttt{PeriodIrreducible}: 
+\item  \texttt{PeriodReducible}: 
+\end{itemize}
+ }
+
+ 
+
+\subsection{\textcolor{Chapter }{ViewObj (for an NLFSR)}}
+\logpage{[ 3, 2, 5 ]}\nobreak
+\hyperdef{L}{X836CA53B872FD8B6}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{ViewObj({\mdseries\slshape [B, ]nlfsr})\index{ViewObj@\texttt{ViewObj}!for an NLFSR}
+\label{ViewObj:for an NLFSR}
+}\hfill{\scriptsize (method)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{PrintObj({\mdseries\slshape [B, ]nlfsr})\index{PrintObj@\texttt{PrintObj}!for an NLFSR}
+\label{PrintObj:for an NLFSR}
+}\hfill{\scriptsize (method)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{PrintAll({\mdseries\slshape [B, ]nlfsr})\index{PrintAll@\texttt{PrintAll}!for an NLFSR}
+\label{PrintAll:for an NLFSR}
+}\hfill{\scriptsize (method)}}\\
+
+
+ Different detail on the UNKNOWNEntity(NLFSR) created by \texttt{NLFSR} (\ref{NLFSR}): 
+\begin{itemize}
+\item  \texttt{Display/View}: show the \texttt{MultivarPoly} and wheter or not the UNKNOWNEntity(NLFSR) is empty
+\item  \texttt{Print}: same as \texttt{Display/View} if UNKNOWNEntity(NLFSR) is empty, otherwise it also shows the values of the
+three components \texttt{init}, \texttt{state} and \texttt{numsteps}
+\item  \texttt{PrintAll}: same as \texttt{Print} if UNKNOWNEntity(NLFSR) is empty, otherwise it also shows the values of the
+three components \texttt{init}, \texttt{state} and \texttt{numsteps} with additional information about the underlying field and the tap positions
+\end{itemize}
+ Can be used with optional parameter basis \mbox{\texttt{\mdseries\slshape B}} for desiered output format. }
+
+ }
+
+ 
+\section{\textcolor{Chapter }{NLFSR specific funcionality}}\label{nlfsr}
+\logpage{[ 3, 3, 0 ]}
+\hyperdef{L}{X797E9B3381339AB2}{}
+{
+  
+
+\subsection{\textcolor{Chapter }{ChooseField (for a given field)}}
+\logpage{[ 3, 3, 1 ]}\nobreak
+\hyperdef{L}{X8040B069804A223A}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{ChooseField({\mdseries\slshape F})\index{ChooseField@\texttt{ChooseField}!for a given field}
+\label{ChooseField:for a given field}
+}\hfill{\scriptsize (function)}}\\
+
+
+ Workaround for the UNKNOWNEntity(NLFSR) object definition: we need to fix the
+chosen underlying finite field and prepare indeterminates in the chosen field.
+The indeterminates will be used for the multivariable polynomial, which will
+define the UNKNOWNEntity(NLFSR) feedback. Current threshold is set by global \texttt{MaxNLFSRLen} = 100. 
+
+ }
+
+ 
+
+\subsection{\textcolor{Chapter }{NLFSR}}
+\logpage{[ 3, 3, 2 ]}\nobreak
+\hyperdef{L}{X7DDE3CAC7A9D2A55}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{NLFSR({\mdseries\slshape K, clist, mlist, len[, tap]})\index{NLFSR@\texttt{NLFSR}}
+\label{NLFSR}
+}\hfill{\scriptsize (function)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{NLFSR({\mdseries\slshape K, fieldpol, clist, mlist, len[, tap]})\index{NLFSR@\texttt{NLFSR}}
+\label{NLFSR}
+}\hfill{\scriptsize (function)}}\\
+\textbf{\indent Returns:\ }
+ An empty UNKNOWNEntity(NLFSR) with components \texttt{init}, \texttt{state} and \texttt{numsteps} 
+
+
+
+ Different ways to create an UNKNOWNEntity(NLFSR) oblject, main difference is
+in creation of the underlying finite field. 
+
+ Inputs: 
+\begin{itemize}
+\item  \mbox{\texttt{\mdseries\slshape F}} - the underlying finite field (either an extension field or a prime field)
+\item  \mbox{\texttt{\mdseries\slshape fieldpol}} - defifning polynomial of the extension field (must be irreducible) TO DO 
+\item  \mbox{\texttt{\mdseries\slshape clist}} - list of coefficients for the monomials in \mbox{\texttt{\mdseries\slshape mlist}} 
+\item  \mbox{\texttt{\mdseries\slshape mlist}} - list of monomials 
+\item  \mbox{\texttt{\mdseries\slshape len}} - length of UNKNOWNEntity(NLFSR) 
+\item  \mbox{\texttt{\mdseries\slshape tap}} - optional parameter: the output tap (must be a positive integer or a list of
+positive integers) and will be changed to the default S{\textunderscore}0 if
+the specified integer is out of UNKNOWNEntity(NLFSR) range.
+\end{itemize}
+ NOTE: \mbox{\texttt{\mdseries\slshape clist}} and \mbox{\texttt{\mdseries\slshape mlist}} must be of same length, all elements in \mbox{\texttt{\mdseries\slshape clist}} must belong to the underlying field. Monomials in \mbox{\texttt{\mdseries\slshape mlist}} must not include any indeterminates that are out of range specified by \mbox{\texttt{\mdseries\slshape len}}: stages of UNKNOWNEntity(NLFSR) are represented by indeterminants and the
+feedback is not allowed to use a stage that doesnt exist. A second constraint
+on \mbox{\texttt{\mdseries\slshape mlist}} requires that it must contain at least one monomial of degree
+\${\textgreater}\$ 1, otherwise we must create an UNKNOWNEntity(LFSR). 
+
+ Compoents: 
+\begin{itemize}
+\item  \texttt{init} - UNKNOWNEntity(FFE) vector of length n=deg(charpol), storing the initial
+state of the UNKNOWNEntity(NLFSR), with indeces from n-1, ..., 0
+\item  \texttt{state} - UNKNOWNEntity(FFE) vector of length n=deg(charpol), storing the current
+state of the UNKNOWNEntity(NLFSR), with indeces from n-1, ..., 0
+\item  \texttt{numsteps} - the number of steps performed thus far (initialized to -1 when created, set
+to 0 when loaded using \texttt{LoadFSR} (\ref{LoadFSR}) and incremented by 1 with each step (using \texttt{StepFSR} (\ref{StepFSR}))) 
+\end{itemize}
+ Attributes \texttt{FieldPoly} (\ref{FieldPoly}), \texttt{UnderlyingFied} (\ref{UnderlyingFied}), \texttt{MultivarPoly}, \texttt{FeedbackVec} (\ref{FeedbackVec}), \texttt{IndetList} (\ref{IndetList}), \texttt{Length} (\ref{Length}) and \texttt{OutputTap} (\ref{OutputTap}) and the property \texttt{IsNonLinearFeedback} are set during the construction of an UNKNOWNEntity(NLFSR). 
+
+ If there is something wrong with the arguments (e.g. attempting to create an
+extension field using a reducible poynomial), an error message appears and the
+function returns \texttt{fail}. }
+
+ 
+
+\subsection{\textcolor{Chapter }{IsNonLinearFeedback (for an NLFSR)}}
+\logpage{[ 3, 3, 3 ]}\nobreak
+\hyperdef{L}{X8567C55480B968AB}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{IsNonLinearFeedback({\mdseries\slshape nlfsr})\index{IsNonLinearFeedback@\texttt{IsNonLinearFeedback}!for an NLFSR}
+\label{IsNonLinearFeedback:for an NLFSR}
+}\hfill{\scriptsize (property)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{IsNLFSR({\mdseries\slshape nlfsr})\index{IsNLFSR@\texttt{IsNLFSR}!for an NLFSR}
+\label{IsNLFSR:for an NLFSR}
+}\hfill{\scriptsize (filter)}}\\
+
+
+ For the multivariate polynomial given by \mbox{\texttt{\mdseries\slshape clist}} and \mbox{\texttt{\mdseries\slshape mlist}}, DegreeOfPolynomial greter than 1 sets \texttt{IsNonLinearFeedback} to \emph{true}. otherwise it prints out a warning that you need to use the
+UNKNOWNEntity(LFSR) constructor instead. 
+
+ Filter \texttt{IsNLFSR} is defined as and-filter of \texttt{IsFSR} and \texttt{IsNonLinearFeedback}. }
+
+ 
+
+\subsection{\textcolor{Chapter }{MultivarPoly (for an NLFSR)}}
+\logpage{[ 3, 3, 4 ]}\nobreak
+\hyperdef{L}{X840B27137E4B68C9}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{MultivarPoly({\mdseries\slshape nlfsr})\index{MultivarPoly@\texttt{MultivarPoly}!for an NLFSR}
+\label{MultivarPoly:for an NLFSR}
+}\hfill{\scriptsize (attribute)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{IndetList({\mdseries\slshape nlfsr})\index{IndetList@\texttt{IndetList}!for an NLFSR}
+\label{IndetList:for an NLFSR}
+}\hfill{\scriptsize (attribute)}}\\
+
+
+ \texttt{MultivarPoly} holds the multivariate function defining the feedback of the
+UNKNOWNEntity(NLFSR). \texttt{IndetList} holds all the indeterminates that are present in \texttt{MultivarPoly} and \texttt{FeedbackVec} holds only the nonzero coefficients (as opposed to the LFSR, where this field
+holds coefficients for all stages of the \textsf{FSR}). The feedback element is computed from \texttt{MultivarPoly}, \texttt{IndetList} and \texttt{state}, and not from \texttt{FeedbackVec}. }
+
+ 
+
+\subsection{\textcolor{Chapter }{ViewObj (for an NLFSR)}}
+\logpage{[ 3, 3, 5 ]}\nobreak
+\hyperdef{L}{X836CA53B872FD8B6}{}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{ViewObj({\mdseries\slshape [B, ]nlfsr})\index{ViewObj@\texttt{ViewObj}!for an NLFSR}
+\label{ViewObj:for an NLFSR}
+}\hfill{\scriptsize (method)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{PrintObj({\mdseries\slshape [B, ]nlfsr})\index{PrintObj@\texttt{PrintObj}!for an NLFSR}
+\label{PrintObj:for an NLFSR}
+}\hfill{\scriptsize (method)}}\\
+\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{PrintAll({\mdseries\slshape [B, ]nlfsr})\index{PrintAll@\texttt{PrintAll}!for an NLFSR}
+\label{PrintAll:for an NLFSR}
+}\hfill{\scriptsize (method)}}\\
+
+
+ Different detail on the UNKNOWNEntity(NLFSR) created by \texttt{NLFSR} (\ref{NLFSR}): 
+\begin{itemize}
+\item  \texttt{Display/View}: show the \texttt{MultivarPoly} and wheter or not the UNKNOWNEntity(NLFSR) is empty
+\item  \texttt{Print}: same as \texttt{Display/View} if UNKNOWNEntity(NLFSR) is empty, otherwise it also shows the values of the
+three components \texttt{init}, \texttt{state} and \texttt{numsteps}
+\item  \texttt{PrintAll}: same as \texttt{Print} if UNKNOWNEntity(NLFSR) is empty, otherwise it also shows the values of the
+three components \texttt{init}, \texttt{state} and \texttt{numsteps} with additional information about the underlying field and the tap positions
+\end{itemize}
+ Can be used with optional parameter basis \mbox{\texttt{\mdseries\slshape B}} for desiered output format. }
 
  }
 
