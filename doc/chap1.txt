@@ -1,5 +1,5 @@
   
   [1X1 [33X[0;0YPreface[133X[101X
   
-  [33X[0;0YThe [5XGAP[105X package [5XFSR[105X implements ...[133X
+  [33X[0;0YThe [5XGAP[105X package [5XFSR[105X implements Feedback Shift Registers[133X
   

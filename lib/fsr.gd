@@ -88,7 +88,8 @@ DeclareGlobalFunction( "ChooseField" );
 ##  <Description>
 ##  <C>FieldPoly</C> of the &FSR; stores the irreducible polynomial used to construct the extension field or 1 in case of a prime field.<P/>
 ##  <C>UnderlyingField</C> of the &FSR; is the finite field over which the &FSR; is defined (all indeterminates and constants are from this field). <P/>
-##  <C>FeedbackVec</C> of the &FSR; stores the coefficients of the <C>CharPoly</C> without its leading term in case of &LFSR;, 
+##  NOTE: it may seem redundant to sore both <C>FieldPoly</C> and <C>UnderlyingField</C>, however, they are used by other functions in the package. <P/>
+##  <C>FeedbackVec</C> of the &FSR; stores the coefficients of the <C>CharPoly</C> without its leading term in case of <E>LFSR</E>, 
 ##  and coefficients of the nonzero monomials present in the multivariate function defining the feedback in case of &NLFSR;.<P/>
 ##  <C>OutputTap</C> holds the output tap position(s): the sequence elements are taken from the stage(s) listed in <C>OutputTap</C>.
 ##  </Description>
@@ -204,11 +205,11 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 ##  <Item> <C>RunLFSR(<A> fsr, ist, elmvec[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for  <E>Length(<A>fsr</A>)</E> steps,, whereby one element
 ##  of <A>elmvec</A> is added to the feedback at each step (starting with elmvec[1]), with/without output (ie. <E>non-linear</E> version)</Item>
 ##  </List>
-##  NOTE: for the load and run versions, element <A>seq$_0$</A> is a part of the output sequence
+##  NOTE: for the load and run versions, element <A>seq</A><M>_0</M> is a part of the output sequence
 ##  The ouput of <C>RunLFSR</C> is: 
 ##  <List> 
-##  <Item> sequence of &FFE;s : seq$_0$, seq$_1$, seq$_2$, \dots for <E>Length</E>(<E>OutputTap</E>)=1</Item>
-##  <Item> sequence of vectors, each of them with $t$ FFEs : seq$_0$, seq$_1$, seq$_2$, \dots, where seq$_i=($ seq$_{i1}$, \dots ,$ seq$_{it}$) for <E>Length</E>(<E>OutputTap</E>)=t</Item>
+##  <Item> sequence of &FFE;s : seq<M>_0</M>, seq<M>_1</M>, seq<M>_2</M>, <M>\dots ,</M>  for <E>Length</E>(<E>OutputTap</E>)=1</Item>
+##  <Item> sequence of vectors, each of them with <M>t</M> FFEs : seq<M>_0</M>, seq<M>_1</M>, seq<M>_2</M>, <M>\dots ,</M>  where seq<M>_i=(</M> seq<M>_{i1}</M>, <M>\dots ,</M> seq<M>_{it}</M>) for <E>Length</E>(<E>OutputTap</E>)=t</Item>
 ##  </List>
 ##  </Description>
 ##  </ManSection>

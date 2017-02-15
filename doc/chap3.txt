@@ -31,10 +31,13 @@
   [33X[0;0Y[10XUnderlyingField[110X of the [5XFSR[105X is the finite field over which the [5XFSR[105X is defined
   (all indeterminates and constants are from this field).[133X
   
+  [33X[0;0YNOTE:  it  may  seem  redundant  to sore both [10XFieldPoly[110X and [10XUnderlyingField[110X,
+  however, they are used by other functions in the package.[133X
+  
   [33X[0;0Y[10XFeedbackVec[110X  of  the [5XFSR[105X stores the coefficients of the [10XCharPoly[110X without its
-  leading term in case of UNKNOWNEntity(LFSR), and coefficients of the nonzero
-  monomials present in the multivariate function defining the feedback in case
-  of UNKNOWNEntity(NLFSR).[133X
+  leading  term  in  case  of  [13XLFSR[113X, and coefficients of the nonzero monomials
+  present  in  the  multivariate  function  defining  the  feedback in case of
+  UNKNOWNEntity(NLFSR).[133X
   
   [33X[0;0Y[10XOutputTap[110X  holds the output tap position(s): the sequence elements are taken
   from the stage(s) listed in [10XOutputTap[110X.[133X
@@ -107,15 +110,14 @@
         the  feedback  at  each  step  (starting with elmvec[1]), with/without
         output (ie. [13Xnon-linear[113X version)[133X
   
-  [33X[0;0YNOTE: for the load and run versions, element [3Xseq$_0$[103X is a part of the output
+  [33X[0;0YNOTE:  for  the load and run versions, element [3Xseq[103X[22X_0[122X is a part of the output
   sequence The ouput of [10XRunLFSR[110X is:[133X
   
-  [30X    [33X[0;6Ysequence of UNKNOWNEntity(FFE)s : seq$_0$, seq$_1$, seq$_2$, \dots for
+  [30X    [33X[0;6Ysequence  of  UNKNOWNEntity(FFE)s  :  seq[22X_0[122X,  seq[22X_1[122X, seq[22X_2[122X, [22Xdots ,[122X for
         [13XLength[113X([13XOutputTap[113X)=1[133X
   
-  [30X    [33X[0;6Ysequence  of  vectors,  each of them with $t$ FFEs : seq$_0$, seq$_1$,
-        seq$_2$,  \dots,  where seq$_i=($ seq$_{i1}$, \dots ,$ seq$_{it}$) for
-        [13XLength[113X([13XOutputTap[113X)=t[133X
+  [30X    [33X[0;6Ysequence  of  vectors, each of them with [22Xt[122X FFEs : seq[22X_0[122X, seq[22X_1[122X, seq[22X_2[122X,
+        [22Xdots ,[122X where seq[22X_i=([122X seq[22X_i1[122X, [22Xdots ,[122X seq[22X_it[122X) for [13XLength[113X([13XOutputTap[113X)=t[133X
   
   
   [1X3.2 [33X[0;0YLFSR specific funcionality[133X[101X

@@ -119,7 +119,7 @@
 {\small 
 \section*{Copyright}
 \logpage{[ 0, 0, 2 ]}
- {\copyright} 2017-2017 by Nusa Zidaric
+ {\copyright} 2017-2017 by Nusa Zidaric, Mark Aagaard, Guang Gong
 
  \textsf{FSR} is free software; you can redistribute it and/or modify it under the terms of
 the GNU General Public License as published by the Free Software Foundation;
@@ -147,7 +147,7 @@ details, see the FSF's own site \href{http://www.gnu.org/licenses/gpl.html} {\te
 \logpage{[ 1, 0, 0 ]}
 \hyperdef{L}{X874E1D45845007FE}{}
 {
-  The \textsf{GAP} package \textsf{FSR} implements ... }
+  The \textsf{GAP} package \textsf{FSR} implements Feedback Shift Registers }
 
  
 \chapter{\textcolor{Chapter }{Output formatting functions and TEX drawing functions}}\label{Outputs}
@@ -319,9 +319,10 @@ in case of a prime field.
 
  \texttt{UnderlyingField} of the \textsf{FSR} is the finite field over which the \textsf{FSR} is defined (all indeterminates and constants are from this field). 
 
- \texttt{FeedbackVec} of the \textsf{FSR} stores the coefficients of the \texttt{CharPoly} without its leading term in case of UNKNOWNEntity(LFSR), and coefficients of
-the nonzero monomials present in the multivariate function defining the
-feedback in case of UNKNOWNEntity(NLFSR).
+ NOTE: it may seem redundant to sore both \texttt{FieldPoly} and \texttt{UnderlyingField}, however, they are used by other functions in the package. 
+
+ \texttt{FeedbackVec} of the \textsf{FSR} stores the coefficients of the \texttt{CharPoly} without its leading term in case of \emph{LFSR}, and coefficients of the nonzero monomials present in the multivariate
+function defining the feedback in case of UNKNOWNEntity(NLFSR).
 
  \texttt{OutputTap} holds the output tap position(s): the sequence elements are taken from the
 stage(s) listed in \texttt{OutputTap}. }
@@ -398,17 +399,10 @@ the (already nonlinear) feedback.
 \item  \texttt{RunLFSR(\mbox{\texttt{\mdseries\slshape  fsr, ist, elmvec[, num, pr] }})} - load \mbox{\texttt{\mdseries\slshape fsr}} with \mbox{\texttt{\mdseries\slshape ist}}, then run \mbox{\texttt{\mdseries\slshape fsr}} for \emph{Length(\mbox{\texttt{\mdseries\slshape fsr}})} steps,, whereby one element of \mbox{\texttt{\mdseries\slshape elmvec}} is added to the feedback at each step (starting with elmvec[1]), with/without
 output (ie. \emph{non-linear} version)
 \end{itemize}
- NOTE: for the load and run versions, element \mbox{\texttt{\mdseries\slshape seq\${\textunderscore}0\$}} is a part of the output sequence The ouput of \texttt{RunLFSR} is: 
+ NOTE: for the load and run versions, element \mbox{\texttt{\mdseries\slshape seq}}$_0$ is a part of the output sequence The ouput of \texttt{RunLFSR} is: 
 \begin{itemize}
-\item  sequence of UNKNOWNEntity(FFE)s : seq\${\textunderscore}0\$,
-seq\${\textunderscore}1\$, seq\${\textunderscore}2\$, \texttt{\symbol{92}}dots
-for \emph{Length}(\emph{OutputTap})=1
-\item  sequence of vectors, each of them with \$t\$ FFEs : seq\${\textunderscore}0\$,
-seq\${\textunderscore}1\$, seq\${\textunderscore}2\$,
-\texttt{\symbol{92}}dots, where seq\${\textunderscore}i=(\$
-seq\${\textunderscore}\texttt{\symbol{123}}i1\texttt{\symbol{125}}\$,
-\texttt{\symbol{92}}dots ,\$
-seq\${\textunderscore}\texttt{\symbol{123}}it\texttt{\symbol{125}}\$) for \emph{Length}(\emph{OutputTap})=t
+\item  sequence of UNKNOWNEntity(FFE)s : seq$_0$, seq$_1$, seq$_2$, $\dots ,$ for \emph{Length}(\emph{OutputTap})=1
+\item  sequence of vectors, each of them with $t$ FFEs : seq$_0$, seq$_1$, seq$_2$, $\dots ,$ where seq$_i=($ seq$_{i1}$, $\dots ,$ seq$_{it}$) for \emph{Length}(\emph{OutputTap})=t
 \end{itemize}
  }
 

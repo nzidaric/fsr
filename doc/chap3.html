@@ -79,7 +79,9 @@
 
 <p><code class="code">UnderlyingField</code> of the <strong class="pkg">FSR</strong> is the finite field over which the <strong class="pkg">FSR</strong> is defined (all indeterminates and constants are from this field).</p>
 
-<p><code class="code">FeedbackVec</code> of the <strong class="pkg">FSR</strong> stores the coefficients of the <code class="code">CharPoly</code> without its leading term in case of UNKNOWNEntity(LFSR), and coefficients of the nonzero monomials present in the multivariate function defining the feedback in case of UNKNOWNEntity(NLFSR).</p>
+<p>NOTE: it may seem redundant to sore both <code class="code">FieldPoly</code> and <code class="code">UnderlyingField</code>, however, they are used by other functions in the package.</p>
+
+<p><code class="code">FeedbackVec</code> of the <strong class="pkg">FSR</strong> stores the coefficients of the <code class="code">CharPoly</code> without its leading term in case of <em>LFSR</em>, and coefficients of the nonzero monomials present in the multivariate function defining the feedback in case of UNKNOWNEntity(NLFSR).</p>
 
 <p><code class="code">OutputTap</code> holds the output tap position(s): the sequence elements are taken from the stage(s) listed in <code class="code">OutputTap</code>.</p>
 
@@ -135,14 +137,14 @@
 
 </li>
 </ul>
-<p>NOTE: for the load and run versions, element <var class="Arg">seq$_0$</var> is a part of the output sequence The ouput of <code class="code">RunLFSR</code> is:</p>
+<p>NOTE: for the load and run versions, element <var class="Arg">seq</var><span class="SimpleMath">_0</span> is a part of the output sequence The ouput of <code class="code">RunLFSR</code> is:</p>
 
 
 <ul>
-<li><p>sequence of UNKNOWNEntity(FFE)s : seq$_0$, seq$_1$, seq$_2$, \dots for <em>Length</em>(<em>OutputTap</em>)=1</p>
+<li><p>sequence of UNKNOWNEntity(FFE)s : seq<span class="SimpleMath">_0</span>, seq<span class="SimpleMath">_1</span>, seq<span class="SimpleMath">_2</span>, <span class="SimpleMath">dots ,</span> for <em>Length</em>(<em>OutputTap</em>)=1</p>
 
 </li>
-<li><p>sequence of vectors, each of them with $t$ FFEs : seq$_0$, seq$_1$, seq$_2$, \dots, where seq$_i=($ seq$_{i1}$, \dots ,$ seq$_{it}$) for <em>Length</em>(<em>OutputTap</em>)=t</p>
+<li><p>sequence of vectors, each of them with <span class="SimpleMath">t</span> FFEs : seq<span class="SimpleMath">_0</span>, seq<span class="SimpleMath">_1</span>, seq<span class="SimpleMath">_2</span>, <span class="SimpleMath">dots ,</span> where seq<span class="SimpleMath">_i=(</span> seq<span class="SimpleMath">_i1</span>, <span class="SimpleMath">dots ,</span> seq<span class="SimpleMath">_it</span>) for <em>Length</em>(<em>OutputTap</em>)=t</p>
 
 </li>
 </ul>
