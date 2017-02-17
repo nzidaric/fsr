@@ -1,6 +1,8 @@
                               The FSR package 
 
 This is the README file for the GAP package "FSR" Feedback shift Register.
+contact: Nusa zidaric, Mark Aagaard, Giang Gong 
+{nzidaric, maagaard, ggong}@uwaterloo.ca
 
 
 extract to gapinstallation/pkg/

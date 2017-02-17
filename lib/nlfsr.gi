@@ -6,16 +6,16 @@
 
 #############################################################################
 ##
-#F  NLFSR( <K>, <clist>, <mlist> , <len> )  . . . .  create an LFSR object 	# len 4
-#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len> )  . . . .  create an LFSR object 	# len 5
-#F  NLFSR( <K>, <clist>, <mlist> , <len> , <tap>)  . . . .  create an LFSR object 	# len 5
-#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len>, <tap> )  . . . .  create an LFSR object 	# len 6
+#F  NLFSR( <K>, <clist>, <mlist> , <len> )  . . . .  create an NLFSR object 	# len 4
+#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len> )  . . . .  create an NLFSR object 	# len 5
+#F  NLFSR( <K>, <clist>, <mlist> , <len> , <tap>)  . . . .  create an NLFSR object 	# len 5
+#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len>, <tap> )  . . . .  create an NLFSR object 	# len 6
 
 
 InstallGlobalFunction( NLFSR,  function(arg)
 
 local K, F, multpol, fieldpol, clist, mlist, m, n, tap, y,	# for args
-    fam, fb, st, coefs, nlfsr, d, i, j , idx, indlist, nonlin;	# for constructor
+    fam, fb, st, coefs, nlfsr, d, i, j , idx, indlist, xlist, slist , mof, lin;	# for constructor
 
 # figure out which constructor is being used
 
@@ -23,29 +23,58 @@ if  Length(arg)=4 then
 	if IsField(arg[1]) and IsFFECollection(arg[2]) and IsList(arg[3]) and IsPosInt(arg[4]) then 	
 			#F  NLFSR( <K>, <clist>, <mlist> , <len> )
 			# we dont allow anything thats not a prime here, coz primepower is already an extension
-			if IsPrimeField(arg[1]) then K:= GF(arg[1]);  F := arg[1]; fieldpol := 1;
+			if IsPrimeField(arg[1]) then K:= arg[1];  F := arg[1]; fieldpol := 1;
 			else F := arg[1]; K := PrimeField(F);  fieldpol := DefiningPolynomial(F);
 			fi;
 			clist := arg[2]; mlist := arg[3];
 			d := arg[4]; tap := [0];
-
-
-#	elif IsPrimeField(arg[1]) and IsUnivariatePolynomial( arg[2])  and IsUnivariatePolynomial( arg[3])  then  
-#			#F  LFSR( <K>, <fieldpol>, <charpol>, <tap>)
-#			K := arg[1]; fieldpol := arg[2]; 
-#			if not IsIrreducibleRingElement(PolynomialRing(K),  fieldpol) then 
-#				Error("defining polynomial of the extension field must be irreducible!!!");
-#						return fail;
-#			fi;
-#			F := FieldExtension(K,fieldpol);
-#			charpol := arg[3];
-#			if 	IsPosInt(arg[4]) or IsZero(arg[4]) then		tap := [arg[4]];
-#			elif  	IsRowVector(arg[4]) then 			tap := arg[4];
-#			else 	Error("check the tap arg !!!"); 		return fail;
-#			fi;
-		
 	else Error("check the args!!!"); 		return fail;
 	fi;
+elif  Length(arg)=5 then
+	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsFFECollection(arg[3]) and IsList(arg[4]) and IsPosInt(arg[5]) then 	
+			#F   NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len> )
+			K := arg[1]; fieldpol := arg[2]; 
+			if not IsIrreducibleRingElement(PolynomialRing(K),  fieldpol) then 
+				Error("defining polynomial of the extension field must be irreducible!!!");
+						return fail;
+			fi;
+			F := FieldExtension(K,fieldpol);
+			clist := arg[3]; mlist := arg[4];
+			d := arg[5]; tap := [0];			
+	elif IsField(arg[1]) and IsFFECollection(arg[2]) and IsList(arg[3]) and IsPosInt(arg[4])  then 			
+			#F NLFSR( <K>, <clist>, <mlist> , <len> , <tap>) 
+			# we dont allow anything thats not a prime here, coz primepower is already an extension
+			if IsPrimeField(arg[1]) then K:= arg[1];  F := arg[1]; fieldpol := 1;
+			else F := arg[1]; K := PrimeField(F);  fieldpol := DefiningPolynomial(F);
+			fi;
+			clist := arg[2]; mlist := arg[3];
+			d := arg[4]; 
+	
+			if 	IsPosInt(arg[5]) or IsZero(arg[5]) then		tap := [arg[5]];
+			elif  IsRowVector(arg[5]) then 			tap := arg[5];
+			else 	Error("check the tap arg !!!"); 		return fail;
+			fi;
+	else Error("check the args!!!"); 		return fail;
+	fi;
+elif  Length(arg)=6 then
+	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsFFECollection(arg[3]) and IsList(arg[4]) and IsPosInt(arg[5]) then 	
+			#F   NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len>, <tap> ) 
+			K := arg[1]; fieldpol := arg[2]; 
+			if not IsIrreducibleRingElement(PolynomialRing(K),  fieldpol) then 
+				Error("defining polynomial of the extension field must be irreducible!!!");
+						return fail;
+			fi;
+			F := FieldExtension(K,fieldpol);
+			clist := arg[3]; mlist := arg[4];
+			d := arg[5];
+			
+			if 	IsPosInt(arg[6]) or IsZero(arg[6]) then		tap := [arg[6]];
+			elif  IsRowVector(arg[6]) then 			tap := arg[6];
+			else 	Error("check the tap arg !!!"); 		return fail;
+			fi;
+	else Error("check the args!!!"); 		return fail;
+	fi;
+
 # whatever input constructors - undefined
 else Error("check the args!!!"); 		return fail;
 fi;
@@ -66,6 +95,7 @@ fi;
 # get all the indeterminates in all monomials
 	for i in [1 .. Length(mlist)] do 
 		m := LeadingMonomial(mlist[i]);
+#		Print(m,"\n");
 		for j in [1..Length(m)] do 
 			if IsOddInt(j) then 
 				idx := m[j] - 1000;
@@ -76,17 +106,26 @@ fi;
 			fi;
 		od;
 	od;
+	
 	# get ridof duplicate indeces: DuplicateFreeList(
 	indlist :=  DuplicateFreeList(indlist);
+#	Print(indlist,"\n");
+#	xlist :=[]; 
+#	for i in [1.. Length(indlist)] do
+#		Add(xlist,Indeterminate(F,1000+indlist[i]));
+#	od;
+#	Print(xlist,"\n");		
 	
 #	for i in [1 .. Length(indlist)] do 
 #		Add(varlist , xlist[indlist[i] + 1]);
 #	od;
 	
 # get the feedback poly
-	 multpol := clist * mlist; 
-	 nonlin := (DegreeOfPolynomial(F,multpol)>1);
-	 if not nonlin then 
+
+ 	 mof := MonomialsOverField(F, mlist);
+	 multpol := clist * mof; 
+	 lin := (DegreeOfPolynomial(multpol)=1);
+	 if lin then 
 		Error("Feedback is linear, create an LFSR instead!!!"); 		return fail;
 	 fi;
 
@@ -111,7 +150,8 @@ fi;
 	SetFieldPoly(nlfsr,fieldpol);
 	SetUnderlyingField(nlfsr,F);
 	SetMultivarPoly(nlfsr,multpol);  
-	SetIsNonLinearFeedback(nlfsr, nonlin);  
+	SetIsNonLinearFeedback(nlfsr, (not lin));  
+	SetIsLinearFeedback(nlfsr, lin);  
 	SetFeedbackVec(nlfsr,clist);    
 	SetIndetList(nlfsr, indlist );
 	SetLength(nlfsr,d); 
@@ -273,3 +313,7 @@ end );
 #	if not(\in(new,F)) then
 #		Error( "computed feedback is not an element of the underlying field !!!" );		return fail;
 #	fi;
+
+
+
+Print("nlfsr.gi OK,\t");

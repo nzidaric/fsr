@@ -1,0 +1,20 @@
+<Chapter Label="misc">
+<Heading>misc - helper functions</Heading>    
+
+
+
+<Section Label="misc">
+<Heading>misc - helper functions</Heading>
+
+<#Include Label="MonomialsOverField">
+<#Include Label="DegreeOfPolynomial">
+
+
+
+
+
+</Section>
+
+
+
+</Chapter>

@@ -7,15 +7,14 @@
   [33X[0;0YWe  define  an  object  [5XFSR[105X (Feedback Shift Register), which can come in two
   flavours:  with  linear  feedback  [2XLFSR[102X ([14X3.2-1[114X) and nonlinear feedback [2XNLFSR[102X
   ([14X3.3-2[114X).  Because  of  many  similarities  between the two, the basic common
-  functionality  can  be  found  here,  while  specialized  functions (such as
-  UNKNOWNEntity(LFSR)    and    UNKNOWNEntity(NLFSR)   object   creation)   in
-  corresponding sections.[133X
+  functionality  can  be found here, while specialized functions (such as [10XLFSR[110X
+  and [10XNLFSR[110X object creation) in corresponding sections.[133X
   
   [1X3.1-1 IsFSR[101X
   
   [29X[2XIsFSR[102X[32X filter
   
-  [33X[0;0YThis  is  the  category of [5XFSR[105X objects. Objects in this category are created
+  [33X[0;0YThis  is  the  category of [10XFSR[110X objects. Objects in this category are created
   using functions [2XLFSR[102X ([14X3.2-1[114X) or [2XNLFSR[102X ([14X3.3-2[114X).[133X
   
   [1X3.1-2 FieldPoly[101X
@@ -25,19 +24,18 @@
   [29X[2XFeedbackVec[102X( [3Xfsr[103X ) [32X attribute
   [29X[2XOutputTap[102X( [3Xfsr[103X ) [32X attribute
   
-  [33X[0;0Y[10XFieldPoly[110X of the [5XFSR[105X stores the irreducible polynomial used to construct the
+  [33X[0;0Y[10XFieldPoly[110X of the [3Xfsr[103X stores the irreducible polynomial used to construct the
   extension field or 1 in case of a prime field.[133X
   
-  [33X[0;0Y[10XUnderlyingField[110X of the [5XFSR[105X is the finite field over which the [5XFSR[105X is defined
+  [33X[0;0Y[10XUnderlyingField[110X of the [3Xfsr[103X is the finite field over which the [3Xfsr[103X is defined
   (all indeterminates and constants are from this field).[133X
   
   [33X[0;0YNOTE:  it  may  seem  redundant  to sore both [10XFieldPoly[110X and [10XUnderlyingField[110X,
   however, they are used by other functions in the package.[133X
   
-  [33X[0;0Y[10XFeedbackVec[110X  of  the [5XFSR[105X stores the coefficients of the [10XCharPoly[110X without its
-  leading  term  in  case  of  [13XLFSR[113X, and coefficients of the nonzero monomials
-  present  in  the  multivariate  function  defining  the  feedback in case of
-  UNKNOWNEntity(NLFSR).[133X
+  [33X[0;0Y[10XFeedbackVec[110X  of  the [3Xfsr[103X stores the coefficients of the [10XCharPoly[110X without its
+  leading  term  in  case  of  [10XLFSR[110X, and coefficients of the nonzero monomials
+  present in the multivariate function defining the feedback in case of [10XNLFSR[110X.[133X
   
   [33X[0;0Y[10XOutputTap[110X  holds the output tap position(s): the sequence elements are taken
   from the stage(s) listed in [10XOutputTap[110X.[133X
@@ -47,76 +45,68 @@
   [29X[2XLength[102X( [3Xfsr[103X ) [32X attribute
   [29X[2XInternalStateSize[102X( [3Xfsr[103X ) [32X attribute
   
-  [33X[0;0Y[10XLength[110X of the [5XFSR[105X is the number of its stages.[133X
+  [33X[0;0Y[10XLength[110X of the [3Xfsr[103X is the number of its stages.[133X
   
-  [33X[0;0Y[10XInternalStateSize[110X  of  the  [5XFSR[105X  is  size  in bits needed to store the state
+  [33X[0;0Y[10XInternalStateSize[110X  of  the  [3Xfsr[103X  is  size  in bits needed to store the state
   (length * width)[133X
   
   [1X3.1-4 LoadFSR[101X
   
-  [29X[2XLoadFSR[102X( [3Xfsr[103X ) [32X method
+  [29X[2XLoadFSR[102X( [3Xfsr[103X, [3Xist[103X ) [32X method
   
-  [33X[0;0YLoading   the   [5XFSR[105X   [3Xfsr[103X   with   the   initial   state  [3Xist[103X,  which  is  a
-  UNKNOWNEntity(FFE)  vector  of same length as the [5XFSR[105X and with elements from
-  the  underlying  finite  field.  If  either  of  those  two  requirements is
-  violated,  loading  fails  and error message appears. At the time of loading
-  the initial sequence elements (ie zeroth elements) are obtained and [10Xnumsteps[110X
-  is set to 0.[133X
+  [33X[0;0YLoading  the  [3Xfsr[103X  with the initial state [3Xist[103X, which is a [3XFFE[103X vector of same
+  length  as [3Xfsr[103X and with elements from its underlying finite field. If either
+  of  those  two  requirements  is  violated,  loading fails and error message
+  appears.  At  the  time  of loading the initial sequence elements (ie zeroth
+  elements) are obtained and [10Xnumsteps[110X is set to 0.[133X
   
   [1X3.1-5 StepFSR[101X
   
   [29X[2XStepFSR[102X( [3Xfsr[103X[, [3Xelm[103X] ) [32X method
   
-  [33X[0;0YPerform  one  step  the  [5XFSR[105X  [3Xfsr[103X,  ie. compute the new [10Xstate[110X and update the
-  [10Xnumsteps[110X,  then  output  the  elements denoted by [10XOutputTap[110X. If the optional
-  parameter  [3Xelm[103X is used then the new element is computed as a sum of computed
-  feedback  and  [3Xelm[103X.  Elemen  [3Xelm[103X must be an element of the underlying finite
-  field.[133X
+  [33X[0;0YPerform one step the [3Xfsr[103X, ie. compute the new [10Xstate[110X and update the [10Xnumsteps[110X,
+  then output the elements denoted by [10XOutputTap[110X. If the optional parameter [3Xelm[103X
+  is  used  then the new element is computed as a sum of computed feedback and
+  [3Xelm[103X. Elemen [3Xelm[103X must be an element of the underlying finite field.[133X
   
-  [33X[0;0YAn  error  is  triggered if [10XStepFSR[110X is called for an empty [5XFSR[105X. As this is a
-  way  to destroy the linearity of an UNKNOWNEntity(LFSR), we refer to [10XStepFSR[110X
-  with   the   optiomal   nonzero   [3Xelm[103X  as  [10Xnonlinear  step[110X.  Similarly,  the
-  UNKNOWNEntity(NLFSR)  can  also  have an extra element added to the (already
-  nonlinear) feedback.[133X
+  [33X[0;0YAs  this  is  a way to destroy the linearity of an [10XLFSR[110X, we refer to [10XStepFSR[110X
+  with  the  optiomal  nonzero [3Xelm[103X as [10Xnonlinear step[110X. Similarly, the [10XNLFSR[110X can
+  also have an extra element added to the (already nonlinear) feedback.[133X
   
-  [33X[0;0YReturns an error if the [5XFSR[105X is not loaded![133X
-  
-  [33X[0;0YNOTE: TO DO for the NLFSR !!!!!![133X
+  [33X[0;0YReturns an error if the [3Xfsr[103X is not loaded![133X
   
   [1X3.1-6 RunFSR[101X
   
   [29X[2XRunFSR[102X( [3Xfsr[103X[, [3Xist[103X][, [3Xnum[103X][, [3Xpr[103X] ) [32X method
   
-  [33X[0;0YThe UNKNOWNEntity(FSR will be run for a certain ([3Xnum[103X or [3Xthreshold[103X) number of
-  steps:  there  is  a  threshold  value,  currently  set  to  2^[13XLength([3Xfsr[103X)[113X +
-  [13XLength([3Xfsr[103X)[113X, which is used by all versions without explicit [3Xnum[103X and enforced
-  when  [3Xnum[103X  exceeds  [3Xthreshold[103X. There is an optional printing switch [3Xpr[103X, with
-  default  set  to  [13Xfalse[113X)  if  [13Xtrue[113X  then  the  state and the output sequence
-  element(s)  are  printed in [5XGAP[105X shell on every step of the [5XFSR[105X (we call this
-  output for [10XRunFSR[110X).[133X
+  [33X[0;0YThe  [3Xfsr[103X will be run for a certain ([3Xnum[103X or [3Xthreshold[103X) number of steps: there
+  is a threshold value, currently set to 2^[13XLength([3Xfsr[103X)[113X + [13XLength([3Xfsr[103X)[113X, which is
+  used  by  all  versions  without  explicit [3Xnum[103X and enforced when [3Xnum[103X exceeds
+  [3Xthreshold[103X.  There  is  an  optional  printing switch [3Xpr[103X, with default set to
+  [13Xfalse[113X; if [13Xtrue[113X then the state and the output sequence element(s) are printed
+  in [5XGAP[105X shell on every step of the [3Xfsr[103X (we call this output for [10XRunFSR[110X).[133X
   
-  [30X    [33X[0;6Y[10XRunLFSR([3X   fsr[,  num,  pr]  [103X[10X)[110X  -  run  [3Xfsr[103X  for  [3Xnum[103X/[3Xthreshold[103X  steps
+  [30X    [33X[0;6Y[10XRunFSR([3X   fsr[,   num,  pr]  [103X[10X)[110X  -  run  [3Xfsr[103X  for  [3Xnum[103X/[3Xthreshold[103X  steps
         with/without output[133X
   
-  [30X    [33X[0;6Y[10XRunLFSR([3X  fsr,  ist[, num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run [3Xfsr[103X for
+  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  ist[,  num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run [3Xfsr[103X for
         [3Xnum[103X/[3Xthreshold[103X steps with/without output (ie. [13Xlinear[113X version)[133X
   
-  [30X    [33X[0;6Y[10XRunLFSR([3X  fsr,  elm[, num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run [3Xfsr[103X for
+  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  elm[,  num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run [3Xfsr[103X for
         [3Xnum[103X/[3Xthreshold[103X  steps,  whereby  the  SAME  element [3Xelm[103X is added to the
         feedback at each step, with/without output (ie. [13Xnon-linear[113X version)[133X
   
-  [30X    [33X[0;6Y[10XRunLFSR([3X  fsr,  ist, elmvec[, num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run
-        [3Xfsr[103X  for [13XLength([3Xfsr[103X)[113X steps,, whereby one element of [3Xelmvec[103X is added to
-        the  feedback  at  each  step  (starting with elmvec[1]), with/without
+  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  ist,  elmvec[, num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run
+        [3Xfsr[103X  for  [13XLength([3Xelmvec[103X)[113X steps, whereby one element of [3Xelmvec[103X is added
+        to  the  feedback at each step (starting with elmvec[1]), with/without
         output (ie. [13Xnon-linear[113X version)[133X
   
-  [33X[0;0YNOTE:  for  the load and run versions, element [3Xseq[103X[22X_0[122X is a part of the output
-  sequence The ouput of [10XRunLFSR[110X is:[133X
+  [33X[0;0YNOTE:  for  the load and run versions, element seq[22X_0[122X is a part of the output
+  sequence The ouput of [10XRunFSR[110X is:[133X
   
-  [30X    [33X[0;6Ysequence  of  UNKNOWNEntity(FFE)s  :  seq[22X_0[122X,  seq[22X_1[122X, seq[22X_2[122X, [22Xdots ,[122X for
-        [13XLength[113X([13XOutputTap[113X)=1[133X
+  [30X    [33X[0;6Ysequence of [3XFFE[103Xs : seq[22X_0[122X, seq[22X_1[122X, seq[22X_2[122X, [22Xdots ,[122X for [13XLength[113X([13XOutputTap[113X)=1[133X
   
-  [30X    [33X[0;6Ysequence  of  vectors, each of them with [22Xt[122X FFEs : seq[22X_0[122X, seq[22X_1[122X, seq[22X_2[122X,
+  [30X    [33X[0;6Ysequence  of  vectors, each of them with [22Xt[122X [3XFFE[103Xs : seq[22X_0[122X, seq[22X_1[122X, seq[22X_2[122X,
         [22Xdots ,[122X where seq[22X_i=([122X seq[22X_i1[122X, [22Xdots ,[122X seq[22X_it[122X) for [13XLength[113X([13XOutputTap[113X)=t[133X
   
   
@@ -128,18 +118,17 @@
   [29X[2XLFSR[102X( [3XK[103X, [3Xfieldpol[103X, [3Xcharpol[103X[, [3Xtap[103X] ) [32X function
   [29X[2XLFSR[102X( [3XF[103X, [3Xcharpol[103X[, [3Xtap[103X] ) [32X function
   [29X[2XLFSR[102X( [3Xp[103X, [3Xm[103X, [3Xn[103X[, [3Xtap[103X] ) [32X function
-  [6XReturns:[106X  [33X[0;10YAn  empty  UNKNOWNEntity(LFSR)  with  components  [10Xinit[110X,  [10Xstate[110X and
-            [10Xnumsteps[110X[133X
+  [6XReturns:[106X  [33X[0;10YAn empty [10XLFSR[110X with components [10Xinit[110X, [10Xstate[110X and [10Xnumsteps[110X[133X
   
-  [33X[0;0YDifferent  ways to create an UNKNOWNEntity(LFSR) oblject, main difference is
-  in creation of the underlying finite field.[133X
+  [33X[0;0YDifferent  ways to create an [10XLFSR[110X oblject, main difference is in creation of
+  the underlying finite field.[133X
   
   [33X[0;0YInputs:[133X
   
   [30X    [33X[0;6Y[3XF[103X  - the underlying finite field (either an extension field or a prime
         field)[133X
   
-  [30X    [33X[0;6Y[3Xcharpol[103X - UNKNOWNEntity(LFSR) dfining polynomial[133X
+  [30X    [33X[0;6Y[3Xcharpol[103X - [10XLFSR[110X dfining polynomial[133X
   
   [30X    [33X[0;6Y[3Xfieldpol[103X  -  defifning  polynomial  of  the  extension  field (must be
         irreducible)[133X
@@ -148,21 +137,19 @@
   
   [30X    [33X[0;6Y[3Xm[103X - degree of extension (degree of [3Xfieldpol[103X)[133X
   
-  [30X    [33X[0;6Y[3Xn[103X - length of UNKNOWNEntity(LFSR) (degree of [3Xcharpoly[103X)[133X
+  [30X    [33X[0;6Y[3Xn[103X - length of [10XLFSR[110X (degree of [3Xcharpoly[103X)[133X
   
   [30X    [33X[0;6Y[3Xtap[103X  -  optional parameter: the output tap (must be a positive integer
         or a list of positive integers) and will be changed to the default S_0
-        if the specified integer is out of LFSR range.[133X
+        if the specified integer is out of [10XLFSR[110X range.[133X
   
   [33X[0;0YCompoents:[133X
   
-  [30X    [33X[0;6Y[10Xinit[110X - UNKNOWNEntity(FFE) vector of length n=deg(charpol), storing the
-        initial  state of the UNKNOWNEntity(LFSR), with indeces from n-1, ...,
-        0[133X
+  [30X    [33X[0;6Y[10Xinit[110X  - [3XFFE[103X vector of length n=deg(charpol), storing the initial state
+        of the [10XLFSR[110X, with indeces from n-1, ..., 0[133X
   
-  [30X    [33X[0;6Y[10Xstate[110X  -  UNKNOWNEntity(FFE)  vector of length n=deg(charpol), storing
-        the  current  state of the UNKNOWNEntity(LFSR), with indeces from n-1,
-        ..., 0[133X
+  [30X    [33X[0;6Y[10Xstate[110X - [3XFFE[103X vector of length n=deg(charpol), storing the current state
+        of the [10XLFSR[110X, with indeces from n-1, ..., 0[133X
   
   [30X    [33X[0;6Y[10Xnumsteps[110X  -  the number of steps performed thus far (initialized to -1
         when  created,  set to 0 when loaded using [2XLoadFSR[102X ([14X???LoadFSR???[114X) and
@@ -171,7 +158,7 @@
   [33X[0;0YAttributes         [2XFieldPoly[102X        ([14X???FieldPoly???[114X),        [2XUnderlyingFied[102X
   ([14X???UnderlyingFied???[114X),  [10XCharPoly[110X,  [2XFeedbackVec[102X  ([14X???FeedbackVec???[114X), [2XLength[102X
   ([14X???Length???[114X)    and   [2XOutputTap[102X   ([14X???OutputTap???[114X)   and   the   property
-  [10XIsLinearFeedback[110X are set during the construction of an UNKNOWNEntity(LFSR).[133X
+  [10XIsLinearFeedback[110X are set during the construction of an[10XLFSR[110X.[133X
   
   [33X[0;0YIf there is something wrong with the arguments (e.g. attempting to create an
   extension  field  using a reducible poynomial), an error message appears and
@@ -182,10 +169,10 @@
   [29X[2XIsLinearFeedback[102X( [3Xlfsr[103X ) [32X property
   [29X[2XIsLFSR[102X( [3Xlfsr[103X ) [32X filter
   
-  [33X[0;0YIf  we  were  to  represent  the  UNKNOWNEntity(LFSR)  with  a  multivariate
-  polynomial,  DegreeOfPolynomial  would return 1 - the feedback polynomial is
-  linear  and  [10XIsLinearFeedback[110X  is  set  to  [13Xtrue[113X. (ie. only linear terms are
-  present: monomials with only one variable )[133X
+  [33X[0;0YIf   we   were  to  represent  the  [3Xlsfr[103X  with  a  multivariate  polynomial,
+  DegreeOfPolynomial  would  return  1 - the feedback polynomial is linear and
+  [10XIsLinearFeedback[110X  is  set  to  [13Xtrue[113X.  (ie.  only  linear  terms are present:
+  monomials with only one variable )[133X
   
   [33X[0;0YFilter [10XIsLFSR[110X is defined as and-filter of [10XIsFSR[110X and [10XIsLinearFeedback[110X.[133X
   
@@ -200,19 +187,19 @@
   [29X[2XIsPeriodic[102X( [3Xlfsr[103X ) [32X property
   [29X[2XIsUltPeriodic[102X( [3Xlfsr[103X ) [32X property
   [29X[2XIsMaxSeqLFSR[102X( [3Xlfsr[103X ) [32X property
-  [29X[2XIsMaxSeqLFSR[102X( [3Xlfsr[103X ) [32X attribute
+  [29X[2XPeriod[102X( [3Xlfsr[103X ) [32X attribute
   [29X[2XPeriodIrreducible[102X( [3Xlfsr[103X ) [32X method
   [29X[2XPeriodReducible[102X( [3Xlfsr[103X ) [32X method
   
   [33X[0;0YProperties,  attributes and methods concerning the periodicity of the output
-  sequence(s), generated by the UNKNOWNEntity(LFSR).[133X
+  sequence(s), generated by the [3Xlsfr[103X.[133X
   
   [33X[0;0YProperties:[133X
   
   [30X    [33X[0;6Y[10XIsPeriodic[110X:  true  if  constant  term  of  [10XCharPoly[110X  !=  0 (8.11 lidl,
         niederreiter)[133X
   
-  [30X    [33X[0;6Y[10XIsUltPeriodic[110X: true if UNKNOWNEntity(LFSR) (8.7 lidl, niederreiter)[133X
+  [30X    [33X[0;6Y[10XIsUltPeriodic[110X: true if [10XIsLFSR[110X is true (8.7 lidl, niederreiter)[133X
   
   [30X    [33X[0;6Y[10XIsMaxSeqLFSR[110X: true if [10XCharPoly[110X is primitive (ref???)[133X
   
@@ -228,22 +215,20 @@
   
   [1X3.2-5 ViewObj[101X
   
-  [29X[2XViewObj[102X( [[3XB[103X, ][3Xnlfsr[103X ) [32X method
-  [29X[2XPrintObj[102X( [[3XB[103X, ][3Xnlfsr[103X ) [32X method
-  [29X[2XPrintAll[102X( [[3XB[103X, ][3Xnlfsr[103X ) [32X method
+  [29X[2XViewObj[102X( [[3XB[103X, ][3Xlfsr[103X ) [32X method
+  [29X[2XPrintObj[102X( [[3XB[103X, ][3Xlfsr[103X ) [32X method
+  [29X[2XPrintAll[102X( [[3XB[103X, ][3Xlfsr[103X ) [32X method
   
-  [33X[0;0YDifferent detail on the UNKNOWNEntity(NLFSR) created by [2XNLFSR[102X ([14X3.3-2[114X):[133X
+  [33X[0;0YDifferent detail on the [3Xlfsr[103X created by [2XLFSR[102X ([14X3.2-1[114X):[133X
   
-  [30X    [33X[0;6Y[10XDisplay/View[110X:   show   the   [10XMultivarPoly[110X   and   wheter  or  not  the
-        UNKNOWNEntity(NLFSR) is empty[133X
+  [30X    [33X[0;6Y[10XDisplay/View[110X: show the [10XCharPoly[110X and wheter or not the [3Xlsfr[103X is empty[133X
   
-  [30X    [33X[0;6Y[10XPrint[110X:   same   as  [10XDisplay/View[110X  if  UNKNOWNEntity(NLFSR)  is  empty,
-        otherwise it also shows the values of the three components [10Xinit[110X, [10Xstate[110X
-        and [10Xnumsteps[110X[133X
+  [30X    [33X[0;6Y[10XPrint[110X:  same as [10XDisplay/View[110X if [3Xlsfr[103X is empty, otherwise it also shows
+        the values of the three components [10Xinit[110X, [10Xstate[110X and [10Xnumsteps[110X[133X
   
-  [30X    [33X[0;6Y[10XPrintAll[110X: same as [10XPrint[110X if UNKNOWNEntity(NLFSR) is empty, otherwise it
-        also shows the values of the three components [10Xinit[110X, [10Xstate[110X and [10Xnumsteps[110X
-        with  additional  information  about  the underlying field and the tap
+  [30X    [33X[0;6Y[10XPrintAll[110X:  same as [10XPrint[110X if [3Xlsfr[103X is empty, otherwise it also shows the
+        values   of  the  three  components  [10Xinit[110X,  [10Xstate[110X  and  [10Xnumsteps[110X  with
+        additional   information  about  the  underlying  field  and  the  tap
         positions[133X
   
   [33X[0;0YCan be used with optional parameter basis [3XB[103X for desiered output format.[133X
@@ -258,18 +243,17 @@
   [33X[0;0YWorkaround  for  the  UNKNOWNEntity(NLFSR) object definition: we need to fix
   the  chosen underlying finite field and prepare indeterminates in the chosen
   field.  The  indeterminates  will  be used for the multivariable polynomial,
-  which  will  define  the UNKNOWNEntity(NLFSR) feedback. Current threshold is
-  set by global [10XMaxNLFSRLen[110X = 100.[133X
+  which  will  define  the  [10XNLFSR[110X feedback. Current threshold is set by global
+  [10XMaxNLFSRLen[110X = 100.[133X
   
   [1X3.3-2 NLFSR[101X
   
   [29X[2XNLFSR[102X( [3XK[103X, [3Xclist[103X, [3Xmlist[103X, [3Xlen[103X[, [3Xtap[103X] ) [32X function
   [29X[2XNLFSR[102X( [3XK[103X, [3Xfieldpol[103X, [3Xclist[103X, [3Xmlist[103X, [3Xlen[103X[, [3Xtap[103X] ) [32X function
-  [6XReturns:[106X  [33X[0;10YAn  empty  UNKNOWNEntity(NLFSR)  with  components  [10Xinit[110X, [10Xstate[110X and
-            [10Xnumsteps[110X[133X
+  [6XReturns:[106X  [33X[0;10YAn empty [10XNLFSR[110X with components [10Xinit[110X, [10Xstate[110X and [10Xnumsteps[110X[133X
   
-  [33X[0;0YDifferent ways to create an UNKNOWNEntity(NLFSR) oblject, main difference is
-  in creation of the underlying finite field.[133X
+  [33X[0;0YDifferent ways to create an [10XNLFSR[110X oblject, main difference is in creation of
+  the underlying finite field.[133X
   
   [33X[0;0YInputs:[133X
   
@@ -283,29 +267,27 @@
   
   [30X    [33X[0;6Y[3Xmlist[103X - list of monomials[133X
   
-  [30X    [33X[0;6Y[3Xlen[103X - length of UNKNOWNEntity(NLFSR)[133X
+  [30X    [33X[0;6Y[3Xlen[103X - length of [10XNLFSR[110X[133X
   
   [30X    [33X[0;6Y[3Xtap[103X  -  optional parameter: the output tap (must be a positive integer
         or a list of positive integers) and will be changed to the default S_0
-        if the specified integer is out of UNKNOWNEntity(NLFSR) range.[133X
+        if the specified integer is out of [10XNLFSR[110Xrange.[133X
   
   [33X[0;0YNOTE:  [3Xclist[103X  and  [3Xmlist[103X  must be of same length, all elements in [3Xclist[103X must
   belong  to  the  underlying  field.  Monomials in [3Xmlist[103X must not include any
-  indeterminates   that   are  out  of  range  specified  by  [3Xlen[103X:  stages  of
-  UNKNOWNEntity(NLFSR)  are  represented by indeterminants and the feedback is
-  not  allowed  to use a stage that doesnt exist. A second constraint on [3Xmlist[103X
-  requires  that  it  must  contain  at  least  one  monomial of degree $>$ 1,
-  otherwise we must create an UNKNOWNEntity(LFSR).[133X
+  indeterminates  that  are out of range specified by [3Xlen[103X: stages of [10XNLFSR[110X are
+  represented by indeterminants and the feedback is not allowed to use a stage
+  that  doesnt  exist.  A  second  constraint  on  [3Xmlist[103X requires that it must
+  contain  at  least one monomial of degree $>$ 1, otherwise we must create an
+  [10XLFSR[110X.[133X
   
   [33X[0;0YCompoents:[133X
   
-  [30X    [33X[0;6Y[10Xinit[110X - UNKNOWNEntity(FFE) vector of length n=deg(charpol), storing the
-        initial state of the UNKNOWNEntity(NLFSR), with indeces from n-1, ...,
-        0[133X
+  [30X    [33X[0;6Y[10Xinit[110X  - [3XFFE[103X vector of length n=deg(charpol), storing the initial state
+        of the [10XNLFSR[110X, with indeces from n-1, ..., 0[133X
   
-  [30X    [33X[0;6Y[10Xstate[110X  -  UNKNOWNEntity(FFE)  vector of length n=deg(charpol), storing
-        the  current state of the UNKNOWNEntity(NLFSR), with indeces from n-1,
-        ..., 0[133X
+  [30X    [33X[0;6Y[10Xstate[110X - [3XFFE[103X vector of length n=deg(charpol), storing the current state
+        of the [10XNLFSR[110X, with indeces from n-1, ..., 0[133X
   
   [30X    [33X[0;6Y[10Xnumsteps[110X  -  the number of steps performed thus far (initialized to -1
         when  created,  set to 0 when loaded using [2XLoadFSR[102X ([14X???LoadFSR???[114X) and
@@ -315,7 +297,7 @@
   ([14X???UnderlyingFied???[114X),   [10XMultivarPoly[110X,   [2XFeedbackVec[102X   ([14X???FeedbackVec???[114X),
   [2XIndetList[102X    ([14X???IndetList???[114X),    [2XLength[102X   ([14X???Length???[114X)   and   [2XOutputTap[102X
   ([14X???OutputTap???[114X)  and  the  property [10XIsNonLinearFeedback[110X are set during the
-  construction of an UNKNOWNEntity(NLFSR).[133X
+  construction of an [10XNLFSR[110X.[133X
   
   [33X[0;0YIf there is something wrong with the arguments (e.g. attempting to create an
   extension  field  using a reducible poynomial), an error message appears and
@@ -328,9 +310,12 @@
   
   [33X[0;0YFor the multivariate polynomial given by [3Xclist[103X and [3Xmlist[103X, DegreeOfPolynomial
   greter  than  1  sets [10XIsNonLinearFeedback[110X to [13Xtrue[113X. otherwise it prints out a
-  warning that you need to use the UNKNOWNEntity(LFSR) constructor instead.[133X
+  warning that you need to use the [10XLFSR[110X constructor instead.[133X
   
   [33X[0;0YFilter [10XIsNLFSR[110X is defined as and-filter of [10XIsFSR[110X and [10XIsNonLinearFeedback[110X.[133X
+  
+  [33X[0;0YNOTE:  at  the  same  time  [10XIsLinearFeedback[110X  is  set  to  [13Xfalse[113X (for coding
+  purposes).[133X
   
   [1X3.3-4 MultivarPoly[101X
   
@@ -338,11 +323,11 @@
   [29X[2XIndetList[102X( [3Xnlfsr[103X ) [32X attribute
   
   [33X[0;0Y[10XMultivarPoly[110X  holds  the  multivariate function defining the feedback of the
-  UNKNOWNEntity(NLFSR).  [10XIndetList[110X  holds  all  the  indeterminates  that  are
-  present  in [10XMultivarPoly[110X and [10XFeedbackVec[110X holds only the nonzero coefficients
-  (as  opposed to the LFSR, where this field holds coefficients for all stages
-  of  the  [5XFSR[105X). The feedback element is computed from [10XMultivarPoly[110X, [10XIndetList[110X
-  and [10Xstate[110X, and not from [10XFeedbackVec[110X.[133X
+  [10XNLFSR[110X.   [10XIndetList[110X   holds  all  the  indeterminates  that  are  present  in
+  [10XMultivarPoly[110X and [10XFeedbackVec[110X holds only the nonzero coefficients (as opposed
+  to the [10XLFSR[110X, where this field holds coefficients for all stages of the [10XFSR[110X).
+  The feedback element is computed from [10XMultivarPoly[110X, [10XIndetList[110X and [10Xstate[110X, and
+  not from [10XFeedbackVec[110X.[133X
   
   [1X3.3-5 ViewObj[101X
   
@@ -350,18 +335,17 @@
   [29X[2XPrintObj[102X( [[3XB[103X, ][3Xnlfsr[103X ) [32X method
   [29X[2XPrintAll[102X( [[3XB[103X, ][3Xnlfsr[103X ) [32X method
   
-  [33X[0;0YDifferent detail on the UNKNOWNEntity(NLFSR) created by [2XNLFSR[102X ([14X3.3-2[114X):[133X
+  [33X[0;0YDifferent detail on [3Xnlfsr[103X created by [2XNLFSR[102X ([14X3.3-2[114X):[133X
   
-  [30X    [33X[0;6Y[10XDisplay/View[110X:   show   the   [10XMultivarPoly[110X   and   wheter  or  not  the
-        UNKNOWNEntity(NLFSR) is empty[133X
+  [30X    [33X[0;6Y[10XDisplay/View[110X:  show  the  [10XMultivarPoly[110X  and wheter or not the [3Xnlfsr[103X is
+        empty[133X
   
-  [30X    [33X[0;6Y[10XPrint[110X:   same   as  [10XDisplay/View[110X  if  UNKNOWNEntity(NLFSR)  is  empty,
-        otherwise it also shows the values of the three components [10Xinit[110X, [10Xstate[110X
-        and [10Xnumsteps[110X[133X
+  [30X    [33X[0;6Y[10XPrint[110X: same as [10XDisplay/View[110X if [3Xnlfsr[103X is empty, otherwise it also shows
+        the values of the three components [10Xinit[110X, [10Xstate[110X and [10Xnumsteps[110X[133X
   
-  [30X    [33X[0;6Y[10XPrintAll[110X: same as [10XPrint[110X if UNKNOWNEntity(NLFSR) is empty, otherwise it
-        also shows the values of the three components [10Xinit[110X, [10Xstate[110X and [10Xnumsteps[110X
-        with  additional  information  about  the underlying field and the tap
+  [30X    [33X[0;6Y[10XPrintAll[110X: same as [10XPrint[110X if [3Xnlfsr[103X is empty, otherwise it also shows the
+        values   of  the  three  components  [10Xinit[110X,  [10Xstate[110X  and  [10Xnumsteps[110X  with
+        additional   information  about  the  underlying  field  and  the  tap
         positions[133X
   
   [33X[0;0YCan be used with optional parameter basis [3XB[103X for desiered output format.[133X

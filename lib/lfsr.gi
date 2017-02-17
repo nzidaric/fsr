@@ -57,7 +57,7 @@ elif  Length(arg)=3 then
 	elif IsPrimeField(arg[1]) and IsUnivariatePolynomial( arg[2])  then 		#new
 
 			#F  LFSR( <F>, <charpol>, <tap>)
-			K := arg[1]; fieldpol := 1; charpol := arg[2];	
+			K := arg[1]; F := arg[1]; fieldpol := 1; charpol := arg[2];	
 		
 			if 	IsPosInt(arg[3]) or IsZero(arg[3]) then 	tap := [arg[3]];
 			elif  	IsRowVector(arg[3]) then 			tap := arg[3];

@@ -12,6 +12,8 @@
 \makelabel{fsr:Common functionality}{3.1}{X7D5E0FF97CA51E2E}
 \makelabel{fsr:LFSR specific funcionality}{3.2}{X7A98C0FE855337A7}
 \makelabel{fsr:NLFSR specific funcionality}{3.3}{X797E9B3381339AB2}
+\makelabel{fsr:misc - helper functions}{4}{X82DB6D4585397594}
+\makelabel{fsr:misc - helper functions}{4.1}{X82DB6D4585397594}
 \makelabel{fsr:Bibliography}{Bib}{X7A6F98FD85F02BFE}
 \makelabel{fsr:References}{Bib}{X7A6F98FD85F02BFE}
 \makelabel{fsr:Index}{Ind}{X83A0356F839C696F}
@@ -26,10 +28,10 @@
 \makelabel{fsr:WriteMatrixTEX}{2.1.5}{X7C88DF8385B5C384}
 \makelabel{fsr:fsr}{3.1}{X7D5E0FF97CA51E2E}
 \makelabel{fsr:IsFSR}{3.1.1}{X867B95117FAEC3E6}
-\makelabel{fsr:FieldPoly (for an FSR)}{3.1.2}{X786E842E78537AA0}
-\makelabel{fsr:UnderlyingField (for an FSR)}{3.1.2}{X786E842E78537AA0}
-\makelabel{fsr:FeedbackVec (for an FSR)}{3.1.2}{X786E842E78537AA0}
-\makelabel{fsr:OutputTap (for an FSR)}{3.1.2}{X786E842E78537AA0}
+\makelabel{fsr:FieldPoly (FieldPoly)}{3.1.2}{X83EC632C826A7CAB}
+\makelabel{fsr:UnderlyingField (UnderlyingField)}{3.1.2}{X83EC632C826A7CAB}
+\makelabel{fsr:FeedbackVec (FeedbackVec)}{3.1.2}{X83EC632C826A7CAB}
+\makelabel{fsr:OutputTap (OutputTap)}{3.1.2}{X83EC632C826A7CAB}
 \makelabel{fsr:Length (for an FSR)}{3.1.3}{X8246C2AF80A0F0E9}
 \makelabel{fsr:InternalStateSize (for an FSR)}{3.1.3}{X8246C2AF80A0F0E9}
 \makelabel{fsr:LoadFSR (for an FSR)}{3.1.4}{X81B15596784EC6D5}
@@ -45,12 +47,12 @@
 \makelabel{fsr:IsPeriodic (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
 \makelabel{fsr:IsUltPeriodic (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
 \makelabel{fsr:IsMaxSeqLFSR (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
-\makelabel{fsr:IsMaxSeqLFSR (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
+\makelabel{fsr:Period (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
 \makelabel{fsr:PeriodIrreducible (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
 \makelabel{fsr:PeriodReducible (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
-\makelabel{fsr:ViewObj (for an NLFSR)}{3.2.5}{X836CA53B872FD8B6}
-\makelabel{fsr:PrintObj (for an NLFSR)}{3.2.5}{X836CA53B872FD8B6}
-\makelabel{fsr:PrintAll (for an NLFSR)}{3.2.5}{X836CA53B872FD8B6}
+\makelabel{fsr:ViewObj (for an LFSR)}{3.2.5}{X82E35D2083529319}
+\makelabel{fsr:PrintObj (for an LFSR)}{3.2.5}{X82E35D2083529319}
+\makelabel{fsr:PrintAll (for an LFSR)}{3.2.5}{X82E35D2083529319}
 \makelabel{fsr:ChooseField (for a given field)}{3.3.1}{X8040B069804A223A}
 \makelabel{fsr:NLFSR}{3.3.2}{X7DDE3CAC7A9D2A55}
 \makelabel{fsr:NLFSR}{3.3.2}{X7DDE3CAC7A9D2A55}
@@ -61,3 +63,5 @@
 \makelabel{fsr:ViewObj (for an NLFSR)}{3.3.5}{X836CA53B872FD8B6}
 \makelabel{fsr:PrintObj (for an NLFSR)}{3.3.5}{X836CA53B872FD8B6}
 \makelabel{fsr:PrintAll (for an NLFSR)}{3.3.5}{X836CA53B872FD8B6}
+\makelabel{fsr:MonomialsOverField (for an NLFSR)}{4.1.1}{X7CF7FC2182FEA652}
+\makelabel{fsr:DegreeOfPolynomial (DegreeOfPolynomial)}{4.1.2}{X85A860DA845F6090}

@@ -68,6 +68,8 @@ The &GAP; package &FSR; ...
 
 <#Include SYSTEM "fsr.xml">
 
+<#Include SYSTEM "misc.xml">
+
 
 
 </Body>

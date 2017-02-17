@@ -46,6 +46,7 @@ FSRMANUALFILES:=[
 "../lib/fsr.gd",
 "../lib/lfsr.gd",
 "../lib/nlfsr.gd",
+"../lib/misc.gd",
 ];
 Print(FSRMANUALFILES,"\n");
 

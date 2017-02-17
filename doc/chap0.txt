@@ -83,6 +83,10 @@
       3.3-3 IsNonLinearFeedback
       3.3-4 MultivarPoly
       3.3-5 ViewObj
+  4 [33X[0;0Ymisc - helper functions[133X
+    4.1 [33X[0;0Ymisc - helper functions[133X
+      4.1-1 MonomialsOverField
+      4.1-2 DegreeOfPolynomial
   
   
   [32X

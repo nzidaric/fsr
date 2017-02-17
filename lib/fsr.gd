@@ -11,7 +11,7 @@
 ##  We define an object &FSR; (Feedback Shift Register), which can come in two flavours: 
 ##  with linear feedback <Ref Func="LFSR" /> and nonlinear feedback  <Ref Func="NLFSR" />. Because of many 
 ##  similarities between the two, the basic common functionality can be found here, 
-##  while specialized functions (such as &LFSR; and &NLFSR; object creation) in corresponding sections.
+##  while specialized functions (such as <C>LFSR</C> and <C>NLFSR</C> object creation) in corresponding sections.
 ##  <#/GAPDoc>
 
 #############################################################################
@@ -23,7 +23,7 @@
 ##  <ManSection>
 ##  <Filt Name="IsFSR" />
 ##  <Description>
-##  This is the category of &FSR; objects.
+##  This is the category of <C>FSR</C> objects.
 ##  Objects in this category are created 
 ##  using functions <Ref Func="LFSR" /> or <Ref Func="NLFSR" />.
 ##  </Description>
@@ -43,7 +43,7 @@ DeclareCategory( "IsFSR",  IsObject );
 ##  <ManSection>
 ##  <Fam Name="FSRFamily" />
 ##  <Description>
-##  This is the family of FSRs with characteristic <P/>.
+##  This is the family of <C>FSR</C>s with characteristic <P/>.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -63,7 +63,7 @@ DeclareGlobalFunction( "FSRFamily" );
 ##  <Description>
 ##  Workaround for the &NLFSR; object definition: we need to fix the chosen underlying finite field 
 ##  and prepare indeterminates in the chosen field. 
-##  The indeterminates will be used for the multivariable polynomial, which will define the &NLFSR; feedback.
+##  The indeterminates will be used for the multivariable polynomial, which will define the <C>NLFSR</C> feedback.
 ##  Current threshold is set by global <C>MaxNLFSRLen</C> = 100. <P/>
 ##  </Description>
 ##  </ManSection>
@@ -81,16 +81,16 @@ DeclareGlobalFunction( "ChooseField" );
 ##
 ##  <#GAPDoc Label="FieldPoly">
 ##  <ManSection>
-##  <Attr Name="FieldPoly" Arg='fsr' Label="for an FSR"/>
-##  <Attr Name="UnderlyingField" Arg='fsr' Label="for an FSR"/>
-##  <Attr Name="FeedbackVec" Arg='fsr' Label="for an FSR"/>
-##  <Attr Name="OutputTap" Arg='fsr' Label="for an FSR"/>
+##  <Attr Name="FieldPoly" Arg='fsr' Label="FieldPoly"/>
+##  <Attr Name="UnderlyingField" Arg='fsr' Label="UnderlyingField"/>
+##  <Attr Name="FeedbackVec" Arg='fsr' Label="FeedbackVec"/>
+##  <Attr Name="OutputTap" Arg='fsr' Label="OutputTap"/>
 ##  <Description>
-##  <C>FieldPoly</C> of the &FSR; stores the irreducible polynomial used to construct the extension field or 1 in case of a prime field.<P/>
-##  <C>UnderlyingField</C> of the &FSR; is the finite field over which the &FSR; is defined (all indeterminates and constants are from this field). <P/>
+##  <C>FieldPoly</C> of the <A>fsr</A> stores the irreducible polynomial used to construct the extension field or 1 in case of a prime field.<P/>
+##  <C>UnderlyingField</C> of the <A>fsr</A> is the finite field over which the <A>fsr</A> is defined (all indeterminates and constants are from this field). <P/>
 ##  NOTE: it may seem redundant to sore both <C>FieldPoly</C> and <C>UnderlyingField</C>, however, they are used by other functions in the package. <P/>
-##  <C>FeedbackVec</C> of the &FSR; stores the coefficients of the <C>CharPoly</C> without its leading term in case of <E>LFSR</E>, 
-##  and coefficients of the nonzero monomials present in the multivariate function defining the feedback in case of &NLFSR;.<P/>
+##  <C>FeedbackVec</C> of the <A>fsr</A> stores the coefficients of the <C>CharPoly</C> without its leading term in case of <C>LFSR</C>, 
+##  and coefficients of the nonzero monomials present in the multivariate function defining the feedback in case of <C>NLFSR</C>.<P/>
 ##  <C>OutputTap</C> holds the output tap position(s): the sequence elements are taken from the stage(s) listed in <C>OutputTap</C>.
 ##  </Description>
 ##  </ManSection>
@@ -115,8 +115,8 @@ DeclareAttribute( "OutputTap", IsFSR );
 ##  <Attr Name="InternalStateSize" Arg='fsr' Label="for an FSR"/>
 ##
 ##  <Description>
-##  <C>Length</C> of the &FSR; is the number of its stages.<P/>
-##  <C>InternalStateSize</C> of the &FSR; is size in bits needed to store the state (length * width) 
+##  <C>Length</C> of the <A>fsr</A> is the number of its stages.<P/>
+##  <C>InternalStateSize</C> of the <A>fsr</A> is size in bits needed to store the state (length * width) 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -130,11 +130,11 @@ DeclareAttribute( "InternalStateSize", IsFSR );
 ##
 ##  <#GAPDoc Label="LoadFSR">
 ##  <ManSection>
-##  <Meth Name="LoadFSR" Arg='fsr' Label="for an FSR"/>
+##  <Meth Name="LoadFSR" Arg='fsr, ist' Label="for an FSR"/>
 ##
 ##  <Description>
-##  Loading the &FSR; <A>fsr</A> with the initial state <A>ist</A>, which is a &FFE; vector
-##  of same length as the &FSR; and with elements from the underlying finite field. If either of those two
+##  Loading the <A>fsr</A> with the initial state <A>ist</A>, which is a <A>FFE</A> vector
+##  of same length as <A>fsr</A> and with elements from its underlying finite field. If either of those two
 ##  requirements is violated, loading fails and error message appears. At the time of loading 
 ##  the initial sequence elements (ie zeroth elements) are obtained and <C>numsteps</C> is set to 0.<P/>
 ##  </Description>
@@ -159,14 +159,13 @@ DeclareOperation("LoadFSR", [IsFSR,  IsFFECollection]);
 ##  <Meth Name="StepFSR" Arg='fsr[, elm]' Label="for an FSR"/>
 ##
 ##  <Description>
-##  Perform one step the &FSR; <A>fsr</A>, ie. compute the new <C>state</C> and update the <C>numsteps</C>, then output the
+##  Perform one step the <A>fsr</A>, ie. compute the new <C>state</C> and update the <C>numsteps</C>, then output the
 ##  elements denoted by <C>OutputTap</C>. If the optional parameter <A>elm</A> is used then the new element is computed as 
 ##  a sum of computed feedback and <A>elm</A>. Elemen <A>elm</A> must be an element of the underlying finite field. <P/>
-##  An error is triggered if <C>StepFSR</C> is called for an empty &FSR;. As this is a way to destroy the linearity of an &LFSR;, 
-##  we refer to <C>StepFSR</C> with the optiomal nonzero <A>elm</A> as <C>nonlinear step</C>. Similarly, the &NLFSR; can also have 
+##  As this is a way to destroy the linearity of an <C>LFSR</C>, 
+##  we refer to <C>StepFSR</C> with the optiomal nonzero <A>elm</A> as <C>nonlinear step</C>. Similarly, the <C>NLFSR</C> can also have 
 ##  an extra element added to the (already nonlinear) feedback.<P/>
-##  Returns an error if the &FSR; is not loaded!<P/>
-##  NOTE: TO DO for the NLFSR !!!!!!
+##  Returns an error if the <A>fsr</A> is not loaded!<P/>
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -194,22 +193,22 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 ##  <Meth Name="RunFSR" Arg='fsr [, ist] [, num] [, pr]' Label="for an FSR"/>
 ##
 ##  <Description>
-##  The &FSR will be run for a certain (<A>num</A> or <A>threshold</A>) number of steps: there is a threshold value, currently set to  2^<E>Length(<A>fsr</A>)</E> + <E>Length(<A>fsr</A>)</E>, 
+##  The <A>fsr</A> will be run for a certain (<A>num</A> or <A>threshold</A>) number of steps: there is a threshold value, currently set to  2^<E>Length(<A>fsr</A>)</E> + <E>Length(<A>fsr</A>)</E>, 
 ##  which is used by all versions without explicit <A>num</A> and enforced when <A>num</A> exceeds <A>threshold</A>. There is an optional printing switch <A>pr</A>,
-##  with default set to <E>false</E>; if <E>true</E> then the state and the output sequence element(s) are printed in &GAP; shell on every step of the &FSR; (we call this output for <C>RunFSR</C>).
+##  with default set to <E>false</E>; if <E>true</E> then the state and the output sequence element(s) are printed in &GAP; shell on every step of the <A>fsr</A> (we call this output for <C>RunFSR</C>).
 ##  <List>
-##  <Item> <C>RunLFSR(<A> fsr[, num, pr] </A>)</C> - run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps with/without output</Item>
-##  <Item> <C>RunLFSR(<A> fsr, ist[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps with/without output (ie. <E>linear</E> version)</Item>
-##  <Item> <C>RunLFSR(<A> fsr, elm[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps, whereby the SAME element 
+##  <Item> <C>RunFSR(<A> fsr[, num, pr] </A>)</C> - run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps with/without output</Item>
+##  <Item> <C>RunFSR(<A> fsr, ist[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps with/without output (ie. <E>linear</E> version)</Item>
+##  <Item> <C>RunFSR(<A> fsr, elm[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps, whereby the SAME element 
 ##  <A>elm</A> is added to the feedback at each step, with/without output (ie. <E>non-linear</E> version)</Item>
-##  <Item> <C>RunLFSR(<A> fsr, ist, elmvec[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for  <E>Length(<A>fsr</A>)</E> steps,, whereby one element
+##  <Item> <C>RunFSR(<A> fsr, ist, elmvec[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for  <E>Length(<A>elmvec</A>)</E> steps, whereby one element
 ##  of <A>elmvec</A> is added to the feedback at each step (starting with elmvec[1]), with/without output (ie. <E>non-linear</E> version)</Item>
 ##  </List>
-##  NOTE: for the load and run versions, element <A>seq</A><M>_0</M> is a part of the output sequence
-##  The ouput of <C>RunLFSR</C> is: 
+##  NOTE: for the load and run versions, element seq<M>_0</M> is a part of the output sequence
+##  The ouput of <C>RunFSR</C> is: 
 ##  <List> 
-##  <Item> sequence of &FFE;s : seq<M>_0</M>, seq<M>_1</M>, seq<M>_2</M>, <M>\dots ,</M>  for <E>Length</E>(<E>OutputTap</E>)=1</Item>
-##  <Item> sequence of vectors, each of them with <M>t</M> FFEs : seq<M>_0</M>, seq<M>_1</M>, seq<M>_2</M>, <M>\dots ,</M>  where seq<M>_i=(</M> seq<M>_{i1}</M>, <M>\dots ,</M> seq<M>_{it}</M>) for <E>Length</E>(<E>OutputTap</E>)=t</Item>
+##  <Item> sequence of <A>FFE</A>s : seq<M>_0</M>, seq<M>_1</M>, seq<M>_2</M>, <M>\dots ,</M>  for <E>Length</E>(<E>OutputTap</E>)=1</Item>
+##  <Item> sequence of vectors, each of them with <M>t</M> <A>FFE</A>s : seq<M>_0</M>, seq<M>_1</M>, seq<M>_2</M>, <M>\dots ,</M>  where seq<M>_i=(</M> seq<M>_{i1}</M>, <M>\dots ,</M> seq<M>_{it}</M>) for <E>Length</E>(<E>OutputTap</E>)=t</Item>
 ##  </List>
 ##  </Description>
 ##  </ManSection>

@@ -31,11 +31,11 @@ InstallGlobalFunction( ChooseField, function( F )
 		for i in [1..MaxNLFSRLen] do  
 			str :=  Concatenation("x_",String(i-1)); 
 			if IsBoundGlobal(str) then 
-				Print("changing: ",str," \n");
+	#			Print("changing: ",str," \n");
 				str := Indeterminate(F,1000+(i-1));
 			else
 
-				Print("binding: ",str," \n");			
+	#			Print("binding: ",str," \n");			
 				SetIndeterminateName(FamilyObj(x), 1000+(i-1), str); 
 				BindGlobal(str,Indeterminate(F,1000+(i-1)));
 				MakeReadWriteGlobal(str);
@@ -121,6 +121,7 @@ local i, F, tap, seq, scist;
 ## TO DO : UPDATE THE BoolState field for NLFSR 
 # not having BoolState for NLFSR anymore !!! 
 # which makes it the same for LFSR and NLFSR :)
+## this TO DO = DONE
 	
 # sequence starts with seq_0, seq_1, ...
 	tap := OutputTap(x); 
@@ -142,11 +143,22 @@ end);
 #O  StepFSR( <fsr> , <print>)
 ##
 
+
+
+# StepFSR is done for two cases, IsLFSR and IsNLFSR 
+# since this is the only one of Load, Step Run functions with the distinction
+# its kept here instead of having separate calls for IsLFSR and IsNLFRS
+# another reason: its used a lot and having if-else is faster than 
+# having a StepFSR(FSR) which would then call StepFSR(LFSR) or StepFSR(NLFSR) 
+# also: smaller code in terms of lines of code 
+
+
 ##this one is more commonly used 
 ## so whats faster: GAP calling the next menthod with elm = 0 
 ## or having an almost identical copy of the method (difference is only in the computation of new)
+
 InstallMethod(StepFSR, "one step of FSR", [IsFSR], function(x )
-local fb, st, new, tap,i, seq, n, F; 
+local fb, st, new, tap,i, seq, n, F, indlist, xlist, slist, idx; 
 
 	if x!.numsteps < 0 then 
 		Error( "the LFSR is NOT loaded !!!" );
@@ -157,9 +169,29 @@ local fb, st, new, tap,i, seq, n, F;
 	fb := FeedbackVec(x); 
 	st := x!.state; 
 
-# add for NLFSR
 # the step
-	new := fb * st; 
+
+	
+	if IsLFSR(x) then 
+		new := fb * st;
+	elif IsNLFSR(x) then 
+		xlist :=[]; slist :=[];
+		indlist := IndetList(x);
+		for i in [1.. Length(indlist)] do
+			idx := indlist[i];
+			Add(xlist,Indeterminate(F,1000+idx));
+			Add(slist,st[Length(x)-idx]); ## because states are DOWNTO !!! 
+		od;
+#		Print(xlist,"\n");	
+#		Print(slist,"\n");
+		
+		new := Value(MultivarPoly(x), xlist, slist);	
+#		Print("new=",new,"\n");
+	else 
+		Error("Youre trying to perform StepFSR on something thats neither an LFSR nor NLFSR!!!"); return fail;	
+	
+	fi;
+	
 	if not(\in(new,F)) then
 		Error( "computed feedback is not an element of the underlying field !!!" );		return fail;
 	fi;
@@ -193,9 +225,8 @@ end);
 
 
 
-
 InstallMethod(StepFSR, "one step of FSR with an external input", [IsFSR, IsFFE], function(x, elm)
-local fb, st, new, tap,i, seq, F, n; 
+local fb, st, new, tap,i, seq, F, n, idx, indlist, slist, xlist; 
 	if x!.numsteps < 0 then 
 		Error( "the FSR is NOT loaded !!!" );
 		return fail;
@@ -212,6 +243,29 @@ local fb, st, new, tap,i, seq, F, n;
 
 # the step
 	new := (fb * st) + elm; 
+	
+	if IsLFSR(x) then 
+		new := (fb * st) + elm; 
+	elif IsNLFSR(x) then 
+		xlist :=[]; slist :=[];
+		indlist := IndetList(x);
+		for i in [1.. Length(indlist)] do
+			idx := indlist[i];
+			Add(xlist,Indeterminate(F,1000+idx));
+			Add(slist,st[Length(x)-idx]); ## because states are DOWNTO !!! 
+		od;
+#		Print(xlist,"\n");	
+#		Print(slist,"\n");
+		
+		new := Value(MultivarPoly(x), xlist, slist) + elm;	
+#		Print("new=",new,"\n");
+	else 
+		Error("Youre trying to perform StepFSR on something thats neither an LFSR nor NLFSR!!!"); return fail;	
+	
+	fi;	
+	
+	
+	
 	if not(\in(new,F)) then
 		Error( "computed feedback is not an element of the underlying field !!!" );		return fail;
 	fi;
@@ -414,11 +468,13 @@ end);
 
 # XI. run for num steps with the different nonlinear input on each step with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR,  IsFFECollection, IsFFECollection, IsBool], function(x, ist, elmvec, pr)
-local  sequence,  treshold, num, nrsteps, seq , i; 
+local  sequence,  treshold, num, nrsteps, seq , i, B; 
 # load FSR 
 	seq := LoadFSR(x,ist); # the seq_0 element 
+	B := Basis(UnderlyingField(x));
 # print header, init state and seq_0
 	if pr then 
+
 		Print("elm \t\t");
 		Print( "[ ",Length(x)-1,",");
 		for i in [2.. Length(x)-1] do
@@ -427,9 +483,9 @@ local  sequence,  treshold, num, nrsteps, seq , i;
 		Print(",0 ]");
 		Print( "  with taps  ",OutputTap(x),"\n");	
 		Print(" \t\t");
-		Print((IntVecFFExt(x!.state)));  				# NOT reversed !!!! 
-		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(seq) , "\n");
-		else  Print("\t\t",  IntVecFFExt(seq) , "\n");
+		Print((IntVecFFExt(B,x!.state)));  				# NOT reversed !!!! 
+		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
+		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
 		fi;			
 	fi;
 
@@ -448,10 +504,10 @@ local  sequence,  treshold, num, nrsteps, seq , i;
 		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
 #print on every step 
 		if pr then 
-			Print(IntFFExt(elmvec[i]),"\t\t");  				# NOT reversed !!!! 		
-			Print(IntVecFFExt(x!.state));  				# NOT reversed !!!! 
-			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(seq) , "\n");
-			else  	Print("\t\t",  IntVecFFExt(seq) , "\n");
+			Print(IntFFExt(B,elmvec[i]),"\t\t");  				# NOT reversed !!!! 		
+			Print(IntVecFFExt(B,x!.state));  				# NOT reversed !!!! 
+			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
+			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
 			fi;			
 		fi;
 	od; 
@@ -463,6 +519,10 @@ local  sequence,  treshold, num, nrsteps, seq , i;
 end);
 
 
-
+# something is wrong, cant make this one work :( 
+# XII. run for num steps with the different nonlinear input on each step without print to shell
+#InstallMethod(RunFSR, "run FSR", [IsFSR,  IsFFECollection, IsFFECollection], function(x, ist, elmvec)
+#	return RunFSR(x, ist, elmvec, false);
+#end);
 
 Print("fsr.gi OK,\t");

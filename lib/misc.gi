@@ -73,6 +73,45 @@ return Length(tlist);
 end);
 
 
+
+InstallMethod( MonomialsOverField, "reduce expomnents of monomials",  [IsField, IsPolynomial], function(K, mon)
+local lmlist, term , m, i;
+	lmlist := LeadingMonomial(mon);
+	term := LeadingCoefficient(mon);
+#	Print(lmlist,"\n");	Print(term,"\n");
+	if (IsPrimeField(K) and Characteristic(K)=2) then 
+		for i in [1..Length(lmlist)] do 
+			if IsOddInt(i) then
+				term := term * Indeterminate(K, lmlist[i]);
+#				Print(term,"\t");
+				 # in F_2: a^n = a for all n>0
+			fi;
+		od;	
+#		Print("\n");	
+	else 
+		m := Size(K)-1;
+		for i in [1..Length(lmlist)-1] do
+			if IsOddInt(i) then
+				term := term * Indeterminate(K, lmlist[i])^(lmlist[i+1] mod m);
+			fi;
+		od; 	
+	fi;
+	
+
+return term;
+end);
+
+
+InstallMethod( MonomialsOverField, "reduce expomnents of monomials",  [IsField, IsList],  function(K, mon)
+local newlist, i;
+		newlist := [];
+		for i in [1..Length(mon)] do
+			newlist[i] := MonomialsOverField(K, mon[i]);
+		od;
+return newlist;
+end);
+
+
 InstallMethod( DegreeOfPolynomial, "degree of polynomial",  [IsPolynomial], function(mon)
 local lmlist, d, i;
 
@@ -87,19 +126,34 @@ local lmlist, d, i;
 return d;
 end);
 
-InstallMethod( DegreeOfPolynomial, "degree of polynomial",  [IsField, IsPolynomial], function(K, mon)
-local lmlist, d, i, m;
-	m := Size(K) - 1;
-	lmlist := LeadingMonomial(mon);
-	d := 0;
-	for i in [1..Length(lmlist)] do 
-		if IsEvenInt(i) then 
-			d := d + ( lmlist[i] mod m );
-		fi;
-	od;
 
-return d;
-end);
+
+
+# in order to make sure that monomial returned by LeadingMonomial is still leading monomial 
+# even after mod reduction of exponents , easiest thing is to reduce exponent first -> 
+# new function PolynomialOverField
+# but now i dont really need two versions of DegreeOfPolynomial coz the one without field as parameter is enough !!! 
+#InstallMethod( DegreeOfPolynomial, "degree of polynomial",  [IsField, IsPolynomial], function(K, mon)
+#local lmlist, d, dmax, i, m;
+#		lmlist := LeadingMonomial(mon);
+#		d := 0; dmax := 0;
+#	if (IsPrimeField(K) and Characteristic(K)=2) then 
+#		for i in [1..Length(lmlist)] do 
+#			if IsEvenInt(i) then
+#				d := d + 1; # in F_2: a^n = a for all n>0
+#			fi;
+#		od;		
+#	else 
+#		m := Size(K)-1;
+#		for i in [1..Length(lmlist)] do 
+#			if IsEvenInt(i) then
+#				d := d + ( lmlist[i] mod m );
+#			fi;
+#		od;		
+#	fi;
+#
+#return d;
+#end);
 
 
 
