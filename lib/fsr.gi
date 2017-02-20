@@ -348,7 +348,7 @@ local seq, sequence, nrsteps, treshold, i, divs;
 		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
 #print on every step 
 		if pr then 
-			Print(IntVecFFExt(B, x!.state));  				# NOT reversed !!!! 
+			Print("\t\t", IntVecFFExt(B, x!.state));  				# NOT reversed !!!! 
 			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
 			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
 			fi;			
@@ -406,14 +406,14 @@ local  i, sequence,  seq, taps, divs;
 		od;
 		Print(",0 ]");
 		Print( "  with taps  ",OutputTap(x),"\n");	
-		Print(" \t\t");
-		Print((IntVecFFExt(B,x!.state)));  				# NOT reversed !!!! 
+
+		Print("\t\t", (IntVecFFExt(B,x!.state)));  				# NOT reversed !!!! 
 		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
 		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
 		fi;			
 	fi;
 # start run
-	sequence := RunFSR(x,B, num-1, pr);		
+	sequence := RunFSR(x,B, num, pr);		
 	Add(sequence,seq,1);	# seq_0 at the beginning	
 
 	return sequence;
@@ -471,7 +471,7 @@ local seq, sequence, nrsteps, treshold, i, divs;
 		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
 #print on every step 
 		if pr then 
-			Print(IntVecFFExt(B, x!.state));  				# NOT reversed !!!! 
+			Print("\t\t", IntVecFFExt(B, x!.state));  				# NOT reversed !!!! 
 			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
 			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
 			fi;			

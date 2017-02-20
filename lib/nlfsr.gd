@@ -69,8 +69,8 @@ DeclareGlobalFunction( "NLFSR" );
 ##
 ##  <#GAPDoc Label="IsNonLinearFeedback">
 ##  <ManSection>
-##  <Prop Name="IsNonLinearFeedback" Arg='nlfsr' Label="for an NLFSR"/>
-##  <Filt Name="IsNLFSR" Arg='nlfsr' Label="for an NLFSR"/>
+##  <Prop Name="IsNonLinearFeedback" Arg='nlfsr'/>
+##  <Filt Name="IsNLFSR" Arg='nlfsr' />
 ##
 ##  <Description>
 ##  For the multivariate polynomial given by <A>clist</A>  and <A>mlist</A>, 
@@ -92,8 +92,8 @@ DeclareSynonym( "IsNLFSR", IsFSR and IsNonLinearFeedback);
 ##
 ##  <#GAPDoc Label="MultivarPoly">
 ##  <ManSection>
-##  <Attr Name="MultivarPoly" Arg='nlfsr' Label="for an NLFSR"/>
-##  <Attr Name="IndetList" Arg='nlfsr' Label="for an NLFSR"/>
+##  <Attr Name="MultivarPoly" Arg='nlfsr' />
+##  <Attr Name="IndetList" Arg='nlfsr' />
 ##  <Description>
 ##  <C>MultivarPoly</C> holds the multivariate function defining the feedback of the <C>NLFSR</C>. 
 ##  <C>IndetList</C> holds all the indeterminates that are present in <C>MultivarPoly</C>
@@ -117,9 +117,9 @@ DeclareAttribute( "IndetList", IsNLFSR );
 ##
 ##  <#GAPDoc Label="ViewObjNLFSR">
 ##  <ManSection>
-##  <Meth Name="ViewObj" Arg='[B,] nlfsr' Label="for an NLFSR"/>
-##  <Meth Name="PrintObj" Arg='[B,] nlfsr' Label="for an NLFSR"/>
-##  <Meth Name="PrintAll" Arg='[B,] nlfsr' Label="for an NLFSR"/>
+##  <Meth Name="ViewObj" Arg='[B,] nlfsr' />
+##  <Meth Name="PrintObj" Arg='[B,] nlfsr'/>
+##  <Meth Name="PrintAll" Arg='[B,] nlfsr'/>
 ##
 ##  <Description>
 ##  Different detail on <A>nlfsr</A> created by <Ref Func="NLFSR" />:

@@ -59,7 +59,7 @@ DeclareGlobalFunction( "FSRFamily" );
 ##
 ##  <#GAPDoc Label="ChooseField">
 ##  <ManSection>
-##  <Func Arg="F" Name="ChooseField" Label="for a given field" />
+##  <Func Arg="F" Name="ChooseField"  />
 ##  <Description>
 ##  Workaround for the <C>NLFSR</C> object definition: we need to fix the chosen underlying finite field 
 ##  and prepare indeterminates in the chosen field. 
@@ -81,10 +81,10 @@ DeclareGlobalFunction( "ChooseField" );
 ##
 ##  <#GAPDoc Label="FieldPoly">
 ##  <ManSection>
-##  <Attr Name="FieldPoly" Arg='fsr' Label="FieldPoly"/>
-##  <Attr Name="UnderlyingField" Arg='fsr' Label="UnderlyingField"/>
-##  <Attr Name="FeedbackVec" Arg='fsr' Label="FeedbackVec"/>
-##  <Attr Name="OutputTap" Arg='fsr' Label="OutputTap"/>
+##  <Attr Name="FieldPoly" Arg='fsr' />
+##  <Attr Name="UnderlyingField" Arg='fsr'/>
+##  <Attr Name="FeedbackVec" Arg='fsr'/>
+##  <Attr Name="OutputTap" Arg='fsr' />
 ##  <Description>
 ##  <C>FieldPoly</C> of the <A>fsr</A> stores the irreducible polynomial used to construct the extension field or 1 in case of a prime field.<P/>
 ##  <C>UnderlyingField</C> of the <A>fsr</A> is the finite field over which the <A>fsr</A> is defined (all indeterminates and constants are from this field). <P/>
@@ -111,8 +111,8 @@ DeclareAttribute( "OutputTap", IsFSR );
 ##
 ##  <#GAPDoc Label="Length">
 ##  <ManSection>
-##  <Attr Name="Length" Arg='fsr' Label="for an FSR"/>
-##  <Attr Name="InternalStateSize" Arg='fsr' Label="for an FSR"/>
+##  <Attr Name="Length" Arg='fsr' />
+##  <Attr Name="InternalStateSize" Arg='fsr'/>
 ##
 ##  <Description>
 ##  <C>Length</C> of the <A>fsr</A> is the number of its stages.<P/>
@@ -130,7 +130,7 @@ DeclareAttribute( "InternalStateSize", IsFSR );
 ##
 ##  <#GAPDoc Label="LoadFSR">
 ##  <ManSection>
-##  <Meth Name="LoadFSR" Arg='fsr, ist' Label="for an FSR"/>
+##  <Meth Name="LoadFSR" Arg='fsr, ist' />
 ##
 ##  <Description>
 ##  Loading the <A>fsr</A> with the initial state <A>ist</A>, which is a <A>FFE</A> vector
@@ -156,7 +156,7 @@ DeclareOperation("LoadFSR", [IsFSR,  IsFFECollection]);
 ##
 ##  <#GAPDoc Label="StepFSR">
 ##  <ManSection>
-##  <Meth Name="StepFSR" Arg='fsr[, elm]' Label="for an FSR"/>
+##  <Meth Name="StepFSR" Arg='fsr[, elm]' />
 ##
 ##  <Description>
 ##  Perform one step the <A>fsr</A>, ie. compute the new <C>state</C> and update the <C>numsteps</C>, then output the
@@ -190,7 +190,7 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 ##
 ##  <#GAPDoc Label="RunFSR">
 ##  <ManSection>
-##  <Meth Name="RunFSR" Arg='fsr [, B, ist, num, pr]' Label="for an FSR"/>
+##  <Meth Name="RunFSR" Arg='fsr [, B, ist, num, pr]'/>
 ##
 ##  <Description>
 ##  The <A>fsr</A> will be run for a certain (<A>num</A> or <A>threshold</A>) number of steps: there is a threshold value, currently set to  2^<E>Length(<A>fsr</A>)</E> + <E>Length(<A>fsr</A>)</E>, 
@@ -200,19 +200,58 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 ##  calls with basis and calls with both initial state <A>ist</A> and the cvector of FFE elements <A>elmvec</A> to be used for nonlinear steps (because all three vectors return true for IsFFECollection). 
 ##  <List>
 ##  <Item> <C>RunFSR(<A> fsr[, B, num, pr] </A>)</C> - run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps with/without output</Item>
-##  <Item> <C>RunFSR(<A> fsr, [B,] ist[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <A>num-1</A>/<A>threshold</A> steps with/without output (ie. <E>linear</E> version)</Item>
-##  <Item> <C>RunFSR(<A> fsr, [B,] elm[, num, pr] </A>)</C> - run <A>fsr</A> for <A>num-1</A>/<A>threshold</A> steps, whereby the SAME element 
+##  <Item> <C>RunFSR(<A> fsr, [B,] ist[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps with/without output (ie. <E>linear</E> version)</Item>
+##  <Item> <C>RunFSR(<A> fsr, [B,] elm[, num, pr] </A>)</C> - run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps, whereby the SAME element 
 ##  <A>elm</A> is added to the feedback at each step, with/without output (ie. <E>non-linear</E> version)</Item>
 ##  <Item> <C>RunFSR(<A> fsr, [B,] ist, elmvec[, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <E>Length(<A>elmvec</A>)</E> steps, whereby one element
 ##  of <A>elmvec</A> is added to the feedback at each step (starting with <A>elmvec[1]</A>), with/without output (ie. <E>non-linear</E> version). NOTE: the sequence returned has length <E>Length(elmvec)+1</E>,
 ##  because the zeroth sequence element is returned at the time of loading the <C>FSR</C>.</Item>
 ##  </List>
-##  NOTE: for the load and run versions, element seq<M>_0</M> is a part of the output sequence
+##  NOTE: for the load and run versions, element seq<M>_0</M> is a part of the output sequence, hence the output sequence has the length <A>num+1</A>/<A>threshold+1</A>/<A>Length(elmvec)+1</A>,
 ##  The ouput of <C>RunFSR</C> is: 
 ##  <List> 
 ##  <Item> sequence of <A>FFE</A>s : seq<M>_0</M>, seq<M>_1</M>, seq<M>_2</M>, <M>\dots ,</M>  for <E>Length</E>(<E>OutputTap</E>)=1</Item>
 ##  <Item> sequence of vectors, each of them with <M>t</M> <A>FFE</A>s : seq<M>_0</M>, seq<M>_1</M>, seq<M>_2</M>, <M>\dots ,</M>  where seq<M>_i=(</M> seq<M>_{i1}</M>, <M>\dots ,</M> seq<M>_{it}</M>) for <E>Length</E>(<E>OutputTap</E>)=t</Item>
 ##  </List>
+##  Example of <C>RunFSR</C> called for an lfsr <E>test</E> over <M>F_{2^4}</M>, with initial state <E>ist</E>, print switch <E>true</E> for basis  <E>B</E>, with run length 5:
+##  <Example>
+##  <![CDATA[
+##  gap> K := GF(2);; x := X(K, "x");;
+##  gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
+##  gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
+##  gap> test := LFSR(K, f, l);;
+##  < empty LFSR given by CharPoly = y^4+y+Z(2^4)>
+##  gap> ist :=[0*Z(2), Z(2^4), Z(2^4)^5, Z(2)^0 ];;
+##  gap> RunFSR(test, B, ist, 5, true);             
+##  using basis B := [ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]	
+##  elm 		[ 3,......,0 ]  with taps  [ 0 ]
+##  		[ [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ], [ 1, 0, 0, 0 ] ]		[ 1, 0, 0, 0 ]
+##  		[ [ 1, 0, 1, 1 ], [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ] ]		[ 1, 1, 0, 1 ]
+##  		[ [ 0, 1, 1, 1 ], [ 1, 0, 1, 1 ], [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ] ]		[ 0, 1, 1, 0 ]
+##  		[ [ 1, 0, 1, 1 ], [ 0, 1, 1, 1 ], [ 1, 0, 1, 1 ], [ 0, 0, 0, 0 ] ]		[ 0, 0, 0, 0 ]
+##  		[ [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ], [ 0, 1, 1, 1 ], [ 1, 0, 1, 1 ] ]		[ 1, 0, 1, 1 ]
+##  		[ [ 1, 1, 0, 1 ], [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ], [ 0, 1, 1, 1 ] ]		[ 0, 1, 1, 1 ]
+##  [ Z(2)^0, Z(2^2), Z(2^4), 0*Z(2), Z(2^4)^2, Z(2^4)^11 ]
+##  ]]>
+##  </Example> 
+##  Example of <C>RunFSR</C> called for an lfsr <E>test</E> over <M>F_{2^4}</M>, with initial state <E>ist</E>, print switch <E>true</E> for basis  <E>B</E>, with 5 nonlinear inputs :
+##  <Example>
+##  <![CDATA[
+##  gap> elmvec := [Z(2^4)^2, Z(2^4)^2, Z(2^2), Z(2^4)^7, Z(2^4)^6];;                                
+##  gap> RunFSR(test, B, ist, elmvec, true);                         
+##  elm 		[ 3,......,0 ]  with taps  [ 0 ]
+##   		[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]		[ 0, 0, 0, 0 ]
+##  [ 1, 0, 1, 1 ]		[ [ 1, 0, 1, 1 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]		[ 0, 0, 0, 0 ]
+##  [ 1, 0, 1, 1 ]		[ [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]		[ 0, 0, 0, 0 ]
+##  [ 1, 1, 0, 1 ]		[ [ 1, 1, 0, 1 ], [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ], [ 0, 0, 0, 0 ] ]		[ 0, 0, 0, 0 ]
+##  [ 0, 1, 0, 0 ]		[ [ 1, 1, 1, 1 ], [ 1, 1, 0, 1 ], [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ] ]		[ 1, 0, 1, 1 ]
+##  [ 0, 0, 0, 1 ]		[ [ 0, 0, 0, 0 ], [ 1, 1, 1, 1 ], [ 1, 1, 0, 1 ], [ 1, 0, 1, 1 ] ]		[ 1, 0, 1, 1 ]
+##  [ Z(2^4)^2, 0*Z(2), 0*Z(2), 0*Z(2), Z(2^4)^2, Z(2^4)^2 ]
+##  ]]>
+##  </Example> 
+##  In both examples above the there is a column <E>elm</E>, which is in first case empty, because we are not adding nonlinear inputs to the feedback, while in the second example,
+##  this column shows the element being added at each step (empty in first row - the loading step). Also note that the second example had a longer output sequence -- I THINK I MUST FIX THIS :
+##  make the first example to run for num steps instead of num-1 !!!! but then also fix the *.tst files :( 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
