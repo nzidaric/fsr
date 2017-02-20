@@ -7,6 +7,7 @@ pkgdir := DirectoriesPackageLibrary( pkgname, "tst" );
 testfiles := [ 
 "tstfsroutputs.tst",
 "tstlfsr.tst",
+"tstnlfsr.tst",
 ];
 
 testresult:=true;

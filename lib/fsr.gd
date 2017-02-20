@@ -61,7 +61,7 @@ DeclareGlobalFunction( "FSRFamily" );
 ##  <ManSection>
 ##  <Func Arg="F" Name="ChooseField" Label="for a given field" />
 ##  <Description>
-##  Workaround for the &NLFSR; object definition: we need to fix the chosen underlying finite field 
+##  Workaround for the <C>NLFSR</C> object definition: we need to fix the chosen underlying finite field 
 ##  and prepare indeterminates in the chosen field. 
 ##  The indeterminates will be used for the multivariable polynomial, which will define the <C>NLFSR</C> feedback.
 ##  Current threshold is set by global <C>MaxNLFSRLen</C> = 100. <P/>
@@ -190,19 +190,22 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 ##
 ##  <#GAPDoc Label="RunFSR">
 ##  <ManSection>
-##  <Meth Name="RunFSR" Arg='fsr [, ist] [, num] [, pr]' Label="for an FSR"/>
+##  <Meth Name="RunFSR" Arg='fsr [, B, ist, num, pr]' Label="for an FSR"/>
 ##
 ##  <Description>
 ##  The <A>fsr</A> will be run for a certain (<A>num</A> or <A>threshold</A>) number of steps: there is a threshold value, currently set to  2^<E>Length(<A>fsr</A>)</E> + <E>Length(<A>fsr</A>)</E>, 
 ##  which is used by all versions without explicit <A>num</A> and enforced when <A>num</A> exceeds <A>threshold</A>. There is an optional printing switch <A>pr</A>,
-##  with default set to <E>false</E>; if <E>true</E> then the state and the output sequence element(s) are printed in &GAP; shell on every step of the <A>fsr</A> (we call this output for <C>RunFSR</C>).
+##  with default set to <E>false</E>; if <E>true</E> then the state and the output sequence element(s) are printed in &GAP; shell on every step of the <A>fsr</A> (we call this output for <C>RunFSR</C>), and 
+##  the given basis <A>B</A> is used for representation of elements. Note that having both a pint switch and a basis is redundant, however, the additional boolean helps the method selection to distinguish between 
+##  calls with basis and calls with both initial state <A>ist</A> and the cvector of FFE elements <A>elmvec</A> to be used for nonlinear steps (because all three vectors return true for IsFFECollection). 
 ##  <List>
-##  <Item> <C>RunFSR(<A> fsr[, num, pr] </A>)</C> - run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps with/without output</Item>
-##  <Item> <C>RunFSR(<A> fsr, ist[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps with/without output (ie. <E>linear</E> version)</Item>
-##  <Item> <C>RunFSR(<A> fsr, elm[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps, whereby the SAME element 
+##  <Item> <C>RunFSR(<A> fsr[, B, num, pr] </A>)</C> - run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps with/without output</Item>
+##  <Item> <C>RunFSR(<A> fsr, [B,] ist[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <A>num-1</A>/<A>threshold</A> steps with/without output (ie. <E>linear</E> version)</Item>
+##  <Item> <C>RunFSR(<A> fsr, [B,] elm[, num, pr] </A>)</C> - run <A>fsr</A> for <A>num-1</A>/<A>threshold</A> steps, whereby the SAME element 
 ##  <A>elm</A> is added to the feedback at each step, with/without output (ie. <E>non-linear</E> version)</Item>
-##  <Item> <C>RunFSR(<A> fsr, ist, elmvec[, num, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for  <E>Length(<A>elmvec</A>)</E> steps, whereby one element
-##  of <A>elmvec</A> is added to the feedback at each step (starting with elmvec[1]), with/without output (ie. <E>non-linear</E> version)</Item>
+##  <Item> <C>RunFSR(<A> fsr, [B,] ist, elmvec[, pr] </A>)</C> - load <A>fsr</A> with <A>ist</A>, then run <A>fsr</A> for <E>Length(<A>elmvec</A>)</E> steps, whereby one element
+##  of <A>elmvec</A> is added to the feedback at each step (starting with <A>elmvec[1]</A>), with/without output (ie. <E>non-linear</E> version). NOTE: the sequence returned has length <E>Length(elmvec)+1</E>,
+##  because the zeroth sequence element is returned at the time of loading the <C>FSR</C>.</Item>
 ##  </List>
 ##  NOTE: for the load and run versions, element seq<M>_0</M> is a part of the output sequence
 ##  The ouput of <C>RunFSR</C> is: 
@@ -217,22 +220,45 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 
 
 
+# although IsBool is only used with true when IsBasis is set (doesnt make sense to have basis if we dont print steps)
+# it is left too add an argument so method selection doesnt get confused
+# problem with method selection: a basis will also have IsFFECollection = true
+# so basis might get mistaken for initial state 
+# by having an extra parameter IsBool the number of arguments is different and this problem is avoided 
 
 
+DeclareOperation("RunFSR", [IsFSR, IsBasis, IsPosInt, IsBool]);	 #Ib.   run for num steps with/without print to shell
+#DeclareOperation("RunFSR", [IsFSR, IsPosInt, IsBool]);	 #I.  didnt make sense => removed 
 
-DeclareOperation("RunFSR", [IsFSR, IsPosInt, IsBool]); #I.   run for num steps with/without print to shell
-DeclareOperation("RunFSR", [IsFSR, IsPosInt]);	 #II.  run for num steps without print to shell
-DeclareOperation("RunFSR", [IsFSR, IsBool]);		 #III. run with/without print to shell
-DeclareOperation("RunFSR", [IsFSR]);			 #IV.  run without print to shell
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt, IsBool]); #V. load new initial state then run for num-1 steps with/without print to shell
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt]);         #VI.  load new initial state then run for num-1 steps without print to shell
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection]);                   #VII. load new initial state then run without print to shell
+# DeclareOperation("RunFSR", [IsFSR, IsBasis, IsPosInt]);				 #IIb.   didnt make sense => removed 
+DeclareOperation("RunFSR", [IsFSR, IsPosInt]); 							 #II.  run for num steps without print to shell
+
+DeclareOperation("RunFSR", [IsFSR, IsBasis, IsBool]);					 #IIIb. run with/without print to shell
+#DeclareOperation("RunFSR", [IsFSR, IsBool]);								 #III.   didnt make sense => removed 
+
+#DeclareOperation("RunFSR", [IsFSR, IsBasis ]);							 #IVb.    didnt make sense => removed 
+DeclareOperation("RunFSR", [IsFSR ]);										 #IV.  run without print to shell
+
+DeclareOperation("RunFSR", [IsFSR, IsBasis, IsFFECollection, IsPosInt, IsBool]);		 #Vb. load new initial state then run for num-1 steps with/without print to shell
+#DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt, IsBool]);					 #V.   didnt make sense => removed 
+
+#DeclareOperation("RunFSR", [IsFSR, IsBasis, IsFFECollection, IsPosInt]);         	 #VIb.    didnt make sense => removed 
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt]);      				    #VI.  load new initial state then run for num-1 steps without print to shell
+
+DeclareOperation("RunFSR", [IsFSR, IsBasis,  IsFFECollection, IsBool]);                   	 #VIIb. load new initial state then run without print to shell
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection]);               					    #VII. load new initial state then run without print to shell
 
 ## nonlinear versions 
-DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt, IsBool]);		  #VIII. run for num steps with the same nonlinear input on each step and with/without print to shell
-DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt]);		  #IX. run for num steps with the same nonlinear input on each step without print to shell
-DeclareOperation("RunFSR", [IsFSR, IsFFE]);				  #X.   run with the same nonlinear input on each step without print to shell
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection, IsBool]);# XI. run for num steps with the different nonlinear input on each step with/without print to shell
+DeclareOperation("RunFSR", [IsFSR, IsBasis, IsFFE, IsPosInt, IsBool]);		  	#VIIIb. run for num steps with the same nonlinear input on each step and with/without print to shell
+#DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt, IsBool]);		  				#VIII.   didnt make sense => removed 
 
+#DeclareOperation("RunFSR", [IsFSR, IsBasis, IsFFE, IsPosInt]);		  				#IXb.   didnt make sense => removed 
+DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt]);		 							#IX. run for num steps with the same nonlinear input on each step without print to shell
+
+DeclareOperation("RunFSR", [IsFSR, IsBasis, IsFFE, IsBool]);				  						#Xb.   run with the same nonlinear input on each step without print to shell
+DeclareOperation("RunFSR", [IsFSR, IsFFE]);				  									#X.   run with the same nonlinear input on each step without print to shell
+
+DeclareOperation("RunFSR", [IsFSR, IsBasis, IsFFECollection, IsFFECollection, IsBool]);	# XIb. run for num steps with the different nonlinear input on each step with/without print to shell
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection]);				# XI. run for num steps with the different nonlinear input on each step with/without print to shell
 
 Print("fsr.gd OK,\t");

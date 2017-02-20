@@ -120,21 +120,21 @@
 
 <h5>3.1-6 RunFSR</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; RunFSR</code>( <var class="Arg">fsr</var>[, <var class="Arg">ist</var>][, <var class="Arg">num</var>][, <var class="Arg">pr</var>] )</td><td class="tdright">( method )</td></tr></table></div>
-<p>The <var class="Arg">fsr</var> will be run for a certain (<var class="Arg">num</var> or <var class="Arg">threshold</var>) number of steps: there is a threshold value, currently set to 2^<em>Length(<var class="Arg">fsr</var>)</em> + <em>Length(<var class="Arg">fsr</var>)</em>, which is used by all versions without explicit <var class="Arg">num</var> and enforced when <var class="Arg">num</var> exceeds <var class="Arg">threshold</var>. There is an optional printing switch <var class="Arg">pr</var>, with default set to <em>false</em>; if <em>true</em> then the state and the output sequence element(s) are printed in <strong class="pkg">GAP</strong> shell on every step of the <var class="Arg">fsr</var> (we call this output for <code class="code">RunFSR</code>).</p>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; RunFSR</code>( <var class="Arg">fsr</var>[, <var class="Arg">B</var>, <var class="Arg">ist</var>, <var class="Arg">num</var>, <var class="Arg">pr</var>] )</td><td class="tdright">( method )</td></tr></table></div>
+<p>The <var class="Arg">fsr</var> will be run for a certain (<var class="Arg">num</var> or <var class="Arg">threshold</var>) number of steps: there is a threshold value, currently set to 2^<em>Length(<var class="Arg">fsr</var>)</em> + <em>Length(<var class="Arg">fsr</var>)</em>, which is used by all versions without explicit <var class="Arg">num</var> and enforced when <var class="Arg">num</var> exceeds <var class="Arg">threshold</var>. There is an optional printing switch <var class="Arg">pr</var>, with default set to <em>false</em>; if <em>true</em> then the state and the output sequence element(s) are printed in <strong class="pkg">GAP</strong> shell on every step of the <var class="Arg">fsr</var> (we call this output for <code class="code">RunFSR</code>), and the given basis <var class="Arg">B</var> is used for representation of elements. Note that having both a pint switch and a basis is redundant, however, the additional boolean helps the method selection to distinguish between calls with basis and calls with both initial state <var class="Arg">ist</var> and the cvector of FFE elements <var class="Arg">elmvec</var> to be used for nonlinear steps (because all three vectors return true for IsFFECollection).</p>
 
 
 <ul>
-<li><p><code class="code">RunFSR(<var class="Arg"> fsr[, num, pr] </var>)</code> - run <var class="Arg">fsr</var> for <var class="Arg">num</var>/<var class="Arg">threshold</var> steps with/without output</p>
+<li><p><code class="code">RunFSR(<var class="Arg"> fsr[, B, num, pr] </var>)</code> - run <var class="Arg">fsr</var> for <var class="Arg">num</var>/<var class="Arg">threshold</var> steps with/without output</p>
 
 </li>
-<li><p><code class="code">RunFSR(<var class="Arg"> fsr, ist[, num, pr] </var>)</code> - load <var class="Arg">fsr</var> with <var class="Arg">ist</var>, then run <var class="Arg">fsr</var> for <var class="Arg">num</var>/<var class="Arg">threshold</var> steps with/without output (ie. <em>linear</em> version)</p>
+<li><p><code class="code">RunFSR(<var class="Arg"> fsr, [B,] ist[, num, pr] </var>)</code> - load <var class="Arg">fsr</var> with <var class="Arg">ist</var>, then run <var class="Arg">fsr</var> for <var class="Arg">num-1</var>/<var class="Arg">threshold</var> steps with/without output (ie. <em>linear</em> version)</p>
 
 </li>
-<li><p><code class="code">RunFSR(<var class="Arg"> fsr, elm[, num, pr] </var>)</code> - load <var class="Arg">fsr</var> with <var class="Arg">ist</var>, then run <var class="Arg">fsr</var> for <var class="Arg">num</var>/<var class="Arg">threshold</var> steps, whereby the SAME element <var class="Arg">elm</var> is added to the feedback at each step, with/without output (ie. <em>non-linear</em> version)</p>
+<li><p><code class="code">RunFSR(<var class="Arg"> fsr, [B,] elm[, num, pr] </var>)</code> - run <var class="Arg">fsr</var> for <var class="Arg">num-1</var>/<var class="Arg">threshold</var> steps, whereby the SAME element <var class="Arg">elm</var> is added to the feedback at each step, with/without output (ie. <em>non-linear</em> version)</p>
 
 </li>
-<li><p><code class="code">RunFSR(<var class="Arg"> fsr, ist, elmvec[, num, pr] </var>)</code> - load <var class="Arg">fsr</var> with <var class="Arg">ist</var>, then run <var class="Arg">fsr</var> for <em>Length(<var class="Arg">elmvec</var>)</em> steps, whereby one element of <var class="Arg">elmvec</var> is added to the feedback at each step (starting with elmvec[1]), with/without output (ie. <em>non-linear</em> version)</p>
+<li><p><code class="code">RunFSR(<var class="Arg"> fsr, [B,] ist, elmvec[, pr] </var>)</code> - load <var class="Arg">fsr</var> with <var class="Arg">ist</var>, then run <var class="Arg">fsr</var> for <em>Length(<var class="Arg">elmvec</var>)</em> steps, whereby one element of <var class="Arg">elmvec</var> is added to the feedback at each step (starting with <var class="Arg">elmvec[1]</var>), with/without output (ie. <em>non-linear</em> version). NOTE: the sequence returned has length <em>Length(elmvec)+1</em>, because the zeroth sequence element is returned at the time of loading the <code class="code">FSR</code>.</p>
 
 </li>
 </ul>

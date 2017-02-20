@@ -77,29 +77,37 @@
   
   [1X3.1-6 RunFSR[101X
   
-  [29X[2XRunFSR[102X( [3Xfsr[103X[, [3Xist[103X][, [3Xnum[103X][, [3Xpr[103X] ) [32X method
+  [29X[2XRunFSR[102X( [3Xfsr[103X[, [3XB[103X, [3Xist[103X, [3Xnum[103X, [3Xpr[103X] ) [32X method
   
   [33X[0;0YThe  [3Xfsr[103X will be run for a certain ([3Xnum[103X or [3Xthreshold[103X) number of steps: there
   is a threshold value, currently set to 2^[13XLength([3Xfsr[103X)[113X + [13XLength([3Xfsr[103X)[113X, which is
   used  by  all  versions  without  explicit [3Xnum[103X and enforced when [3Xnum[103X exceeds
   [3Xthreshold[103X.  There  is  an  optional  printing switch [3Xpr[103X, with default set to
   [13Xfalse[113X; if [13Xtrue[113X then the state and the output sequence element(s) are printed
-  in [5XGAP[105X shell on every step of the [3Xfsr[103X (we call this output for [10XRunFSR[110X).[133X
+  in  [5XGAP[105X shell on every step of the [3Xfsr[103X (we call this output for [10XRunFSR[110X), and
+  the  given  basis [3XB[103X is used for representation of elements. Note that having
+  both a pint switch and a basis is redundant, however, the additional boolean
+  helps the method selection to distinguish between calls with basis and calls
+  with  both  initial  state  [3Xist[103X and the cvector of FFE elements [3Xelmvec[103X to be
+  used  for  nonlinear  steps  (because  all  three  vectors  return  true for
+  IsFFECollection).[133X
   
-  [30X    [33X[0;6Y[10XRunFSR([3X   fsr[,   num,  pr]  [103X[10X)[110X  -  run  [3Xfsr[103X  for  [3Xnum[103X/[3Xthreshold[103X  steps
+  [30X    [33X[0;6Y[10XRunFSR([3X  fsr[,  B,  num,  pr]  [103X[10X)[110X  -  run  [3Xfsr[103X  for [3Xnum[103X/[3Xthreshold[103X steps
         with/without output[133X
   
-  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  ist[,  num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run [3Xfsr[103X for
-        [3Xnum[103X/[3Xthreshold[103X steps with/without output (ie. [13Xlinear[113X version)[133X
+  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  [B,] ist[, num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run [3Xfsr[103X
+        for [3Xnum-1[103X/[3Xthreshold[103X steps with/without output (ie. [13Xlinear[113X version)[133X
   
-  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  elm[,  num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run [3Xfsr[103X for
-        [3Xnum[103X/[3Xthreshold[103X  steps,  whereby  the  SAME  element [3Xelm[103X is added to the
-        feedback at each step, with/without output (ie. [13Xnon-linear[113X version)[133X
+  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  [B,]  elm[,  num,  pr]  [103X[10X)[110X - run [3Xfsr[103X for [3Xnum-1[103X/[3Xthreshold[103X
+        steps,  whereby  the SAME element [3Xelm[103X is added to the feedback at each
+        step, with/without output (ie. [13Xnon-linear[113X version)[133X
   
-  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  ist,  elmvec[, num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run
+  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  [B,]  ist, elmvec[, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run
         [3Xfsr[103X  for  [13XLength([3Xelmvec[103X)[113X steps, whereby one element of [3Xelmvec[103X is added
-        to  the  feedback at each step (starting with elmvec[1]), with/without
-        output (ie. [13Xnon-linear[113X version)[133X
+        to  the  feedback at each step (starting with [3Xelmvec[1][103X), with/without
+        output  (ie.  [13Xnon-linear[113X  version).  NOTE:  the  sequence returned has
+        length  [13XLength(elmvec)+1[113X,  because  the  zeroth  sequence  element  is
+        returned at the time of loading the [10XFSR[110X.[133X
   
   [33X[0;0YNOTE:  for  the load and run versions, element seq[22X_0[122X is a part of the output
   sequence The ouput of [10XRunFSR[110X is:[133X

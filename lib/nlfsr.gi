@@ -94,17 +94,19 @@ fi;
 	indlist := []; 
 # get all the indeterminates in all monomials
 	for i in [1 .. Length(mlist)] do 
-		m := LeadingMonomial(mlist[i]);
-#		Print(m,"\n");
-		for j in [1..Length(m)] do 
-			if IsOddInt(j) then 
-				idx := m[j] - 1000;
-				if idx >= d then 
-					Error("Feedback needs an element from a stage that does not exist ( out of range) !!!"); 	return fail;
+		if IsPolynomial(mlist[i]) then # to account for case when we have constants 
+			m := LeadingMonomial(mlist[i]);
+	#		Print(m,"\n");
+			for j in [1..Length(m)] do 
+				if IsOddInt(j) then 
+					idx := m[j] - 800;
+					if idx >= d then 
+						Error("Feedback needs an element from a stage that does not exist ( out of range) !!!"); 	return fail;
+					fi;
+					Add(indlist, m[j] - 800 ); # get all the indeterminates in this monomial
 				fi;
-				Add(indlist, m[j] - 1000 ); # get all the indeterminates in this monomial
-			fi;
-		od;
+			od;
+		fi;
 	od;
 	
 	# get ridof duplicate indeces: DuplicateFreeList(
@@ -112,7 +114,7 @@ fi;
 #	Print(indlist,"\n");
 #	xlist :=[]; 
 #	for i in [1.. Length(indlist)] do
-#		Add(xlist,Indeterminate(F,1000+indlist[i]));
+#		Add(xlist,Indeterminate(F,800+indlist[i]));
 #	od;
 #	Print(xlist,"\n");		
 	
@@ -174,9 +176,9 @@ end);
 ##
 InstallMethod( ViewObj,    "for NLFSR",    true,    [ IsNLFSR ],    0,  function( x )
 	if x!.numsteps=-1 then 
-		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	else 	
-	Print("< NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "\n>");
+	Print("< NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	fi;
 end );
 
@@ -191,9 +193,9 @@ end );
 ##
 InstallOtherMethod( PrintObj,     "for NLFSR",    true,    [ IsNLFSR ],    0,  function( x )
 	if x!.numsteps=-1 then 
-		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	else 	
-		Print("< NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "\n>");
+		Print("< NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 		Print("\nwith initial state =");
 		Print(((x!.init))); # NOT reversed !!!! 
 		Print("\nwith current state =");
@@ -209,9 +211,9 @@ end );
 ##
 InstallMethod( PrintObj,     "for nLFSR",    true,    [IsBasis, IsNLFSR ],    0,  function( B, x )
 	if x!.numsteps=-1 then 
-		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	else 	
-		Print("< NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+		Print("< NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 		Print("\nwith initial state =");
 		Print((IntVecFFExt(B, x!.init))); # NOT reversed !!!! 
 		Print("\nwith current state =");
@@ -229,9 +231,9 @@ local uf, tap, i;
 
 	uf := UnderlyingField(x);
 	if x!.numsteps=-1 then 
-		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	else 	
-		Print("< NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+		Print("< NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	fi;
 	Print("with feedback coeff =");
 	Print((FeedbackVec(x))); # NOT reversed !!!!
@@ -265,9 +267,9 @@ local uf, tap, i;
 
 	uf := UnderlyingField(x);	
 	if x!.numsteps=-1 then 
-		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	else 	
-		Print("< NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x), ">\n");
+		Print("< NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	fi;
 	Print("with feedback coeff =");
 	Print(IntVecFFExt(B, FeedbackVec(x))); # NOT reversed !!!!

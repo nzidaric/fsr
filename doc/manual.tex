@@ -382,19 +382,22 @@ of loading the initial sequence elements (ie zeroth elements) are obtained and \
 \subsection{\textcolor{Chapter }{RunFSR (for an FSR)}}
 \logpage{[ 3, 1, 6 ]}\nobreak
 \hyperdef{L}{X7926D97381213BB2}{}
-{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{RunFSR({\mdseries\slshape fsr[, ist][, num][, pr]})\index{RunFSR@\texttt{RunFSR}!for an FSR}
+{\noindent\textcolor{FuncColor}{$\triangleright$\ \ \texttt{RunFSR({\mdseries\slshape fsr[, B, ist, num, pr]})\index{RunFSR@\texttt{RunFSR}!for an FSR}
 \label{RunFSR:for an FSR}
 }\hfill{\scriptsize (method)}}\\
 
 
  The \mbox{\texttt{\mdseries\slshape fsr}} will be run for a certain (\mbox{\texttt{\mdseries\slshape num}} or \mbox{\texttt{\mdseries\slshape threshold}}) number of steps: there is a threshold value, currently set to
-2\texttt{\symbol{94}}\emph{Length(\mbox{\texttt{\mdseries\slshape fsr}})} + \emph{Length(\mbox{\texttt{\mdseries\slshape fsr}})}, which is used by all versions without explicit \mbox{\texttt{\mdseries\slshape num}} and enforced when \mbox{\texttt{\mdseries\slshape num}} exceeds \mbox{\texttt{\mdseries\slshape threshold}}. There is an optional printing switch \mbox{\texttt{\mdseries\slshape pr}}, with default set to \emph{false}; if \emph{true} then the state and the output sequence element(s) are printed in \textsf{GAP} shell on every step of the \mbox{\texttt{\mdseries\slshape fsr}} (we call this output for \texttt{RunFSR}). 
+2\texttt{\symbol{94}}\emph{Length(\mbox{\texttt{\mdseries\slshape fsr}})} + \emph{Length(\mbox{\texttt{\mdseries\slshape fsr}})}, which is used by all versions without explicit \mbox{\texttt{\mdseries\slshape num}} and enforced when \mbox{\texttt{\mdseries\slshape num}} exceeds \mbox{\texttt{\mdseries\slshape threshold}}. There is an optional printing switch \mbox{\texttt{\mdseries\slshape pr}}, with default set to \emph{false}; if \emph{true} then the state and the output sequence element(s) are printed in \textsf{GAP} shell on every step of the \mbox{\texttt{\mdseries\slshape fsr}} (we call this output for \texttt{RunFSR}), and the given basis \mbox{\texttt{\mdseries\slshape B}} is used for representation of elements. Note that having both a pint switch
+and a basis is redundant, however, the additional boolean helps the method
+selection to distinguish between calls with basis and calls with both initial
+state \mbox{\texttt{\mdseries\slshape ist}} and the cvector of FFE elements \mbox{\texttt{\mdseries\slshape elmvec}} to be used for nonlinear steps (because all three vectors return true for
+IsFFECollection). 
 \begin{itemize}
-\item  \texttt{RunFSR(\mbox{\texttt{\mdseries\slshape  fsr[, num, pr] }})} - run \mbox{\texttt{\mdseries\slshape fsr}} for \mbox{\texttt{\mdseries\slshape num}}/\mbox{\texttt{\mdseries\slshape threshold}} steps with/without output
-\item  \texttt{RunFSR(\mbox{\texttt{\mdseries\slshape  fsr, ist[, num, pr] }})} - load \mbox{\texttt{\mdseries\slshape fsr}} with \mbox{\texttt{\mdseries\slshape ist}}, then run \mbox{\texttt{\mdseries\slshape fsr}} for \mbox{\texttt{\mdseries\slshape num}}/\mbox{\texttt{\mdseries\slshape threshold}} steps with/without output (ie. \emph{linear} version)
-\item  \texttt{RunFSR(\mbox{\texttt{\mdseries\slshape  fsr, elm[, num, pr] }})} - load \mbox{\texttt{\mdseries\slshape fsr}} with \mbox{\texttt{\mdseries\slshape ist}}, then run \mbox{\texttt{\mdseries\slshape fsr}} for \mbox{\texttt{\mdseries\slshape num}}/\mbox{\texttt{\mdseries\slshape threshold}} steps, whereby the SAME element \mbox{\texttt{\mdseries\slshape elm}} is added to the feedback at each step, with/without output (ie. \emph{non-linear} version)
-\item  \texttt{RunFSR(\mbox{\texttt{\mdseries\slshape  fsr, ist, elmvec[, num, pr] }})} - load \mbox{\texttt{\mdseries\slshape fsr}} with \mbox{\texttt{\mdseries\slshape ist}}, then run \mbox{\texttt{\mdseries\slshape fsr}} for \emph{Length(\mbox{\texttt{\mdseries\slshape elmvec}})} steps, whereby one element of \mbox{\texttt{\mdseries\slshape elmvec}} is added to the feedback at each step (starting with elmvec[1]), with/without
-output (ie. \emph{non-linear} version)
+\item  \texttt{RunFSR(\mbox{\texttt{\mdseries\slshape  fsr[, B, num, pr] }})} - run \mbox{\texttt{\mdseries\slshape fsr}} for \mbox{\texttt{\mdseries\slshape num}}/\mbox{\texttt{\mdseries\slshape threshold}} steps with/without output
+\item  \texttt{RunFSR(\mbox{\texttt{\mdseries\slshape  fsr, [B,] ist[, num, pr] }})} - load \mbox{\texttt{\mdseries\slshape fsr}} with \mbox{\texttt{\mdseries\slshape ist}}, then run \mbox{\texttt{\mdseries\slshape fsr}} for \mbox{\texttt{\mdseries\slshape num-1}}/\mbox{\texttt{\mdseries\slshape threshold}} steps with/without output (ie. \emph{linear} version)
+\item  \texttt{RunFSR(\mbox{\texttt{\mdseries\slshape  fsr, [B,] elm[, num, pr] }})} - run \mbox{\texttt{\mdseries\slshape fsr}} for \mbox{\texttt{\mdseries\slshape num-1}}/\mbox{\texttt{\mdseries\slshape threshold}} steps, whereby the SAME element \mbox{\texttt{\mdseries\slshape elm}} is added to the feedback at each step, with/without output (ie. \emph{non-linear} version)
+\item  \texttt{RunFSR(\mbox{\texttt{\mdseries\slshape  fsr, [B,] ist, elmvec[, pr] }})} - load \mbox{\texttt{\mdseries\slshape fsr}} with \mbox{\texttt{\mdseries\slshape ist}}, then run \mbox{\texttt{\mdseries\slshape fsr}} for \emph{Length(\mbox{\texttt{\mdseries\slshape elmvec}})} steps, whereby one element of \mbox{\texttt{\mdseries\slshape elmvec}} is added to the feedback at each step (starting with \mbox{\texttt{\mdseries\slshape elmvec[1]}}), with/without output (ie. \emph{non-linear} version). NOTE: the sequence returned has length \emph{Length(elmvec)+1}, because the zeroth sequence element is returned at the time of loading the \texttt{FSR}.
 \end{itemize}
  NOTE: for the load and run versions, element seq$_0$ is a part of the output sequence The ouput of \texttt{RunFSR} is: 
 \begin{itemize}

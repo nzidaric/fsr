@@ -81,11 +81,11 @@
   \item \texttt  {PeriodReducible}
     \subitem for an LFSR, \hyperpage{10}
   \item \texttt  {PrintAll}
-    \subitem for an LFSR, \hyperpage{10}
-    \subitem for an NLFSR, \hyperpage{12}
+    \subitem for an LFSR, \hyperpage{11}
+    \subitem for an NLFSR, \hyperpage{13}
   \item \texttt  {PrintObj}
-    \subitem for an LFSR, \hyperpage{10}
-    \subitem for an NLFSR, \hyperpage{12}
+    \subitem for an LFSR, \hyperpage{11}
+    \subitem for an NLFSR, \hyperpage{13}
 
   \indexspace
 
@@ -106,8 +106,8 @@
 
   \item \texttt  {VecToString}, \hyperpage{5}
   \item \texttt  {ViewObj}
-    \subitem for an LFSR, \hyperpage{10}
-    \subitem for an NLFSR, \hyperpage{12}
+    \subitem for an LFSR, \hyperpage{11}
+    \subitem for an NLFSR, \hyperpage{13}
 
   \indexspace
 
