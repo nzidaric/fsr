@@ -23,7 +23,8 @@ DeclareRepresentation( "IsNLFSRRep", IsComponentObjectRep and IsAttributeStoring
 ##  An empty <C>NLFSR</C>  with components <C>init</C>, <C>state</C> and <C>numsteps</C>
 ##  </Returns>	
 ##  <Description>
-##  Different ways to create an <C>NLFSR</C> oblject, main difference is in creation of the underlying finite field.
+##  Different ways to create an <C>NLFSR</C> oblject, main difference is in creation of the underlying finite field. <P/>
+##  NOTE: before creating the <C>NLFSR</C>, we must always create the indeterminates to be used for the feedback using <C>ChooseField</C> function call!!! please see example below <P/>
 ##  <P/>
 ##  Inputs:
 ##  <List>
@@ -37,7 +38,7 @@ DeclareRepresentation( "IsNLFSRRep", IsComponentObjectRep and IsAttributeStoring
 ##  </List>
 ##  NOTE: <A>clist</A>  and <A>mlist</A> must be of same length, all elements in <A>clist</A> must belong to the underlying field. Monomials in <A>mlist</A> 
 ##  must not include any indeterminates that are out of range specified by <A>len</A>: stages of <C>NLFSR</C>  are represented by indeterminants and the feedback is not allowed to use 
-##  a stage that doesnt exist. A second constraint on <A>mlist</A> requires that it must contain at least one monomial of degree $>$ 1, otherwise we must create an <C>LFSR</C>. <P/> 
+##  a stage that doesnt exist. A second constraint on <A>mlist</A> requires that it must contain at least one monomial of degree <M>></M> 1, otherwise we must create an <C>LFSR</C>. <P/> 
 ##  Compoents:
 ##  <List>
 ##  <Item> <C>init</C> - <A>FFE</A> vector of length n=deg(charpol), storing the initial state of the <C>NLFSR</C>, with indeces from n-1, ..., 0</Item> 
@@ -48,6 +49,23 @@ DeclareRepresentation( "IsNLFSRRep", IsComponentObjectRep and IsAttributeStoring
 ##  construction of an <C>NLFSR</C>. 
 ##  <P/>
 ##  If there is something wrong with the arguments (e.g. attempting to create an extension field using a reducible poynomial), an error message appears and the function returns <C>fail</C>.
+##  <Example>
+##  <![CDATA[
+##  gap>  F := GF(2);;  clist := [One(F), One(F)];; mlist := [x_0*x_1, x_2];;
+##  Error, Variable: 'x_0' must have a value
+##  not in any function at line 2 of *stdin*
+##  gap>  test := NLFSR(F, clist, mlist, 3);
+##  Error, Variable: 'mlist' must have a value
+##  not in any function at line 3 of *stdin*
+##  gap> ChooseField(F);
+##  You can now create an NLFSR with up to 100 stages
+##  with up to  100 nonzero terms
+##  gap> mlist := [x_0*x_1, x_2];;                                           
+##  gap>  test := NLFSR(F, clist, mlist, 3);
+##  < empty NLFSR of length 3,
+##   given by MultivarPoly = x_0*x_1+x_2> 
+##  ]]>
+##  </Example> 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -100,6 +118,14 @@ DeclareSynonym( "IsNLFSR", IsFSR and IsNonLinearFeedback);
 ##  and <C>FeedbackVec</C> holds only the nonzero coefficients (as opposed to the <C>LFSR</C>, where 
 ##  this field holds coefficients for all stages of the <C>FSR</C>). The feedback element is computed from 
 ##  <C>MultivarPoly</C>, <C>IndetList</C> and <C>state</C>, and not from <C>FeedbackVec</C>.
+##  <Example>
+##  <![CDATA[
+##  gap> MultivarPoly(test); IndetList(test);
+##  x_0*x_1+x_2
+##  [ 0, 1, 2 ]
+##  ]]>
+##  </Example> 
+
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -117,9 +143,9 @@ DeclareAttribute( "IndetList", IsNLFSR );
 ##
 ##  <#GAPDoc Label="ViewObjNLFSR">
 ##  <ManSection>
-##  <Meth Name="ViewObj" Arg='[B,] nlfsr' />
-##  <Meth Name="PrintObj" Arg='[B,] nlfsr'/>
-##  <Meth Name="PrintAll" Arg='[B,] nlfsr'/>
+##  <Meth Name="ViewObj" Arg='nlfsr  ' />
+##  <Meth Name="PrintObj" Arg='nlfsr [,B] ' />
+##  <Meth Name="PrintAll" Arg='nlfsr [,B] ' />
 ##
 ##  <Description>
 ##  Different detail on <A>nlfsr</A> created by <Ref Func="NLFSR" />:
@@ -129,15 +155,29 @@ DeclareAttribute( "IndetList", IsNLFSR );
 ##  <Item> <C>PrintAll</C>: same as <C>Print</C> if <A>nlfsr</A> is empty, otherwise it also shows the values of the three components <C>init</C>, <C>state</C> and <C>numsteps</C> 
 ##  with additional information about the underlying field and the tap positions</Item>
 ##  </List> 
-##  Can be used with optional parameter basis <A>B</A> for desiered output format. 
+##  Both <C>Print</C> and <C>PrintAll</C> can be used with optional parameter basis <A>B</A> for desiered output format.
+##  <Example>
+##  <![CDATA[
+##  gap> Display(test);                                      
+##  < empty NLFSR of length 3,
+##   given by MultivarPoly = x_0*x_1+x_2> 
+##  gap> PrintAll(test, Basis(UnderlyingField(test)));
+##  < empty NLFSR of length 3,
+##   given by MultivarPoly = x_0*x_1+x_2>
+##  with initial state  =[ [ 0 ], [ 0 ], [ 0 ] ]
+##  with current state  =[ [ 0 ], [ 0 ], [ 0 ] ]
+##  after initialization 
+##  with output from stage S_0
+##  ]]>
+##  </Example> 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
 
 DeclareOperation("PrintObj", [IsNLFSR]);
-DeclareOperation("PrintObj", [IsBasis, IsNLFSR]);
+DeclareOperation("PrintObj", [IsNLFSR, IsBasis]);
 DeclareOperation("PrintAll", [IsNLFSR]);
-DeclareOperation("PrintAll", [IsBasis, IsNLFSR]);
+DeclareOperation("PrintAll", [IsNLFSR, IsBasis]);
 
 
 

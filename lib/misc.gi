@@ -107,7 +107,7 @@ local newlist, i;
 		newlist := [];
 		for i in [1..Length(mon)] do
 		
-			if IsPolynomial(mlist[i]) then
+			if IsPolynomial(mon[i]) then
 				newlist[i] := MonomialsOverField(K, mon[i]);
 			else 
 				newlist[i] := mon[i];   # to account for case when we have constants 

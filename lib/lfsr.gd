@@ -176,9 +176,9 @@ DeclareAttribute( "Period", IsLFSR );
 ##
 ##  <#GAPDoc Label="ViewObjLFSR">
 ##  <ManSection>
-##  <Meth Name="ViewObj" Arg='[B,] lfsr' />
-##  <Meth Name="PrintObj" Arg='[B,] lfsr'/>
-##  <Meth Name="PrintAll" Arg='[B,] lfsr' />
+##  <Meth Name="ViewObj" Arg='lfsr  ' />
+##  <Meth Name="PrintObj" Arg='lfsr [,B] ' />
+##  <Meth Name="PrintAll" Arg='lfsr [,B] ' />
 ##
 ##  <Description>
 ##  Different detail on the <A>lfsr</A> created by <Ref Func="LFSR" />:
@@ -186,18 +186,59 @@ DeclareAttribute( "Period", IsLFSR );
 ##  <Item> <C>Display/View</C>:  show the <C>CharPoly</C> and wheter or not the <A>lsfr</A> is empty</Item>
 ##  <Item> <C>Print</C>: same as <C>Display/View</C> if <A>lsfr</A> is empty, otherwise it also shows the values of the three components <C>init</C>, <C>state</C> and <C>numsteps</C></Item>
 ##  <Item> <C>PrintAll</C>: same as <C>Print</C> if <A>lsfr</A> is empty, otherwise it also shows the values of the three components <C>init</C>, <C>state</C> and <C>numsteps</C> 
-##  with additional information about the underlying field and the tap positions</Item>
+##  with additional information about the underlying field and the tap positions.  </Item>
 ##  </List> 
-##  Can be used with optional parameter basis <A>B</A> for desiered output format. 
+##  Both <C>Print</C> and <C>PrintAll</C> can be used with optional parameter basis <A>B</A> for desiered output format.
+##  Below are examples of output
+##  <Example>
+##  <![CDATA[
+##  gap> K := GF(2);; x := X(K, "x");;
+##  gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
+##  gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
+##  gap> test := LFSR(K, f, l);;
+##  gap> Print(test);           
+##  Empty LFSR given by CharPoly = y^4+y+Z(2^4)
+##  gap> LoadFSR(test, ist);
+##  Z(2)^0
+##  gap> Print(test);           
+##  LFSR given by CharPoly = y^4+y+Z(2^4)
+##  
+##  with initial state =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
+##  with current state =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
+##  after  0 steps
+##  gap> RunFSR(test,5);
+##  [ Z(2^2), Z(2^4), 0*Z(2), Z(2^4)^2, Z(2^4)^11 ]
+##  gap> Print(test);   
+##  LFSR given by CharPoly = y^4+y+Z(2^4)
+##  with initial state =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
+##  with current state =[ Z(2^2), Z(2^4)^2, Z(2^4)^2, Z(2^4)^11 ]
+##  after  5 steps
+##  gap> PrintAll(test);
+##  LFSR over GF(2^4)  given by CharPoly = y^4+y+Z(2^4)
+##  with feedback coeff =[ 0*Z(2), 0*Z(2), Z(2)^0, Z(2^4) ]
+##  with initial state  =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
+##  with current state  =[ Z(2^2), Z(2^4)^2, Z(2^4)^2, Z(2^4)^11 ]
+##  after 5 steps
+##  with output from stage S_0
+##  gap> PrintAll(test, B);
+##  LFSR over GF(2^4) defined by FieldPoly=x^4+x^3+Z(2)^0  given by CharPoly = y^4+y+Z(2^4)
+##  with feedback coeff =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 0, 0, 0 ], [ 0, 1, 1, 0 ] ]
+##  with initial state  =[ [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ], [ 1, 0, 0, 0 ] ]
+##  with current state  =[ [ 1, 1, 0, 1 ], [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ], [ 0, 1, 1, 1 ] ]
+##  after 5 steps
+##  with output from stage S_0
+##  ]]>
+##  </Example> 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
 ##
 DeclareOperation("PrintObj", [IsLFSR]);
-DeclareOperation("PrintObj", [IsBasis, IsLFSR]);
+DeclareOperation("PrintObj", [IsLFSR, IsBasis]);
 DeclareOperation("PrintAll", [IsLFSR]);
-DeclareOperation("PrintAll", [IsBasis, IsLFSR]);
-
+DeclareOperation("PrintAll", [IsLFSR, IsBasis, ]);
+# swapped the order of inputs coz lfsr is bigger input than basis!!!! 
+# FIX tet files !!! 
 
 
 

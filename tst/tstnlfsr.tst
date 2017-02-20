@@ -9,7 +9,7 @@ gap> nl := NLFSR(F, clist, mlist, 3);
 gap> ist := [One(F),Zero(F),Zero(F)];; LoadFSR(nl,ist);;
 gap> PrintAll(nl);
 < NLFSR of length 3 over GF(2),
- given by MultivarPoly = x_0*x_1+x_2> with feedback coeff =[ Z(2)^0, Z(2)^0 ]
+ given by MultivarPoly = x_0*x_1+x_2> 
 with initial state  =[ Z(2)^0, 0*Z(2), 0*Z(2) ]
 with current state  =[ Z(2)^0, 0*Z(2), 0*Z(2) ]
 after loading
@@ -165,8 +165,7 @@ gap> nl := NLFSR(K, f,  clist, mlist, 4, 2);
  given by MultivarPoly = x_1^5+x_1*x_2*x_3+Z(2^4)^7*x_0+Z(2)^0> 
 gap> PrintAll(nl);
 < empty NLFSR of length 4,
- given by MultivarPoly = x_1^5+x_1*x_2*x_3+Z(2^4)^7*x_0+Z(2)^0> with feedback coeff =
-[ Z(2^4)^7, Z(2)^0, Z(2)^0, Z(2)^0 ]
+ given by MultivarPoly = x_1^5+x_1*x_2*x_3+Z(2^4)^7*x_0+Z(2)^0> 
 with initial state  =[ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ]
 with current state  =[ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ]
 after initialization 

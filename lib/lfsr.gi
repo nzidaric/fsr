@@ -269,7 +269,7 @@ end );
 ##
 #M  PrintObj( <lfsr> ) . . . . . . . . . . . . . . . . .
 ##
-InstallMethod( PrintObj,     "for LFSR",    true,    [IsBasis, IsLFSR ],    0,  function( B, x )
+InstallMethod( PrintObj,     "for LFSR",    true,    [ IsLFSR, IsBasis ],    0,  function(  x, B )
 	if x!.numsteps=-1 then 
 		Print("Empty LFSR given by CharPoly = ", CharPoly(x), "\n");
 	else 	
@@ -321,9 +321,9 @@ end );
 
 #############################################################################
 ##
-#M  PrintAll( <B>,<lfsr> ) . . . . . . . . . . . . . . . . . . view a GF2 vector
+#M  PrintAll( <lfsr>, <B> ) . . . . . . . . . . . . . . . . . . view a GF2 vector
 ##
-InstallMethod( PrintAll,     "for LFSR",    true,    [ IsBasis, IsLFSR ],    0,  function( B , x )
+InstallMethod( PrintAll,     "for LFSR",    true,    [ IsLFSR, IsBasis ],    0,  function(  x, B )
 local uf, tap, i;
 
 	if FieldPoly(x) = 1 then 

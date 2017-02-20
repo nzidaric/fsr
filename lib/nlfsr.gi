@@ -209,7 +209,7 @@ end );
 ##
 #M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .
 ##
-InstallMethod( PrintObj,     "for nLFSR",    true,    [IsBasis, IsNLFSR ],    0,  function( B, x )
+InstallMethod( PrintObj,     "for nLFSR",    true,    [IsNLFSR,  IsBasis ],    0,  function( x, B )
 	if x!.numsteps=-1 then 
 		Print("< empty NLFSR of length ",Length(x),",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	else 	
@@ -235,8 +235,7 @@ local uf, tap, i;
 	else 	
 		Print("< NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	fi;
-	Print("with feedback coeff =");
-	Print((FeedbackVec(x))); # NOT reversed !!!!
+
 	Print("\nwith initial state  =");
 	Print(((x!.init))); # NOT reversed !!!!
 	Print("\nwith current state  =");
@@ -262,7 +261,7 @@ end );
 ##
 #M  PrintAll( <B>,<nlfsr> ) . . . . . . . as binary vectors in a given basis
 ##
-InstallMethod( PrintAll,     "for NLFSR",    true,    [ IsBasis, IsNLFSR ],    0,  function( B , x )
+InstallMethod( PrintAll,     "for NLFSR",    true,    [IsNLFSR,  IsBasis ],    0,  function( x, B )
 local uf, tap, i;
 
 	uf := UnderlyingField(x);	
@@ -271,8 +270,7 @@ local uf, tap, i;
 	else 	
 		Print("< NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	fi;
-	Print("with feedback coeff =");
-	Print(IntVecFFExt(B, FeedbackVec(x))); # NOT reversed !!!!
+
 	Print("\nwith initial state  =");
 	Print((IntVecFFExt(B, x!.init))); # NOT reversed !!!!
 	Print("\nwith current state  =");

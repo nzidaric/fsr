@@ -28,40 +28,40 @@
 \makelabel{fsr:WriteMatrixTEX}{2.1.5}{X7C88DF8385B5C384}
 \makelabel{fsr:fsr}{3.1}{X7D5E0FF97CA51E2E}
 \makelabel{fsr:IsFSR}{3.1.1}{X867B95117FAEC3E6}
-\makelabel{fsr:FieldPoly (FieldPoly)}{3.1.2}{X83EC632C826A7CAB}
-\makelabel{fsr:UnderlyingField (UnderlyingField)}{3.1.2}{X83EC632C826A7CAB}
-\makelabel{fsr:FeedbackVec (FeedbackVec)}{3.1.2}{X83EC632C826A7CAB}
-\makelabel{fsr:OutputTap (OutputTap)}{3.1.2}{X83EC632C826A7CAB}
-\makelabel{fsr:Length (for an FSR)}{3.1.3}{X8246C2AF80A0F0E9}
-\makelabel{fsr:InternalStateSize (for an FSR)}{3.1.3}{X8246C2AF80A0F0E9}
-\makelabel{fsr:LoadFSR (for an FSR)}{3.1.4}{X81B15596784EC6D5}
-\makelabel{fsr:StepFSR (for an FSR)}{3.1.5}{X87B3D9AD878A0C32}
-\makelabel{fsr:RunFSR (for an FSR)}{3.1.6}{X7926D97381213BB2}
+\makelabel{fsr:FieldPoly}{3.1.2}{X828F246B82428CC9}
+\makelabel{fsr:UnderlyingField}{3.1.2}{X828F246B82428CC9}
+\makelabel{fsr:FeedbackVec}{3.1.2}{X828F246B82428CC9}
+\makelabel{fsr:OutputTap}{3.1.2}{X828F246B82428CC9}
+\makelabel{fsr:Length}{3.1.3}{X780769238600AFD1}
+\makelabel{fsr:InternalStateSize}{3.1.3}{X780769238600AFD1}
+\makelabel{fsr:LoadFSR}{3.1.4}{X7F800DCF810E2532}
+\makelabel{fsr:StepFSR}{3.1.5}{X82A7CA487ECAEFD5}
+\makelabel{fsr:RunFSR}{3.1.6}{X86AAB63D8781648A}
 \makelabel{fsr:LFSR}{3.2.1}{X8099A9DC86E0B078}
 \makelabel{fsr:LFSR}{3.2.1}{X8099A9DC86E0B078}
 \makelabel{fsr:LFSR}{3.2.1}{X8099A9DC86E0B078}
 \makelabel{fsr:LFSR}{3.2.1}{X8099A9DC86E0B078}
-\makelabel{fsr:IsLinearFeedback (for an LFSR)}{3.2.2}{X838DA9E4839822E6}
-\makelabel{fsr:IsLFSR (for an LFSR)}{3.2.2}{X838DA9E4839822E6}
-\makelabel{fsr:CharPoly (for an LFSR)}{3.2.3}{X7DC75BE47BA3F4BE}
-\makelabel{fsr:IsPeriodic (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
-\makelabel{fsr:IsUltPeriodic (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
-\makelabel{fsr:IsMaxSeqLFSR (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
-\makelabel{fsr:Period (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
-\makelabel{fsr:PeriodIrreducible (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
-\makelabel{fsr:PeriodReducible (for an LFSR)}{3.2.4}{X823B75F984A72E7A}
-\makelabel{fsr:ViewObj (for an LFSR)}{3.2.5}{X82E35D2083529319}
-\makelabel{fsr:PrintObj (for an LFSR)}{3.2.5}{X82E35D2083529319}
-\makelabel{fsr:PrintAll (for an LFSR)}{3.2.5}{X82E35D2083529319}
-\makelabel{fsr:ChooseField (for a given field)}{3.3.1}{X8040B069804A223A}
+\makelabel{fsr:IsLinearFeedback}{3.2.2}{X80DF9A3D7B1E3E92}
+\makelabel{fsr:IsLFSR}{3.2.2}{X80DF9A3D7B1E3E92}
+\makelabel{fsr:CharPoly}{3.2.3}{X7D4D9DCC7B4BE3ED}
+\makelabel{fsr:IsPeriodic}{3.2.4}{X81AC5D2D832C346A}
+\makelabel{fsr:IsUltPeriodic}{3.2.4}{X81AC5D2D832C346A}
+\makelabel{fsr:IsMaxSeqLFSR}{3.2.4}{X81AC5D2D832C346A}
+\makelabel{fsr:Period}{3.2.4}{X81AC5D2D832C346A}
+\makelabel{fsr:PeriodIrreducible}{3.2.4}{X81AC5D2D832C346A}
+\makelabel{fsr:PeriodReducible}{3.2.4}{X81AC5D2D832C346A}
+\makelabel{fsr:ViewObj}{3.2.5}{X815BF22186FD43C9}
+\makelabel{fsr:PrintObj}{3.2.5}{X815BF22186FD43C9}
+\makelabel{fsr:PrintAll}{3.2.5}{X815BF22186FD43C9}
+\makelabel{fsr:ChooseField}{3.3.1}{X824D14CF818525B2}
 \makelabel{fsr:NLFSR}{3.3.2}{X7DDE3CAC7A9D2A55}
 \makelabel{fsr:NLFSR}{3.3.2}{X7DDE3CAC7A9D2A55}
-\makelabel{fsr:IsNonLinearFeedback (for an NLFSR)}{3.3.3}{X8567C55480B968AB}
-\makelabel{fsr:IsNLFSR (for an NLFSR)}{3.3.3}{X8567C55480B968AB}
-\makelabel{fsr:MultivarPoly (for an NLFSR)}{3.3.4}{X840B27137E4B68C9}
-\makelabel{fsr:IndetList (for an NLFSR)}{3.3.4}{X840B27137E4B68C9}
-\makelabel{fsr:ViewObj (for an NLFSR)}{3.3.5}{X836CA53B872FD8B6}
-\makelabel{fsr:PrintObj (for an NLFSR)}{3.3.5}{X836CA53B872FD8B6}
-\makelabel{fsr:PrintAll (for an NLFSR)}{3.3.5}{X836CA53B872FD8B6}
+\makelabel{fsr:IsNonLinearFeedback}{3.3.3}{X7E493B9784FCFF58}
+\makelabel{fsr:IsNLFSR}{3.3.3}{X7E493B9784FCFF58}
+\makelabel{fsr:MultivarPoly}{3.3.4}{X7C6FCBDC82C3734E}
+\makelabel{fsr:IndetList}{3.3.4}{X7C6FCBDC82C3734E}
+\makelabel{fsr:ViewObj}{3.3.5}{X815BF22186FD43C9}
+\makelabel{fsr:PrintObj}{3.3.5}{X815BF22186FD43C9}
+\makelabel{fsr:PrintAll}{3.3.5}{X815BF22186FD43C9}
 \makelabel{fsr:MonomialsOverField (for an NLFSR)}{4.1.1}{X7CF7FC2182FEA652}
 \makelabel{fsr:DegreeOfPolynomial (DegreeOfPolynomial)}{4.1.2}{X85A860DA845F6090}
