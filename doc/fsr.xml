@@ -11,12 +11,11 @@
 <#Include Label="IsFSR">
 <#Include Label="FieldPoly">
 <#Include Label="Length">
+<#Include Label="ChangeBasis">
+
 <#Include Label="LoadFSR">
 <#Include Label="StepFSR">
 <#Include Label="RunFSR">
-
-
-
 
 </Section>
 

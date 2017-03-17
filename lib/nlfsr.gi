@@ -15,7 +15,7 @@
 InstallGlobalFunction( NLFSR,  function(arg)
 
 local K, F, multpol, fieldpol, clist, mlist, m, n, tap, y,	# for args
-    fam, fb, st, coefs, nlfsr, d, i, j , idx, indlist, xlist, slist , mof, lin;	# for constructor
+    fam, fb, st, coefs, nlfsr, d, i, j , idx, indlist, xlist, slist , mof, lin, basis;	# for constructor
 
 # figure out which constructor is being used
 
@@ -147,7 +147,7 @@ fi;
 	od;	
 # new LFSR :) 
 	fam :=FSRFamily(Characteristic(K));
-	nlfsr := Objectify(NewType(fam, IsNLFSRRep),   rec(init:=st, state:= st, numsteps := -1));
+	nlfsr := Objectify(NewType(fam, IsNLFSRRep),   rec(init:=st, state:= st, numsteps := -1, basis := CanonicalBasis(F)));
 
 	SetFieldPoly(nlfsr,fieldpol);
 	SetUnderlyingField(nlfsr,F);

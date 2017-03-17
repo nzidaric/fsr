@@ -20,12 +20,12 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 #F  LFSR( <p>, <m>, <n>, <tap>  )					
 ##  <#GAPDoc Label="LFSR">
 ##  <ManSection>
-##  <Func Name="LFSR" Arg="F, charpol [, tap]"/>
-##  <Func Name="LFSR" Arg="K, fieldpol, charpol [, tap]"/>
-##  <Func Name="LFSR" Arg="F, charpol [, tap]"/>
+##  <Func Name="LFSR" Arg="F, charpol [, B, tap]"/>
+##  <Func Name="LFSR" Arg="K, fieldpol, charpol [, B, tap]"/>
+##  <Func Name="LFSR" Arg="F, charpol [, B, tap]"/>
 ##  <Func Name="LFSR" Arg="p, m, n [, tap]"/>
 ##  <Returns>
-##  An empty <C>LFSR</C> with components <C>init</C>, <C>state</C> and <C>numsteps</C>
+##  An empty <C>LFSR</C> with components <C>init</C>, <C>state</C> , <C>numsteps</C> and <C>basis</C>
 ##  </Returns>	
 ##  <Description>
 ##  Different ways to create an <C>LFSR</C>  oblject, main difference is in creation of the underlying finite field.
@@ -33,6 +33,7 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 ##  Inputs:
 ##  <List>
 ##  <Item> <A>F</A> - the underlying finite field (either an extension field or a prime field)</Item>
+##  <Item> <A>B</A> - basis of F over its prime subfield</Item>
 ##  <Item> <A>charpol</A> - <C>LFSR</C> dfining polynomial </Item>
 ##  <Item> <A>fieldpol</A> - defifning polynomial of the extension field (must be irreducible)</Item>
 ##  <Item> <A>p</A> - characteeristic </Item>
@@ -46,12 +47,13 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 ##  <Item> <C>init</C> - <A>FFE</A> vector of length n=deg(charpol), storing the initial state of the <C>LFSR</C>, with indeces from n-1, ..., 0</Item> 
 ##  <Item> <C>state</C> - <A>FFE</A> vector of length n=deg(charpol), storing the current state of the <C>LFSR</C>, with indeces from n-1, ..., 0</Item> 
 ##  <Item> <C>numsteps</C> - the number of steps performed thus far (initialized to -1 when created, set to 0 when loaded using <Ref Meth="LoadFSR" /> and incremented by 1 with each step (using <Ref Meth="StepFSR" />)) </Item>
+##  <Item> <C>basis</C> - basis of F over its prime subfield (if no basis is given this field is set to canonical basis of F over its prime subfield) </Item>
 ##  </List>
 ##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingFied" />, <C>CharPoly</C>, <Ref Attr="FeedbackVec" />, <Ref Attr="Length" /> and <Ref Attr="OutputTap" />  and the property <C>IsLinearFeedback</C> are set during the 
 ##  construction of an<C>LFSR</C>. 
 ##  <P/>
 ##  If there is something wrong with the arguments (e.g. attempting to create an extension field using a reducible poynomial), an error message appears and the function returns <C>fail</C>.<P/>
-##  Example below shows how to create an empty <C>LFSR</C> over <M>F_{2^4}</M> created as extension of <M>F_2</M>, called <E>test</E>:
+##  Example below shows how to create an empty <C>LFSR</C> over <M>F_{2^4}</M> created as extension of <M>F_2</M>, called <E>test</E>, firstly without a specified basis, and then with basis <A>B</A>:
 ##  <Example>
 ##  <![CDATA[
 ##  gap> K := GF(2);; x := X(K, "x");;
@@ -59,6 +61,13 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 ##  gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
 ##  gap> test := LFSR(K, f, l);
 ##  < empty LFSR given by CharPoly = y^4+y+Z(2^4)>
+##  gap> WhichBasis(test);
+##  CanonicalBasis( GF(2^4) )
+##  gap> B := Basis(F, Conjugates(Z(2^4)^3));;  
+##  gap> test := LFSR(K, f, l, B);
+##  < empty LFSR given by CharPoly = y^4+y+Z(2^4)>
+##  gap> WhichBasis(test);        
+##  Basis( GF(2^4), [ Z(2^4)^3, Z(2^4)^6, Z(2^4)^12, Z(2^4)^9 ] )
 ##  ]]>
 ##  </Example> 
 
@@ -163,7 +172,8 @@ DeclareProperty( "IsPeriodic", IsLFSR ); # if  constant term of CharPoly <> 0 (8
 DeclareSynonym( "IsUltPeriodic", IsLFSR ); # if LSFR then always ult.per.   (8.7 lidl, niederreiter)	
 DeclareProperty("IsMaxSeqLFSR",  IsLFSR); # if CharPoly primitive (find ref)
 DeclareOperation("PeriodIrreducible",  [IsField, IsUnivariatePolynomial, IsPosInt]);
-DeclareOperation("PeriodReducible",  [IsField, IsUnivariatePolynomial, IsPosInt]);
+DeclareOperation("PeriodIrreducible",  [IsField, IsUnivariatePolynomial]);
+DeclareOperation("PeriodReducible",  [IsField, IsUnivariatePolynomial]);
 DeclareAttribute( "Period", IsLFSR );
 
 
@@ -177,32 +187,32 @@ DeclareAttribute( "Period", IsLFSR );
 ##  <#GAPDoc Label="ViewObjLFSR">
 ##  <ManSection>
 ##  <Meth Name="ViewObj" Arg='lfsr  ' />
-##  <Meth Name="PrintObj" Arg='lfsr [,B] ' />
-##  <Meth Name="PrintAll" Arg='lfsr [,B] ' />
+##  <Meth Name="PrintObj" Arg='lfsr [,b] ' />
+##  <Meth Name="PrintAll" Arg='lfsr [,b] ' />
 ##
 ##  <Description>
 ##  Different detail on the <A>lfsr</A> created by <Ref Func="LFSR" />:
 ##  <List>
 ##  <Item> <C>Display/View</C>:  show the <C>CharPoly</C> and wheter or not the <A>lsfr</A> is empty</Item>
-##  <Item> <C>Print</C>: same as <C>Display/View</C> if <A>lsfr</A> is empty, otherwise it also shows the values of the three components <C>init</C>, <C>state</C> and <C>numsteps</C></Item>
-##  <Item> <C>PrintAll</C>: same as <C>Print</C> if <A>lsfr</A> is empty, otherwise it also shows the values of the three components <C>init</C>, <C>state</C> and <C>numsteps</C> 
+##  <Item> <C>Print</C>: same as <C>Display/View</C> if <A>lsfr</A> is empty, otherwise it also shows the values of the four components <C>init</C>, <C>state</C> , <C>numsteps</C> and <C>basis</C></Item>
+##  <Item> <C>PrintAll</C>: same as <C>Print</C> if <A>lsfr</A> is empty, otherwise it also shows the values of the four components <C>init</C>, <C>state</C> , <C>numsteps</C> and <C>basis</C> 
 ##  with additional information about the underlying field and the tap positions.  </Item>
 ##  </List> 
-##  Both <C>Print</C> and <C>PrintAll</C> can be used with optional parameter basis <A>B</A> for desiered output format.
+##  Both <C>Print</C> and <C>PrintAll</C> can be used with optional boolean parameter <A>b</A> for desiered output format. When <A>b</A> is true, all the fields will be represented in currently set basis. 
 ##  Below are examples of output
 ##  <Example>
 ##  <![CDATA[
 ##  gap> K := GF(2);; x := X(K, "x");;
-##  gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
+##  gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; 
 ##  gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
 ##  gap> test := LFSR(K, f, l);;
 ##  gap> Print(test);           
 ##  Empty LFSR given by CharPoly = y^4+y+Z(2^4)
-##  gap> LoadFSR(test, ist);
+##  gap> ist := [ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ];; LoadFSR(test, ist);
 ##  Z(2)^0
-##  gap> Print(test);           
+##  gap> Print(test);                         
 ##  LFSR given by CharPoly = y^4+y+Z(2^4)
-##  
+##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
 ##  with initial state =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
 ##  with current state =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
 ##  after  0 steps
@@ -210,21 +220,28 @@ DeclareAttribute( "Period", IsLFSR );
 ##  [ Z(2^2), Z(2^4), 0*Z(2), Z(2^4)^2, Z(2^4)^11 ]
 ##  gap> Print(test);   
 ##  LFSR given by CharPoly = y^4+y+Z(2^4)
+##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
 ##  with initial state =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
 ##  with current state =[ Z(2^2), Z(2^4)^2, Z(2^4)^2, Z(2^4)^11 ]
 ##  after  5 steps
 ##  gap> PrintAll(test);
 ##  LFSR over GF(2^4)  given by CharPoly = y^4+y+Z(2^4)
+##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
 ##  with feedback coeff =[ 0*Z(2), 0*Z(2), Z(2)^0, Z(2^4) ]
 ##  with initial state  =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
 ##  with current state  =[ Z(2^2), Z(2^4)^2, Z(2^4)^2, Z(2^4)^11 ]
 ##  after 5 steps
 ##  with output from stage S_0
-##  gap> PrintAll(test, B);
-##  LFSR over GF(2^4) defined by FieldPoly=x^4+x^3+Z(2)^0  given by CharPoly = y^4+y+Z(2^4)
-##  with feedback coeff =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 0, 0, 0 ], [ 0, 1, 1, 0 ] ]
-##  with initial state  =[ [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ], [ 1, 0, 0, 0 ] ]
-##  with current state  =[ [ 1, 1, 0, 1 ], [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ], [ 0, 1, 1, 1 ] ]
+##  gap>  PrintAll(test, true);
+##  LFSR over GF(2^4) defined by FieldPoly=x^4+x^3+Z(2)^0  given by CharPoly = y^4\
+##  +y+Z(2^4)
+##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
+##  with feedback coeff =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 0, 0, 0 ], 
+##    [ 0, 1, 1, 0 ] ]
+##  with initial state  =[ [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ], 
+##    [ 1, 0, 0, 0 ] ]
+##  with current state  =[ [ 1, 1, 0, 1 ], [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ], 
+##    [ 0, 1, 1, 1 ] ]
 ##  after 5 steps
 ##  with output from stage S_0
 ##  ]]>
@@ -234,9 +251,9 @@ DeclareAttribute( "Period", IsLFSR );
 ##  <#/GAPDoc>
 ##
 DeclareOperation("PrintObj", [IsLFSR]);
-DeclareOperation("PrintObj", [IsLFSR, IsBasis]);
+DeclareOperation("PrintObj", [IsLFSR, IsBool]);
 DeclareOperation("PrintAll", [IsLFSR]);
-DeclareOperation("PrintAll", [IsLFSR, IsBasis, ]);
+DeclareOperation("PrintAll", [IsLFSR, IsBool ]);
 # swapped the order of inputs coz lfsr is bigger input than basis!!!! 
 # FIX tet files !!! 
 

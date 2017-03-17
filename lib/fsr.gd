@@ -124,6 +124,31 @@ DeclareAttribute( "OutputTap", IsFSR );
 DeclareAttribute( "Length", IsFSR );
 DeclareAttribute( "InternalStateSize", IsFSR );
 
+
+#############################################################################
+##
+#M  ChangeBasis( <fsr>, <B> )
+#M  WhichBasis( <fsr> )
+##
+##  <#GAPDoc Label="ChangeBasis">
+##  <ManSection>
+##  <Meth Name="ChangeBasis" Arg='fsr, B' />
+##  <Meth Name="WhichBasis" Arg='fsr' />
+##
+##  <Description>
+##  <C>ChangeBasis</C> allows changing the basis of the <A>fsr</A> to basis <A>B</A>. Basis B must be given for 
+##  <C>UnderlyingField(fsr)</C> over its prime subfield. <P/>
+##  <C>WhichBasis</C> returns the basis currently set for the  <A>fsr</A>. Elements in the <A>fsr</A> state are still 
+##  represented in &GAP native representation, but the functions with basis switch turned on will print the elements w.r.t to
+##  currently set basis.  
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+##
+DeclareOperation("ChangeBasis", [IsFSR,  IsBasis]);
+DeclareOperation("WhichBasis", [IsFSR]);
+
+
 #############################################################################
 ##
 #M  LoadFSR( <fsr>, <ist> )

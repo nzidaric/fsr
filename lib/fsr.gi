@@ -94,11 +94,41 @@ end);
 
 #############################################################################
 ##
+#O  ChangeBasis( <fsr>, <B> )
+##
+##  identical for both lfsr and nlfsr 
+##
+InstallMethod(ChangeBasis, "change the basis underlying field of the FSR", [IsFSR,  IsBasis], function(x, B)
+
+	if DegreeOverPrimeField(UnderlyingField(x)) = Length(B) then 
+		x!.basis := B;
+	else 
+		Error( "basis does not match the field" );		return fail;
+	fi;
+	return true;
+end);
+
+
+#############################################################################
+##
+#O  WhichBasis( <fsr> )
+##
+##  identical for both lfsr and nlfsr 
+##
+InstallMethod(WhichBasis, "which basis is currently set ?", [IsFSR], function(x)
+	return x!.basis;
+end);
+
+
+
+
+#############################################################################
+##
 #O  LoadFSR( <lfsr>, <ist> )
 ##
 ##  almost identical for both 
 ##
-InstallMethod(LoadFSR, "one step of FSR", [IsFSR,  IsFFECollection], function(x, ist)
+InstallMethod(LoadFSR, "load FSR with initial state ist", [IsFSR,  IsFFECollection], function(x, ist)
 local i, F, tap, seq, scist;
 	if Length(ist) <> Length(x) then
 		Error( "initial state length doesnt match" );		return fail;
