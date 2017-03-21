@@ -42,10 +42,11 @@ end;
 
 FSRMANUALFILES:=[ 
 "../PackageInfo.g",
-"../lib/outputs.gd",
 "../lib/fsr.gd",
 "../lib/lfsr.gd",
 "../lib/nlfsr.gd",
+"../lib/outfsr.gd",
+"../lib/outputs.gd",
 "../lib/misc.gd",
 ];
 Print(FSRMANUALFILES,"\n");

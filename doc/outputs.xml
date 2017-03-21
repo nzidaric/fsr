@@ -1,20 +1,19 @@
 <Chapter Label="Outputs">
 <Heading>Output formatting functions and TEX drawing functions</Heading>    
 
+<Section Label="View">
+<Heading>View/Display/Print/PrintAll</Heading>
+<#Include Label="ViewObjFSR">
+</Section>
 
 
-<Section Label="Formatting">
-<Heading>Output formatting functions</Heading>
 
-<#Include Label="outputs">
 
-<#Include Label="IntFFExt">
-<#Include Label="VecToString">
-<#Include Label="WriteVector">
-<#Include Label="WriteMatrix">
-<#Include Label="WriteMatrixTEX">
+<Section Label="Writing">
+<Heading>Writing to *.txt or *.tex </Heading>
 
 </Section>
+
 
 
 

@@ -54,14 +54,14 @@ DeclareRepresentation( "IsNLFSRRep", IsComponentObjectRep and IsAttributeStoring
 ##  gap>  F := GF(2);;  clist := [One(F), One(F)];; mlist := [x_0*x_1, x_2];;
 ##  Error, Variable: 'x_0' must have a value
 ##  not in any function at line 2 of *stdin*
-##  gap>  test := NLFSR(F, clist, mlist, 3);
+##  gap> test := NLFSR(F, clist, mlist, 3);
 ##  Error, Variable: 'mlist' must have a value
 ##  not in any function at line 3 of *stdin*
 ##  gap> ChooseField(F);
 ##  You can now create an NLFSR with up to 100 stages
 ##  with up to  100 nonzero terms
 ##  gap> mlist := [x_0*x_1, x_2];;                                           
-##  gap>  test := NLFSR(F, clist, mlist, 3);
+##  gap> test := NLFSR(F, clist, mlist, 3);
 ##  < empty NLFSR of length 3,
 ##   given by MultivarPoly = x_0*x_1+x_2> 
 ##  ]]>
@@ -133,51 +133,6 @@ DeclareSynonym( "IsNLFSR", IsFSR and IsNonLinearFeedback);
 DeclareAttribute( "MultivarPoly", IsNLFSR );
 DeclareAttribute( "IndetList", IsNLFSR );
 
-
-#############################################################################
-##
-#M  ViewObj( <nlfsr> )
-#M  PrintObj( <nlfsr> )
-#M  Display( <nlfsr> )
-#M  PrintAll( <nlfsr> )
-##
-##  <#GAPDoc Label="ViewObjNLFSR">
-##  <ManSection>
-##  <Meth Name="ViewObj" Arg='nlfsr  ' />
-##  <Meth Name="PrintObj" Arg='nlfsr [,B] ' />
-##  <Meth Name="PrintAll" Arg='nlfsr [,B] ' />
-##
-##  <Description>
-##  Different detail on <A>nlfsr</A> created by <Ref Func="NLFSR" />:
-##  <List>
-##  <Item> <C>Display/View</C>:  show the <C>MultivarPoly</C> and wheter or not the <A>nlfsr</A> is empty</Item>
-##  <Item> <C>Print</C>: same as <C>Display/View</C> if <A>nlfsr</A> is empty, otherwise it also shows the values of the three components <C>init</C>, <C>state</C> and <C>numsteps</C></Item>
-##  <Item> <C>PrintAll</C>: same as <C>Print</C> if <A>nlfsr</A> is empty, otherwise it also shows the values of the three components <C>init</C>, <C>state</C> and <C>numsteps</C> 
-##  with additional information about the underlying field and the tap positions</Item>
-##  </List> 
-##  Both <C>Print</C> and <C>PrintAll</C> can be used with optional parameter basis <A>B</A> for desiered output format.
-##  <Example>
-##  <![CDATA[
-##  gap> Display(test);                                      
-##  < empty NLFSR of length 3,
-##   given by MultivarPoly = x_0*x_1+x_2> 
-##  gap> PrintAll(test, Basis(UnderlyingField(test)));
-##  < empty NLFSR of length 3,
-##   given by MultivarPoly = x_0*x_1+x_2>
-##  with initial state  =[ [ 0 ], [ 0 ], [ 0 ] ]
-##  with current state  =[ [ 0 ], [ 0 ], [ 0 ] ]
-##  after initialization 
-##  with output from stage S_0
-##  ]]>
-##  </Example> 
-##  </Description>
-##  </ManSection>
-##  <#/GAPDoc>
-
-DeclareOperation("PrintObj", [IsNLFSR]);
-DeclareOperation("PrintObj", [IsNLFSR, IsBasis]);
-DeclareOperation("PrintAll", [IsNLFSR]);
-DeclareOperation("PrintAll", [IsNLFSR, IsBasis]);
 
 
 

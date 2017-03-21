@@ -3,6 +3,21 @@
 
 
 
+<Section Label="outputs">
+
+<Heading>Output formatting functions</Heading>
+
+<#Include Label="outputs">
+
+<#Include Label="IntFFExt">
+<#Include Label="VecToString">
+<#Include Label="WriteVector">
+<#Include Label="WriteMatrix">
+<#Include Label="WriteMatrixTEX">
+
+</Section>
+
+
 <Section Label="misc">
 <Heading>misc - helper functions</Heading>
 

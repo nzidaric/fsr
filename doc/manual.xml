@@ -16,9 +16,20 @@
   <Version>Version &VERSION;</Version>
 
   <Author>Nusa Zidaric
-          <Email>email</Email>
+          <Email>nzidaric@uwaterloo.ca</Email>
 	      <Homepage>http://</Homepage>
   </Author>
+  <Author>Mark Aagaard
+          <Email>maagaard@uwaterloo.ca</Email>
+	      <Homepage>http://</Homepage>
+  </Author>
+  
+    <Author>Guang Gong
+          <Email>ggong@uwaterloo.ca</Email>
+	      <Homepage>http://</Homepage>
+  </Author>
+
+
 
   <Date>&RELEASEDATE;</Date>
 
@@ -64,9 +75,9 @@ The &GAP; package &FSR; ...
 
 <#Include SYSTEM "preface.xml">
 
-<#Include SYSTEM "outputs.xml">
-
 <#Include SYSTEM "fsr.xml">
+
+<#Include SYSTEM "outputs.xml">
 
 <#Include SYSTEM "misc.xml">
 

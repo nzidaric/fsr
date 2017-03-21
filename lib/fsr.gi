@@ -99,11 +99,17 @@ end);
 ##  identical for both lfsr and nlfsr 
 ##
 InstallMethod(ChangeBasis, "change the basis underlying field of the FSR", [IsFSR,  IsBasis], function(x, B)
-
-	if DegreeOverPrimeField(UnderlyingField(x)) = Length(B) then 
-		x!.basis := B;
+local divs, deg;
+	deg := DegreeOverPrimeField(UnderlyingField(x));
+	divs := DivisorsInt(deg);
+	if not  deg > Length(B) then 
+	
+		if \in(Length(B),divs) then 
+			x!.basis := B;
+		fi; 
+		
 	else 
-		Error( "basis does not match the field" );		return fail;
+		Error( "basis does not match the field!\n" );		return fail;
 	fi;
 	return true;
 end);
@@ -342,20 +348,16 @@ end);
 
 
 # Ib. run for num steps with/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsBasis, IsPosInt, IsBool], function(x, B, num, pr)
-local seq, sequence, nrsteps, treshold, i, divs; 
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt, IsBool], function(x, num, pr)
+local seq, sequence, nrsteps, treshold, i, B, m; 
 
-# check basis - simple check , only checking if number of basis elms makes sense, 
-# not checking if its a lin indep set coz if its not it wont pass tru the IsBasis filter, so we should be fine  
-	divs := DivisorsInt(DegreeOverPrimeField(UnderlyingField(x)));
-	if not \in(Length(B),divs) then 
-		Error("check if youre using correct basis!");
-		return fail;
-	fi; 
+
 	
-
+		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
+		else m:= 1;
+		fi;	
 # check num
-	treshold := 2^Length(x) + Length(x); 
+		treshold := 2^(Length(x)*m) + Minimum(Length(x),m);   #(if primitive thats one period plus one length of FSR)
 #(if LFSR and primitive thats one period plus one length of FSR + 1)
 #(if NLFSR and primitive thats one max possible period plus one length of FSR )
 	if num > treshold then 
@@ -364,20 +366,17 @@ local seq, sequence, nrsteps, treshold, i, divs;
 	else 	nrsteps := num;
 	fi;
 
-	
-
-
-
 
 #start run
 	sequence := [];		
-	
+		B := x!.basis;
 	
 	for i in [1.. nrsteps] do 
 		seq := StepFSR(x);
 		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
 #print on every step 
-		if pr then 
+		if pr  then 
+			
 			Print("\t\t", IntVecFFExt(B, x!.state));  				# NOT reversed !!!! 
 			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
 			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
@@ -392,47 +391,62 @@ end);
 
 # II. run for num steps without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt], function(x, num)
-	return  RunFSR(x, Basis(UnderlyingField(x)), num, false);	
+	return  RunFSR(x,  num, false);	
 end);
 
 
 # IIIb. run with/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR,  IsBasis,  IsBool], function(x, B, pr)		
-	return RunFSR(x, B, 2^Length(x) + Length(x), pr);
+InstallMethod(RunFSR, "run FSR", [IsFSR,   IsBool], function(x, pr)		
+	return RunFSR(x, 	 2^(Length(x)* Length(x)) + Length(x) , pr); ## change num to something huge then the called method will set the threshold 
 end);
+
+
+
 
 
 # IV. run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR], function(x)		
-	return RunFSR(x, Basis(UnderlyingField(x)), 2^Length(x) + Length(x), false);
+	return RunFSR(x, 2^(Length(x)* Length(x)) + Length(x), false);## change num to something huge then the called method will set the threshold 
 end);
 
 
 # PRIMARY METHOD FOR ALL PRACTICAL PURPOSES: because otherwise u need to handle the seq_0 elm urself 
 # load with <ist> then call   RunFSR( FSR, num-1 , pr)
 # Vb. load new initial state then run for num-1 steps with/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsBasis, IsFFECollection, IsPosInt, IsBool], function(x, B, ist, num, pr)
-local  i, sequence,  seq, taps, divs; 
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsPosInt, IsBool], function(x,ist, num, pr)
+local  i, sequence,treshold , seq, taps, B, m ,  nrsteps; 
 # check basis - simple check , only checking if number of basis elms makes sense, 
 # not checking if its a lin indep set coz if its not it wont pass tru the IsBasis filter, so we should be fine  
-	divs := DivisorsInt(DegreeOverPrimeField(UnderlyingField(x)));
-	if not \in(Length(B),divs) then 
-		Error("check if youre using correct basis!");
-		return fail;
-	fi; 
+#	divs := DivisorsInt(DegreeOverPrimeField(UnderlyingField(x)));
+#	if not \in(Length(B),divs) then 
+#		Error("check if youre using correct basis!");
+#		return fail;
+#	fi; 
 	
-
+		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
+		else m:= 1;
+		fi;	
+# check num
+		treshold := 2^(Length(x)*m) + Minimum(Length(x),m);   #(if primitive thats one period plus one length of FSR)
+	if num > treshold then 
+		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
+		nrsteps := treshold;
+	else 	nrsteps := num;
+	fi;
+	
 # load FSR 
 	seq := LoadFSR(x,ist); # the seq_0 element 
 # print header, init state and seq_0
 
 	if pr then 
+			B := x!.basis;
 		Print("using basis B := ",BasisVectors(B),"\t\n");		
 
-		Print("elm \t\t");
+		Print("elm");
+		for i in [1..m] do Print("\t"); od;
 		Print( "[ ",Length(x)-1,",");
 		for i in [2.. Length(x)-1] do
-			Print("...");
+			Print("\t...");
 		od;
 		Print(",0 ]");
 		Print( "  with taps  ",OutputTap(x),"\n");	
@@ -443,7 +457,7 @@ local  i, sequence,  seq, taps, divs;
 		fi;			
 	fi;
 # start run
-	sequence := RunFSR(x,B, num, pr);		
+	sequence := RunFSR(x, 	nrsteps, pr);		
 	Add(sequence,seq,1);	# seq_0 at the beginning	
 
 	return sequence;
@@ -454,18 +468,18 @@ end);
 
 # VI. load new initial state then run for num-1 steps without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR,IsFFECollection, IsPosInt], function(x, ist, num)
-	return RunFSR(x, Basis(UnderlyingField(x)), ist, num, false);
+	return RunFSR(x, ist, num, false);
 end);
 
 # VIIb. load new initial state then run without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsBasis, IsFFECollection, IsBool], function(x, B, ist , pr)
-	return RunFSR(x, B, ist, 2^Length(x) + Length(x), pr);
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsBool], function(x, ist , pr)
+	return RunFSR(x, ist, 2^Length(x) + Length(x), pr);
 end);
 
 
 # VII. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection], function(x, ist )
-	return RunFSR(x,  Basis(UnderlyingField(x)), ist, 2^Length(x) + Length(x), false);
+	return RunFSR(x,  ist, 2^(Length(x)^2) + Length(x), false);
 end);
 
 
@@ -474,21 +488,13 @@ end);
 # rationale behind copied code is speed: could be a very long sequence, dont want to many functions calling eachother 
 
 # VIIIb. run for num steps with the same nonlinear input on each step and with/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsBasis, IsFFE, IsPosInt, IsBool], function(x, B, elm, num, pr)
-local seq, sequence, nrsteps, treshold, i, divs; 
-
-
-# check basis - simple check , only checking if number of basis elms makes sense, 
-# not checking if its a lin indep set coz if its not it wont pass tru the IsBasis filter, so we should be fine  
-	divs := DivisorsInt(DegreeOverPrimeField(UnderlyingField(x)));
-	if not \in(Length(B),divs) then 
-		Error("check if youre using correct basis!");
-		return fail;
-	fi; 
-
-
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt, IsBool], function(x, elm, num, pr)
+local seq, sequence, nrsteps, treshold, i, B,m ; 
+		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
+		else m:= 1;
+		fi;	
 # check num
-	treshold := 2^Length(x) + Length(x); #(if primitive thats one period plus one length of FSR)
+		treshold := 2^(Length(x)*m) + Minimum(Length(x),m);   #(if primitive thats one period plus one length of FSR)
 	if num > treshold then 
 		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
 		nrsteps := treshold;
@@ -496,6 +502,11 @@ local seq, sequence, nrsteps, treshold, i, divs;
 	fi;
 #start run
 	sequence := [];		
+	
+	if pr then 
+			B := x!.basis;
+		Print("using basis B := ",BasisVectors(B),"\t\n");			
+	fi;	
 	for i in [1.. nrsteps] do 
 		seq := StepFSR(x,elm);
 		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
@@ -515,52 +526,52 @@ end);
 
 # IX. run for num steps with the same nonlinear input on each step without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt], function(x, elm, num)
-	return RunFSR(x, Basis(UnderlyingField(x)), elm, num, false);
+	return RunFSR(x, elm, num, false);
 end);
 
 
 # Xb. run for num steps with the same nonlinear input on each step without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsBasis,  IsFFE, IsBool], function(x, B, elm, pr)
-	return RunFSR(x, B, elm, 2^Length(x) + Length(x), pr);
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsBool], function(x, elm, pr)
+	return RunFSR(x,  elm,  2^(Length(x)* Length(x)) + Length(x) , pr); ## change num to something huge then the called method will set the threshold 
 end);
 
 
 # X. run for num steps with the same nonlinear input on each step without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE], function(x, elm)
-	return RunFSR(x,  Basis(UnderlyingField(x)), elm, 2^Length(x) + Length(x), false);
+	return RunFSR(x,  elm,  2^(Length(x)* Length(x)) + Length(x) , false); ## change num to something huge then the called method will set the threshold 
 end);
 
 
 
 
 # XIb. run for num steps with the different nonlinear input on each step with/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsBasis, IsFFECollection, IsFFECollection, IsBool], function(x, B, ist, elmvec, pr)
-local  sequence,  treshold, num, nrsteps, seq , i, divs; 
-
-# check basis - simple check , only checking if number of basis elms makes sense, 
-# not checking if its a lin indep set coz if its not it wont pass tru the IsBasis filter, so we should be fine  
-	divs := DivisorsInt(DegreeOverPrimeField(UnderlyingField(x)));
-	if not \in(Length(B),divs) then 
-		Error("check if youre using correct basis!");
-		return fail;
-	fi; 
-
-
+InstallMethod(RunFSR, "run FSR", [IsFSR,  IsFFECollection, IsFFECollection, IsBool], function(x,  ist, elmvec, pr)
+local  sequence,  treshold, num, nrsteps, seq , i, B, m; 
 
 # load FSR 
 	seq := LoadFSR(x,ist); # the seq_0 element 
+	if pr then 
+			B := x!.basis;
+		Print("using basis B := ",BasisVectors(B),"\t\n");			
+	fi;	
+		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
+		else m:= 1;
+		fi;	
 	
 # print header, init state and seq_0
 	if pr then 
 
-		Print("elm \t\t");
+
+
+		Print("elm");
+		for i in [1..m] do Print("\t"); od;
 		Print( "[ ",Length(x)-1,",");
 		for i in [2.. Length(x)-1] do
-			Print("...");
+			Print("\t...");
 		od;
 		Print(",0 ]");
 		Print( "  with taps  ",OutputTap(x),"\n");	
-		Print(" \t\t");
+		Print(IntFFExt(B,Zero(UnderlyingField(x))),"\t\t"); 
 		Print((IntVecFFExt(B,x!.state)));  				# NOT reversed !!!! 
 		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
 		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
@@ -568,7 +579,7 @@ local  sequence,  treshold, num, nrsteps, seq , i, divs;
 	fi;
 
 
-	treshold := 2^Length(x) + Length(x);  
+	treshold := 2^(Length(x)*m) + Minimum(Length(x),m);  
 	num := Length(elmvec);
 	if num > treshold then 
 		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
@@ -599,10 +610,76 @@ end);
 
 # XI. run for num steps with the different nonlinear input on each step with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsFFECollection], function(x, ist, elmvec)
-	return RunFSR(x, Basis(UnderlyingField(x)), ist, elmvec, false);
+	return RunFSR(x, ist, elmvec, false);
 
 end);
 
+# XIIb. run for num steps with the different nonlinear input on each step with/without print to shell,
+# without loading first 
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsFFECollection, IsBool], function(x, z, elmvec, pr)
+local  sequence,  treshold, num, nrsteps, seq , i, B, m ; 
 
+		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
+		else m:= 1;
+		fi;
+
+# print header, init state and seq_0
+	if pr then 
+
+			B := x!.basis;
+		Print("using basis B := ",BasisVectors(B),"\t\n");			
+
+		Print("elm");
+		for i in [1..m] do Print("\t"); od;
+		Print( "[ ",Length(x)-1,",");
+		for i in [2.. Length(x)-1] do
+			Print("\t...");
+		od;
+		Print(",0 ]");
+		Print( "  with taps  ",OutputTap(x),"\n");	
+		Print(IntFFExt(B,Zero(UnderlyingField(x))),"\t\t"); 
+		Print((IntVecFFExt(B,x!.state)),"\n");  				# NOT reversed !!!! 
+#		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
+#		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
+#		fi;			
+# note: there will be an element missing coz we start output with CURRENT state, without step ... 
+#the seq elm that came from step is already in the sequence, we dont want to repeat it 
+	fi;
+
+
+	treshold := 2^(Length(x)*m) + Minimum(Length(x),m);  
+	num := Length(elmvec);
+	if num > treshold then 
+		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
+		nrsteps := treshold;
+	else 	nrsteps := num;
+	fi;
+#start run
+	sequence := [];		
+	for i in [1.. nrsteps] do 
+		seq := StepFSR(x,elmvec[i]);
+		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
+#print on every step 
+		if pr then 
+			Print(IntFFExt(B,elmvec[i]),"\t\t");  				# NOT reversed !!!! 		
+			Print(IntVecFFExt(B,x!.state));  				# NOT reversed !!!! 
+			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
+			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+			fi;			
+		fi;
+	od; 
+
+
+
+	Add(sequence,seq,1);	# seq_0 at the beginning
+	return sequence;
+end);
+
+
+# XII. run for num steps with the different nonlinear input on each step with/without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsFFECollection], function(x, z, elmvec)
+	return RunFSR(x, z, elmvec, false);
+
+end);
 
 Print("fsr.gi OK,\t");
