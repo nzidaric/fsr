@@ -18,6 +18,8 @@
 ##  <#/GAPDoc>
 
 
+
+
 #############################################################################
 ##
 #M  IntFFExt( [<B>,] <ffe> )    . . . . . . . . write ffe as integer / vector of integers from the prime subfield
@@ -26,9 +28,9 @@
 ##
 ##  <#GAPDoc Label="IntFFExt">
 ##  <ManSection>
-##  <Meth Name=" IntFFExt" Arg="[B,] ffe"/>
-##  <Meth Name=" IntVecFFExt" Arg="[B,] vec"/>
-##  <Meth Name=" IntMatFFExt" Arg="[B,] M"/>
+##  <Meth Name="IntFFExt" Arg="[B,] ffe"/>
+##  <Meth Name="IntVecFFExt" Arg="[B,] vec"/>
+##  <Meth Name="IntMatFFExt" Arg="[B,] M"/>
 ##
 ##  <Description>
 ##  <C>IntFFExt</C> takes the <A>ffe</A> and writes it as an integer of the prime field 
@@ -98,6 +100,8 @@ DeclareOperation( "VecToString" ,[IsVector] ); # added to tstfsroutputs.tst
 DeclareOperation( "VecToString" ,[IsBasis, IsVector] ); # added to tstfsroutputs.tst
 
 
+
+
 #############################################################################
 ##
 #F  WriteVector( <output>, <B>,  <vec> ) . . . . . . . . write vec to file
@@ -109,6 +113,8 @@ DeclareOperation( "VecToString" ,[IsBasis, IsVector] ); # added to tstfsroutputs
 ##  <Description>
 ##  Writes the human friendly version of vector <A>vec</A> represented in basis <A>B</A>,
 ##  to the output file <A>output</A>. Also works if <A>vec</A> is an integer or FFE. 
+##  can be used to write the sequence produced by the FSR to a file, make sure that the sequence 
+##  does not contain any subsequences (ie if merging two runs of the FSR, must use Append(seq,seq1), if adding new step to a run must use Add(seq, elm1))
 ##  <P/>
 ##  NOTE: the basis MUST be provided.
 ##  <P/>

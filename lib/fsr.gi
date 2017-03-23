@@ -94,6 +94,24 @@ end);
 
 #############################################################################
 ##
+#A  Threshold( <fsr> )
+#(if LFSR and primitive thats one period plus one length of FSR + 1)
+#(if NLFSR and primitive thats one max possible period plus one length of FSR )
+
+InstallMethod(Threshold, "threshold for the length of seq", [IsFSR], function(x)
+local l,t,s; 
+	l := Length(x); 
+	t := InternalStateSize(x);
+
+	s := Characteristic(x)^t + l;
+	
+	SetThreshold(x,s);
+	return s;
+end);
+
+
+#############################################################################
+##
 #O  ChangeBasis( <fsr>, <B> )
 ##
 ##  identical for both lfsr and nlfsr 
@@ -357,9 +375,8 @@ local seq, sequence, nrsteps, treshold, i, B, m;
 		else m:= 1;
 		fi;	
 # check num
-		treshold := 2^(Length(x)*m) + Minimum(Length(x),m);   #(if primitive thats one period plus one length of FSR)
-#(if LFSR and primitive thats one period plus one length of FSR + 1)
-#(if NLFSR and primitive thats one max possible period plus one length of FSR )
+		treshold := Threshold(x);   
+
 	if num > treshold then 
 		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
 		nrsteps := treshold;
@@ -397,7 +414,7 @@ end);
 
 # IIIb. run with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR,   IsBool], function(x, pr)		
-	return RunFSR(x, 	 2^(Length(x)* Length(x)) + Length(x) , pr); ## change num to something huge then the called method will set the threshold 
+	return RunFSR(x, 	 Threshold(x) , pr); ## change num to something huge then the called method will set the threshold 
 end);
 
 
@@ -406,13 +423,15 @@ end);
 
 # IV. run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR], function(x)		
-	return RunFSR(x, 2^(Length(x)* Length(x)) + Length(x), false);## change num to something huge then the called method will set the threshold 
+	return RunFSR(x, 	Threshold(x) , false);## change num to something huge then the called method will set the threshold 
 end);
 
 
 # PRIMARY METHOD FOR ALL PRACTICAL PURPOSES: because otherwise u need to handle the seq_0 elm urself 
 # load with <ist> then call   RunFSR( FSR, num-1 , pr)
 # Vb. load new initial state then run for num-1 steps with/without print to shell
+
+
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsPosInt, IsBool], function(x,ist, num, pr)
 local  i, sequence,treshold , seq, taps, B, m ,  nrsteps; 
 # check basis - simple check , only checking if number of basis elms makes sense, 
@@ -427,7 +446,7 @@ local  i, sequence,treshold , seq, taps, B, m ,  nrsteps;
 		else m:= 1;
 		fi;	
 # check num
-		treshold := 2^(Length(x)*m) + Minimum(Length(x),m);   #(if primitive thats one period plus one length of FSR)
+		treshold := Threshold(x);   
 	if num > treshold then 
 		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
 		nrsteps := treshold;
@@ -473,13 +492,13 @@ end);
 
 # VIIb. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsBool], function(x, ist , pr)
-	return RunFSR(x, ist, 2^Length(x) + Length(x), pr);
+	return RunFSR(x, ist, Threshold(x)   , pr);
 end);
 
 
 # VII. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection], function(x, ist )
-	return RunFSR(x,  ist, 2^(Length(x)^2) + Length(x), false);
+	return RunFSR(x,  ist, Threshold(x),  false);
 end);
 
 
@@ -494,7 +513,7 @@ local seq, sequence, nrsteps, treshold, i, B,m ;
 		else m:= 1;
 		fi;	
 # check num
-		treshold := 2^(Length(x)*m) + Minimum(Length(x),m);   #(if primitive thats one period plus one length of FSR)
+		treshold := Threshold(x);   
 	if num > treshold then 
 		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
 		nrsteps := treshold;
@@ -532,13 +551,13 @@ end);
 
 # Xb. run for num steps with the same nonlinear input on each step without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsBool], function(x, elm, pr)
-	return RunFSR(x,  elm,  2^(Length(x)* Length(x)) + Length(x) , pr); ## change num to something huge then the called method will set the threshold 
+	return RunFSR(x,  elm,   Threshold(x) , pr); ## change num to something huge then the called method will set the threshold 
 end);
 
 
 # X. run for num steps with the same nonlinear input on each step without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE], function(x, elm)
-	return RunFSR(x,  elm,  2^(Length(x)* Length(x)) + Length(x) , false); ## change num to something huge then the called method will set the threshold 
+	return RunFSR(x,  elm,  Threshold(x) , false); ## change num to something huge then the called method will set the threshold 
 end);
 
 
@@ -579,7 +598,7 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m;
 	fi;
 
 
-	treshold := 2^(Length(x)*m) + Minimum(Length(x),m);  
+	treshold := Threshold(x);   
 	num := Length(elmvec);
 	if num > treshold then 
 		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
@@ -646,8 +665,7 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
 #the seq elm that came from step is already in the sequence, we dont want to repeat it 
 	fi;
 
-
-	treshold := 2^(Length(x)*m) + Minimum(Length(x),m);  
+	treshold := Threshold(x);   
 	num := Length(elmvec);
 	if num > treshold then 
 		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");

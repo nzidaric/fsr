@@ -66,6 +66,25 @@ DeclareOperation( "MonomialsOverField",  [IsField, IsList]);
 DeclareOperation( "DegreeOfPolynomial",  [IsPolynomial]);
 #DeclareOperation( "DegreeOfPolynomial",  [IsField, IsPolynomial]);
 
+#############################################################################
+##
+#M  GeneratorOfUnderlyingField( <F> )    . . . .. get generator of zechs log
+##
+##
+##  <#GAPDoc Label="GeneratorOfUnderlyingField">
+##  <ManSection>
+##  <Meth Name="GeneratorOfUnderlyingField" Arg="F"/>
+##
+##  <Description>
+##  <C>GeneratorOfUnderlyingField</C> returns the first element <M>\ni: order(x)=Size(F)-1</M>
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+
+
+#T test file tstfsroutputs.tst
+
+DeclareOperation( "GeneratorOfUnderlyingField", [IsField and IsFinite]); 
 
 
 Print("misc.gd OK,\t");

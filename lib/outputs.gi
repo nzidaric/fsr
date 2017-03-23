@@ -221,8 +221,8 @@ local j, m, str;
 				AppendTo(output, str[Length(str)], " ");
 			fi;
 		else 
-		Error("argument elm is not a row vector nor a FFE nor integer !!!!\n");
-		AppendTo(output, "ERROR: elm is not a vector nor a FFE nor integer!!!! \n", vec, "\n");
+		AppendTo(output, "ERROR: elm is not a vector nor a FFE nor integer!!!! \n\t did you use Add instead of Append to merge sequences ?  \n", vec, "\n");
+		Error("argument elm is not a row vector nor a FFE nor integer !!!!\n\t did you use Add instead of Append to merge sequences ? \n");
 		fi;
 	else 
 	  Error("B is not a basis !!!! \n");

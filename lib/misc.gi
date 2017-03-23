@@ -162,6 +162,18 @@ end);
 
 
 
+#############################################################################
+##
+#M  GeneratorOfUnderlyingField( <F> )    . . . .. get generator of zechs log
+##
+
+InstallMethod(  GeneratorOfUnderlyingField, "generator of underlying field",  [IsField and IsFinite], function(F)
+	return First(Elements(F),x->not IsZero(x) and Order(x)=Size(F)-1); 
+end);
+
+
+
+
 
 Print("misc.gi OK,\t");
 
