@@ -45,7 +45,7 @@ DeclareRepresentation( "IsNLFSRRep", IsComponentObjectRep and IsAttributeStoring
 ##  <Item> <C>state</C> - <A>FFE</A> vector of length n=deg(charpol), storing the current state of the <C>NLFSR</C>, with indeces from n-1, ..., 0</Item> 
 ##  <Item> <C>numsteps</C> - the number of steps performed thus far (initialized to -1 when created, set to 0 when loaded using <Ref Meth="LoadFSR" /> and incremented by 1 with each step (using <Ref Meth="StepFSR" />)) </Item>
 ##  </List>
-##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingFied" />, <C>MultivarPoly</C>, <Ref Attr="FeedbackVec" />, <Ref Attr="IndetList" />, <Ref Attr="Length" /> and <Ref Attr="OutputTap" />  and the property <C>IsNonLinearFeedback</C> are set during the 
+##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingField" />, <C>MultivarPoly</C>, <Ref Attr="FeedbackVec" />, <Ref Attr="IndetList" />, <Ref Attr="Length" /> and <Ref Attr="OutputTap" />  and the property <C>IsNonLinearFeedback</C> are set during the 
 ##  construction of an <C>NLFSR</C>. 
 ##  <P/>
 ##  If there is something wrong with the arguments (e.g. attempting to create an extension field using a reducible poynomial), an error message appears and the function returns <C>fail</C>.

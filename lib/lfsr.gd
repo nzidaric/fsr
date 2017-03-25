@@ -49,7 +49,7 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 ##  <Item> <C>numsteps</C> - the number of steps performed thus far (initialized to -1 when created, set to 0 when loaded using <Ref Meth="LoadFSR" /> and incremented by 1 with each step (using <Ref Meth="StepFSR" />)) </Item>
 ##  <Item> <C>basis</C> - basis of F over its prime subfield (if no basis is given this field is set to canonical basis of F over its prime subfield) </Item>
 ##  </List>
-##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingFied" />, <C>CharPoly</C>, <Ref Attr="FeedbackVec" />, <Ref Attr="Length" /> and <Ref Attr="OutputTap" />  and the property <C>IsLinearFeedback</C> are set during the 
+##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingField" />, <C>CharPoly</C>, <Ref Attr="FeedbackVec" />, <Ref Attr="Length" /> and <Ref Attr="OutputTap" />  and the property <C>IsLinearFeedback</C> are set during the 
 ##  construction of an<C>LFSR</C>. 
 ##  <P/>
 ##  If there is something wrong with the arguments (e.g. attempting to create an extension field using a reducible poynomial), an error message appears and the function returns <C>fail</C>.<P/>
