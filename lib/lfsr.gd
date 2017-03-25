@@ -157,7 +157,7 @@ DeclareAttribute( "CharPoly", IsLFSR );
 ##  </List>
 ##  Attributes:
 ##  <List>
-##  <Item> <C>Period</C>: holds the period of the &LFSR; </Item>
+##  <Item> <C>Period</C>: holds the period of the LFSR </Item>
 ##  </List>
 ##  Methods to compute the period:
 ##  <List>
