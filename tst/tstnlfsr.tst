@@ -24,8 +24,8 @@ gap> MultivarPoly(nl); IndetList(nl);
 x_0*x_1+x_2
 [ 0, 1, 2 ]
 gap> RunFSR(nl);
-over the threshold, will only output the first 9 elements of the sequence
-[ 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2) ]
+[ 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 
+  Z(2)^0, Z(2)^0 ]
 gap>  LoadFSR(nl, ist);; RunFSR(nl,5);
 [ 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2) ]
 gap>  LoadFSR(nl, ist);;B := WhichBasis(nl);; RunFSR(nl, 5,true);
@@ -36,7 +36,6 @@ gap>  LoadFSR(nl, ist);;B := WhichBasis(nl);; RunFSR(nl, 5,true);
 		[ [ 1 ], [ 1 ], [ 0 ] ]		[ 0 ]
 [ 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2) ]
 gap> RunFSR(nl,  true);
-over the threshold, will only output the first 9 elements of the sequence
 		[ [ 1 ], [ 1 ], [ 1 ] ]		[ 1 ]
 		[ [ 0 ], [ 1 ], [ 1 ] ]		[ 1 ]
 		[ [ 1 ], [ 0 ], [ 1 ] ]		[ 1 ]
@@ -46,9 +45,12 @@ over the threshold, will only output the first 9 elements of the sequence
 		[ [ 1 ], [ 0 ], [ 1 ] ]		[ 1 ]
 		[ [ 1 ], [ 1 ], [ 0 ] ]		[ 0 ]
 		[ [ 1 ], [ 1 ], [ 1 ] ]		[ 1 ]
-[ Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0 ]
+		[ [ 0 ], [ 1 ], [ 1 ] ]		[ 1 ]
+		[ [ 1 ], [ 0 ], [ 1 ] ]		[ 1 ]
+[ Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 
+  Z(2)^0, Z(2)^0 ]
 gap> LoadFSR(nl, ist);; RunFSR(nl, ist, 40, true);
-over the threshold, will only output the first 9 elements of the sequence
+over the threshold, will only output the first 11 elements of the sequence
 using basis B := [ Z(2)^0 ]	
 elm	[ 2,	...,0 ]  with taps  [ 0 ]
 		[ [ 1 ], [ 0 ], [ 0 ] ]		[ 0 ]
@@ -61,7 +63,10 @@ elm	[ 2,	...,0 ]  with taps  [ 0 ]
 		[ [ 0 ], [ 1 ], [ 1 ] ]		[ 1 ]
 		[ [ 1 ], [ 0 ], [ 1 ] ]		[ 1 ]
 		[ [ 1 ], [ 1 ], [ 0 ] ]		[ 0 ]
-[ 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2) ]
+		[ [ 1 ], [ 1 ], [ 1 ] ]		[ 1 ]
+		[ [ 0 ], [ 1 ], [ 1 ] ]		[ 1 ]
+[ 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 
+  0*Z(2), Z(2)^0, Z(2)^0 ]
 gap>  elmvec := [Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0];;
 gap> RunFSR(nl, ist, elmvec, true);
 using basis B := [ Z(2)^0 ]	
@@ -81,9 +86,11 @@ gap> mlist := [x_0, x_1, x_1*x_2*x_3, One(F)];;
 gap> nl := NLFSR(F, clist, mlist, 4);
 < empty NLFSR of length 4 over GF(2),
   given by MultivarPoly = x_1*x_2*x_3+x_0+x_1+Z(2)^0> 
-gap> ist := [Zero(F),Zero(F),Zero(F),Zero(F)];; RunFSR(nl,ist);
-over the threshold, will only output the first 17 elements of the sequence
-[ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2) ]
+gap> ist := [Zero(F),Zero(F),Zero(F),Zero(F)];; RunFSR(nl,ist, 100);
+over the threshold, will only output the first 20 elements of the sequence
+[ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 
+  Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 
+  0*Z(2), 0*Z(2), Z(2)^0 ]
 gap> K := GF(2);; x := X(K, "x");; f:= x^4+x^3+Z(2)^0 ;;  F := FieldExtension(K, f);;                               
 gap>  B:= Basis(F);; ChooseField(F);; 
 You can now create an NLFSR with up to 100 stages

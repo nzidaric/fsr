@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2017.2.7)  20 FEB 2017 17:26
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2017.2.7)  26 MAR 2017 15:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -375,6 +375,15 @@ Package graphics Info: Driver file: pdftex.def on input line 91.
 )
 (./manual.aux
 
+LaTeX Warning: Label `RunFSR' multiply defined.
+
+
+LaTeX Warning: Label `RunFSR' multiply defined.
+
+
+LaTeX Warning: Label `RunFSR' multiply defined.
+
+
 LaTeX Warning: Label `LFSR' multiply defined.
 
 
@@ -385,15 +394,6 @@ LaTeX Warning: Label `LFSR' multiply defined.
 
 
 LaTeX Warning: Label `NLFSR' multiply defined.
-
-
-LaTeX Warning: Label `ViewObj' multiply defined.
-
-
-LaTeX Warning: Label `PrintObj' multiply defined.
-
-
-LaTeX Warning: Label `PrintAll' multiply defined.
 
 
 LaTeX Warning: Label `misc' multiply defined.
@@ -489,35 +489,35 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <24.88> not available
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 104.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 110.
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 110.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 112.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 112.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-Underfull \hbox (badness 10000) in paragraph at lines 108--112
+Underfull \hbox (badness 10000) in paragraph at lines 110--120
 
  []
 
 [1
 
 {/usr/share/texlive/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 118--120
+Underfull \hbox (badness 10000) in paragraph at lines 126--128
 
  []
 
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 122.
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 130.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 133--135
+Underfull \hbox (badness 10000) in paragraph at lines 141--143
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 137--138
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
 
  []
 
@@ -567,155 +567,209 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 ]
 Chapter 1.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <20.74> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 146.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 154.
 [4
 
 ]
 Chapter 2.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 166.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 174.
 
-Underfull \hbox (badness 10000) in paragraph at lines 169--178
+Underfull \hbox (badness 10000) in paragraph at lines 177--180
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 203--206
+Underfull \hbox (badness 10000) in paragraph at lines 189--201
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--230
 
  []
 
 [5
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 222--225
+Underfull \hbox (badness 10000) in paragraph at lines 236--237
+[]\T1/cmtt/m/n/10.95 Threshold \T1/ptm/m/n/10.95 of the [] is cur-rently set to
+ $\OML/ztmcm/m/it/10.95 Characteristic\OT1/ztmcm/m/n/10.95 ([])[] + \OML/ztmcm/
+m/it/10.95 `$\T1/ptm/m/n/10.95 , where $\OML/ztmcm/m/it/10.95 t \OT1/ztmcm/m/n/
+10.95 =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 245--251
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 239--242
+Underfull \hbox (badness 10000) in paragraph at lines 264--267
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 253--256
+Underfull \hbox (badness 10000) in paragraph at lines 280--283
 
  []
 
 [6]
-Chapter 3.
-
-Underfull \hbox (badness 10000) in paragraph at lines 290--293
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 302--314
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 334--340
-
- []
-
-[7
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 351--354
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 367--370
-
- []
-
-
-Underfull \hbox (badness 5274) in paragraph at lines 401--402
-[]\T1/cmtt/m/n/10.95 RunFSR([]) \T1/ptm/m/n/10.95 - load [] with [], then run [
-] for
- []
-
-[8]
-Underfull \hbox (badness 1824) in paragraph at lines 403--404
-[]\T1/cmtt/m/n/10.95 RunFSR([]) \T1/ptm/m/n/10.95 - load [] with [], then run [
-] for
- []
-
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 417.
-[9] [10]
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 335.
+ [7] [8]
 
-LaTeX Warning: Reference `UnderlyingFied' on page 11 undefined on input line 51
-5.
+LaTeX Warning: Reference `UnderlyingFied' on page 9 undefined on input line 450
+.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 538--544
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 556--559
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 480--486
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 568--586
+Underfull \hbox (badness 10000) in paragraph at lines 498--501
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 510--528
+
+ []
+
+[10]
+Underfull \hbox (badness 10000) in paragraph at lines 562--565
 
  []
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 613--622
 
- []
-
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 684--687
-
- []
-
-[13]
-
-LaTeX Warning: Reference `UnderlyingFied' on page 14 undefined on input line 73
-8.
+LaTeX Warning: Reference `UnderlyingFied' on page 12 undefined on input line 61
+6.
 
 
-Underfull \hbox (badness 1590) in paragraph at lines 738--739
+Underfull \hbox (badness 1590) in paragraph at lines 616--617
 \T1/ptm/m/n/10.95 Attributes \T1/cmtt/m/n/10.95 FieldPoly \T1/ptm/m/n/10.95 ([]
-[]3.1.2[][]), \T1/cmtt/m/n/10.95 UnderlyingFied \T1/ptm/m/n/10.95 ([]), \T1/cmt
+[]2.1.2[][]), \T1/cmtt/m/n/10.95 UnderlyingFied \T1/ptm/m/n/10.95 ([]), \T1/cmt
 t/m/n/10.95 MultivarPoly\T1/ptm/m/n/10.95 , \T1/cmtt/m/n/10.95 FeedbackVec \T1/
-ptm/m/n/10.95 ([][]3.1.2[][]),
+ptm/m/n/10.95 ([][]2.1.2[][]),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 767--773
+Underfull \hbox (badness 10000) in paragraph at lines 645--651
 
  []
 
-[14]
-Underfull \hbox (badness 10000) in paragraph at lines 786--792
+
+Underfull \hbox (badness 10000) in paragraph at lines 664--670
 
  []
 
-pdfTeX warning (ext4): destination with the same identifier (name{L.X815BF22186
-FD43C9}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.808 \hyperdef{L}{X815BF22186FD43C9}{}
-                                       
-Underfull \hbox (badness 10000) in paragraph at lines 809--818
+[12] [13]
+Chapter 3.
+
+Underfull \hbox (badness 10000) in paragraph at lines 701--710
 
  []
 
-[15] [16]
+[14
+
+] [15]
+Underfull \hbox (badness 10000) in paragraph at lines 807--810
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 820--829
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 848--854
+
+ []
+
+
+Underfull \hbox (badness 4647) in paragraph at lines 859--862
+[]\T1/cmtt/m/n/10.95 WriteNonlinRunFSR \T1/ptm/m/n/10.95 is an out-put to *.txt
+ ver-sion of RunFSR([], [], []).
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 868--877
+
+ []
+
+[16]
+Underfull \hbox (badness 10000) in paragraph at lines 896--899
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 901--903
+[]\T1/cmtt/m/n/10.95 WriteTEXElementTableByGenerator \T1/ptm/m/n/10.95 pro-vide
+s the con-text in-for-ma-tion for
+ []
+
+
+Underfull \hbox (badness 1629) in paragraph at lines 901--903
+\T1/cmtt/m/n/10.95 WriteTEXSequenceByGenerator \T1/ptm/m/n/10.95 and \T1/cmtt/m
+/n/10.95 WriteTEXRunFSRByGenerator\T1/ptm/m/n/10.95 . Its out-put is a *.tex
+ []
+
+[17]
 Chapter 4.
 
-Underfull \hbox (badness 10000) in paragraph at lines 862--865
+Underfull \hbox (badness 10000) in paragraph at lines 934--943
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 875--878
+Underfull \hbox (badness 10000) in paragraph at lines 968--971
+
+ []
+
+[18
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 987--990
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1007--1010
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1021--1024
+
+ []
+
+pdfTeX warning (ext4): destination with the same identifier (name{L.X82DB6D4585
+397594}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1035 \hyperdef{L}{X82DB6D4585397594}{}
+                                        
+Underfull \hbox (badness 10000) in paragraph at lines 1042--1045
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1055--1058
+
+ []
+
+[19]
+Underfull \hbox (badness 1014) in paragraph at lines 1062--1064
+[]\T1/ptm/m/n/10.95 DegreeOfPolynomial for a polynomial:$\OT1/ztmcm/m/n/10.95 =
+ [](\OML/ztmcm/m/it/10.95 DegreeOfPolynomial\OT1/ztmcm/m/n/10.95 (\OML/ztmcm/m/
+it/10.95 p[]\OT1/ztmcm/m/n/10.95 ))$\T1/ptm/m/n/10.95 , where $[]$ runs
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1070--1073
 
  []
 
@@ -723,31 +777,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 875--878
 \tf@brf=\write8
 \openout8 = `manual.brf'.
 
- [17
-
-pdfTeX warning (ext4): destination with the same identifier (name{L.X82DB6D4585
-397594}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.1 \begin{thebibliography}{}
-                             ]
+ [20]
 
 LaTeX Warning: Empty `thebibliography' environment on input line 3.
 
-) [18
+) [21
 
-] (./manual.ind [19
+] (./manual.ind [22
 
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 911.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 911.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1104.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1104.
  (./manual.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 911.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 911.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1104.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1104.
+
 Package rerunfilecheck Info: File `manual.out' has not changed.
-(rerunfilecheck)             Checksum: 6B081CEE93D4A5FDAC340F6085D6EA39;764.
+(rerunfilecheck)             Checksum: 2B45A3E1FC15F82920DBCBE79C17E5BD;911.
 Package rerunfilecheck Info: File `manual.brf' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
@@ -757,16 +804,16 @@ LaTeX Warning: There were undefined references.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 911.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1104.
  ) 
 Here is how much of TeX's memory you used:
- 7365 strings out of 495063
- 108673 string characters out of 3182202
- 186791 words of memory out of 3000000
- 10298 multiletter control sequences out of 15000+200000
+ 7405 strings out of 495063
+ 109316 string characters out of 3182202
+ 186808 words of memory out of 3000000
+ 10318 multiletter control sequences out of 15000+200000
  77974 words of font info for 102 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 32i,7n,28p,793b,638s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 32i,7n,28p,861b,638s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texliv
 e/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/
@@ -778,12 +825,13 @@ m-super/sftt1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-super
 b></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></usr/share/texlive/t
 exmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times
-/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on manual.pdf (19 pages, 214751 bytes).
+type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/
+utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on manual.pdf (22 pages, 231949 bytes).
 PDF statistics:
- 352 PDF objects out of 1000 (max. 8388607)
- 314 compressed objects within 4 object streams
- 92 named destinations out of 1000 (max. 500000)
- 97 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 412 PDF objects out of 1000 (max. 8388607)
+ 370 compressed objects within 4 object streams
+ 112 named destinations out of 1000 (max. 500000)
+ 113 words of extra memory for PDF output out of 10000 (max. 10000000)
 

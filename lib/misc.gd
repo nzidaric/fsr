@@ -37,8 +37,9 @@ DeclareOperation( "NrNonzeroCoeffs",  [IsFFECollection and IsRowVector]);
 ##  <Meth Name="MonomialsOverField" Arg='F, poly'  Label="for an NLFSR"/>
 
 ##  <Description>
-##  MonomialsOverField reduces takes a monomial or a list of monomials, and reduces all the exponents 
-##  modulo (Size(<A>F</A>)-1) for all extension fields and prime fields except for <A>F</A>=<M>\mathcal(F)_2</M>. 
+##  MonomialsOverField reduces takes a monomial or a list of monomials, and 
+##  reduces all the exponents modulo (Size(<A>F</A>)-1) for all extension fields
+##  and prime fields except for <A>F</A>=<M>\mathcal(F)_2</M>. 
 ##  For <M>\mathcal(F)_2</M> all the exponents are set to 1. 
 ##  </Description>
 ##  </ManSection>
@@ -55,10 +56,15 @@ DeclareOperation( "MonomialsOverField",  [IsField, IsList]);
 ##  <ManSection>
 ##  <Meth Name="DegreeOfPolynomial" Arg='F, poly'  Label="DegreeOfPolynomial"/>
 ##  <Description>
-##  <C>DegreeOfPolynomial</C> as follows for both monomial of form <M>p = \prod x_i^{e_i}</M> and polynomial of form <M>P = \sum c_j\cdotp_j</M> where <M>p_j = \prod_{i}x_i^{e_i}</M>
-##  DegreeOfPolynomial for a monomial: <M>=  \sum e_i</M>, where <M>i</M> runs through all indeterminates present in this monomial
-##  DegreeOfPolynomial for a polynomial: <M>= \max (DegreeOfPolynomial(p_j))</M> , where <M>\max</M> runs through all monomials <M>p_j</M> present in this polynomial
-##  so an actual extra funstion called  DegreeOfMonomial is not needed
+##  <C>DegreeOfPolynomial</C> as follows for both monomial of form 
+##  <M>p = \prod x_i^{e_i}</M> and polynomial of form 
+##  <M>P = \sum c_j\cdotp_j</M> where <M>p_j = \prod_{i}x_i^{e_i}</M>
+##  DegreeOfPolynomial for a monomial: <M>=  \sum e_i</M>, where <M>i</M> 
+##  runs through all indeterminates present in this monomial
+##  <P/>
+##  DegreeOfPolynomial for a polynomial:<M>= \max (DegreeOfPolynomial(p_j))</M>,
+##  where <M>\max</M> runs through all monomials <M>p_j</M> present in this 
+##  polynomial so an actual extra funstion called DegreeOfMonomial is not needed
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -76,7 +82,8 @@ DeclareOperation( "DegreeOfPolynomial",  [IsPolynomial]);
 ##  <Meth Name="GeneratorOfUnderlyingField" Arg="F"/>
 ##
 ##  <Description>
-##  <C>GeneratorOfUnderlyingField</C> returns the first element <M>\ni: order(x)=Size(F)-1</M>
+##  <C>GeneratorOfUnderlyingField</C> returns the first element
+##  <M>\ni: order(x)=Size(F)-1</M>
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>

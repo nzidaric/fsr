@@ -7,18 +7,14 @@
 <Heading>Common functionality</Heading>
 
 <#Include Label="fsr">
-
 <#Include Label="IsFSR">
 <#Include Label="FieldPoly">
 <#Include Label="Length">
-
-
+<#Include Label="ChangeBasis">
 <#Include Label="LoadFSR">
 <#Include Label="StepFSR">
 <#Include Label="RunFSR">
-
 </Section>
-
 
 
 <Section Label="lfsr">
@@ -28,9 +24,6 @@
 <#Include Label="IsLinearFeedback">
 <#Include Label="CharPoly">
 <#Include Label="IsPeriodic">
-
-
-
 
 </Section>
 
@@ -43,6 +36,7 @@
 <#Include Label="MultivarPoly">
 
 </Section>
+
 
 
 </Chapter>

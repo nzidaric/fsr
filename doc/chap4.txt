@@ -2,9 +2,96 @@
   [1X4 [33X[0;0Ymisc - helper functions[133X[101X
   
   
-  [1X4.1 [33X[0;0Ymisc - helper functions[133X[101X
+  [1X4.1 [33X[0;0YOutput formatting functions[133X[101X
   
-  [1X4.1-1 MonomialsOverField[101X
+  [33X[0;0YThere  are  two  types  of  functions: ones that return the input in a human
+  friendly  version  (as  strings or list of strings), and ones that write the
+  human friendly version of the input into a file (txt or tex)[133X
+  
+  [1X4.1-1 IntFFExt[101X
+  
+  [29X[2XIntFFExt[102X( [[3XB[103X, ][3Xffe[103X ) [32X method
+  [29X[2XIntVecFFExt[102X( [[3XB[103X, ][3Xvec[103X ) [32X method
+  [29X[2XIntMatFFExt[102X( [[3XB[103X, ][3XM[103X ) [32X method
+  
+  [33X[0;0Y[10XIntFFExt[110X takes the [3Xffe[103X and writes it as an integer of the prime field if [3Xffe[103X
+  is  an  element  of  the  prime  field (same as Int(ffe)), or writes it as a
+  vector  of  integers  from  the  prime  subfield  if [3Xffe[103X is an element of an
+  extension  field,  using the given basis [3XB[103X or canonical basis representation
+  of [3Xffe[103X if no basis is provided.[133X
+  
+  [33X[0;0Y[10XIntVecFFExt[110X  takes  the vector [3Xvec[103X of FFEs and writes it in a human friendly
+  version:  as  a vector of integers from the prime field if all components of
+  [3Xvec[103X  belong to a prime field, or as a vector of vectors of integers from the
+  prime  subfield,  if  the components belong to an extension field, using the
+  given  basis  [3XB[103X  or  canonical  basis  representation of [3Xffe[103X, if no basis is
+  provided.  (note:  all  components  are  treated  as elements of the largest
+  field).[133X
+  
+  [33X[0;0Y[10XIntMatFFExt[110X  takes  a  matrix  [3XM[103X  and  returns its human friendly version: a
+  matrix  of  vectors  of integers from the prime field if all components of [3XM[103X
+  belong  to  a  prime  field,  or a vector of row vectors, whose elements are
+  vectors  of integers from the prime subfield, if the components belong to an
+  extension  field,  using the given basis [3XB[103X or canonical basis representation
+  of components of [3XM[103X.[133X
+  
+  [33X[0;0YNOTE:  the  non-basis versions return a representation in the smallest field
+  that  contains  the element. For representation in a specific field, use the
+  basis version with desired basis.[133X
+  
+  [1X4.1-2 VecToString[101X
+  
+  [29X[2XVecToString[102X( [[3XB[103X, ][3Xvec[103X ) [32X method
+  
+  [33X[0;0YWrites  a FFE verctor or matrix as string or list of strings using the given
+  basis  [3XB[103X  or  canonical basis representation of [3Xffe[103X if no basis is provided.
+  This mathod calls methods [10XIntFFExt[110X, [10XIntVecFFExt[110X and [10XIntMatFFExt[110X from section
+  LINK.  The  list  of strings is more practically useful: we wish to have the
+  components  as  srings,  therefore the human friendly version of a matrix is
+  not an actual string.[133X
+  
+  [33X[0;0YNOTE:  the non-basis versions return a representation in the cononical basis
+  of  the  smallest  field  that contains the element. For representation in a
+  specific field, use the basis version with desired basis.[133X
+  
+  [1X4.1-3 WriteVector[101X
+  
+  [29X[2XWriteVector[102X( [3Xoutput[103X, [3XB[103X, [3Xvec[103X ) [32X function
+  
+  [33X[0;0YWrites  the  human friendly version of vector [3Xvec[103X represented in basis [3XB[103X, to
+  the  output file [3Xoutput[103X. Also works if [3Xvec[103X is an integer or FFE. can be used
+  to  write  the  sequence  produced  by the FSR to a file, make sure that the
+  sequence  does  not  contain any subsequences (ie if merging two runs of the
+  FSR,  must  use  Append(seq,seq1),  if  adding  new  step  to a run must use
+  Add(seq, elm1))[133X
+  
+  [33X[0;0YNOTE: the basis MUST be provided.[133X
+  
+  [33X[0;0YAlso  works  for writing matrices, but writes them as a row vector, not as a
+  rectangle.[133X
+  
+  [1X4.1-4 WriteMatrix[101X
+  
+  [29X[2XWriteMatrix[102X( [3Xoutput[103X, [3XB[103X, [3XM[103X ) [32X function
+  
+  [33X[0;0YWrites  the human friendly version of matrix [3XM[103X represented in basis [3XB[103X to the
+  output file [3Xoutput[103X nicely formatted (rectangular, each row in a new line).[133X
+  
+  [33X[0;0YNOTE: the basis MUST be provided.[133X
+  
+  [1X4.1-5 WriteMatrixTEX[101X
+  
+  [29X[2XWriteMatrixTEX[102X( [3Xoutput[103X, [3XM[103X ) [32X function
+  
+  [33X[0;0YWrites  the  TEX  code  for  matrix  [3XM[103X over a prime field to the output file
+  [3Xoutput[103X.[133X
+  
+  [33X[0;0YNOTE: Only works for matrices over a prime field !!![133X
+  
+  
+  [1X4.2 [33X[0;0Ymisc - helper functions[133X[101X
+  
+  [1X4.2-1 MonomialsOverField[101X
   
   [29X[2XMonomialsOverField[102X( [3XF[103X, [3Xpoly[103X ) [32X method
   
@@ -13,15 +100,22 @@
   prime  fields  except for [3XF[103X=[22Xmathcal(F)_2[122X. For [22Xmathcal(F)_2[122X all the exponents
   are set to 1.[133X
   
-  [1X4.1-2 DegreeOfPolynomial[101X
+  [1X4.2-2 DegreeOfPolynomial[101X
   
   [29X[2XDegreeOfPolynomial[102X( [3XF[103X, [3Xpoly[103X ) [32X method
   
   [33X[0;0Y[10XDegreeOfPolynomial[110X  as  follows  for both monomial of form [22Xp = ∏ x_i^e_i[122X and
   polynomial   of   form   [22XP   =   ∑   c_jcdotp_j[122X   where   [22Xp_j  =  ∏_ix_i^e_i[122X
   DegreeOfPolynomial  for  a  monomial:  [22X=  ∑  e_i[122X,  where  [22Xi[122X runs through all
-  indeterminates present in this monomial DegreeOfPolynomial for a polynomial:
-  [22X=  max  (DegreeOfPolynomial(p_j))[122X , where [22Xmax[122X runs through all monomials [22Xp_j[122X
-  present   in   this   polynomial   so   an   actual  extra  funstion  called
-  DegreeOfMonomial is not needed[133X
+  indeterminates present in this monomial[133X
+  
+  [33X[0;0YDegreeOfPolynomial  for  a polynomial:[22X= max (DegreeOfPolynomial(p_j))[122X, where
+  [22Xmax[122X  runs  through all monomials [22Xp_j[122X present in this polynomial so an actual
+  extra funstion called DegreeOfMonomial is not needed[133X
+  
+  [1X4.2-3 GeneratorOfUnderlyingField[101X
+  
+  [29X[2XGeneratorOfUnderlyingField[102X( [3XF[103X ) [32X method
+  
+  [33X[0;0Y[10XGeneratorOfUnderlyingField[110X returns the first element [22X∋: order(x)=Size(F)-1[122X[133X
   

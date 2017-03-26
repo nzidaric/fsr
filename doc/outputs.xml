@@ -11,7 +11,11 @@
 
 <Section Label="Writing">
 <Heading>Writing to *.txt or *.tex </Heading>
-
+<#Include Label="WriteAllFSR">
+<#Include Label="WriteSequenceFSR">
+<#Include Label="WriteRunFSR">
+<#Include Label="WriteTEXRunFSR">
+<#Include Label="WriteTEXElementTableByGenerator">
 </Section>
 
 

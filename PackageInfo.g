@@ -8,8 +8,8 @@ Subtitle := "FSR - Feedback Shift Register Package",
 Version := "1.1.0",
 Date := "16/03/2017",
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "1.0.4">
-##  <!ENTITY RELEASEDATE "17 January 2017">
+##  <!ENTITY VERSION "1.1.0">
+##  <!ENTITY RELEASEDATE "22 March 2017">
 ##  <!ENTITY RELEASEYEAR "2017">
 ##  <#/GAPDoc>
 

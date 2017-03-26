@@ -22,7 +22,7 @@
 
 #############################################################################
 ##
-#M  IntFFExt( [<B>,] <ffe> )    . . . . . . . . write ffe as integer / vector of integers from the prime subfield
+#M  IntFFExt( [<B>,] <ffe> )    .  . write ffe as integer / vector of integers from the prime subfield
 #M  IntVecFFExt( [<B>,] <vec> ) . . . . . . . . write vector of integers from the prime subfield
 #M  IntMatFFExt( [<B>,] <M> )   . . . . . . . . write matrix of integers from the prime subfield
 ##
@@ -39,10 +39,10 @@
 ##  if <A>ffe</A> is an element of an extension field, using the given basis <A>B</A> or 
 ##  canonical basis representation of <A>ffe</A> if no basis is provided.
 ##  <P/>
-##  <C>IntVecFFExt</C> takes the vector <A>vec</A> of FFEs and writes it in a human friendly version: as 
-##  a vector of integers from the prime field if all components of <A>vec</A> belong to a prime field,
-##  or as a vector of vectors of integers from the prime subfield, if the components belong to an 
-##  extension field, using the given basis <A>B</A> or canonical basis representation of <A>ffe</A>, 
+##  <C>IntVecFFExt</C> takes the vector <A>vec</A> of FFEs and writes it in a human friendly version: 
+##  as a vector of integers from the prime field if all components of <A>vec</A> belong to a prime
+##  field, or as a vector of vectors of integers from the prime subfield, if the components belong to  
+##  an extension field, using the given basis <A>B</A> or canonical basis representation of <A>ffe</A>, 
 ##  if no basis is provided.
 ##  (note: all components are treated as elements of the largest field).
 ##  <P/>
@@ -52,8 +52,8 @@
 ##  elements are vectors of integers from the prime subfield, if the components belong to an extension
 ##  field, using the given basis <A>B</A> or canonical basis representation of components of <A>M</A>.
 ##  <P/>
-##  NOTE: the non-basis versions return a representation in the smallest field that contains the element.
-##  for representation in a specific field, use the basis version with desired basis.
+##  NOTE: the non-basis versions return a representation in the smallest field that contains the
+##  element. For representation in a specific field, use the basis version with desired basis.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -82,8 +82,9 @@ DeclareOperation( "IntMatFFExt" , [IsFFECollColl]);# added to tstfsroutputs.tst
 ##  <Meth Name="VecToString" Arg="[B,] vec"/>
 ##
 ##  <Description>
-##  Writes a FFE verctor or matrix as string or list of strings using the given basis <A>B</A> or canonical 
-##  basis representation of <A>ffe</A> if no basis is provided. This mathod calls methods <C>IntFFExt</C>, <C>IntVecFFExt</C> and <C>IntMatFFExt</C>  from section  LINK.
+##  Writes a FFE verctor or matrix as string or list of strings using the given basis <A>B</A> or
+##  canonical basis representation of <A>ffe</A> if no basis is provided. This mathod calls methods 
+##  <C>IntFFExt</C>, <C>IntVecFFExt</C> and <C>IntMatFFExt</C>  from section  LINK.
 ##  The list of strings is more practically useful: we wish to have the components as srings, therefore 
 ##  the human friendly version of a matrix is not an actual string.
 ##  <P/>
@@ -114,7 +115,8 @@ DeclareOperation( "VecToString" ,[IsBasis, IsVector] ); # added to tstfsroutputs
 ##  Writes the human friendly version of vector <A>vec</A> represented in basis <A>B</A>,
 ##  to the output file <A>output</A>. Also works if <A>vec</A> is an integer or FFE. 
 ##  can be used to write the sequence produced by the FSR to a file, make sure that the sequence 
-##  does not contain any subsequences (ie if merging two runs of the FSR, must use Append(seq,seq1), if adding new step to a run must use Add(seq, elm1))
+##  does not contain any subsequences (ie if merging two runs of the FSR, must use Append(seq,seq1), 
+##  if adding new step to a run must use Add(seq, elm1))
 ##  <P/>
 ##  NOTE: the basis MUST be provided.
 ##  <P/>
