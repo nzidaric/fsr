@@ -157,6 +157,7 @@ end );
 InstallGlobalFunction( WriteAllFSR, function(output,  x, b)
 local uf, tap, i, B;
 	if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);	
 	 if IsFSR(x) then 		
  			
  			uf := UnderlyingField(x);	
@@ -225,6 +226,7 @@ InstallGlobalFunction( WriteSequenceFSR, function(output, x, sequence)
 local  i,j, tmp, B, m; 
 		
 if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then 
 		B := x!.basis;
 		# now append the whole sequence(s)
@@ -272,6 +274,7 @@ InstallGlobalFunction( WriteTBSequenceFSR, function(output, x, sequence)
 local  i,j, tmp, B, m; 
 		
 if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then 
 		B := x!.basis;
 		# now append the whole sequence(s)
@@ -316,6 +319,7 @@ InstallGlobalFunction(WriteTEXSequenceByGenerator, function(output, x, sequence,
 local  i,j, tmp, elm, exp, m; 
 		
 if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then 
 	 	if IsString(strGen) then 
 			if Order(gen)=Size(UnderlyingField(x))-1 then
@@ -426,6 +430,7 @@ local  i,j, sequence,  seq, tmp, treshold, B, m;
 
 		
 if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then 
  
 	 
@@ -515,6 +520,7 @@ local  i,j, sequence,  seq, tmp, treshold, B, m, num;
 
 		
 if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then 
  
 	 		num := Length(elmvec);	 
@@ -602,6 +608,7 @@ local  i,j, sequence,  seq,  tmp, state, outtap, treshold, m, B;
 #only check the output stream here, others will be checked by individual function calls !!! 
 		
 if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then 
 
 	# check num
@@ -730,6 +737,7 @@ local  i,j, sequence,  seq,  tmp, state, outtap, treshold, m, B,  exp, elm;
 #only check the output stream here, others will be checked by individual function calls !!! 
 		
 if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then 
 		if IsString(strGen) then
 				
@@ -926,6 +934,7 @@ local  i,j, elms,  tmp,  m, divs, eb, exp, elm, roots;
 
 	
 if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);
 	 if IsField(F) and IsFinite(F) then 
 		 if IsBasis(B) then 
 			if IsString(strGen) then			

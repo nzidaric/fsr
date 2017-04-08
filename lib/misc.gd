@@ -37,7 +37,7 @@ DeclareOperation( "NrNonzeroCoeffs",  [IsFFECollection and IsRowVector]);
 ##  <Meth Name="MonomialsOverField" Arg='F, poly'  Label="for an NLFSR"/>
 
 ##  <Description>
-##  MonomialsOverField reduces takes a monomial or a list of monomials, and 
+##  MonomialsOverField takes a monomial or a list of monomials, and 
 ##  reduces all the exponents modulo (Size(<A>F</A>)-1) for all extension fields
 ##  and prime fields except for <A>F</A>=<M>\mathcal(F)_2</M>. 
 ##  For <M>\mathcal(F)_2</M> all the exponents are set to 1. 
@@ -71,6 +71,7 @@ DeclareOperation( "MonomialsOverField",  [IsField, IsList]);
 ##
 DeclareOperation( "DegreeOfPolynomial",  [IsPolynomial]);
 #DeclareOperation( "DegreeOfPolynomial",  [IsField, IsPolynomial]);
+
 
 #############################################################################
 ##

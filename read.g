@@ -20,7 +20,9 @@ ReadPackage( "FSR", "lib/nlfsr.gi" ); # the top-level functions
 
 ReadPackage( "FSR", "lib/outfsr.gi" ); # the output formatting functions 
 
-#ReadPackage( "FSR", "lib/drawlfsr.gi" ); # LFSR drawing functions - outputs a *.tex file
+ReadPackage( "FSR", "lib/drawlfsr.gi" ); # NLFSR drawing functions - outputs a *.tex file
+
+ReadPackage( "FSR", "lib/drawnlfsr.gi" ); # NLFSR drawing functions - outputs a *.tex file
 
 Print("read.g done!!!\n");
 #E  read.g . . . . . . . . . . . . . . . . . . . . . . . . . . . .  ends here

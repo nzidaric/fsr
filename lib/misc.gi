@@ -160,6 +160,19 @@ end);
 #return d;
 #end);
 
+#InstallMethod( ReciprocalPolynomial, "reciprocal polynomial",  [IsField, IsPolynomial], function(K, mon)
+#local lmlist,lm, x, rpol;
+#	lm := MonomialsOverField(K,l);
+#	lmlist := LeadingMonomial(mon); 
+#	x := Indeterminate(K, lmlist[1]);
+#	rpol := mon * Value(lm, [x], [x^-1]);
+#
+#return rpol;
+#end);
+
+
+
+
 
 
 #############################################################################

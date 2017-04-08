@@ -155,6 +155,7 @@ fi;
 	SetIsNonLinearFeedback(nlfsr, (not lin));  
 	SetIsLinearFeedback(nlfsr, lin);  
 	SetFeedbackVec(nlfsr,clist);    
+	SetTermList(nlfsr, mlist );
 	SetIndetList(nlfsr, indlist );
 	SetLength(nlfsr,d); 
 	SetOutputTap(nlfsr,tap); # this is S_tap or default S_0
@@ -166,6 +167,19 @@ end);
 
 
 
+InstallMethod( ConstTermOfNLFSR, "const term of the multivariate polynomial",  [IsNLFSR], function(x)
+local F, tlist, clist, i, const;
+	F := UnderlyingField(x);
+	const := Zero(F);
+	tlist := TermList(x);
+	clist := FeedbackVec(x);
+	for i in [1..Length(tlist)] do
+		if tlist[i] = One(F) then 
+			const := clist[i]; 
+		fi;	 
+	od;
+return const;
+end);
 
 
 

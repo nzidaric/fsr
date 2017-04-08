@@ -146,9 +146,10 @@ DeclareSynonym( "IsNLFSR", IsFSR and IsNonLinearFeedback);
 ##  <#/GAPDoc>
 ##
 DeclareAttribute( "MultivarPoly", IsNLFSR );
+DeclareAttribute( "TermList", IsNLFSR );
 DeclareAttribute( "IndetList", IsNLFSR );
 
 
-
+DeclareOperation( "ConstTermOfNLFSR",  [IsNLFSR]);
 
 Print("nlfsr.gd OK,\t");

@@ -154,7 +154,7 @@ DeclareAttribute( "Threshold", IsFSR );
 ##  given for <C>UnderlyingField(fsr)</C> over its prime subfield. 
 ##  <P/>
 ##  <C>WhichBasis</C> returns the basis currently set for the <A>fsr</A>. Elements in the <A>fsr</A>
-##  state are still represented in GAP native representation, but the functions with basis switch 
+##  state are still represented in &GAP; native representation, but the functions with basis switch 
 ##  turned on will print the elements w.r.t to currently set basis.  
 ##  </Description>
 ##  </ManSection>

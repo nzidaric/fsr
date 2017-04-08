@@ -351,18 +351,7 @@ end);
 
 #############################################################################
 ##
-#O  RunFSR( <FSR> , <num>, <pr> ) ......... I.   run for num steps with/without print to shell
-#O  RunFSR( <FSR> , <num> ) ............... II.  run for num steps without print to shell
-#O  RunFSR( <FSR> , <pr> ) ................ III. run with/without print to shell
-#O  RunFSR( <FSR> ) ....................... IV.  run without print to shell
-#O  RunFSR( <FSR> , <ist>, <num>, <pr>) ... V.   load new initial state then run for num-1 steps with/without print to shell
-#O  RunFSR( <FSR> , <ist>, <num>) ......... VI.  load new initial state then run for num-1 steps without print to shell
-#O  RunFSR( <FSR> , <ist>) ................ VII. load new initial state then run without print to shell
-## nonlinear versions 
-#O RunFSR(<FSR>, <elm>, <num>, <pr>) ...... VIII. run for num steps with the same nonlinear input on each step and with/without print to shell
-#O RunFSR(<FSR>, <elm>, <num> ) ........... IX.   run for num steps with the same nonlinear input on each step without print to shell
-#O RunFSR(<FSR>, <elm> ) ........... X.   run for threshold steps with the same nonlinear input on each step without print to shell
-#O RunFSR(<FSR>, <ist>, <elmvec>, <pr> ) .. XI.    run for num steps with the different nonlinear input on each step with/without print to shell
+
 
 
 # Ib. run for num steps with/without print to shell
