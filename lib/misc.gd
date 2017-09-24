@@ -13,7 +13,6 @@
 ##  <#GAPDoc Label="TrimLeadCoeff">
 ##  <ManSection>
 ##  <Meth Name="TrimLeadCoeff" Arg='F, poly'  Label="for an LFSR"/>
-##  <Meth Name="IdxNonzeroCoeffs" Arg='F, poly'  Label="for an LFSR"/>
 ##  <Meth Name="IdxNonzeroCoeffs2" Arg='F, poly'  Label="for an LFSR"/>
 ##  <Meth Name="NrNonzeroCoeffs" Arg='F, poly'  Label="for an LFSR"/>
 ##  <Description>
@@ -35,10 +34,12 @@ DeclareOperation( "NrNonzeroCoeffs",  [IsFFECollection and IsRowVector]);
 ##  <#GAPDoc Label="MonomialsOverField">
 ##  <ManSection>
 ##  <Meth Name="MonomialsOverField" Arg='F, poly'  Label="for an NLFSR"/>
+##  <Meth Name="MonomialsOverField" Arg='F, mlist'  Label="for an NLFSR"/>
 
 ##  <Description>
-##  MonomialsOverField takes a monomial or a list of monomials, and 
-##  reduces all the exponents modulo (Size(<A>F</A>)-1) for all extension fields
+##  MonomialsOverField takes a monomial <A>poly</A> or a list of monomials
+##  <A>mlist</A>, and reduces all the exponents modulo (Size(<A>F</A>)-1)
+##  for all extension fields
 ##  and prime fields except for <A>F</A>=<M>\mathcal(F)_2</M>. 
 ##  For <M>\mathcal(F)_2</M> all the exponents are set to 1. 
 ##  </Description>
@@ -56,7 +57,7 @@ DeclareOperation( "MonomialsOverField",  [IsField, IsList]);
 ##
 ##  <#GAPDoc Label="DegreeOfPolynomial">
 ##  <ManSection>
-##  <Meth Name="DegreeOfPolynomial" Arg='F, poly'  Label="DegreeOfPolynomial"/>
+##  <Meth Name="DegreeOfPolynomial" Arg='F, poly' />
 ##  <Description>
 ##  <C>DegreeOfPolynomial</C> as follows for both monomial of form 
 ##  <M>p = \prod x_i^{e_i}</M> and polynomial of form 
@@ -72,9 +73,21 @@ DeclareOperation( "MonomialsOverField",  [IsField, IsList]);
 ##  <#/GAPDoc>
 ##
 DeclareOperation( "DegreeOfPolynomial",  [IsPolynomial]);
-#DeclareOperation( "DegreeOfPolynomial",  [IsField, IsPolynomial]);
 
 
+#############################################################################
+##
+#O  ReciprocalPolynomial(<F>, <poly>) 			Degree of polynomial
+##
+##  <#GAPDoc Label="ReciprocalPolynomial">
+##  <ManSection>
+##  <Meth Name="ReciprocalPolynomial" Arg='F, poly' />
+##  <Description>
+##  <C>ReciprocalPolynomial</C> returns the polynomial with coefficients taken 
+##  from polynomial <A>poly</A> and used in the reversed order
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
 DeclareOperation( "ReciprocalPolynomial",  [IsField, IsPolynomial]);
 
 

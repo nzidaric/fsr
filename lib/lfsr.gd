@@ -52,9 +52,9 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 ##  </List>
 ##  Compoents:
 ##  <List>
-##  <Item> <C>init</C> - <A>FFE</A> vector of length n=deg(feedbackpol), storing
+##  <Item> <C>init</C> - <A>FFE</A> vector of length n=Degree(feedbackpol), storing
 ##   the initial state of the <C>LFSR</C>, with indices from n-1, ..., 0</Item> 
-##  <Item> <C>state</C> - <A>FFE</A> vector of length n=deg(feedbackpol), 
+##  <Item> <C>state</C> - <A>FFE</A> vector of length n=Degree(feedbackpol), 
 ##  storing the current state of the <C>LFSR</C>, with indices from n-1, ..., 0
 ##  </Item> 
 ##  <Item> <C>numsteps</C> - the number of steps performed thus far 
@@ -62,13 +62,13 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 ##  <Ref Meth="LoadFSR" /> and incremented by 1 with each step (using 
 ##  <Ref Meth="StepFSR" />)) </Item>
 ##  <Item> <C>basis</C> - basis of F over its prime subfield (if no basis is 
-##  given this field is set to canonical basis of F over its prime subfield) 
+##  given this component is set to canonical basis of F over its prime subfield) 
 ##  </Item>
 ##  </List>
 ##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingField" />, 
 ##  <C>FeedbackPoly</C>, <Ref Attr="FeedbackVec" />, <Ref Attr="Length" /> and 
 ##  <Ref Attr="OutputTap" />  and the property <C>IsLinearFeedback</C> are set 
-##  during the construction of an<C>LFSR</C>. 
+##  during the construction of an <C>LFSR</C>. 
 ##  <P/>
 ##  If there is something wrong with the arguments (e.g. attempting to create 
 ##  an extension field using a reducible poynomial), an error message appears 
@@ -140,7 +140,7 @@ DeclareSynonym( "IsLFSR", IsFSR and IsLinearFeedback);
 ##  <Attr Name="FeedbackPoly" Arg='lfsr'/>
 ##
 ##  <Description>
-##  Attribute holding the characteristic polynomial (the feedback polynomial).
+##  Attribute holding the the feedback polynomial.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -191,9 +191,16 @@ DeclareAttribute( "FeedbackPoly", IsLFSR );
 ##  </List>
 ##  Methods to compute the period:
 ##  <List>
-##  <Item> <C>PeriodPrimitive</C>: q^n-1; </Item>
-##  <Item> <C>PeriodIrreducible</C>: order(root) (2.1.53 mullen,panario)</Item>
-##  <Item> <C>PeriodReducible</C>:  thm 2.1.55 mullen,panario</Item>
+##  <Item> <C>PeriodPrimitive</C>: <M>q^n-1</M>, where <M>F_q</M> is the 
+##  underlying finite field and <M>n=Degree(FeedbackPoly(<A>lfsr</A>))</M> </Item>
+##  <Item> <C>PeriodIrreducible</C>: <M>Order(\omega)</M> where 
+##  <M>\omega</M> is a root of FeedbackPoly(<A>lfsr</A>)  (2.1.53 mullen,panario)
+##	 </Item>
+##  <Item> <C>PeriodReducible</C>: for FeedbackPoly(<A>lfsr</A>) = 
+##	 <M>a\prod {f_i}^{bi}</M>, the order is given by <M>ep^t</M>, 
+##  where p is the characteristic of the underlying finite field, 
+##  <M>e = Lcm(ord(f_i))</M> and t is the smallest integer such that
+##  <M>p^t\geq max(b_i)</M> (2.1.55 mullen,panario)</Item>
 ##  </List>
 ##  Although the last method should compute the period correctly for all 
 ##  three cases, it is computationally more demanding 

@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##
-#W  outfsr.gd          LFSR Package                  Nusa
+#W  outfsr.gd          FSR Package                  Nusa
 ##
 ##  Declaration file for the LFSR specific output formatting functions
 ##
@@ -16,12 +16,12 @@
 ##
 ##  <#GAPDoc Label="ViewObjFSR">
 ##  <ManSection>
-##  <Meth Name="ViewObj" Arg='lfsr  ' />
-##  <Meth Name="PrintObj" Arg='lfsr [,b] ' />
-##  <Meth Name="PrintAll" Arg='lfsr [,b] ' />
+##  <Meth Name="ViewObj" Arg='fsr  ' />
+##  <Meth Name="PrintObj" Arg='fsr [,b] ' />
+##  <Meth Name="PrintAll" Arg='fsr [,b] ' />
 ##
 ##  <Description>
-##  Different detail on <A>nsr</A> created either by <Ref Func="LFSR" /> or 
+##  Different detail on <A>fsr</A> created either by <Ref Func="LFSR" /> or 
 ##  <Ref Func="NLFSR" />:
 ##  <List>
 ##  <Item> <C>Display/View</C>:  
@@ -38,7 +38,8 @@
 ##  <Item> <C>PrintAll</C>: same as <C>Print</C> if <A>fsr</A> is empty, 
 ##  otherwise it also shows the values of all four components <C>init</C>, 
 ##  <C>state</C> , <C>numsteps</C> and <C>basis</C>
-##  with additional information about the underlying field and the tap positions</Item>
+##  with additional information about the underlying field and the tap positions
+##  </Item>
 ##  </List> 
 ##  Both <C>Print</C> and <C>PrintAll</C> can be used with optional parameter 
 ##  <A>b</A> for desiered output format: when <C>true</C> the output will use 
@@ -171,9 +172,9 @@ DeclareGlobalFunction( "WriteAllFSR" );
 ##  <C>WriteSequenceFSR</C>  but allows to 
 ##  write the sequence elements as powers of a chosen generator <A>gen</A>.
 ##  Generator <A>gen</A> is used to get the exponents of the elements, and the 
-##  elements themselfs are printed as $\<A>strGen</A>^{exponent}$, where 
-##  strGen must be a string representing a greek letter in *.tex, for example
-##  <A>strGen</A> "alpha" will give <M>\alpha</M>. 
+##  elements themselfs are printed as for example <M>\alpha^{exponent}</M>, where 
+##  <A>strGen</A> is set to "alpha" ( it must be a string representing a greek 
+##  letter in *.tex). 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -240,10 +241,9 @@ DeclareGlobalFunction( "WriteNonlinRunFSR" );
 ##  but instead of using the currently set basis of the <A>fsr</A>, the table 
 ##  entries are printed as  powers of a chosen generator <A>gen</A>.
 ##  Generator <A>gen</A> is used to get the exponents of the elements, and the 
-##  elements themselfs are printed as $\<A>strGen</A>^{exponent}$, where 
-##  <A>strGen</A> must be a string representing a greek letter in *.tex,
-##  for example <A>strGen</A> 
-##  "alpha" will give <M>\alpha</M>. 
+##  elements themselfs are printed as for example <M>\alpha^{exponent}</M>, where 
+##  <A>strGen</A> is set to "alpha" ( it must be a string representing a greek 
+##  letter in *.tex). 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -265,8 +265,9 @@ DeclareGlobalFunction( "WriteTEXRunFSRByGenerator" );
 ##  <C>WriteTEXSequenceByGenerator</C> and <C>WriteTEXRunFSRByGenerator</C>. 
 ##  Its output is a *.tex file with a table containing the elements of <A>F</A> 
 ##  represented in basis <A>B</A> and their representation as powers of a 
-##  chosen generator <A>gen</A>, printed as $\<A>strGen</A>^{exponent}$, where 
-##  by the greek letter passed to the function as a string <A>strGen</A>. There
+##  chosen generator <A>gen</A>, printed as for example <M>\alpha^{exponent}</M>,
+##   where <A>strGen</A> is set to "alpha" ( it must be a string representing a 
+##  greek  letter in *.tex). There
 ##   is an extra table column containing the order of each element. 
 ##  <P/>
 ##  The output file contains additional information: defining polynomial of 
