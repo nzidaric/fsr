@@ -26,11 +26,11 @@ InstallMethod( ViewObj,    "for FSR",    true,    [ IsFSR ],    0,  function( x 
 local uf; 
 	uf := UnderlyingField(x);	
 	if x!.numsteps=-1 then 
-			if IsLFSR(x) then 	Print("< empty LFSR over ",uf," given by CharPoly = ", CharPoly(x), " >");
+			if IsLFSR(x) then 	Print("< empty LFSR over ",uf," given by FeedbackPoly = ", FeedbackPoly(x), " >");
 			else 	Print("< empty NLFSR of length ",Length(x)," over ",uf,",\n  given by MultivarPoly = ", MultivarPoly(x), "> ");
 			fi;
 	else 	
-			if IsLFSR(x) then  Print("< LFSR over ",uf,"  given by CharPoly = ", CharPoly(x), " >");
+			if IsLFSR(x) then  Print("< LFSR over ",uf,"  given by FeedbackPoly = ", FeedbackPoly(x), " >");
 			else 		Print("< NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 			fi;
 	fi;
@@ -51,13 +51,13 @@ InstallMethod( PrintObj,     "for FSR",    true,    [IsFSR,  IsBool ],    0,  fu
 local uf, B; 
 	uf := UnderlyingField(x);	
 	if x!.numsteps=-1 then 
-			if IsLFSR(x) then 	Print("empty LFSR over ",uf," given by CharPoly = ", CharPoly(x));
+			if IsLFSR(x) then 	Print("empty LFSR over ",uf," given by FeedbackPoly = ", FeedbackPoly(x));
 			else 	Print("empty NLFSR of length ",Length(x)," over ",uf,",\n  given by MultivarPoly = ", MultivarPoly(x));
 			fi;
 	else 	
 
 			B := x!.basis;	
-			if IsLFSR(x) then  Print("LFSR over ",uf,"  given by CharPoly = ", CharPoly(x));
+			if IsLFSR(x) then  Print("LFSR over ",uf,"  given by FeedbackPoly = ", FeedbackPoly(x));
 			else 		Print("NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x));
 			fi;
 			
@@ -92,11 +92,11 @@ local uf, tap, i, B;
 
 	uf := UnderlyingField(x);	
 	if x!.numsteps=-1 then 
-			if IsLFSR(x) then 	Print("empty LFSR over ",uf," given by CharPoly = ", CharPoly(x));
+			if IsLFSR(x) then 	Print("empty LFSR over ",uf," given by FeedbackPoly = ", FeedbackPoly(x));
 			else 	Print("empty NLFSR of length ",Length(x)," over ",uf,",\n  given by MultivarPoly = ", MultivarPoly(x));
 			fi;
 	else 	
-			if IsLFSR(x) then  Print("LFSR over ",uf,"  given by CharPoly = ", CharPoly(x));
+			if IsLFSR(x) then  Print("LFSR over ",uf,"  given by FeedbackPoly = ", FeedbackPoly(x));
 			else 		Print("NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x));
 			fi;
 	fi;
@@ -164,11 +164,11 @@ SetPrintFormattingStatus(output, false);
 
 
 			if x!.numsteps=-1 then 
-					if IsLFSR(x) then 	AppendTo(output,"empty LFSR over ",uf," given by CharPoly = ", CharPoly(x));
+					if IsLFSR(x) then 	AppendTo(output,"empty LFSR over ",uf," given by FeedbackPoly = ", FeedbackPoly(x));
 					else 	AppendTo(output,"empty NLFSR of length ",Length(x)," over ",uf,",\n  given by MultivarPoly = ", MultivarPoly(x));
 					fi;
 			else 	
-					if IsLFSR(x) then AppendTo(output,"LFSR over ",uf,"  given by CharPoly = ", CharPoly(x));
+					if IsLFSR(x) then AppendTo(output,"LFSR over ",uf,"  given by FeedbackPoly = ", FeedbackPoly(x));
 					else 		AppendTo(output,"NLFSR of length ",Length(x)," over ",uf,",\n given by MultivarPoly = ", MultivarPoly(x));
 					fi;
 			fi;			
@@ -702,8 +702,8 @@ SetPrintFormattingStatus(output, false);
 	AppendTo(output,  "\\hline\n");	
 	AppendTo(output,  "\\end{tabular}}\n");
 	if IsLFSR(x) then 
-		if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",CharPoly(x),"$ over GF(",Characteristic(x),") !!!}}\\label{LABEL}");
-		else AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",CharPoly(x),"$ over GF($",Characteristic(x),"^",m,"$) !!!}}\\label{LABEL}");
+		if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),"$ over GF(",Characteristic(x),") !!!}}\\label{LABEL}");
+		else AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),"$ over GF($",Characteristic(x),"^",m,"$) !!!}}\\label{LABEL}");
 		fi;
 	elif IsNLFSR(x) then
 		if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",MultivarPoly(x),"$ over GF(",Characteristic(x),") !!!}}\\label{LABEL}");
@@ -892,8 +892,8 @@ SetPrintFormattingStatus(output, false);
 							AppendTo(output,  "\\hline\n");	
 							AppendTo(output,  "\\end{tabular}}\n");
 							if IsLFSR(x) then 
-								if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",CharPoly(x),"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$ !!!}}\\label{LABEL}");
-								else AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",CharPoly(x),"$ over GF($",Characteristic(x),"^",m,"$) using generator $\\",strGen,"$ !!!}}\\label{LABEL}");
+								if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$ !!!}}\\label{LABEL}");
+								else AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),"$ over GF($",Characteristic(x),"^",m,"$) using generator $\\",strGen,"$ !!!}}\\label{LABEL}");
 								fi;
 							elif IsNLFSR(x) then
 								if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",MultivarPoly(x),"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$ !!!}}\\label{LABEL}");

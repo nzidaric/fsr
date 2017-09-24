@@ -203,6 +203,7 @@ end);
 # basis version
 InstallGlobalFunction( WriteVector,  function(output, B, vec)
 local j, m, str;
+
 	if IsBasis(B) then 
 		if (IsRowVector(vec) or IsFFE(vec) or IsInt(vec) or IsFFECollColl(vec)) then 
 			if IsFFE(vec) then  # zech log in whatever field 
@@ -227,6 +228,7 @@ local j, m, str;
 	else 
 	  Error("B is not a basis !!!! \n");
 	fi;
+
 return;
 end);
 

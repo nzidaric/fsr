@@ -13,6 +13,9 @@
 ##  :(
 ## ugly, take a second look at it !!!!
 ##
+
+
+
 InstallGlobalFunction( ChooseField, function( F )
     local x, i , str, MaxNLFSRLen, MaxNrOfPresentMonomials, xlist ;
 
@@ -116,7 +119,7 @@ end);
 ##
 ##  identical for both lfsr and nlfsr 
 ##
-InstallMethod(ChangeBasis, "change the basis underlying field of the FSR", [IsFSR,  IsBasis], function(x, B)
+InstallMethod(ChangeBasis, "change the basis of underlying field of the FSR", [IsFSR,  IsBasis], function(x, B)
 local divs, deg;
 	deg := DegreeOverPrimeField(UnderlyingField(x));
 	divs := DivisorsInt(deg);
@@ -296,7 +299,7 @@ local fb, st, new, tap,i, seq, F, n, idx, indlist, slist, xlist;
 	st := x!.state; 
 
 # the step
-	new := (fb * st) + elm; 
+#	new := (fb * st) + elm; 
 	
 	if IsLFSR(x) then 
 		new := (fb * st) + elm; 
@@ -356,13 +359,9 @@ end);
 
 # Ib. run for num steps with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt, IsBool], function(x, num, pr)
-local seq, sequence, nrsteps, treshold, i, B, m; 
+local seq, sequence, nrsteps, treshold, i, B; 
 
 
-	
-		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
-		else m:= 1;
-		fi;	
 # check num
 		treshold := Threshold(x);   
 
@@ -380,6 +379,7 @@ local seq, sequence, nrsteps, treshold, i, B, m;
 	for i in [1.. nrsteps] do 
 		seq := StepFSR(x);
 		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
+		
 #print on every step 
 		if pr  then 
 			
@@ -422,7 +422,7 @@ end);
 
 
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsPosInt, IsBool], function(x,ist, num, pr)
-local  i, sequence,treshold , seq, taps, B, m ,  nrsteps; 
+local  i, sequence,treshold , seq, taps, B, nrsteps, m; 
 # check basis - simple check , only checking if number of basis elms makes sense, 
 # not checking if its a lin indep set coz if its not it wont pass tru the IsBasis filter, so we should be fine  
 #	divs := DivisorsInt(DegreeOverPrimeField(UnderlyingField(x)));
@@ -433,7 +433,8 @@ local  i, sequence,treshold , seq, taps, B, m ,  nrsteps;
 	
 		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
 		else m:= 1;
-		fi;	
+		fi;
+	
 # check num
 		treshold := Threshold(x);   
 	if num > treshold then 
@@ -498,9 +499,9 @@ end);
 # VIIIb. run for num steps with the same nonlinear input on each step and with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt, IsBool], function(x, elm, num, pr)
 local seq, sequence, nrsteps, treshold, i, B,m ; 
-		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
-		else m:= 1;
-		fi;	
+#		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
+#		else m:= 1;
+#		fi;	
 # check num
 		treshold := Threshold(x);   
 	if num > treshold then 

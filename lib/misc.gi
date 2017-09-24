@@ -23,30 +23,32 @@ return trimmed;
 end);
 
 
-InstallMethod( IdxNonzeroCoeffs, "Indeces of nonzero coefficients off the list",  [IsFFECollection and IsRowVector], function(coefs)
-# doesnt work coz coefs not mutable !!!!
-local t, tlist,len , c;
+#InstallMethod( IdxNonzeroCoeffs, "Indeces of nonzero coefficients off the list",  [IsFFECollection and IsRowVector], function(coefs)
+## doesnt work coz coefs not mutable !!!!
+#local t, tlist,len , c;
 
-len := Length(coefs)+1;
-tlist := [];
-t := PositionNonZero(coefs);
-if (t < len) then 
-	Add(tlist,t); 
-	coefs[t] := 0*Z(2); # doesnt work coz coefs not mutable !!!!
-fi;
+#len := Length(coefs)+1;
+#tlist := [];
+#t := PositionNonZero(coefs);
+#if (t < len) then 
+#	Add(tlist,t); 
+#	coefs[t] := 0*Z(2); # doesnt work coz coefs not mutable !!!!
+#fi;
 
-while (t < len) do 
-	t := PositionNonZero(coefs);
-	if (t < len) then 
-		Add(tlist,t); 
-		coefs[t] := 0*Z(2);
-	fi;
-od; 
+#while (t < len) do 
+#	t := PositionNonZero(coefs);
+#	if (t < len) then 
+#		Add(tlist,t); 
+#		coefs[t] := 0*Z(2);
+#	fi;
+#od; 
 
 
 
-return tlist;
-end);
+#return tlist;
+#end);
+
+
 
 InstallMethod( IdxNonzeroCoeffs2, "Indeces of nonzero coefficients off the list",  [IsFFECollection and IsRowVector], function(coefs)
 
@@ -67,10 +69,11 @@ end);
 InstallMethod( NrNonzeroCoeffs, "Number of nonzero indeces",  [IsFFECollection and IsRowVector], function(coefs)
 local tlist;
 
-	tlist := IdxNonzeroCoeffs(coefs);
+	tlist := IdxNonzeroCoeffs2(coefs);
 
 return Length(tlist);
 end);
+
 
 
 
@@ -160,15 +163,14 @@ end);
 #return d;
 #end);
 
-#InstallMethod( ReciprocalPolynomial, "reciprocal polynomial",  [IsField, IsPolynomial], function(K, mon)
-#local lmlist,lm, x, rpol;
-#	lm := MonomialsOverField(K,l);
-#	lmlist := LeadingMonomial(mon); 
-#	x := Indeterminate(K, lmlist[1]);
-#	rpol := mon * Value(lm, [x], [x^-1]);
-#
-#return rpol;
-#end);
+InstallMethod( ReciprocalPolynomial, "reciprocal polynomial",  [IsField, IsPolynomial], function(K, poly)
+local  rcoefs ;
+	
+	rcoefs := Reversed(CoefficientsOfUnivariatePolynomial(poly));  # reversed !!!! 
+		
+	return UnivariatePolynomial(K, rcoefs);
+
+end);
 
 
 

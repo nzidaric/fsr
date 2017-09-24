@@ -10,19 +10,19 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 
 #############################################################################
 ##
-#F  LFSR( <K>, <charpol> )  . . . . . . . . . .  create an LFSR object 	
-#F  LFSR( <K>, <fieldpol>, <charpol>)					
-#F  LFSR( <F>, <charpol>)						
+#F  LFSR( <K>, <feedbackpol> )  . . . . . . . . . .  create an LFSR object 	
+#F  LFSR( <K>, <fieldpol>, <feedbackpol>)					
+#F  LFSR( <F>, <feedbackpol>)						
 #F  LFSR( <p>, <m>, <n>  )						
-#F  LFSR( <K>, <charpol>, <tap> ) 					
-#F  LFSR( <K>, <fieldpol>, <charpol>, <tap>)				
-#F  LFSR( <F>, <charpol>, <tap>)					
+#F  LFSR( <K>, <feedbackpol>, <tap> ) 					
+#F  LFSR( <K>, <fieldpol>, <feedbackpol>, <tap>)				
+#F  LFSR( <F>, <feedbackpol>, <tap>)					
 #F  LFSR( <p>, <m>, <n>, <tap>  )					
 ##  <#GAPDoc Label="LFSR">
 ##  <ManSection>
-##  <Func Name="LFSR" Arg="F, charpol [, B, tap]"/>
-##  <Func Name="LFSR" Arg="K, fieldpol, charpol [, B, tap]"/>
-##  <Func Name="LFSR" Arg="F, charpol [, B, tap]"/>
+##  <Func Name="LFSR" Arg="F, feedbackpol [, B, tap]"/>
+##  <Func Name="LFSR" Arg="K, fieldpol, feedbackpol [, B, tap]"/>
+##  <Func Name="LFSR" Arg="F, feedbackpol [, B, tap]"/>
 ##  <Func Name="LFSR" Arg="p, m, n [, tap]"/>
 ##  <Returns>
 ##  An empty <C>LFSR</C> with components <C>init</C>, <C>state</C> , <C>numsteps</C> and <C>basis</C>
@@ -35,20 +35,20 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 ##  <List>
 ##  <Item> <A>F</A> - the underlying finite field (either an extension field or a prime field)</Item>
 ##  <Item> <A>B</A> - basis of F over its prime subfield</Item>
-##  <Item> <A>charpol</A> - <C>LFSR</C> dfining polynomial </Item>
+##  <Item> <A>feedbackpol</A> - <C>LFSR</C> dfining polynomial </Item>
 ##  <Item> <A>fieldpol</A> - defifning polynomial of the extension field (must be irreducible)</Item>
 ##  <Item> <A>p</A> - characteeristic </Item>
 ##  <Item> <A>m</A> - degree of extension (degree of <A>fieldpol</A>) </Item>
-##  <Item> <A>n</A> - length of  <C>LFSR</C> (degree of <A>charpoly</A>)</Item>
+##  <Item> <A>n</A> - length of  <C>LFSR</C> (degree of <A>feedbackpoly</A>)</Item>
 ##  <Item> <A>tap</A> - optional parameter: the output tap (must be a positive integer or a list of 
 ##  positive integers) and will be changed to the default S_0 if the specified integer is out of 
 ##  <C>LFSR</C> range.</Item>
 ##  </List>
 ##  Compoents:
 ##  <List>
-##  <Item> <C>init</C> - <A>FFE</A> vector of length n=deg(charpol), storing the initial state of the 
+##  <Item> <C>init</C> - <A>FFE</A> vector of length n=deg(feedbackpol), storing the initial state of the 
 ##						<C>LFSR</C>, with indeces from n-1, ..., 0</Item> 
-##  <Item> <C>state</C> - <A>FFE</A> vector of length n=deg(charpol), storing the current state of the 
+##  <Item> <C>state</C> - <A>FFE</A> vector of length n=deg(feedbackpol), storing the current state of the 
 ##						<C>LFSR</C>, with indeces from n-1, ..., 0</Item> 
 ##  <Item> <C>numsteps</C> - the number of steps performed thus far (initialized to -1 when created, 
 ##					set to 0 when loaded using <Ref Meth="LoadFSR" /> and incremented by 1 with each step
@@ -56,7 +56,7 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 ##  <Item> <C>basis</C> - basis of F over its prime subfield (if no basis is given this field is set
 ##				 to canonical basis of F over its prime subfield) </Item>
 ##  </List>
-##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingFied" />, <C>CharPoly</C>, 
+##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingFied" />, <C>FeedbackPoly</C>, 
 ##  <Ref Attr="FeedbackVec" />, <Ref Attr="Length" /> and <Ref Attr="OutputTap" />  and the property 
 ##  <C>IsLinearFeedback</C> are set during the construction of an<C>LFSR</C>. 
 ##  <P/>
@@ -70,12 +70,12 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 ##  gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; 
 ##  gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
 ##  gap> test := LFSR(K, f, l);
-##  < empty LFSR given by CharPoly = y^4+y+Z(2^4)>
+##  < empty LFSR given by FeedbackPoly = y^4+y+Z(2^4)>
 ##  gap> WhichBasis(test);
 ##  CanonicalBasis( GF(2^4) )
 ##  gap> B := Basis(F, Conjugates(Z(2^4)^3));;  
 ##  gap> test := LFSR(K, f, l, B);
-##  < empty LFSR given by CharPoly = y^4+y+Z(2^4)>
+##  < empty LFSR given by FeedbackPoly = y^4+y+Z(2^4)>
 ##  gap> WhichBasis(test);        
 ##  Basis( GF(2^4), [ Z(2^4)^3, Z(2^4)^6, Z(2^4)^12, Z(2^4)^9 ] )
 ##  ]]>
@@ -118,12 +118,12 @@ DeclareSynonym( "IsLFSR", IsFSR and IsLinearFeedback);
 
 #############################################################################
 ##
-#A  CharPoly( <lfsr> )
+#A  FeedbackPoly( <lfsr> )
 #A  FeedbackVec, FieldPoly, OutputTap  # moved to fsr.gd!!!
 ##
-##  <#GAPDoc Label="CharPoly">
+##  <#GAPDoc Label="FeedbackPoly">
 ##  <ManSection>
-##  <Attr Name="CharPoly" Arg='lfsr'/>
+##  <Attr Name="FeedbackPoly" Arg='lfsr'/>
 ##
 ##  <Description>
 ##  Attribute holding the characteristic polynomial (the feedback polynomial).
@@ -131,7 +131,7 @@ DeclareSynonym( "IsLFSR", IsFSR and IsLinearFeedback);
 ##  </ManSection>
 ##  <#/GAPDoc>
 ##
-DeclareAttribute( "CharPoly", IsLFSR );
+DeclareAttribute( "FeedbackPoly", IsLFSR );
 
 
 
@@ -145,6 +145,7 @@ DeclareAttribute( "CharPoly", IsLFSR );
 #P  IsUltPeriodic( <lfsr> )
 #P  IsMaxSeqLFSR( <lfsr> )
 #A  Period( <lfsr> )
+#M  PeriodPrimitive( <lfsr> )
 #M  PeriodIrreducible( <lfsr> )
 #M  PeriodReducible( <lfsr> )
 ##
@@ -154,6 +155,7 @@ DeclareAttribute( "CharPoly", IsLFSR );
 ##  <Prop Name="IsUltPeriodic" Arg='lfsr' />
 ##  <Prop Name="IsMaxSeqLFSR" Arg='lfsr'/>
 ##  <Attr Name="Period" Arg='lfsr' />
+##  <Meth Name="PeriodPrimitive" Arg='lfsr' />
 ##  <Meth Name="PeriodIrreducible" Arg='lfsr' />
 ##  <Meth Name="PeriodReducible" Arg='lfsr' />
 ##
@@ -162,10 +164,10 @@ DeclareAttribute( "CharPoly", IsLFSR );
 ##  by the <A>lsfr</A>. <P/>
 ##  Properties:
 ##  <List>
-##  <Item> <C>IsPeriodic</C>: true if constant term of <C>CharPoly</C> != 0 (8.11 lidl, niederreiter)	
+##  <Item> <C>IsPeriodic</C>: true if constant term of <C>FeedbackPoly</C> != 0 (8.11 lidl, niederreiter)	
 ## 				</Item>
 ##  <Item> <C>IsUltPeriodic</C>: true if <C>IsLFSR</C> is true (8.7 lidl, niederreiter)	</Item>
-##  <Item> <C>IsMaxSeqLFSR</C>: true if <C>CharPoly</C> is primitive (ref???)	</Item>
+##  <Item> <C>IsMaxSeqLFSR</C>: true if <C>FeedbackPoly</C> is primitive (10.2.36 mullen,panario)	</Item>
 ##  </List>
 ##  Attributes:
 ##  <List>
@@ -173,17 +175,20 @@ DeclareAttribute( "CharPoly", IsLFSR );
 ##  </List>
 ##  Methods to compute the period:
 ##  <List>
-##  <Item> <C>PeriodIrreducible</C>:  </Item>
-##  <Item> <C>PeriodReducible</C>:  </Item>
+##  <Item> <C>PeriodPrimitive</C>: q^n-1; </Item>
+##  <Item> <C>PeriodIrreducible</C>: order(root) (2.1.53 mullen,panario)</Item>
+##  <Item> <C>PeriodReducible</C>:  thm 2.1.55 mullen,panario</Item>
 ##  </List>
+##  Although the last method should compute the period correctly for all three cases, it is computationally more demanding 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
 ##
-DeclareProperty( "IsPeriodic", IsLFSR ); # if  constant term of CharPoly <> 0 (8.11 lidl, niederreiter)	
+DeclareProperty( "IsPeriodic", IsLFSR ); # if  constant term of FeedbackPoly <> 0 (8.11 lidl, niederreiter)	
 DeclareSynonym( "IsUltPeriodic", IsLFSR ); # if LSFR then always ult.per.   (8.7 lidl, niederreiter)	
-DeclareProperty("IsMaxSeqLFSR",  IsLFSR); # if CharPoly primitive (find ref)
-DeclareOperation("PeriodIrreducible",  [IsField, IsUnivariatePolynomial, IsPosInt]);
+DeclareProperty("IsMaxSeqLFSR",  IsLFSR); # if FeedbackPoly primitive (find ref)
+#DeclareOperation("PeriodIrreducible",  [IsField, IsUnivariatePolynomial, IsPosInt]);
+DeclareOperation("PeriodPrimitive",  [IsField, IsUnivariatePolynomial]);
 DeclareOperation("PeriodIrreducible",  [IsField, IsUnivariatePolynomial]);
 DeclareOperation("PeriodReducible",  [IsField, IsUnivariatePolynomial]);
 DeclareAttribute( "Period", IsLFSR );

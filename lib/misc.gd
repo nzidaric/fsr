@@ -23,7 +23,7 @@
 ##  <#/GAPDoc>
 ##
 DeclareOperation( "TrimLeadCoeff",  [IsFFECollection and IsRowVector]);
-DeclareOperation( "IdxNonzeroCoeffs",  [IsFFECollection and IsRowVector]);
+#DeclareOperation( "IdxNonzeroCoeffs",  [IsFFECollection and IsRowVector]);
 DeclareOperation( "IdxNonzeroCoeffs2",  [IsFFECollection and IsRowVector]);
 DeclareOperation( "NrNonzeroCoeffs",  [IsFFECollection and IsRowVector]);
 
@@ -45,8 +45,10 @@ DeclareOperation( "NrNonzeroCoeffs",  [IsFFECollection and IsRowVector]);
 ##  </ManSection>
 ##  <#/GAPDoc>
 ##
+
 DeclareOperation( "MonomialsOverField",  [IsField, IsPolynomial]);
 DeclareOperation( "MonomialsOverField",  [IsField, IsList]);
+#DeclareOperation( "AllMonomialsOverField",  [IsField, IsPolynomial]);
 
 #############################################################################
 ##
@@ -73,6 +75,9 @@ DeclareOperation( "DegreeOfPolynomial",  [IsPolynomial]);
 #DeclareOperation( "DegreeOfPolynomial",  [IsField, IsPolynomial]);
 
 
+DeclareOperation( "ReciprocalPolynomial",  [IsField, IsPolynomial]);
+
+
 #############################################################################
 ##
 #M  GeneratorOfUnderlyingField( <F> )    . . . .. get generator of zechs log
@@ -93,6 +98,7 @@ DeclareOperation( "DegreeOfPolynomial",  [IsPolynomial]);
 #T test file tstfsroutputs.tst
 
 DeclareOperation( "GeneratorOfUnderlyingField", [IsField and IsFinite]); 
+
 
 
 Print("misc.gd OK,\t");

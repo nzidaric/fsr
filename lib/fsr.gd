@@ -92,9 +92,9 @@ DeclareGlobalFunction( "ChooseField" );
 ##  extension field or 1 in case of a prime field.<P/>
 ##  <C>UnderlyingField</C> of the <A>fsr</A> is the finite field over which the <A>fsr</A> is defined 
 ##  (all indeterminates and constants are from this field). <P/>
-##  NOTE: it may seem redundant to sore both <C>FieldPoly</C> and <C>UnderlyingField</C>, however, 
+##  NOTE: it may seem redundant to store both <C>FieldPoly</C> and <C>UnderlyingField</C>, however, 
 ##  they are used by other functions in the package. <P/>
-##  <C>FeedbackVec</C> of the <A>fsr</A> stores the coefficients of the <C>CharPoly</C> without its
+##  <C>FeedbackVec</C> of the <A>fsr</A> stores the coefficients of the <C>FeedbackPoly</C> without its
 ##  leading term in case of <C>LFSR</C>, 
 ##  and coefficients of the nonzero monomials present in the multivariate function defining the
 ##  feedback in case of <C>NLFSR</C>.<P/>
@@ -130,7 +130,9 @@ DeclareAttribute( "OutputTap", IsFSR );
 ##  <M>length \cdot width</M>, where <M> width = DegreeOverPrimeField(UnderlyingField(<A>fsr</A>))</M>.
 ##  <P/>
 ##  <C>Threshold</C> of the <A>fsr</A> is currently set to <M>Characteristic(<A>fsr</A>)^t+\ell</M>, 
-##  where <M>t=InternalStateSize(<A>fsr</A>)</M> and <M>\ell=Length(<A>fsr</A>)</M>.<P/>
+##  where <M>t=InternalStateSize(<A>fsr</A>)</M> and <M>\ell=Length(<A>fsr</A>)</M>. 
+##  <C>Threshold</C> is not related to the <A>fsr</A> itself, but to the number of times the <A>fsr</A>
+##  can be clocked, that is it serves as the upper threshold to the length of the sequence produced. <P/>
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -150,8 +152,8 @@ DeclareAttribute( "Threshold", IsFSR );
 ##  <Meth Name="WhichBasis" Arg='fsr' />
 ##
 ##  <Description>
-##  <C>ChangeBasis</C> allows changing the basis of the <A>fsr</A> to basis <A>B</A>. Basis B must be 
-##  given for <C>UnderlyingField(fsr)</C> over its prime subfield. 
+##  <C>ChangeBasis</C> allows changing the basis of the <A>fsr</A> to basis <A>B</A>. 
+##  The argument <A>B</A> must be given for <C>UnderlyingField(fsr)</C> over its prime subfield. 
 ##  <P/>
 ##  <C>WhichBasis</C> returns the basis currently set for the <A>fsr</A>. Elements in the <A>fsr</A>
 ##  state are still represented in &GAP; native representation, but the functions with basis switch 
@@ -203,7 +205,7 @@ DeclareOperation("LoadFSR", [IsFSR,  IsFFECollection]);
 ##  Perform one step the <A>fsr</A>, ie. compute the new <C>state</C> and update the <C>numsteps</C>, 
 ##  then output the elements denoted by <C>OutputTap</C>. If the optional parameter <A>elm</A> is used
 ##  then the new element is computed as 
-##  a sum of computed feedback and <A>elm</A>. Elemen <A>elm</A> must be an element of the underlying 
+##  a sum of the computed feedback and <A>elm</A>. Elemen <A>elm</A> must be an element of the underlying 
 ##  finite field. <P/>
 ##  As this is a way to destroy the linearity of an <C>LFSR</C>, 
 ##  we refer to <C>StepFSR</C> with the optiomal nonzero <A>elm</A> as <C>nonlinear step</C>. 
@@ -244,7 +246,8 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 ##  <Description>
 ##  The <A>fsr</A> will be run for  <M>min(<A>num</A> , Threshold(<A>fsr</A>))</M> number of steps: 
 ##  value Threshold(<A>fsr</A>) is used by all versions without explicit <A>num</A> and enforced when 
-##  <A>num</A> exceeds Threshold(<A>fsr</A>). There is an optional printing switch <A>pr</A>,
+##  <A>num</A> exceeds Threshold(<A>fsr</A>), see <Ref Attr="Threshold" /> for details. 
+##  There is an optional printing switch <A>pr</A>,
 ##  with default set to <E>false</E>; if <E>true</E> then the state and the output sequence element(s)
 ##  are printed in &GAP; shell on every step of the <A>fsr</A> (we call this output for <C>RunFSR</C>), and 
 ##  the currently set basis <A>B</A> is used for representation of elements. 
@@ -291,7 +294,7 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 ##  gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
 ##  gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
 ##  gap> test := LFSR(K, f, l);;
-##  < empty LFSR given by CharPoly = y^4+y+Z(2^4)>
+##  < empty LFSR given by FeedbackPoly = y^4+y+Z(2^4)>
 ##  gap> ist :=[0*Z(2), Z(2^4), Z(2^4)^5, Z(2)^0 ];;
 ##  gap> RunFSR(test, ist, 5, true);             
 ##  using basis B := [ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]	
@@ -337,11 +340,13 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 ##  In both examples above the there is a column <E>elm</E>, which is in first case empty, because we 
 ##  are not adding nonlinear inputs to the feedback, while in the second example,
 ##  this column shows the element being added at each step (empty in first row - the loading step). 
-##  Also note that the two examples above use the call <C>LoadFSR</C>, which adds the elm 
+##  Also note that in the two examples above, <C>RunFSR</C> will call <C>LoadFSR</C> first, which adds the elm 
 ##  seq<M>{{_0}}</M> to the sequence, 
 ##  so both sequences above are of length  <A>num+1</A>/<A>Length(elmvec)+1</A>, ie 6. 
 ##  The last row in both examples is the actual sequence obtained from this run, and is kept in
-##  Zechs logarithm representation. 
+##  Zechs logarithm representation. To represent the elements in the first 6 rows, the basis 
+##  printed out at the beginning is used; it can be changed by using <C>ChangeBasis</C> call and 
+##  repeating <C>RunFSR</C>.
 ##  <Example>
 ##  <![CDATA[
 ##  gap> RunFSR(test,  ist); Length(last);

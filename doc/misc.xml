@@ -3,7 +3,7 @@
 
 
 
-<Section Label="outputs">
+<Section Label="XMLoutputs">
 
 <Heading>Output formatting functions</Heading>
 
@@ -18,7 +18,7 @@
 </Section>
 
 
-<Section Label="misc">
+<Section Label="XMLmisc">
 <Heading>misc - helper functions</Heading>
 
 <#Include Label="MonomialsOverField">

@@ -25,7 +25,7 @@
 ##  <List>
 ##  <Item> <C>Display/View</C>:  
 ##  			<List>
-##						<Item> for LFSR: show the <C>CharPoly</C> and wheter or not the <A>fsr</A> is 
+##						<Item> for LFSR: show the <C>FeedbackPoly</C> and wheter or not the <A>fsr</A> is 
 ##								empty</Item>
 ##  					<Item> for NLFSR: show the <C>MultivarPoly</C> and wheter or not the <A>fsr</A> 
 ##								is empty</Item>
@@ -48,23 +48,23 @@
 ##  gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
 ##  gap> test := LFSR(K, f, l);;
 ##  gap> Print(test);           
-##  empty LFSR over GF(2^4) given by CharPoly = y^4+y+Z(2^4)
+##  empty LFSR over GF(2^4) given by FeedbackPoly = y^4+y+Z(2^4)
 ##  gap> ist := [ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ];; LoadFSR(test, ist);
 ##  Z(2)^0
 ##  gap> Print(test);                         
-##  LFSR over GF(2^4)  given by CharPoly = y^4+y+Z(2^4)
+##  LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4)
 ##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
 ##  with current state =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
 ##  after  0 steps
 ##  gap> RunFSR(test,5);
 ##  [ Z(2^2), Z(2^4), 0*Z(2), Z(2^4)^2, Z(2^4)^11 ]
 ##  gap> Print(test);   
-##  LFSR over GF(2^4)  given by CharPoly = y^4+y+Z(2^4)
+##  LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4)
 ##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
 ##  with current state =[ Z(2^2), Z(2^4)^2, Z(2^4)^2, Z(2^4)^11 ]
 ##  after  5 steps
 ##  gap> PrintAll(test);
-##  LFSR over GF(2^4)  given by CharPoly = y^4+y+Z(2^4)
+##  LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4)
 ##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
 ##  with feedback coeff =[ 0*Z(2), 0*Z(2), Z(2)^0, Z(2^4) ]
 ##  with initial state  =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
@@ -72,7 +72,7 @@
 ##  after 5 steps
 ##  with output from stage S_0
 ##  gap>  PrintAll(test, true);
-##  LFSR over GF(2^4) defined by FieldPoly=x^4+x^3+Z(2)^0  given by CharPoly = y^4\
+##  LFSR over GF(2^4) defined by FieldPoly=x^4+x^3+Z(2)^0  given by FeedbackPoly = y^4\
 ##  +y+Z(2^4)
 ##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
 ##  with feedback coeff =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 0, 0, 0 ], 

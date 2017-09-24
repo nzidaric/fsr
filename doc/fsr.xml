@@ -3,7 +3,7 @@
 
 
 
-<Section Label="fsrcommon">
+<Section Label="XMLfsrcommon">
 <Heading>Common functionality</Heading>
 
 <#Include Label="fsr">
@@ -17,23 +17,24 @@
 </Section>
 
 
-<Section Label="lfsr">
+<Section Label="XMLlfsr">
 <Heading>LFSR specific funcionality</Heading>
 
 <#Include Label="LFSR">
 <#Include Label="IsLinearFeedback">
-<#Include Label="CharPoly">
+<#Include Label="FeedbackPoly">
 <#Include Label="IsPeriodic">
 
 </Section>
 
 
-<Section Label="nlfsr">
+<Section Label="XMLnlfsr">
 <Heading>NLFSR specific funcionality</Heading>
 <#Include Label="ChooseField">
 <#Include Label="NLFSR">
 <#Include Label="IsNonLinearFeedback">
 <#Include Label="MultivarPoly">
+<#Include Label="ConstTermOfNLFSR">
 
 </Section>
 

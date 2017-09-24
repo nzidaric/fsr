@@ -21,7 +21,7 @@ DeclareRepresentation( "IsNLFSRRep", IsComponentObjectRep and IsAttributeStoring
 ##  <Func Name="NLFSR" Arg="K, clist , mlist, len[, tap]"/>
 ##  <Func Name="NLFSR" Arg="K, fieldpol, clist , mlist, len[, tap]"/>
 ##  <Returns>
-##  An empty <C>NLFSR</C>  with components <C>init</C>, <C>state</C> and <C>numsteps</C>
+##  An empty <C>NLFSR</C>  with components <C>init</C>, <C>state</C>, <C>numsteps</C> and <C>basis</C>
 ##  </Returns>	
 ##  <Description>
 ##  Different ways to create an <C>NLFSR</C> oblject, main difference is in creation of the underlying 
@@ -48,15 +48,19 @@ DeclareRepresentation( "IsNLFSRRep", IsComponentObjectRep and IsAttributeStoring
 ##  least one monomial of degree <M>></M> 1, otherwise we must create an <C>LFSR</C>. <P/> 
 ##  Compoents:
 ##  <List>
-##  <Item> <C>init</C> - <A>FFE</A> vector of length n=deg(charpol), storing the initial state of the
+##  <Item> <C>init</C> - <A>FFE</A> vector of length n=deg(feedbackpol), storing the initial state of the
 ##  <C>NLFSR</C>, with indeces from n-1, ..., 0</Item> 
-##  <Item> <C>state</C> - <A>FFE</A> vector of length n=deg(charpol), storing the current state of the 
+##  <Item> <C>state</C> - <A>FFE</A> vector of length n=deg(feedbackpol), storing the current state of the 
 ##	 <C>NLFSR</C>, with indices from n-1, ..., 0</Item> 
 ##  <Item> <C>numsteps</C> - the number of steps performed thus far (initialized to -1 when created, 
 ##  set to 0 when loaded using <Ref Meth="LoadFSR" /> and incremented by 1 with each step 
 ##  (using <Ref Meth="StepFSR" />)) </Item>
+##  <Item> <C>basis</C> - basis of F over its prime subfield (set
+##				 to canonical basis of F over its prime subfield) </Item>
 ##  </List>
-##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingFied" />, <C>MultivarPoly</C>, 
+##  NOTE: none of the <C>NLFSR</C> calls contain the basis as argument: the basis is set to 
+##  canonical basis and must be later changed by ChangeBasis <Ref Meth="ChangeBasis"  />. <P/>
+##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingField" />, <Ref Attr="MultivarPoly" />, 
 ##  <Ref Attr="FeedbackVec" />, <Ref Attr="IndetList" />, <Ref Attr="Length" /> and 
 ##  <Ref Attr="OutputTap" />  and the property <C>IsNonLinearFeedback</C> are set during the 
 ##  construction of an <C>NLFSR</C>. 
@@ -107,7 +111,7 @@ DeclareGlobalFunction( "NLFSR" );
 ##  <Description>
 ##  For the multivariate polynomial given by <A>clist</A>  and <A>mlist</A>, 
 ##  DegreeOfPolynomial greter than 1 sets <C>IsNonLinearFeedback</C> to <E>true</E>.
-##  otherwise it prints out a warning that you need to use the <C>LFSR</C> constructor instead. <P/>
+##  Otherwise it prints out a warning that you need to use the <C>LFSR</C> constructor instead. <P/>
 ##  Filter <C>IsNLFSR</C> is defined as and-filter of <C>IsFSR</C>  and <C>IsNonLinearFeedback</C>. 
 ##  <P/>
 ##  NOTE: at the same time <C>IsLinearFeedback</C> is set to <E>false</E> (for coding purposes).
@@ -121,16 +125,20 @@ DeclareSynonym( "IsNLFSR", IsFSR and IsNonLinearFeedback);
 #############################################################################
 ##
 #A  MultivarPoly( <nlfsr> )
+#A  TermList(<nlfsr>)
 #A  IndetList( <nlfsr> )
 ##
 ##  <#GAPDoc Label="MultivarPoly">
 ##  <ManSection>
 ##  <Attr Name="MultivarPoly" Arg='nlfsr' />
+##  <Attr Name="TermList" Arg='nlfsr' />
 ##  <Attr Name="IndetList" Arg='nlfsr' />
 ##  <Description>
 ##  <C>MultivarPoly</C> holds the multivariate function defining the feedback of the <C>NLFSR</C>. 
-##  <C>IndetList</C> holds all the indeterminates that are present in <C>MultivarPoly</C>
-##  and <C>FeedbackVec</C> holds only the nonzero coefficients (as opposed to the <C>LFSR</C>, where 
+##  <C>TermList</C> holds a copy of the initial monomial list <C>mlist</C> used to create the <C>NLFSR</C>.
+##  <C>IndetList</C> holds all the indeterminates that are present in <C>MultivarPoly</C> and <C>TermList</C>. 
+##  Please note the <C>FeedbackVec</C> now holds only the nonzero coefficients for the monomials, not stages, 
+##  that is, it holds a coply of the initial coefficients list <C>clist</C>, (as opposed to the <C>LFSR</C>, where 
 ##  this field holds coefficients for all stages of the <C>FSR</C>). The feedback element is computed  
 ##  from <C>MultivarPoly</C>, <C>IndetList</C> and <C>state</C>, and not from <C>FeedbackVec</C>.
 ##  <Example>
@@ -149,6 +157,23 @@ DeclareAttribute( "MultivarPoly", IsNLFSR );
 DeclareAttribute( "TermList", IsNLFSR );
 DeclareAttribute( "IndetList", IsNLFSR );
 
+
+
+
+
+#############################################################################
+##
+#M  ConstTermOfNLFSR( <nlfsr> )
+##
+##  <#GAPDoc Label="ConstTermOfNLFSR">
+##  <ManSection>
+##  <Meth Name="ConstTermOfNLFSR" Arg='nlfsr' />
+##
+##  <Description>
+##  Returns the constant term of the multivariate polynomial defining the feedback function.  
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
 
 DeclareOperation( "ConstTermOfNLFSR",  [IsNLFSR]);
 
