@@ -33,8 +33,8 @@ DeclareOperation( "NrNonzeroCoeffs",  [IsFFECollection and IsRowVector]);
 ##
 ##  <#GAPDoc Label="MonomialsOverField">
 ##  <ManSection>
-##  <Meth Name="MonomialsOverField" Arg='F, poly'  Label="for an NLFSR"/>
-##  <Meth Name="MonomialsOverField" Arg='F, mlist'  Label="for an NLFSR"/>
+##  <Meth Name="MonomialsOverField" Arg='F, poly'  Label="for a monomial - for an NLFSR"/>
+##  <Meth Name="MonomialsOverField" Arg='F, mlist'  Label="for list of monomials - for an NLFSR"/>
 
 ##  <Description>
 ##  MonomialsOverField takes a monomial <A>poly</A> or a list of monomials
@@ -93,16 +93,21 @@ DeclareOperation( "ReciprocalPolynomial",  [IsField, IsPolynomial]);
 
 #############################################################################
 ##
-#M  GeneratorOfUnderlyingField( <F> )    . . . .. get generator of zechs log
+#M  GeneratorOfField( <F> )    . . . .. get generator of zechs log
 ##
 ##
-##  <#GAPDoc Label="GeneratorOfUnderlyingField">
+##  <#GAPDoc Label="GeneratorOfField">
 ##  <ManSection>
-##  <Meth Name="GeneratorOfUnderlyingField" Arg="F"/>
+##  <Meth Name="GeneratorOfField" Arg="F"/>
+##  <Meth Name="GeneratorWRTDefiningPolynomial" Arg="F"/>
 ##
 ##  <Description>
-##  <C>GeneratorOfUnderlyingField</C> returns the first element
-##  <M>\ni: order(x)=Size(F)-1</M>
+##  <C>GeneratorOfField</C> returns the root of the defining 
+##  polynomial if the root is also a generator, otherwise it returns the first 
+##   element <M>\ni: order(x)=Size(F)-1</M>.<P/>
+##  <C>GeneratorWRTDefiningPolynomial</C> returns the the coefficient vector 
+##  of the element returned by the  <C>GeneratorOfField</C> call w.r.t 
+##  polynomial basis given by the root of the defining polynomial of the field.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -110,7 +115,9 @@ DeclareOperation( "ReciprocalPolynomial",  [IsField, IsPolynomial]);
 
 #T test file tstfsroutputs.tst
 
-DeclareOperation( "GeneratorOfUnderlyingField", [IsField and IsFinite]); 
+DeclareOperation( "GeneratorOfField", [IsField and IsFinite]); 
+DeclareOperation( "GeneratorWRTDefiningPolynomial", [IsField and IsFinite]); 
+
 
 
 

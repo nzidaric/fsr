@@ -8,20 +8,16 @@
 
 #############################################################################
 ##
-#F  LFSR( <K>, <feedbackpol> )  . . . . . . . . . .  create an LFSR object 	# len 2 B
-#F  LFSR( <K>, <feedbackpol>, <B> )  . . . . . . . . . .  create an LFSR object 	# len 3 B
+#F  LFSR( <F>, <feedbackpol> )  . . . . . . . . . .  create an LFSR object 	# len 2 B
+#F  LFSR( <F>, <feedbackpol>, <B> )  . . . . . . . . . .  create an LFSR object 	# len 3 B
 #F  LFSR( <K>, <fieldpol>, <feedbackpol>)					# len 3 B
 #F  LFSR( <K>, <fieldpol>, <feedbackpol>, <B>)					# len 4 B
-#F  LFSR( <K>, <feedbackpol>, <tap>)				# len 3 B
-#F  LFSR( <K>, <feedbackpol>, <tap> ) 					# len 3 B
-#F  LFSR( <K>, <feedbackpol>, <B>,  <tap>)	# len 4 B
-#F  LFSR( <F>, <feedbackpol>, <B>)						# len 3 B
+#F  LFSR( <F>, <feedbackpol>, <tap>)				# len 3 B
+#F  LFSR( <F>, <feedbackpol>, <B>,  <tap>)	# len 4 B
 #F  LFSR( <F>, <feedbackpol>,)						# len 2 B
 #F  LFSR( <p>, <m>, <n>  )						# len 3 B
 #F  LFSR( <K>, <fieldpol>, <feedbackpol>, <tap>)				# len 4 B
 #F  LFSR( <K>, <fieldpol>, <feedbackpol>, <B>, <tap>)				# len 5 B
-#F  LFSR( <F>, <feedbackpol>, <tap>)					# len 3 B
-#F  LFSR( <F>, <feedbackpol>, <B>, <tap>)					# len 4 B
 #F  LFSR( <p>, <m>, <n>, <tap>  )					# len 4
 
 InstallGlobalFunction( LFSR,  function(arg)

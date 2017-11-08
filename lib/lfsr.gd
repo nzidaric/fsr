@@ -5,7 +5,8 @@
 ##
 
 ## storing initial state , current state and number of steps already performed 
-DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringRep and IsFSR, ["init", "state", "numsteps"] );
+DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and 
+IsAttributeStoringRep and IsFSR, ["init", "state", "numsteps"] );
 
 
 #############################################################################
@@ -20,10 +21,11 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 #F  LFSR( <p>, <m>, <n>, <tap>  )					
 ##  <#GAPDoc Label="LFSR">
 ##  <ManSection>
-##  <Func Name="LFSR" Arg="F, feedbackpol [, B, tap]"/>
-##  <Func Name="LFSR" Arg="K, fieldpol, feedbackpol [, B, tap]"/>
-##  <Func Name="LFSR" Arg="F, feedbackpol [, B, tap]"/>
-##  <Func Name="LFSR" Arg="p, m, n [, tap]"/>
+##  <Func Name="LFSR" Arg='F, feedbackpol [, B, tap]' />
+##  <Func Name="LFSR" Arg='K, fieldpol, feedbackpol [, B, tap]' 
+##  Label="with field defining polynomial"/>
+##  <Func Name="LFSR" Arg='p, m, n [, tap]' Label="as ext. field with LFSR of 
+##  length n"/>
 ##  <Returns>
 ##  An empty <C>LFSR</C> with components <C>init</C>, <C>state</C> , 
 ##	 <C>numsteps</C> and <C>basis</C>
@@ -52,7 +54,8 @@ DeclareRepresentation( "IsLFSRRep", IsComponentObjectRep and IsAttributeStoringR
 ##  </List>
 ##  Compoents:
 ##  <List>
-##  <Item> <C>init</C> - <A>FFE</A> vector of length n=Degree(feedbackpol), storing
+##  <Item> <C>init</C> - <A>FFE</A> vector of length n=Degree(feedbackpol), 
+##  storing
 ##   the initial state of the <C>LFSR</C>, with indices from n-1, ..., 0</Item> 
 ##  <Item> <C>state</C> - <A>FFE</A> vector of length n=Degree(feedbackpol), 
 ##  storing the current state of the <C>LFSR</C>, with indices from n-1, ..., 0
@@ -192,9 +195,10 @@ DeclareAttribute( "FeedbackPoly", IsLFSR );
 ##  Methods to compute the period:
 ##  <List>
 ##  <Item> <C>PeriodPrimitive</C>: <M>q^n-1</M>, where <M>F_q</M> is the 
-##  underlying finite field and <M>n=Degree(FeedbackPoly(<A>lfsr</A>))</M> </Item>
+##  underlying finite field and <M>n=Degree(FeedbackPoly(<A>lfsr</A>))</M>
+##  </Item>
 ##  <Item> <C>PeriodIrreducible</C>: <M>Order(\omega)</M> where 
-##  <M>\omega</M> is a root of FeedbackPoly(<A>lfsr</A>)  (2.1.53 mullen,panario)
+##  <M>\omega</M> is a root of FeedbackPoly(<A>lfsr</A>) (2.1.53 mullen,panario)
 ##	 </Item>
 ##  <Item> <C>PeriodReducible</C>: for FeedbackPoly(<A>lfsr</A>) = 
 ##	 <M>a\prod {f_i}^{bi}</M>, the order is given by <M>ep^t</M>, 
@@ -214,11 +218,13 @@ DeclareSynonym( "IsUltPeriodic", IsLFSR );
 # if LSFR then always ult.per.   (8.7 lidl, niederreiter)	
 DeclareProperty("IsMaxSeqLFSR",  IsLFSR); 
 # if FeedbackPoly primitive (find ref)
-#DeclareOperation("PeriodIrreducible",  [IsField, IsUnivariatePolynomial, IsPosInt]);
+#DeclareOperation("PeriodIrreducible", 
+#[IsField, IsUnivariatePolynomial, IsPosInt]);
+
 DeclareOperation("PeriodPrimitive",  [IsField, IsUnivariatePolynomial]);
 DeclareOperation("PeriodIrreducible",  [IsField, IsUnivariatePolynomial]);
 DeclareOperation("PeriodReducible",  [IsField, IsUnivariatePolynomial]);
-DeclareAttribute( "Period", IsLFSR );
+DeclareAttribute("Period", IsLFSR );
 
 
 

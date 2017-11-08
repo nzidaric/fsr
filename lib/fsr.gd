@@ -62,10 +62,11 @@ DeclareGlobalFunction( "FSRFamily" );
 ##  <ManSection>
 ##  <Func Arg="F" Name="ChooseField"  />
 ##  <Description>
-##  Workaround for the <C>NLFSR</C> object definition: we need to fix the chosen underlying finite 
+##  Workaround for the <C>NLFSR</C> object definition: we need to fix the 
+##  chosen underlying finite 
 ##  field and prepare indeterminates in the chosen field. 
-##  The indeterminates will be used for the multivariable polynomial, which will define the 
-##  <C>NLFSR</C> feedback.
+##  The indeterminates will be used for the multivariable polynomial, which will
+##  define the <C>NLFSR</C> feedback.
 ##  Current threshold is set by global <C>MaxNLFSRLen</C> = 100. <P/>
 ##  </Description>
 ##  </ManSection>
@@ -88,18 +89,22 @@ DeclareGlobalFunction( "ChooseField" );
 ##  <Attr Name="FeedbackVec" Arg='fsr'/>
 ##  <Attr Name="OutputTap" Arg='fsr' />
 ##  <Description>
-##  <C>FieldPoly</C> of the <A>fsr</A> stores the irreducible polynomial used to construct the 
-##  extension field or 1 in case of a prime field.<P/>
-##  <C>UnderlyingField</C> of the <A>fsr</A> is the finite field over which the <A>fsr</A> is defined 
+##  <C>FieldPoly</C> of the <A>fsr</A> stores the irreducible polynomial used to
+##  construct the extension field or 1 in case of a prime field.<P/>
+##  <C>UnderlyingField</C> of the <A>fsr</A> is the finite field over which the 
+##  <A>fsr</A> is defined 
 ##  (all indeterminates and constants are from this field). <P/>
-##  NOTE: it may seem redundant to store both <C>FieldPoly</C> and <C>UnderlyingField</C>, however, 
+##  NOTE: it may seem redundant to store both <C>FieldPoly</C> and 
+##  <C>UnderlyingField</C>, especially since they can also be accessed from the 
+##  basis component of the <A>fsr</A> , however, 
 ##  they are used by other functions in the package. <P/>
-##  <C>FeedbackVec</C> of the <A>fsr</A> stores the coefficients of the <C>FeedbackPoly</C> without its
+##  <C>FeedbackVec</C> of the <A>fsr</A> stores the coefficients of the 
+##  <C>FeedbackPoly</C> without its
 ##  leading term in case of <C>LFSR</C>, 
-##  and coefficients of the nonzero monomials present in the multivariate function defining the
-##  feedback in case of <C>NLFSR</C>.<P/>
-##  <C>OutputTap</C> holds the output tap position(s): the sequence elements are taken from the 
-##  stage(s) listed in <C>OutputTap</C>.
+##  and coefficients of the nonzero monomials present in the multivariate 
+##  function defining the feedback in case of <C>NLFSR</C>.<P/>
+##  <C>OutputTap</C> holds the output tap position(s): the sequence elements 
+##  are taken from the stage(s) listed in <C>OutputTap</C>.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -107,10 +112,29 @@ DeclareGlobalFunction( "ChooseField" );
 DeclareAttribute( "FieldPoly", IsFSR );
 DeclareAttribute( "UnderlyingField", IsFSR );
 DeclareAttribute( "FeedbackVec", IsFSR ); 
-# should be IsLFSR , the equivalent for IsNLFSR will be CoeffVec ...
-# maybe can have the same name coz theyre both coefficients  and belong to the feedback
-# maybe rename to FeedbackCoeffs
 DeclareAttribute( "OutputTap", IsFSR );
+
+
+
+#############################################################################
+##
+#M  GeneratorOfUnderlyingField( <fsr> )    . . . .. get generator of zechs log
+##
+##
+##  <#GAPDoc Label="GeneratorOfUnderlyingField">
+##  <ManSection>
+##  <Meth Name="GeneratorOfUnderlyingField" Arg="fsr"/>
+##
+##  <Description>
+##  <C>GeneratorOfUnderlyingField</C> returns the root of the defining 
+##  polynomial if the root is also a generator, otherwise it returns the first 
+##   element <M>\ni: order(x)=Size(F)-1</M> by calling <C>GeneratorOfField</C>.
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+
+
+DeclareOperation( "GeneratorOfUnderlyingField", [IsFSR]); 
 
 #############################################################################
 ##
@@ -126,13 +150,17 @@ DeclareAttribute( "OutputTap", IsFSR );
 ##
 ##  <Description>
 ##  <C>Length</C> of the <A>fsr</A> is the number of its stages.<P/>
-##  <C>InternalStateSize</C> of the <A>fsr</A> is size in bits needed to store the state 
-##  <M>length \cdot width</M>, where <M> width = DegreeOverPrimeField(UnderlyingField(<A>fsr</A>))</M>.
+##  <C>InternalStateSize</C> of the <A>fsr</A> is size in bits needed to store 
+##  the state <M>length \cdot width</M>, where 
+##  <M> width = DegreeOverPrimeField(UnderlyingField(<A>fsr</A>))</M>.
 ##  <P/>
-##  <C>Threshold</C> of the <A>fsr</A> is currently set to <M>Characteristic(<A>fsr</A>)^t+\ell</M>, 
-##  where <M>t=InternalStateSize(<A>fsr</A>)</M> and <M>\ell=Length(<A>fsr</A>)</M>. 
-##  <C>Threshold</C> is not related to the <A>fsr</A> itself, but to the number of times the <A>fsr</A>
-##  can be clocked, that is it serves as the upper threshold to the length of the sequence produced. <P/>
+##  <C>Threshold</C> of the <A>fsr</A> is currently set to 
+##  <M>Characteristic(<A>fsr</A>)^t+\ell</M>, 
+##  where <M>t=InternalStateSize(<A>fsr</A>)</M> and 
+##  <M>\ell=Length(<A>fsr</A>)</M>. 
+##  <C>Threshold</C> is not related to the <A>fsr</A> itself, but to the number 
+##  of times the <A>fsr</A> can be clocked, that is it serves as the upper 
+##  threshold to the length of the sequence produced. <P/>
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -152,11 +180,13 @@ DeclareAttribute( "Threshold", IsFSR );
 ##  <Meth Name="WhichBasis" Arg='fsr' />
 ##
 ##  <Description>
-##  <C>ChangeBasis</C> allows changing the basis of the <A>fsr</A> to basis <A>B</A>. 
-##  The argument <A>B</A> must be given for <C>UnderlyingField(fsr)</C> over its prime subfield. 
+##  <C>ChangeBasis</C> allows changing the basis of the <A>fsr</A> to basis 
+##  <A>B</A>. The argument <A>B</A> must be given for the 
+##  <C>UnderlyingField(fsr)</C> over its prime subfield. 
 ##  <P/>
-##  <C>WhichBasis</C> returns the basis currently set for the <A>fsr</A>. Elements in the <A>fsr</A>
-##  state are still represented in &GAP; native representation, but the functions with basis switch 
+##  <C>WhichBasis</C> returns the basis currently set for the <A>fsr</A>. 
+##  Elements in the <A>fsr</A> state are still represented in &GAP; native 
+##  representation, but the functions with basis switch 
 ##  turned on will print the elements w.r.t to currently set basis.  
 ##  </Description>
 ##  </ManSection>
@@ -174,10 +204,12 @@ DeclareOperation("WhichBasis", [IsFSR]);
 ##  <Meth Name="LoadFSR" Arg='fsr, ist' />
 ##
 ##  <Description>
-##  Loading the <A>fsr</A> with the initial state <A>ist</A>, which is a <A>FFE</A> vector
-##  of same length as <A>fsr</A> and with elements from its underlying finite field. If either of 
-##  those two requirements is violated, loading fails and error message appears. At the time of loading 
-##  the initial sequence elements (ie zeroth elements) are obtained and <C>numsteps</C> is set to 0.
+##  Loading the <A>fsr</A> with the initial state <A>ist</A>, which is a 
+##  <A>FFE</A> vector of same length as <A>fsr</A> and with elements from its 
+##  underlying finite field. If either of those two requirements is violated, 
+##  loading fails and error message appears. At the time of loading 
+##  the initial sequence elements (ie zeroth elements) are obtained and 
+##  <C>numsteps</C> is set to 0.
 ##  <P/>
 ##  </Description>
 ##  </ManSection>
@@ -187,9 +219,11 @@ DeclareOperation("LoadFSR", [IsFSR,  IsFFECollection]);
 #DeclareProperty("IsEmpty", IsFSR); DONT coz once set cant change again
 
 
-# TO DO : from initial state and number of steps , knowing the feedback polynomial, we can check if 
+# TO DO : from initial state and number of steps , knowing the feedback 
+#polynomial, we can check if 
 ## current state is
-# VALID (if we can get it from initial state in num of steps), and if not valid then reset the LFSR
+# VALID (if we can get it from initial state in num of steps), and if not 
+# valid then reset the LFSR
 # is it the same for both ????
 
 #############################################################################
@@ -202,13 +236,16 @@ DeclareOperation("LoadFSR", [IsFSR,  IsFFECollection]);
 ##  <Meth Name="StepFSR" Arg='fsr[, elm]' />
 ##
 ##  <Description>
-##  Perform one step the <A>fsr</A>, ie. compute the new <C>state</C> and update the <C>numsteps</C>, 
-##  then output the elements denoted by <C>OutputTap</C>. If the optional parameter <A>elm</A> is used
+##  Perform one step the <A>fsr</A>, ie. compute the new <C>state</C> and update
+##  the <C>numsteps</C>, then output the elements denoted by <C>OutputTap</C>. 
+##  If the optional parameter <A>elm</A> is used
 ##  then the new element is computed as 
-##  a sum of the computed feedback and <A>elm</A>. Elemen <A>elm</A> must be an element of the underlying 
+##  a sum of the computed feedback and <A>elm</A>. Elemen <A>elm</A> must be an 
+##  element of the underlying 
 ##  finite field. <P/>
 ##  As this is a way to destroy the linearity of an <C>LFSR</C>, 
-##  we refer to <C>StepFSR</C> with the optiomal nonzero <A>elm</A> as <C>nonlinear step</C>. 
+##  we refer to <C>StepFSR</C> with the optiomal nonzero <A>elm</A> as 
+##  <C>nonlinear step</C>. 
 ##  Similarly, the <C>NLFSR</C> can also have 
 ##  an extra element added to the (already nonlinear) feedback.<P/>
 ##  Returns an error if the <A>fsr</A> is not loaded!<P/>
@@ -222,24 +259,43 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 
 #############################################################################
 ##
-#O  RunFSR( <FSR> , <num>, <pr> ) ......... Ib.   run for num steps with/without print to shell
-#O  RunFSR( <FSR> , <num> ) ............... II.  run for num steps without print to shell
-#O  RunFSR( <FSR> , <pr> ) ................ IIIb. run with/without print to shell
-#O  RunFSR( <FSR> ) ....................... IV.  run without print to shell
-#O  RunFSR( <FSR> , <ist>, <num>, <pr>) ... Vb.   load new initial state then run for num-1 steps with/without print to shell
-#O  RunFSR( <FSR> , <ist>, <num>) ......... VI.  load new initial state then run for num-1 steps without print to shell
-#O  RunFSR( <FSR> , <ist>) ................ VII. load new initial state then run without print to shell
+#O  RunFSR( <FSR> , <num>, <pr> )
+##                ......... Ib.   run for num steps with/without print to shell
+#O  RunFSR( <FSR> , <num> ) 
+##          ............... II.  run for num steps without print to shell
+#O  RunFSR( <FSR> , <pr> ) 
+##         ................ IIIb. run with/without print to shell
+#O  RunFSR( <FSR> ) 
+##  ....................... IV.  run without print to shell
+#O  RunFSR( <FSR> , <ist>, <num>, <pr>) 
+##                      ... Vb.   load new initial state then run for 
+##                                num-1 steps with/without print to shell
+#O  RunFSR( <FSR> , <ist>, <num>) 
+##                ......... VI.  load new initial state then run for num-1 steps
+##                               without print to shell
+#O  RunFSR( <FSR> , <ist>) 
+##         ................ VII. load new initial state then run 
+##                               without print to shell
 ## nonlinear versions 
-#O  RunFSR(<FSR>, <elm>, <num>, <pr>) ...... VIIIb. run for num steps with the same nonlinear input on each step and with/without print to shell
-#O  RunFSR(<FSR>, <elm>, <num>) ............ IX.   run for num steps with the same nonlinear input on each step without print to shell
-#O  RunFSR(<FSR>, <ist>, <elmvec>, <pr> ) .. Xb.    run for num steps with the different nonlinear input on each step with/without print to shell
+#O  RunFSR(<FSR>, <elm>, <num>, <pr>) 
+##                   ...... VIIIb. run for num steps with the same nonlinear 
+##                          input on each step and with/without print to shell
+#O  RunFSR(<FSR>, <elm>, <num>) 
+##             ............ IX.   run for num steps with the same nonlinear 
+##                          input on each step without print to shell
+#O  RunFSR(<FSR>, <ist>, <elmvec>, <pr> ) 
+##                       .. Xb.    run for num steps with the different 
+##                     nonlinear input on each step with/without print to shell
 ##
 ##  <#GAPDoc Label="RunFSR">
 ##  <ManSection>
 ##  <Meth Name="RunFSR" Arg='fsr [, ist, num, pr]'/>
-##  <Meth Name="RunFSR" Arg='fsr ,elm [, num, pr]'/>
-##  <Meth Name="RunFSR" Arg='fsr , ist, elmvec [, pr]'/>
-##  <Meth Name="RunFSR" Arg='fsr , z, elmvec [, pr]'/>
+##  <Meth Name="RunFSR" Arg='fsr , elm [, num, pr]' 
+##  Label="with same nonlinear input"/>
+##  <Meth Name="RunFSR" Arg='fsr , ist, elmvec [, pr]' 
+##  Label="load and run with different nonlinear input"/>
+##  <Meth Name="RunFSR" Arg='fsr , z, elmvec [, pr]' 
+##  Label="run with different nonlinear input"/>
 ##  <Returns>
 ##  A sequence of elements generated by <C>FSR</C>.
 ##  </Returns>	
@@ -289,10 +345,10 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 ##  <List> 
 ##  <Item> sequence of <A>FFE</A>s : seq<M>_0</M>, seq<M>_1</M>, seq<M>_2</M>, 
 ##  <M>\dots ,</M>  for <E>Length</E>(<E>OutputTap</E>)=1</Item>
-##  <Item> sequence of vectors, each of them with <M>t</M> <A>FFE</A>s : 
+##  <Item> sequence of vectors, each of them with <M>t</M> <A>FFE</A>s: 
 ##  seq<M>_0</M>, seq<M>_1</M>, seq<M>_2</M>, <M>\dots ,</M>  
 ##  where seq<M>_i=(</M> seq<M>_{i1}</M>, <M>\dots ,
-##					</M> seq<M>_{it}</M>) for <E>Length</E>(<E>OutputTap</E>)=t</Item>
+##				</M> seq<M>_{it}</M>) for <E>Length</E>(<E>OutputTap</E>)=t</Item>
 ##  </List>
 ##  Example of <C>RunFSR</C> called for an lfsr <E>test</E> over <M>F_{2^4}</M>,
 ##  with initial state <E>ist</E>, print switch <E>true</E> for basis <E>B</E>, 
@@ -388,35 +444,58 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 
 
 
-DeclareOperation("RunFSR", [IsFSR, IsPosInt, IsBool]);	 #Ib.   run for num steps with/without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR, IsPosInt, IsBool]);	 
+#Ib.   run for num steps with/without print to shell  -  changed
 
-DeclareOperation("RunFSR", [IsFSR, IsPosInt]); 							 #II.  run for num steps without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR, IsPosInt]); 							 
+#II.  run for num steps without print to shell  -  changed
 
-DeclareOperation("RunFSR", [IsFSR,  IsBool]);					 #IIIb. run with/without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR,  IsBool]);					 
+#IIIb. run with/without print to shell  -  changed
 
-DeclareOperation("RunFSR", [IsFSR ]);										 #IV.  run without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR ]);										 
+#IV.  run without print to shell  -  changed
 
+DeclareOperation("RunFSR", [IsFSR,  IsFFECollection, IsPosInt, IsBool]);		 
+#Vb. load new initial state then run for num-1 steps with/without print to shell  -  changed
 
-DeclareOperation("RunFSR", [IsFSR,  IsFFECollection, IsPosInt, IsBool]);		 #Vb. load new initial state then run for num-1 steps with/without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt]);      				    
+#VI.  load new initial state then run for num-1 steps without print to shell  -  changed
 
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt]);      				    #VI.  load new initial state then run for num-1 steps without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsBool]);                   	 
+#VIIb. load new initial state then run without print to shell  -  changed
 
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsBool]);                   	 #VIIb. load new initial state then run without print to shell  -  changed
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection]);               					    #VII. load new initial state then run without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection]);               					    
+#VII. load new initial state then run without print to shell  -  changed
 
 ## nonlinear versions 
-DeclareOperation("RunFSR", [IsFSR,  IsFFE, IsPosInt, IsBool]);		  	#VIIIb. run for num steps with the same nonlinear input on each step and with/without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR,  IsFFE, IsPosInt, IsBool]);		  	
+#VIIIb. run for num steps with the same nonlinear input on each step and with/without print to shell  -  changed
 
-DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt]);		 							#IX. run for num steps with the same nonlinear input on each step without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt]);		 							
+#IX. run for num steps with the same nonlinear input on each step without print to shell  -  changed
 
-DeclareOperation("RunFSR", [IsFSR, IsFFE, IsBool]);				  						#Xb.   run with the same nonlinear input on each step without print to shell  -  changed
-DeclareOperation("RunFSR", [IsFSR, IsFFE]);				  									#X.   run with the same nonlinear input on each step without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR, IsFFE, IsBool]);				  						
+#Xb.   run with the same nonlinear input on each step without print to shell  -  changed
 
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection, IsBool]);	# XIb. run for num steps with the different nonlinear input on each step with/without print to shell  -  changed
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection]);				# XI. run for num steps with the different nonlinear input on each step with/without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR, IsFFE]);				  									
+#X.   run with the same nonlinear input on each step without print to shell  -  changed
+
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection, IsBool]);	
+# XIb. run for num steps with the different nonlinear input on each step with/without print to shell  -  changed
+
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection]);				
+# XI. run for num steps with the different nonlinear input on each step with/without print to shell  -  changed
 
 
-DeclareOperation("RunFSR", [IsFSR, IsZero, IsFFECollection, IsBool]);	# XIIb. run for num steps with the different nonlinear input on each step with/without print to shell  -  changed
-DeclareOperation("RunFSR", [IsFSR, IsZero, IsFFECollection]);				# XII. run for num steps with the different nonlinear input on each step with/without print to shell  -  changed
+DeclareOperation("RunFSR", [IsFSR, IsZero, IsFFECollection, IsBool]);	
+# XIIb. run for num steps with the different nonlinear input on each step with/without print to shell  -  changed
+
+DeclareOperation("RunFSR", [IsFSR, IsZero, IsFFECollection]);				
+# XII. run for num steps with the different nonlinear input on each step with/without print to shell  -  changed
+
+
+
+
 
 Print("fsr.gd OK,\t");

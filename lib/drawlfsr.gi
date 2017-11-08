@@ -821,7 +821,7 @@ end);
 
 InstallGlobalFunction( TikzW_LFSR, function(output, x)
 
-if IsPrimeField(DefaultField(FeedbackVec(x))) then TikzWSimple_LFSR(output, x);
+if IsPrimeField(UnderlyingField(x)) then TikzWSimple_LFSR(output, x);
 else TikzWComplex_LFSR(output, x);
 fi;
 

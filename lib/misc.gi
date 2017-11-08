@@ -179,14 +179,28 @@ end);
 
 #############################################################################
 ##
-#M  GeneratorOfUnderlyingField( <F> )    . . . .. get generator of zechs log
+#M  GeneratorOfField( <F> )    . . . .. get generator of zechs log
 ##
 
-InstallMethod(  GeneratorOfUnderlyingField, "generator of underlying field",  [IsField and IsFinite], function(F)
-	return First(Elements(F),x->not IsZero(x) and Order(x)=Size(F)-1); 
+InstallMethod(  GeneratorOfField, "generator of underlying field",  [IsField and IsFinite], function(F)
+local w;
+	w := RootOfDefiningPolynomial(F);
+	
+	if Order(w)=Size(F)-1 then return w;
+	else return First(Elements(F),x->not IsZero(x) and Order(x)=Size(F)-1); 
+	fi;
 end);
 
 
+
+#############################################################################
+##
+#M  GeneratorWRTDefiningPolynomial( <F> )    . . . .. get generator of zechs log
+##
+
+InstallMethod( GeneratorWRTDefiningPolynomial, "generator of underlying field",  [IsField and IsFinite], function(F)
+	return Coefficients(Basis(F), GeneratorOfField(F)); 
+end);
 
 
 

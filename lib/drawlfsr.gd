@@ -33,11 +33,9 @@ DeclareGlobalFunction( "TikzNComplex_nLFSR" );
 #DeclareGlobalFunction( "TikzWComplexDots_nLFSR" );
 DeclareGlobalFunction( "TikzW_LFSR" );
 DeclareGlobalFunction( "TikzW_nLFSR" );
+DeclareGlobalFunction( "TikzN_LFSR" );
+DeclareGlobalFunction( "TikzN_nLFSR" );
 
-
-#move to WG library ? 
-#DeclareGlobalFunction( "TikzWG_LFSR" );
-#DeclareGlobalFunction( "TikzWGDots_LFSR" );
 
 
 

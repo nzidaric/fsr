@@ -9,6 +9,7 @@
 <#Include Label="fsr">
 <#Include Label="IsFSR">
 <#Include Label="FieldPoly">
+<#Include Label="GeneratorOfUnderlyingField">
 <#Include Label="Length">
 <#Include Label="ChangeBasis">
 <#Include Label="LoadFSR">

@@ -4,22 +4,28 @@
 ##
 ##
 
-## storing initial state , current state , current multinomial state and number of steps already 
-## performed 
-DeclareRepresentation( "IsNLFSRRep", IsComponentObjectRep and IsAttributeStoringRep and IsFSR, ["init", "state", "polystate", "numsteps"] );
+
+DeclareRepresentation( "IsNLFSRRep", 
+IsComponentObjectRep and IsAttributeStoringRep and IsFSR, 
+["init", "state", "polystate", "numsteps"] );
 
 
 #############################################################################
 ##
-#F  NLFSR( <K>, <clist>, <mlist> , <len> )  . . . .  create an LFSR object 	# len 4
-#F  NLFSR( <K>, <fieldpol>,  <clist>, <mlist> , <len> )  . . . .  create an LFSR object 	# len 5
-#F  NLFSR( <K>, <clist>, <mlist> , <len> , <tap>)  . . . .  create an LFSR object 	# len 5
-#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len>, <tap> )  . . . .  create an LFSR object 	# len 6
+#F  NLFSR( <K>, <clist>, <mlist> , <len> )  
+##. . . .  create an LFSR object 	# len 4
+#F  NLFSR( <K>, <fieldpol>,  <clist>, <mlist> , <len> ) 
+## . . . .  create an LFSR object 	# len 5
+#F  NLFSR( <K>, <clist>, <mlist> , <len> , <tap>) 
+## . . . .  create an LFSR object 	# len 5
+#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len>, <tap> )  
+##. . . .  create an LFSR object 	# len 6
 ##
 ##  <#GAPDoc Label="NLFSR">
 ##  <ManSection>
-##  <Func Name="NLFSR" Arg="K, clist , mlist, len[, tap]"/>
-##  <Func Name="NLFSR" Arg="K, fieldpol, clist , mlist, len[, tap]"/>
+##  <Func Name="NLFSR" Arg='K, clist , mlist, len[, tap]' />
+##  <Func Name="NLFSR" Arg='K, fieldpol, clist , mlist, len[, tap]' 
+##  Label="with field defining polynomial"/>
 ##  <Returns>
 ##  An empty <C>NLFSR</C>  with components <C>init</C>, <C>state</C>,
 ##   <C>numsteps</C> and <C>basis</C>
@@ -30,7 +36,7 @@ DeclareRepresentation( "IsNLFSRRep", IsComponentObjectRep and IsAttributeStoring
 ##  finite field. <P/>
 ##  NOTE: before creating the <C>NLFSR</C>, we must always create the
 ##   indeterminates to be used for the 
-##  feedback using <C>ChooseField</C> function call!!! please see example below .
+##  feedback using <C>ChooseField</C> function call!!! please see example below.
 ##  <P/>
 ##  Inputs:
 ##  <List>

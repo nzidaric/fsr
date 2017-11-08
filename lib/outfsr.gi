@@ -268,14 +268,14 @@ SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then 
 		B := x!.basis;
 		# now append the whole sequence(s)
-#			if Length(OutputTap(x))=1 then 
-#
-#				for i in [1.. Length(sequence)] do 
-#					tmp := sequence[i]; # outputs on step i
-#					 AppendTo(output, VecToString(B,tmp) , "\n");
-#				od;	
+			if Length(OutputTap(x))=1 then 
+
+				for i in [1.. Length(sequence)] do 
+					tmp := sequence[i]; # outputs on step i
+					 AppendTo(output,VecToString(IntFFExt(B,tmp)) , "\n");
+				od;	
 	
-#			else 
+			else 
 	
 
 				# must separate them for each tap position
@@ -288,7 +288,7 @@ SetPrintFormattingStatus(output, false);
 						od;	
 						AppendTo(output, "\n");
 				od;
-#			fi;
+			fi;
 	
 		else 
 		Error("IsFSR(",x,")=false !!!!\n");
@@ -313,10 +313,34 @@ SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then 
 	 	if IsString(strGen) then 
 			if Order(gen)=Size(UnderlyingField(x))-1 then
+				m := DegreeOverPrimeField(UnderlyingField(x));
+	
+				if IsLFSR(x) then 
+					if m=1 then  AppendTo(output, "For the LFSR with feedback $",FeedbackPoly(x),
+															"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$");
+														
+					else  AppendTo(output,"For the LFSR with feedback $",FeedbackPoly(x),
+												"$ over GF($",Characteristic(x),"^",m,"$) using generator $\\",strGen,"$");
+											
+												
+					fi;
+				elif IsNLFSR(x) then
+					if m=1 then  AppendTo(output, "For the  NLFSR with feedback $",MultivarPoly(x),
+															"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$");
+
+					else AppendTo(output,  "For the NLFSR with feedback $",MultivarPoly(x),
+															"$ over GF($",Characteristic(x),"^",m,"$) using generator $\\",strGen,"$");
+					fi;	
+				fi;
+				
+				WriteTEXGeneratorWRTDefiningPolynomial(output, UnderlyingField(x), strGen);												
+				AppendTo(output,"\\\\\n\n");	
+
+	
 						
 				# now append the whole sequence(s)
 					if Length(OutputTap(x))=1 then 
-						AppendTo(output,"\nThe whole sequence:\n");	
+						AppendTo(output,"\nThe whole sequence:\\\\\n");	
 			
 						for i in [1.. Length(sequence)-1] do 
 							 elm := sequence[i]; # outputs on step i
@@ -328,7 +352,7 @@ SetPrintFormattingStatus(output, false);
 							else 
 								 exp := LogFFE(elm,gen);
 								 if exp = 1 then 			 AppendTo(output,  "\\, $\\",strGen,"$\\,");
-								 else 		AppendTo(output,  "\\, $\\",strGen,"^",exp,"$\\,");
+								 else 		AppendTo(output,  "\\, $\\",strGen,"^{",exp,"}$\\,");
 								 fi;
 							fi;										
 							
@@ -341,7 +365,7 @@ SetPrintFormattingStatus(output, false);
 							else 
 								 exp := LogFFE(elm,gen);
 								 if exp = 1 then 			 AppendTo(output,  "\\, $\\",strGen,"$\\,");
-								 else 		AppendTo(output,  "\\, $\\",strGen,"^",exp,"$\\,");
+								 else 		AppendTo(output,  "\\, $\\",strGen,"^{",exp,"}$\\,");
 								 fi;
 							fi;	
 						AppendTo(output, "\n");
@@ -362,7 +386,7 @@ SetPrintFormattingStatus(output, false);
 								else 
 									 exp := LogFFE(elm,gen);
 									 if exp = 1 then 			 AppendTo(output,  "\\, $\\",strGen,"$\\,");
-									 else 		AppendTo(output,  "\\, $\\",strGen,"^",exp,"$\\,");
+									 else 		AppendTo(output,  "\\, $\\",strGen,"^{",exp,"}$\\,");
 									 fi;
 								fi;						
 
@@ -377,7 +401,7 @@ SetPrintFormattingStatus(output, false);
 								else 
 									 exp := LogFFE(elm,gen);
 									 if exp = 1 then 			 AppendTo(output,  "\\, $\\",strGen,"$\\,");
-									 else 		AppendTo(output,  "\\, $\\",strGen,"^",exp,"$\\,");
+									 else 		AppendTo(output,  "\\, $\\",strGen,"^{",exp,"}$\\,");
 									 fi;
 								fi;
 						AppendTo(output, "\n");						
@@ -692,12 +716,12 @@ SetPrintFormattingStatus(output, false);
 	AppendTo(output,  "\\hline\n");	
 	AppendTo(output,  "\\end{tabular}}\n");
 	if IsLFSR(x) then 
-		if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),"$ over GF(",Characteristic(x),") !!!}}\\label{LABEL}");
-		else AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),"$ over GF($",Characteristic(x),"^",m,"$) !!!}}\\label{LABEL}");
+		if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),"$ over GF(",Characteristic(x),").}}\\label{LABEL}");
+		else AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),"$ over GF($",Characteristic(x),"^",m,"$).}}\\label{LABEL}");
 		fi;
 	elif IsNLFSR(x) then
-		if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",MultivarPoly(x),"$ over GF(",Characteristic(x),") !!!}}\\label{LABEL}");
-		else AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",MultivarPoly(x),"$ over GF($",Characteristic(x),"^",m,"$) !!!}}\\label{LABEL}");
+		if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize NLFSR with feedback $",MultivarPoly(x),"$ over GF(",Characteristic(x),").}}\\label{LABEL}");
+		else AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",MultivarPoly(x),"$ over GF($",Characteristic(x),"^",m,"$).}}\\label{LABEL}");
 		fi;	
 	fi;
 	
@@ -718,10 +742,49 @@ SetPrintFormattingStatus(output, false);
 	return sequence;
 end);
 
+InstallGlobalFunction( WriteTEXGeneratorWRTDefiningPolynomial, function(output, F, strGen)
+local gen, genvec, i;
+
+if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);
+	  
+		if IsString(strGen) and  strGen <> "omega" then
+	
+			gen := GeneratorOfField(F);
+			if gen = RootOfDefiningPolynomial(F) then 
+				AppendTo(output, ", which is a root of $",DefiningPolynomial(F),"$");
+			else 
+				genvec := GeneratorWRTDefiningPolynomial(F);																		
+				AppendTo(output, ", where $\\",strGen,"=");		
+				if genvec[1] = One(F) then 
+					AppendTo(output, "1 +");
+				fi;
+				for i in [2.. Length(genvec)-1] do	
+					if genvec[i] = One(F) then 
+						AppendTo(output, "\\omega^", i-1, " +");
+					fi;																		
+				od;
+				if genvec[Length(genvec)] = One(F) then 
+					AppendTo(output, "\\omega^",Length(genvec)-1, "$");
+				fi;						
+		
+				AppendTo(output, " and $\\omega$ is a root of $",DefiningPolynomial(F),"$");																		
+			fi;
+		else 
+			Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
+		fi;
+
+	else 
+		Error("outputstream not valid !!!!\n");
+	fi;			
+
+return;
+end); 
+			
 
 
-InstallGlobalFunction( WriteTEXRunFSRByGenerator, function(output, x,ist, num, strGen, gen)
-local  i,j, sequence,  seq,  tmp, state, outtap, treshold, m, B,  exp, elm; 
+InstallGlobalFunction( WriteTEXRunFSRByGenerator, function(output, x,ist, num, strGen)
+local  i,j, sequence,  seq,  tmp, state, outtap, treshold, m, B,  exp, elm, gen, genvec; 
 
 # [IsOutputStream,IsLFSR,IsFFECollection, IsPosInt] 
 #only check the output stream here, others will be checked by individual function calls !!! 
@@ -729,10 +792,10 @@ local  i,j, sequence,  seq,  tmp, state, outtap, treshold, m, B,  exp, elm;
 if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then 
-		if IsString(strGen) then
-				
+		if IsString(strGen) and  strGen <> "omega" then
+				gen := GeneratorOfUnderlyingField(x);
 				if Order(gen)=Size(UnderlyingField(x))-1 then		
-				#		gen := GeneratorOfUnderlyingField(UnderlyingField(x));
+						
 						# check num
 								treshold := Threshold(x); 
 								if num > treshold then 
@@ -789,7 +852,7 @@ SetPrintFormattingStatus(output, false);
 								else 
 									 exp := LogFFE(elm,gen);
 									 if exp = 1 then 			 AppendTo(output,  "&\\, $\\",strGen,"$\\,");
-									 else 		AppendTo(output,  "&\\, $\\",strGen,"^",exp,"$\\,");
+									 else 		AppendTo(output,  "&\\, $\\",strGen,"^{",exp,"}$\\,");
 									 fi;
 								fi;
 							od;
@@ -804,7 +867,7 @@ SetPrintFormattingStatus(output, false);
 									else 
 										 exp := LogFFE(elm,gen);
 										 if exp = 1 then 			 AppendTo(output,  "&\\, $\\",strGen,"$\\,");
-										 else 		AppendTo(output,  "&\\, $\\",strGen,"^",exp,"$\\,");
+										 else 		AppendTo(output,  "&\\, $\\",strGen,"^{",exp,"}$\\,");
 										 fi;
 									fi;							
 							else  
@@ -817,7 +880,7 @@ SetPrintFormattingStatus(output, false);
 										else 
 											 exp := LogFFE(elm,gen);
 											 if exp = 1 then 			 AppendTo(output,  "&\\, $\\",strGen,"$\\,");
-											 else 		AppendTo(output,  "&\\, $\\",strGen,"^",exp,"$\\,");
+											 else 		AppendTo(output,  "&\\, $\\",strGen,"^{",exp,"}$\\,");
 											 fi;
 										fi;						
 								od;	
@@ -841,7 +904,7 @@ SetPrintFormattingStatus(output, false);
 									else 
 										 exp := LogFFE(elm,gen);
 										 if exp = 1 then 			 AppendTo(output,  "&\\, $\\",strGen,"$\\,");
-										 else 		AppendTo(output,  "&\\, $\\",strGen,"^",exp,"$\\,");
+										 else 		AppendTo(output,  "&\\, $\\",strGen,"^{",exp,"}$\\,");
 										 fi;
 									fi;
 								od;
@@ -855,7 +918,7 @@ SetPrintFormattingStatus(output, false);
 										else 
 											 exp := LogFFE(elm,gen);
 											 if exp = 1 then 			 AppendTo(output,  "&\\, $\\",strGen,"$\\,");
-											 else 		AppendTo(output,  "&\\, $\\",strGen,"^",exp,"$\\,");
+											 else 		AppendTo(output,  "&\\, $\\",strGen,"^{",exp,"}$\\,");
 											 fi;
 										fi;					
 								else  
@@ -868,7 +931,7 @@ SetPrintFormattingStatus(output, false);
 											else 
 												 exp := LogFFE(elm,gen);
 												 if exp = 1 then 			 AppendTo(output,  "&\\, $\\",strGen,"$\\,");
-												 else 		AppendTo(output,  "&\\, $\\",strGen,"^",exp,"$\\,");
+												 else 		AppendTo(output,  "&\\, $\\",strGen,"^{",exp,"}$\\,");
 												 fi;
 											fi;							
 									od;	
@@ -882,16 +945,27 @@ SetPrintFormattingStatus(output, false);
 							AppendTo(output,  "\\hline\n");	
 							AppendTo(output,  "\\end{tabular}}\n");
 							if IsLFSR(x) then 
-								if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$ !!!}}\\label{LABEL}");
-								else AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),"$ over GF($",Characteristic(x),"^",m,"$) using generator $\\",strGen,"$ !!!}}\\label{LABEL}");
+								if m=1 then  AppendTo(output, "\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),
+																		"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$");
+																	
+								else  AppendTo(output,"\\caption{{\\footnotesize LFSR with feedback $",FeedbackPoly(x),
+															"$ over GF($",Characteristic(x),"^",m,"$) using generator $\\",strGen,"$");
+														
+															
 								fi;
 							elif IsNLFSR(x) then
-								if m=1 then  AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",MultivarPoly(x),"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$ !!!}}\\label{LABEL}");
-								else AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback $",MultivarPoly(x),"$ over GF($",Characteristic(x),"^",m,"$) using generator $\\",strGen,"$ !!!}}\\label{LABEL}");
+								if m=1 then  AppendTo(output, "\\caption{{\\footnotesize NLFSR with feedback $",MultivarPoly(x),
+																		"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$");
+
+								else AppendTo(output,  "\\caption{{\\footnotesize NLFSR with feedback $",MultivarPoly(x),
+																		"$ over GF($",Characteristic(x),"^",m,"$) using generator $\\",strGen,"$");
 								fi;	
 							fi;
 							
-							AppendTo(output,  "\\end{center}\n\\end{table}\n}");
+							WriteTEXGeneratorWRTDefiningPolynomial(output, UnderlyingField(x), strGen);												
+							AppendTo(output, ".}}\\label{LABEL}");
+							
+							AppendTo(output,  "\\end{center}\n\\end{table}\n}\n");
 						
 						
 							WriteTEXSequenceByGenerator(output, x, sequence, strGen, gen);
@@ -902,7 +976,7 @@ SetPrintFormattingStatus(output, false);
 						
 						
 				else 
-				Error(strGen," is not a string !!!!\n");
+				Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
 				fi;
 				
 		
@@ -919,15 +993,16 @@ end);
 
 
 
-InstallGlobalFunction(WriteTEXElementTableByGenerator, function(output, F, B, strGen, gen)
-local  i,j, elms,  tmp,  m, divs, eb, exp, elm, roots; 
+InstallGlobalFunction(WriteTEXElementTableByGenerator, function(output, F, B, strGen)
+local  i,j, elms,  tmp,  m, divs, eb, exp, elm, roots, gen; 
 
 	
 if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	 if IsField(F) and IsFinite(F) then 
 		 if IsBasis(B) then 
-			if IsString(strGen) then			
+		if IsString(strGen) and  strGen <> "omega" then	
+				gen := GeneratorOfField(F);
 				if Order(gen)=Size(F)-1 then		
 
 							m:= DegreeOverPrimeField(F);
@@ -987,7 +1062,7 @@ SetPrintFormattingStatus(output, false);
 												else 
 													 exp := LogFFE(elm,gen);
 													 if exp = 1 then 			 AppendTo(output,  "&\\, $\\",strGen,"$\\,");
-													 else 		AppendTo(output,  "&\\, $\\",strGen,"^",exp,"$\\,");
+													 else 		AppendTo(output,  "&\\, $\\",strGen,"^{",exp,"}$\\,");
 													 fi;
 												fi;
 											
@@ -1001,7 +1076,11 @@ SetPrintFormattingStatus(output, false);
 											AppendTo(output,  "\\hline\n");	
 											AppendTo(output,  "\\end{tabular}}\n");
 												
-											 AppendTo(output,  "\\caption{{\\footnotesize Element table for GF($",Characteristic(F),"^",m,"$) with defining polynomial $",DefiningPolynomial(F), "$, basis B and generator $\\",strGen,"$ !!!}}\\label{LABEL}");
+											 AppendTo(output,  "\\caption{{\\footnotesize Element table for GF($",Characteristic(F),"^",m,"$) with generator $\\",strGen,"$"); 
+											 
+														WriteTEXGeneratorWRTDefiningPolynomial(output, F, strGen);												
+														AppendTo(output, ".}}\\label{LABEL}");	 
+											 
 											
 				
 											
@@ -1011,6 +1090,9 @@ SetPrintFormattingStatus(output, false);
 
 												for j in [1.. Length(B)] do
 												   elm := BasisVectors(B)[j];
+												   if j <> 1 then 
+												  	 AppendTo(output,  ",");
+												   fi;
 													if IsZero(elm) then 
 														AppendTo(output,  "\\, 0\\,");
 													elif IsOne(elm) then 
@@ -1018,7 +1100,7 @@ SetPrintFormattingStatus(output, false);
 													else 
 														 exp := LogFFE(elm,gen);
 														 if exp = 1 then 			 AppendTo(output,  "\\, $\\",strGen,"$\\,");
-														 else 		AppendTo(output,  "\\, $\\",strGen,"^",exp,"$\\,");
+														 else 		AppendTo(output,  "\\, $\\",strGen,"^{",exp,"}$\\,");
 														 fi;
 													fi;													
 													
@@ -1026,18 +1108,19 @@ SetPrintFormattingStatus(output, false);
 												od;									   
 										   
 										   AppendTo(output,  " ]\n");	
+										    AppendTo(output,  "\\\\ \n");	
 										   
-										   AppendTo(output,  "\n\n \n\nIs generator ",strGen," a root of defining polynomial $",DefiningPolynomial(F),"$:\t ");
-										   roots := RootsOfPolynomial(F,DefiningPolynomial(F)); j := 0;
-										   for i in [1.. Length(roots)] do 
-										   	if gen=roots[i] then 
-										   			AppendTo(output,  "YES, its the root number ",i);
-										   			j := j + 1;										   			
-								   		   fi;
-								   		od;
-								   		if IsZero(j) then  AppendTo(output,  "NO, the roots are :$",roots,"$");  
-								   		fi;
-										   AppendTo(output,  "\\\\ \n");	
+	#									   AppendTo(output,  "\n\n \n\nIs generator ",strGen," a root of defining polynomial $",DefiningPolynomial(F),"$:\t ");
+	#									   roots := RootsOfPolynomial(F,DefiningPolynomial(F)); j := 0;
+	#									   for i in [1.. Length(roots)] do 
+	#									   	if gen=roots[i] then 
+	#									   			AppendTo(output,  "YES, its the root number ",i);
+	#									   			j := j + 1;										   			
+	#							   		   fi;
+	#							   		od;
+	#							   		if IsZero(j) then  AppendTo(output,  "NO, the roots are :$",roots,"$");  
+	#							   		fi;
+	#									   AppendTo(output,  "\\\\ \n");	
 										   
 											
 							else 
@@ -1047,10 +1130,11 @@ SetPrintFormattingStatus(output, false);
 						else 
 						Error(gen," is not a generator of ",F,"!!!!\n");
 						fi;
-													
+														
 					else 
-					Error(strGen," is not a string !!!!\n");
+					Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
 					fi;
+				
 				else 
 				Error(B,"is not a basis !!!!\n");
 				fi;			

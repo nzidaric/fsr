@@ -57,6 +57,9 @@ return;
 end );
 
 
+
+
+
 #############################################################################
 ##
 #F  FSRFamily( <p> ) 
@@ -74,6 +77,17 @@ InstallGlobalFunction( FSRFamily, function( p )
  #   fam!.FSRType:= NewType( fam, IsFSR );
     return fam;
 end );
+
+
+
+#############################################################################
+##
+#M  GeneratorOfUnderlyingField( <fsr> )    . . . .. get generator of zechs log
+##
+
+InstallMethod(  GeneratorOfUnderlyingField, "generator of underlying field",  [IsFSR], function(x)
+	return GeneratorOfField(UnderlyingField(x));
+end);
 
 
 

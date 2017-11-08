@@ -1,6 +1,168 @@
 <Chapter Label="Preface">
 <Heading>Preface</Heading>    
 
-The &GAP; package &FSR; implements Feedback Shift Registers 
+The &GAP; package &FSR; implements Feedback Shift Registers. 
+MOTIVATION:  WHY, WHERE USED  
+<P/>
+  
+  
+  <Section Label="intro">  
+<Heading>Some basic concepts</Heading>   
+An <M>n</M>-stage shift register over a finite field <M>\mathcal{F}</M> is an 
+array of <M>n</M> registers (denoted <M>S_t</M>, <M>t=n-1, \ldots,0</M>), and 
+each stage holds a value from the underlying finite field <M>\mathcal{F}</M>. 
+<M>n</M> is also referred to as the length of the FSR. This memory array is 
+shifted with each step <M>S_t \rightarrow S_{t-1}</M> for <M>t=n-1, \dots,1</M>, 
+and the vacant register <M>S_{n-1}</M> is updated with a new value obtained from 
+the feedback function, hence the name <C>feedback shift register</C> (FSR). 
+One of the stages is used to generate the output and each time the FSR is 
+clocked, that stages produces a new element <M>a_i\in\mathcal{F}</M>. 
+In this way, the FSR produces a sequence of elements:
+<M>\underline{a}=\{a_k\}= a_0,a_1,a_2,\dots</M>
+<P/>
 
+
+
+
+The feedback function is a polynomial function in <M>n</M> variables 
+(that correspond to the stages, i.e. variable <M>x_t</M> takes its value
+from the stage <M>S_t</M>):<P/>
+<M>f:\,\mathcal{F}^n \rightarrow \,\mathcal{F}\,</M><P/>
+<M>f(x_0,x_1,\dots,x_{n-1}) = \sum\limits_{\forall (i_0,i_1,\dots,i_{n-1})
+\in Z_q^n}c_{i_0,i_1,\dots,i_{n-1}}x_0^{i_0}
+x_1^{i_1}\dots x_{n-1}^{i_{n-1}}</M><P/>
+
+with coefficients <M>c_{i_0,i_1,\dots,i_{n-1}}\in\mathcal{F}=\mathbb{F}_q</M> 
+and where 
+<M>i_t\in \mathbb{Z}_q</M> and <M>q</M> is a prime or a prime power and 
+<M>t\in \mathbb{Z}_n</M>. 
+The sum in the equation above runs over 
+all possible monomials 
+<M> x_0^{i_0}x_1^{i_1}\dots x_{n-1}^{i_{n-1}}</M>.<P/>
+
+
+ The degree of a monomial is defined as the sum of all its powers 
+  and the degree of
+ the polynomial as the maximum degree of all its monomials. 
+ For readability, notation <M>m_{i_0,i_1,\dots,i_{n-1}}</M> is introduced for 
+ monomials:
+<M>m_{i_0,i_1,\dots,i_{n-1}}=m(x_0,x_1,\dots,x_{n-1})=x_0^{i_0}x_1^{i_1}
+\dots x_{n-1}^{i_{n-1}}</M> 
+ 
+<P/>
+
+
+
+<M>{\rm Degree}(m(x_0,x_1,\dots,x_{n-1}))=\sum\limits_{t=0}^{n-1}i_t</M><P/>
+<M>{\rm Degree}(f(x_0,x_1,\dots,x_{n-1}))=\max\limits_{\forall 
+(i_0,i_1,\dots,i_{n-1})\in Z_q^n}
+\left\{{\rm Degree}(m_{i_0,i_1,\dots,i_{n-1}})\right\}</M>
+<P/>
+
+
+Based on the degree of the feedback polynomial, distinction is made between 
+<C>linear</C> ( <Ref Func="LFSR" />) and <C>nonlianear</C> 
+(<Ref Func="NLFSR" />) feedback shift registers. 
+For the linear case, the degree of the feedback polynomial is 1. 
+<P/>
+<P/>
+<P/>
+ 
+ At any given moment, the contents of the FSR hold <M>n</M> values from the 
+ underlying finite field, and can be written as a vector of length <M>n</M>:
+  <M>(a_0,a_1,\dots,a_{n-1})\in\mathcal{F}^n</M>. This vector is called the 
+  <C>state</C> of the FSR, and the state right after loading the
+   <C>initial state</C>. The output sequence <M>\underline{a}</M> is completely
+    determined by the feedback polynomial and the initial state. 
+<P/>    
+In case of <M>q=2</M>, <M>\mathcal{F}=\mathbb{F}_2</M>, function <M>f</M> is a 
+boolean function and the FSR produces a binary sequence. In all other 
+cases, the sequence is referred to as <M>q</M>-arry sequence. 
+<P/>
+ 
+ 
+ 
+To keep the chapter short, details will be omitted and the reader can refer to 
+a number of sources such as {sdgc,GGbook,lidl}. 
+<P/>
+
+
+</Section>
+
+<Section Label="overview">  
+<Heading>Overview</Heading>   
+
+
+The FSR package allows creation, initialization and running of FSRs, and can 
+compute some of their properties, such as length or internal state size. 
+The core functionality is organized into three basic parts: 
+<List>
+<Item> common functionality for both LFSRs and NLFSRs</Item>
+<Item> LFSR specific functionality</Item>
+<Item> NLFSR specific functionality</Item>
+</List>
+
+
+
+The category of FSR objects is defined, and the FSRs can created either as LFSRs
+ or NLFSRs. Both are created through a function call with various possibilities 
+ for the input arguments, and will return an object with four components, same 
+ for both cases, and some case specific attributes and properties. 
+ Only the values that can change during the FSRs lifetime are implemented as 
+ components: 
+<List>
+<Item> <C>init</C> - initial state of the FSR </Item>
+<Item> <C>state</C> - the current state of the FSR</Item> 
+<Item> <C>numsteps</C> - number of steps since object was created</Item> 
+<Item> <C>basis</C> - the basis used for representation of the field elements
+</Item>
+</List>
+
+
+Initial state is kept as a component because we want the ability to reload and 
+run the same FSR without creating a new instance. Field <C>init</C> is empty 
+when the FSR is created and is updated when its loaded. The component 
+<C>state</C> 
+is updated with each FSR step. Field <C>numsteps</C> keeps track of the FRS: 
+when created its set to -1, when loaded to 0, and then increments with each 
+step. It is used for coding purposes to prevent an attempt of running an empty 
+FRS and to stop the FRS once a certain threshold is reached, preventing it from
+ looping indefinitely. The <C>basis</C> field holds the current basis used for 
+ representation of elements and can be chained when needed.
+<P/>
+ 
+ 
+
+
+Since the behaviour of an FSR is the same for both cases it is captured with 
+three methods: 
+<List>
+	<Item> <C>LoadFSR</C> - loads the initial state </Item>
+	<Item> <C>StepFSR</C> - computes the feedback value, updates stage 
+	<M>S_{n-1}</M> and outputs the new sequence element </Item>
+
+	<Item> <C>RunFSR</C> - a sequence of <C>StepFSR</C> calls ( with options 
+	such as run, load and run, run for number of steps, ... available) </Item>
+</List>
+
+<C>StepFSR</C> comes in two versions, and both are inherited by the
+ <C>RunFSR</C> as well:  
+	<List>
+		<Item> regular step - FSR self-contained </Item>
+		<Item> nonlinear step - adds additional (nonlinear) element to the 
+		computed feedback value before updating <M>S_{n-1}</M></Item>
+	</List>
+The nonlinear step and run are implemented because of their common use in 
+cryptography. 
+<P/> 
+
+
+Remainder of the FSR package consists of helper functions 
+(for example to compute the degree of the feedback polynomial), 
+writing functions (for example to print out a sequence of LFSR steps including 
+the state changes to a *.txt file or directly as *.tex file) 
+and drawing functions (generating the tikz) as is shown in FIGURE blablabla. 
+ 
+
+</Section>
 </Chapter>
