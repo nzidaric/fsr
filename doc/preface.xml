@@ -16,12 +16,15 @@ shifted with each step <M>S_t \rightarrow S_{t-1}</M> for <M>t=n-1, \dots,1</M>,
 and the vacant register <M>S_{n-1}</M> is updated with a new value obtained from 
 the feedback function, hence the name <C>feedback shift register</C> (FSR). 
 One of the stages is used to generate the output and each time the FSR is 
-clocked, that stages produces a new element <M>a_i\in\mathcal{F}</M>. 
+clocked, that stages produces a new element <M>s_i\in\mathcal{F}</M>. 
 In this way, the FSR produces a sequence of elements:
-<M>\underline{a}=\{a_k\}= a_0,a_1,a_2,\dots</M>
+<M>\underline{a}=\{a_k\}= s_0,s_1,s_2,\dots</M>
 <P/>
 
-
+<Alt Only="LaTeX">\begin{figure}\centering\includegraphics[scale=0.7]{fsr}\caption{Top level schematic of a <M>n</M>-stage FSR}\end{figure}</Alt>
+<Alt Only="HTML">&lt;img src="fsr.jpg" align="center" /></Alt>
+<Alt Only="Text">/See diagrams in HTML and PDF versions of the manual/</Alt>
+<P/>
 
 
 The feedback function is a polynomial function in <M>n</M> variables 
@@ -70,9 +73,9 @@ For the linear case, the degree of the feedback polynomial is 1.
  
  At any given moment, the contents of the FSR hold <M>n</M> values from the 
  underlying finite field, and can be written as a vector of length <M>n</M>:
-  <M>(a_0,a_1,\dots,a_{n-1})\in\mathcal{F}^n</M>. This vector is called the 
+  <M>(s_0,s_1,\dots,s_{n-1})\in\mathcal{F}^n</M>. This vector is called the 
   <C>state</C> of the FSR, and the state right after loading the
-   <C>initial state</C>. The output sequence <M>\underline{a}</M> is completely
+   <C>initial state</C>. The output sequence <M>\underline{s}</M> is completely
     determined by the feedback polynomial and the initial state. 
 <P/>    
 In case of <M>q=2</M>, <M>\mathcal{F}=\mathbb{F}_2</M>, function <M>f</M> is a 

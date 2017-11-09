@@ -65,7 +65,7 @@ SetPrintFormattingStatus(output, false);
 		od;		
 		AppendTo(output,  OutputTap(x)[Length(OutputTap(x))], "}{\n"); 
 		AppendTo(output, "\\pgfmathtruncatemacro{\\x}{\\n-\\t-1};\n \\draw [->,thick] (\\x+1.5,0)-- ++(0,-\\s) --++(1+\\t,0)  node [right] {$s_{\\t}$};\n }\n");
-		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $f(x)=", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
+		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
 
 	else 
 	Error("not a SIMPLE  LFSR  !!!!\n");
@@ -136,7 +136,7 @@ SetPrintFormattingStatus(output, false);
 		od;		
 		AppendTo(output,  OutputTap(x)[Length(OutputTap(x))], "}{\n"); 
 		AppendTo(output, "\\pgfmathtruncatemacro{\\x}{\\n-\\t-1};\n \\draw [->,thick] (\\x+1.5,0.5)-- ++(0,-\\s) --++(1+\\t,0)  node [right] {$s_{\\t}$};\n }\n");
-		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $f(x)=", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
+		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
 
 	else 
 	Error("not a SIMPLE  LFSR  !!!!\n");
@@ -208,7 +208,7 @@ SetPrintFormattingStatus(output, false);
 		od;		
 		AppendTo(output,  OutputTap(x)[Length(OutputTap(x))], "}{\n"); 
 		AppendTo(output, "\\pgfmathtruncatemacro{\\x}{\\n-\\t-1};\n \\draw [->,thick] (\\x+1.5,0)-- ++(0,-\\s) --++(1+\\t,0)  node [right] {$s_{\\t}$};\n }\n");
-		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $f(x)=", FeedbackPoly(x),"$ and additional ``nonlinear'' input}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
+		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$ and additional ``nonlinear'' input}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
 
 	else 
 	Error("not a SIMPLE  LFSR  !!!!\n");
@@ -281,7 +281,7 @@ SetPrintFormattingStatus(output, false);
 		od;		
 		AppendTo(output,  OutputTap(x)[Length(OutputTap(x))], "}{\n"); 
 		AppendTo(output, "\\pgfmathtruncatemacro{\\x}{\\n-\\t-1};\n \\draw [->,thick] (\\x+1.5,0.5)-- ++(0,-\\s) --++(1+\\t,0)  node [right] {$s_{\\t}$};\n }\n");
-		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $f(x)=", FeedbackPoly(x),"$ and additional ``nonlinear'' input}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
+		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$ and additional ``nonlinear'' input}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
 
 	else 
 	Error("not a SIMPLE  LFSR  !!!!\n");
@@ -295,7 +295,7 @@ end);
 
 
 InstallGlobalFunction( TikzWComplex_LFSR, function(output, x)
-local  n, nzt, i, len, simple, complex, idx; 
+local  n, nzt, i, len, simple, complex, idx, fbv; 
 
 # [IsOutputStream,IsLFSR,IsFFECollection, IsPosInt] 
 #only check the output stream here, others will be checked by individual function calls !!! 
@@ -409,7 +409,19 @@ SetPrintFormattingStatus(output, false);
 		od;		
 		AppendTo(output,  OutputTap(x)[Length(OutputTap(x))], "}{\n"); 
 		AppendTo(output, "\\pgfmathtruncatemacro{\\x}{\\n-\\t-1};\n \\draw [->,thick] (\\x+1.5,0)-- ++(0,-\\s) --++(1+\\t,0)  node [right] {$s_{\\t}$};\n }\n");
-		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $f(x)=", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
+		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$\n");
+		AppendTo(output, "and constant(s) ");
+		fbv := FeedbackVec(x);
+		for i in [1.. Length(fbv)] do 
+			if fbv[i] <> Zero(UnderlyingField(x)) and fbv[i] <> One(UnderlyingField(x)) then 
+							AppendTo(output, "$\\omega_{",Length(fbv)-i,"}=",fbv[i],"$");
+							if i < Length(fbv) then 
+							AppendTo(output, ", ");
+							fi;
+			fi;
+		od;
+
+		AppendTo(output, "}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
 
 	else 
 	Error("not a COMPLEX  LFSR  !!!!\n");
@@ -538,7 +550,7 @@ SetPrintFormattingStatus(output, false);
 		od;		
 		AppendTo(output,  OutputTap(x)[Length(OutputTap(x))], "}{\n"); 
 		AppendTo(output, "\\pgfmathtruncatemacro{\\x}{\\n-\\t-1};\n \\draw [->,thick] (\\x+1.5,0.5)-- ++(0,-\\s) --++(1+\\t,0)  node [right] {$s_{\\t}$};\n }\n");
-		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $f(x)=", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
+		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
 
 	else 
 	Error("not a COMPLEX  LFSR  !!!!\n");
@@ -672,7 +684,7 @@ SetPrintFormattingStatus(output, false);
 		od;		
 		AppendTo(output,  OutputTap(x)[Length(OutputTap(x))], "}{\n"); 
 		AppendTo(output, "\\pgfmathtruncatemacro{\\x}{\\n-\\t-1};\n \\draw [->,thick] (\\x+1.5,0)-- ++(0,-\\s) --++(1+\\t,0)  node [right] {$s_{\\t}$};\n }\n");
-		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $f(x)=", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
+		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
 
 	else 
 	Error("not a COMPLEX  LFSR  !!!!\n");
@@ -806,7 +818,7 @@ SetPrintFormattingStatus(output, false);
 		od;		
 		AppendTo(output,  OutputTap(x)[Length(OutputTap(x))], "}{\n"); 
 		AppendTo(output, "\\pgfmathtruncatemacro{\\x}{\\n-\\t-1};\n \\draw [->,thick] (\\x+1.5,0.5)-- ++(0,-\\s) --++(1+\\t,0)  node [right] {$s_{\\t}$};\n }\n");
-		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $f(x)=", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
+		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
 
 	else 
 	Error("not a COMPLEX  LFSR  !!!!\n");

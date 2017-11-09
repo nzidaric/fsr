@@ -136,8 +136,91 @@ InstallMethod( PrintAll,     "for FSR",    true,    [ IsFSR ],    0,  function( 
 end );
 
 
+#############################################################################
+##
+#F  WriteTEXFF( <output>, <F> ) . . . . . . same as PrintAll, but to a file
+##
+##  <#GAPDoc Label="WriteTEXFF">
+##  <ManSection>
+##  <Func Name="WriteTEXFF" Arg="output, F"/>
+##  <Func Name="WriteTEXFFEByGenerator" Arg="output, F, ffe"/> # in case its a subfield elm
+##  <Func Name="WriteTEXUnivarFFPolyByGenerator" Arg="output, F, f, indet"/>
+##  <Func Name="WriteTEXMultivarFFPolyByGenerator" Arg="output, F, f"/>
+##  <Func Name="WriteTEXFieldPolyByGenerator" Arg="output, F"/>
+##  <Func Name="WriteTEXLFSRPolyByGenerator" Arg="output, F, l"/>
+##
+##  <Description>
+##  Equivalent to PrintAll, but it writes to an output stream. NOTE: The basis
+##   switch must be present and if <E>true</E>, the currently set basis of the
+##   <A>fsr</A> is used. 
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+##DeclareGlobalFunction( "WriteTEXFF" );
+##DeclareGlobalFunction( "WriteTEXFFEByGenerator" );
+##DeclareGlobalFunction( "WriteTEXUnivarFFPolyByGenerator" );
+#DeclareGlobalFunction( "WriteTEXMultivarFFPolyByGenerator" ); TO DO (will need indet list)
+##DeclareGlobalFunction( "WriteTEXFieldPolyByGenerator" );
+##DeclareGlobalFunction( "WriteTEXLFSRPolyByGenerator" );
 
+#############################################################################
+##
+#F  WriteTEXFF( <output>, <F> ) . . . . . . 
+##
+InstallGlobalFunction(  WriteTEXFF, function(output,  F)
+local char, m;
 
+	if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);	
+	 if IsField(F) and IsFinite(F) then 		
+			char := Characteristic(F);
+			m := DegreeOverPrimeField(F);
+			if m=1 then 
+				AppendTo(output,"$\\mathbb{F}_{",char,"}$");
+			else 
+				AppendTo(output,"$\\mathbb{F}_{{",char,"}^{",m,"}}$");
+			fi;
+
+		else 
+		Error(F," is not a finite field !!!!\n");
+		fi;
+	else 
+	Error("outputstream not valid !!!!\n");
+	fi;
+	
+	return;
+end);
+
+#############################################################################
+##
+##  <Func Name="WriteTEXFFEByGenerator" Arg="output, F, ffe"/> # in case its a subfield elm
+##
+InstallGlobalFunction(WriteTEXFFEByGenerator, function(output,  F, ffe)
+local char, m, g, gvec;
+
+	if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);	
+	 if IsField(F) and IsFinite(F) then 	
+			char := Characteristic(F);
+			m := DegreeOverPrimeField(F);
+			g := GeneratorOfField(F);
+			gvec := GeneratorWRTDefiningPolynomial(F);
+			
+				if m=1 then 
+					AppendTo(output,"$\\mathbb{F}_{",char,"}$");
+				else 
+					AppendTo(output,"$\\mathbb{F}_{{",char,"}^{",m,"}}$");
+				fi;
+
+		else 
+		Error(F," is not a finite field !!!!\n");
+		fi;
+	else 
+	Error("outputstream not valid !!!!\n");
+	fi;
+	
+	return;
+end);
 
 #############################################################################
 ##
@@ -333,7 +416,7 @@ SetPrintFormattingStatus(output, false);
 					fi;	
 				fi;
 				
-				WriteTEXGeneratorWRTDefiningPolynomial(output, UnderlyingField(x), strGen);												
+				WriteTEXGeneratorWRTDefiningPolynomial(output, UnderlyingField(x), strGen, gen);												
 				AppendTo(output,"\\\\\n\n");	
 
 	
@@ -742,15 +825,15 @@ SetPrintFormattingStatus(output, false);
 	return sequence;
 end);
 
-InstallGlobalFunction( WriteTEXGeneratorWRTDefiningPolynomial, function(output, F, strGen)
-local gen, genvec, i;
+InstallGlobalFunction( WriteTEXGeneratorWRTDefiningPolynomial, function(output, F, strGen, gen)
+local genvec, i;
 
 if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	  
-		if IsString(strGen) and  strGen <> "omega" then
+	if IsString(strGen) and  strGen <> "omega" then
+		if Order(gen)=Size(F)-1 then
 	
-			gen := GeneratorOfField(F);
 			if gen = RootOfDefiningPolynomial(F) then 
 				AppendTo(output, ", which is a root of $",DefiningPolynomial(F),"$");
 			else 
@@ -770,9 +853,14 @@ SetPrintFormattingStatus(output, false);
 		
 				AppendTo(output, " and $\\omega$ is a root of $",DefiningPolynomial(F),"$");																		
 			fi;
+	
 		else 
-			Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
+			Error(gen," is not a generator of ",UnderlyingField(x),"!!!!\n");
 		fi;
+					
+	else 
+		Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
+	fi;
 
 	else 
 		Error("outputstream not valid !!!!\n");
@@ -783,8 +871,8 @@ end);
 			
 
 
-InstallGlobalFunction( WriteTEXRunFSRByGenerator, function(output, x,ist, num, strGen)
-local  i,j, sequence,  seq,  tmp, state, outtap, treshold, m, B,  exp, elm, gen, genvec; 
+InstallGlobalFunction( WriteTEXRunFSRByGenerator, function(output, x,ist, num, strGen, gen)
+local  i,j, sequence,  seq,  tmp, state, outtap, treshold, m, B,  exp, elm, genvec; 
 
 # [IsOutputStream,IsLFSR,IsFFECollection, IsPosInt] 
 #only check the output stream here, others will be checked by individual function calls !!! 
@@ -962,7 +1050,7 @@ SetPrintFormattingStatus(output, false);
 								fi;	
 							fi;
 							
-							WriteTEXGeneratorWRTDefiningPolynomial(output, UnderlyingField(x), strGen);												
+							WriteTEXGeneratorWRTDefiningPolynomial(output, UnderlyingField(x), strGen, gen);												
 							AppendTo(output, ".}}\\label{LABEL}");
 							
 							AppendTo(output,  "\\end{center}\n\\end{table}\n}\n");
@@ -993,8 +1081,8 @@ end);
 
 
 
-InstallGlobalFunction(WriteTEXElementTableByGenerator, function(output, F, B, strGen)
-local  i,j, elms,  tmp,  m, divs, eb, exp, elm, roots, gen; 
+InstallGlobalFunction(WriteTEXElementTableByGenerator, function(output, F, B, strGen, gen)
+local  i,j, elms,  tmp,  m, divs, eb, exp, elm, roots; 
 
 	
 if (IsOutputStream( output )) then
@@ -1002,7 +1090,7 @@ SetPrintFormattingStatus(output, false);
 	 if IsField(F) and IsFinite(F) then 
 		 if IsBasis(B) then 
 		if IsString(strGen) and  strGen <> "omega" then	
-				gen := GeneratorOfField(F);
+		
 				if Order(gen)=Size(F)-1 then		
 
 							m:= DegreeOverPrimeField(F);
@@ -1078,7 +1166,7 @@ SetPrintFormattingStatus(output, false);
 												
 											 AppendTo(output,  "\\caption{{\\footnotesize Element table for GF($",Characteristic(F),"^",m,"$) with generator $\\",strGen,"$"); 
 											 
-														WriteTEXGeneratorWRTDefiningPolynomial(output, F, strGen);												
+														WriteTEXGeneratorWRTDefiningPolynomial(output, F, strGen, gen);												
 														AppendTo(output, ".}}\\label{LABEL}");	 
 											 
 											

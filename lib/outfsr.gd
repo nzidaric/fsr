@@ -124,6 +124,30 @@ DeclareOperation("PrintObj", [IsFSR]);
 DeclareOperation("PrintAll", [IsFSR, IsBool]);
 DeclareOperation("PrintAll", [IsFSR]);
 
+#############################################################################
+##
+#F  WriteTEXFF( <output>, <F> ) . . . . . . same as PrintAll, but to a file
+##
+##  <#GAPDoc Label="WriteTEXFF">
+##  <ManSection>
+##  <Func Name="WriteTEXFF" Arg="output, F"/>
+##  <Func Name="WriteTEXFFE" Arg="output, F, ffe"/> # in case its a subfield elm
+##  <Func Name="WriteTEXUnivarFFPoly" Arg="output, F, f, indet"/>
+##  <Func Name="WriteTEXMultivarFFPoly" Arg="output, F, f"/>
+##  <Func Name="WriteTEXFieldPoly" Arg="output, F"/>
+##  <Func Name="WriteTEXLFSRPoly" Arg="output, F, l"/>
+##
+##  <Description>
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+DeclareGlobalFunction( "WriteTEXFF" );
+DeclareGlobalFunction( "WriteTEXFFE" );
+DeclareGlobalFunction( "WriteTEXUnivarFFPoly" );
+#DeclareGlobalFunction( "WriteTEXMultivarFFPoly" ); TO DO (will need indet list)
+DeclareGlobalFunction( "WriteTEXFieldPoly" );
+DeclareGlobalFunction( "WriteTEXLFSRPoly" );
+
 
 
 #############################################################################
@@ -142,7 +166,7 @@ DeclareOperation("PrintAll", [IsFSR]);
 ##  </ManSection>
 ##  <#/GAPDoc>
 DeclareGlobalFunction( "WriteAllFSR" );
-#DeclareGlobalFunction( "WriteAllLFSRTEX" );
+
 
 
 #############################################################################
@@ -176,7 +200,7 @@ DeclareGlobalFunction( "WriteAllFSR" );
 ##  Generator <A>gen</A> is used to get the exponents of the elements, and the 
 ##  elements themselfs are printed as for example <M>\alpha^{exponent}</M>, 
 ##  where <A>strGen</A> is set to "alpha" ( it must be a string representing 
-##  a greek letter in *.tex). 
+##  a greek letter in *.tex). Use of "omega" is not allowed. 
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -263,7 +287,7 @@ DeclareGlobalFunction( "WriteNonlinRunFSR" );
 ##  Generator <A>gen</A> is used to get the exponents of the elements, and the 
 ##  elements themselfs are printed as for example <M>\alpha^{exponent}</M>, where 
 ##  <A>strGen</A> is set to "alpha" ( it must be a string representing a greek 
-##  letter in *.tex). Use of "omega" is not allowed. 
+##  letter in *.tex). Use of "omega" is not allowed. <P/>
 ##  An example of the the <C>WriteTEXRunFSRByGenerator</C>  output can be seen in figure below: <P/>
 ##  <Alt Only="LaTeX">\begin{figure}\centering
 ##  \includegraphics[scale=0.65]{WriteTEXRunFSRbygensnap}\caption{Sample output of WriteTEXRunFSRByGenerator}\end{figure}</Alt>
@@ -295,10 +319,11 @@ DeclareGlobalFunction( "WriteTEXRunFSRByGenerator" );
 ##  represented in basis <A>B</A> and their representation as powers of a 
 ##  chosen generator <A>gen</A>, printed as for example <M>\alpha^{exponent}</M>,
 ##   where <A>strGen</A> is set to "alpha" ( it must be a string representing a 
-##  greek  letter in *.tex). There
+##  greek  letter in *.tex). Use of "omega" is not allowed.  There
 ##   is an extra table column containing the order of each element. 
 ##  The output file contains additional information: defining polynomial of 
 ##  <A>F</A>, basis elements of <A>B</A> as powers of generator <A>gen</A>, 
+## <P/>
 ##  An example of the the <C>WriteTEXElementTableByGenerator</C>  output can be seen in figure below: <P/>
 ##  <Alt Only="LaTeX">\begin{figure}\centering
 ##  \includegraphics[scale=0.7]{WriteTEXelmTablesnap}\caption{Sample output of WriteTEXElementTableByGenerator}\end{figure}</Alt>
