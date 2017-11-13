@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W    init.g                      The FSR package              
-#W                                                                
+#W    init.g                      The FSR package
+#W
 ##
 
 
@@ -20,7 +20,7 @@ ReadPackage( "FSR", "lib/lfsr.gd" ); # the top-level functions
 
 ReadPackage( "FSR", "lib/nlfsr.gd" ); # the top-level functions
 
-ReadPackage( "FSR", "lib/outfsr.gd" ); # the output formatting functions 
+ReadPackage( "FSR", "lib/outfsr.gd" ); # the output formatting functions
 
 ReadPackage( "FSR", "lib/drawlfsr.gd" ); # NLFSR drawing functions - outputs a *.tex file
 
@@ -28,4 +28,3 @@ ReadPackage( "FSR", "lib/drawnlfsr.gd" ); # NLFSR drawing functions - outputs a 
 
 Print("init.g done!!!\n");
 #E  init.g . . . . . . . . . . . . . . . . . . . . . . . . . . . .  ends here
-
