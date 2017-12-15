@@ -235,6 +235,93 @@ SetPrintFormattingStatus(output, false);
 end);
 
 
+
+
+#############################################################################
+##
+#
+#F WriteTEXAllLFSR( <output>, <lfsr> , <b>) . . .. . . view a GF2 vector
+##
+InstallGlobalFunction( WriteTEXAllFSR, function(output,  x, b, strGen, gen)
+local uf, tap, i, B;
+	if (IsOutputStream( output )) then
+SetPrintFormattingStatus(output, false);
+	 if IsFSR(x) then
+ 			uf := UnderlyingField(x);
+			if x!.numsteps=-1 then
+					if IsLFSR(x) then
+						AppendTo(output,"empty LFSR over ");
+						WriteTEXFF(output,uf);
+						AppendTo(output," given by FeedbackPoly = ");
+				WriteTEXLFSRPolyByGenerator(output,  uf, FeedbackPoly(x), strGen, gen);
+					else
+					 	AppendTo(output,"empty NLFSR of length ",Length(x)," over ");
+						WriteTEXFF(output,uf);
+						AppendTo(output,",\\\\\n  given by MultivarPoly = ");
+  WriteTEXMultivarFFPolyByGenerator(output,  uf,  FeedbackVec(x),  TermList(x),  strGen, gen);
+					fi;
+			else
+				if IsLFSR(x) then
+					AppendTo(output,"empty LFSR over ");
+					WriteTEXFF(output,uf);
+					AppendTo(output," given by FeedbackPoly = ");
+		WriteTEXLFSRPolyByGenerator(output,  uf, FeedbackPoly(x), strGen, gen);
+				else
+					AppendTo(output,"empty NLFSR of length ",Length(x)," over ");
+					WriteTEXFF(output,uf);
+					AppendTo(output,",\\\\\n  given by MultivarPoly = ");
+  WriteTEXMultivarFFPolyByGenerator(output,  uf,  FeedbackVec(x),  TermList(x),  strGen, gen);
+				fi;
+			fi;
+			B := x!.basis;
+
+			AppendTo(output,"\\\\\nwith basis =");
+  WriteTEXBasisByGenerator(output, uf, B, strGen, gen);
+
+			if IsLFSR(x) then
+					AppendTo(output,"\\\\\nwith feedback coeff =");
+					if b  then
+									WriteTEXFFEVec(output, B, FeedbackVec(x));
+					else 	WriteTEXFFEVecByGenerator(output, uf, FeedbackVec(x), strGen, gen);
+					fi;
+			fi;
+			AppendTo(output,"\\\\\nwith initial state  =");
+			if b  then
+							WriteTEXFFEVec(output, B,  x!.init);
+			else 	WriteTEXFFEVecByGenerator(output, uf,  x!.init , strGen, gen);
+			fi;
+			AppendTo(output,"\\\\\nwith current state  =");
+			if b  then
+							WriteTEXFFEVec(output, B,  x!.state);
+			else 	WriteTEXFFEVecByGenerator(output, uf, x!.state , strGen, gen);
+			fi;
+			AppendTo(output,"\\\\\nafter ");
+			if x!.numsteps>0 then
+				AppendTo(output,x!.numsteps," steps\\\\\n");
+			elif x!.numsteps=0 then
+				AppendTo(output,"loading\\\\\n");
+			else 	AppendTo(output,"initialization \\\\\n");
+			fi;
+
+			tap := OutputTap(x);
+			if Length(tap)=1 then
+				AppendTo(output,"with output from stage $S_{",tap[1],"}$\n");
+			else
+				AppendTo(output,"with output from stages $S_{",tap,"}$\n");
+			fi;
+
+		else
+		Error("IsFSR(",x,")=false !!!!\n");
+		fi;
+	else
+	Error("outputstream not valid !!!!\n");
+	fi;
+
+	return;
+end);
+
+
+
 #############################################################################
 ##
 #F  WriteSequenceFSR ( <output>, <lfsr>, <sequence> ) . . . . write elm to file
@@ -243,21 +330,16 @@ InstallGlobalFunction( WriteSequenceFSR, function(output, x, sequence)
 
 local  i,j, tmp, B, m;
 
-if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
 		B := x!.basis;
 		# now append the whole sequence(s)
 			if Length(OutputTap(x))=1 then
 				AppendTo(output,"\nThe whole sequence:\n");
-
 				for i in [1.. Length(sequence)-1] do
-					tmp := sequence[i]; # outputs on step i
-					 AppendTo(output, VecToString(B,tmp) , ", ");
+					AppendTo(output,(VecToString(B, sequence[i])), ",\t");
 				od;
-				tmp := sequence[Length(sequence)]; # last step
-				AppendTo(output, VecToString(B,tmp) , "\n");
-
+				AppendTo(output,(VecToString(B, sequence[Length(sequence)])), "\n");
 			else
 
 				AppendTo(output,"\nThe whole sequences:\n");
@@ -276,9 +358,6 @@ SetPrintFormattingStatus(output, false);
 		else
 		Error("IsFSR(",x,")=false !!!!\n");
 		fi;
-	else
-	Error("outputstream not valid !!!!\n");
-	fi;
 
 	return;
 end);
@@ -291,7 +370,6 @@ InstallGlobalFunction( WriteTBSequenceFSR, function(output, x, sequence)
 
 local  i,j, tmp, B, m;
 
-if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
 		B := x!.basis;
@@ -304,15 +382,11 @@ SetPrintFormattingStatus(output, false);
 				od;
 
 			else
-
-
 				# must separate them for each tap position
-
-
 				for i in [1.. Length(sequence)] do
 						tmp := sequence[i]; # outputs on step i
 						for j in [1..Length(OutputTap(x))] do
-							 AppendTo(output, VecToString(B, tmp[j]) , "\t ");
+							 AppendTo(output, VecToString(IntFFExt(B,tmp[j])) , "\t ");
 						od;
 						AppendTo(output, "\n");
 				od;
@@ -321,139 +395,118 @@ SetPrintFormattingStatus(output, false);
 		else
 		Error("IsFSR(",x,")=false !!!!\n");
 		fi;
+	return;
+end);
+
+
+#############################################################################
+##
+#F  WriteTEXSequenceFSR( <output>, <lfsr>, <sequence> ) . write to file
+##
+InstallGlobalFunction(WriteTEXSequenceFSR,
+function(output, x, sequence)
+
+local  i, j, tmp, B;
+
+SetPrintFormattingStatus(output, false);
+if IsField(F) and IsFinite(F) then
+if IsString(strGen) and  strGen <> "omega" then
+	if Order(gen)=Size(F)-1 then
+	 if IsFSR(x) then
+	 		B := x!.basis;
+	 	if Length(OutputTap(x))=1 then
+ 			AppendTo(output,"\nThe whole sequence:\n");
+			for j in [1.. Length(sequence)] do
+				ffe := sequence[j];
+						AppendTo(output,  "$",VecToString(B,ffe),"$");
+				if j < Length(sequence) then
+					AppendTo(output,  ",\\,");
+				fi;
+			od;
+			AppendTo(output, "\n");
+		else
+				for j in [1..Length(OutputTap(x))] do
+					AppendTo(output,"seq from $S_{",OutputTap(x)[j],"}$: ");
+					for i in [1.. Length(sequence)-1] do
+						tmp := sequence[i]; # outputs on step i
+						WriteTEXFFE(output,  B, tmp[j]);
+					 	AppendTo(output,  ",\t ");
+					od;
+					tmp := sequence[Length(sequence)]; # last step
+					WriteTEXFFE(output, B, tmp[j]);
+					AppendTo(output, "\\\\\n");
+				od;
+		fi;
+
+
+		else
+		Error("IsFSR(",x,")=false !!!!\n");
+		fi;
+		else
+			Error(gen," is not a generator of ",F,"!!!!\n");
+			fi;
+		else
+		Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
+		fi;
 	else
-	Error("outputstream not valid !!!!\n");
+	Error(F," is not a finite field !!!!\n");
 	fi;
 
 	return;
 end);
 
+
+
 #############################################################################
 ##
-#F  WriteTEXSequenceByGenerator( <output>, <lfsr>, <sequence> ) . write to file
+#F  WriteTEXSequenceFSRByGenerator( <output>, <lfsr>, <sequence> ) . write to file
 ##
-InstallGlobalFunction(WriteTEXSequenceByGenerator,
+InstallGlobalFunction(WriteTEXSequenceFSRByGenerator,
 function(output, x, sequence, strGen, gen)
 
-local  i,j, tmp, elm, exp, m;
+local  i,j, tmp, ffe, exp, m;
 
-if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
+if IsField(F) and IsFinite(F) then
+if IsString(strGen) and  strGen <> "omega" then
+	if Order(gen)=Size(F)-1 then
 	 if IsFSR(x) then
-	 	if IsString(strGen) then
-			if Order(gen)=Size(UnderlyingField(x))-1 then
-#				m := DegreeOverPrimeField(UnderlyingField(x));
-#
-#				if IsLFSR(x) then
-#					if m=1 then
-#					AppendTo(output, "For the LFSR with feedback $",FeedbackPoly(x),
-#					"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$");
-#
-#					else  AppendTo(output,"For the LFSR with feedback $",FeedbackPoly(x),
-#		"$ over GF($",Characteristic(x),"^",m,"$) using generator $\\",strGen,"$");
-#					fi;
-#				elif IsNLFSR(x) then
-#					if m=1 then
-#					 AppendTo(output, "For the  NLFSR with feedback $",MultivarPoly(x),
-#						"$ over GF(",Characteristic(x),") using generator $\\",strGen,"$");
-#
-#					else
-#					AppendTo(output,  "For the NLFSR with feedback $",MultivarPoly(x),
-#		"$ over GF($",Characteristic(x),"^",m,"$) using generator $\\",strGen,"$");
-#					fi;
-#				fi;
-
-#WriteTEXGeneratorWRTDefiningPolynomial(output, UnderlyingField(x), strGen, gen);
-#				AppendTo(output,"\\\\\n\n");
-#
-#
-
-				# now append the whole sequence(s)
-					if Length(OutputTap(x))=1 then
-						AppendTo(output,"\nThe whole sequence:\\\\\n");
-
-						for i in [1.. Length(sequence)-1] do
-							 elm := sequence[i]; # outputs on step i
-
-							if IsZero(elm) then
-								AppendTo(output,  "\\, 0\\,,");
-							elif IsOne(elm) then
-								AppendTo(output,  "\\, 1\\,,");
-							else
-								 exp := LogFFE(elm,gen);
-								 if exp = 1 then AppendTo(output,  "\\, $\\",strGen,"$\\,,");
-								 else 		AppendTo(output,  "\\, $\\",strGen,"^{",exp,"}$\\,,");
-								 fi;
-							fi;
-
-						od;
-						elm := sequence[Length(sequence)]; # last step
-							if IsZero(elm) then
-								AppendTo(output,  "\\, 0\\,");
-							elif IsOne(elm) then
-								AppendTo(output,  "\\, 1\\,");
-							else
-								 exp := LogFFE(elm,gen);
-								 if exp = 1 then  AppendTo(output,  "\\, $\\",strGen,"$\\,");
-								 else 		AppendTo(output,  "\\, $\\",strGen,"^{",exp,"}$\\,");
-								 fi;
-							fi;
-						AppendTo(output, "\n");
-					else
-
-						AppendTo(output,"\nThe whole sequences:\n");
-						# must separate them for each tap position
-						for j in [1..Length(OutputTap(x))] do
-							AppendTo(output,"seq from S_",OutputTap(x)[j],": ");
-							for i in [1.. Length(sequence)-1] do
-								tmp := sequence[i]; # outputs on step i
-								elm := tmp[j]; # outputs on step i
-
-								if IsZero(elm) then
-									AppendTo(output,  "\\, 0\\,");
-								elif IsOne(elm) then
-									AppendTo(output,  "\\, 1\\,");
-								else
-									 exp := LogFFE(elm,gen);
-									 if exp = 1 then 	 AppendTo(output,  "\\, $\\",strGen,"$\\,");
-									 else 		AppendTo(output, "\\, $\\",strGen,"^{",exp,"}$\\,");
-									 fi;
-								fi;
-
-
-							od;
-							tmp := sequence[Length(sequence)]; # last step
-							elm := tmp[j]; # outputs on step i
-								if IsZero(elm) then
-									AppendTo(output,  "\\, 0\\,");
-								elif IsOne(elm) then
-									AppendTo(output,  "\\, 1\\,");
-								else
-									 exp := LogFFE(elm,gen);
-									 if exp = 1 then 	AppendTo(output,  "\\, $\\",strGen,"$\\,");
-									 else 		AppendTo(output,"\\, $\\",strGen,"^{",exp,"}$\\,");
-									 fi;
-								fi;
-						AppendTo(output, "\n");
-						od;
-
-					fi;
-
-				else
-				Error(gen," is not a generator of ",UnderlyingField(x),"!!!!\n");
+	 	if Length(OutputTap(x))=1 then
+ 			AppendTo(output,"\nThe whole sequence: \n");
+			for j in [1.. Length(sequence)] do
+				ffe := sequence[j];
+						WriteTEXFFEByGeneratorNC(output, ffe, strGen, gen);
+				if j < Length(sequence) then
+					AppendTo(output,  ",\\,");
 				fi;
+			od;
+			AppendTo(output, "\n");
+		else
+				for j in [1..Length(OutputTap(x))] do
+					AppendTo(output,"seq from $S_{",OutputTap(x)[j],"}$: ");
+					for i in [1.. Length(sequence)-1] do
+						tmp := sequence[i]; # outputs on step i
+						WriteTEXFFEByGeneratorNC(output,  tmp[j], strGen, gen);
+					 	AppendTo(output,  ",\t ");
+					od;
+					tmp := sequence[Length(sequence)]; # last step
+					WriteTEXFFEByGeneratorNC(output,  tmp[j], strGen, gen);
+					AppendTo(output, "\\\\\n");
+				od;
+		fi;
 
-
-
-			else
-			Error(strGen," is not a string !!!!\n");
-			fi;
 
 		else
 		Error("IsFSR(",x,")=false !!!!\n");
 		fi;
+		else
+			Error(gen," is not a generator of ",F,"!!!!\n");
+			fi;
+		else
+		Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
+		fi;
 	else
-	Error("outputstream not valid !!!!\n");
+	Error(F," is not a finite field !!!!\n");
 	fi;
 
 	return;
@@ -646,8 +699,8 @@ end);
 
 
 
-InstallGlobalFunction( WriteTEXRunFSR, function(output, x,ist, num)
-local  i,j, sequence,  seq,  tmp, state, outtap, treshold, B, gen;
+InstallGlobalFunction( WriteTEXRunFSR, function(output, x,ist, num, strGen, gen)
+local  i,j, sequence,  seq,  tmp, state, outtap, treshold, B;
 
 # [IsOutputStream,IsLFSR,IsFFECollection, IsPosInt]
 #only check the output stream here,
@@ -656,7 +709,7 @@ local  i,j, sequence,  seq,  tmp, state, outtap, treshold, B, gen;
 if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
-
+  WriteTEXAllFSR(output, x, true, "alpha", gen );
 	# check num
 			treshold := Threshold(x);
 			if num > treshold then
@@ -745,10 +798,10 @@ SetPrintFormattingStatus(output, false);
 	# end table
 	AppendTo(output,  "\\hline\n");
 	AppendTo(output,  "\\end{tabular}}\n");
-	gen := GeneratorOfField( UnderlyingField(x));
+
 	if IsLFSR(x) then
 			AppendTo(output,  "\\caption{{\\footnotesize LFSR with feedback ");
-  		WriteTEXLFSRPolyByGenerator(output,  UnderlyingField(x), FeedbackPoly(x), "alpha", gen);
+  		WriteTEXLFSRPolyByGenerator(output,  UnderlyingField(x), FeedbackPoly(x), strGen, gen);
 			AppendTo(output,  " over ");
 			WriteTEXFF(output, UnderlyingField(x));
 	elif IsNLFSR(x) then
@@ -757,14 +810,14 @@ SetPrintFormattingStatus(output, false);
  		WriteTEXFF(output, UnderlyingField(x));
  	fi;
   AppendTo(output,  " with basis ");
-  WriteTEXBasisByGenerator(output,  UnderlyingField(x), B, "alpha", gen);
+  WriteTEXBasisByGenerator(output,  UnderlyingField(x), B, strGen, gen);
 	AppendTo(output,  " where generator ");
-	WriteTEXGeneratorWRTDefiningPolynomial(output,  UnderlyingField(x),	"alpha", gen);
+	WriteTEXGeneratorWRTDefiningPolynomial(output,  UnderlyingField(x),	strGen, gen);
   AppendTo(output,  ".}}\\label{LABEL}");
  	AppendTo(output,  "\\end{center}\n\\end{table}\n}");
 
 	AppendTo(output,  "\n\n");
-	WriteSequenceFSR(output, x, sequence);
+	WriteTEXSequenceFSR(output, x, sequence);
 		else
 		Error("IsFSR(",x,")=false !!!!\n");
 		fi;
@@ -793,7 +846,7 @@ SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
 		if IsString(strGen) and  strGen <> "omega" then
 				if Order(gen)=Size(UnderlyingField(x))-1 then
-
+  WriteTEXAllFSR(output, x, false, "alpha", gen );
 						# check num
 								treshold := Threshold(x);
 								if num > treshold then
@@ -975,7 +1028,7 @@ AppendTo(output,"&\\multicolumn{",Length(OutputTap(x)),"}{c|}{sequence}\\\\\n");
 			AppendTo(output,  "\n\n");
 
 
-			WriteTEXSequenceByGenerator(output, x, sequence, strGen, gen);
+WriteTEXSequenceFSRByGenerator(output, x, sequence, strGen, gen);
 					else
 					Error(gen," is not a generator of ",UnderlyingField(x),"!!!!\n");
 					fi;

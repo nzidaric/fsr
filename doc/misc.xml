@@ -31,6 +31,8 @@
 <#Include Label="WriteTEXUnivarFFPolyByGenerator">
 <#Include Label="WriteTEXGeneratorWRTDefiningPolynomial">
 
+  <#Include Label="outputsEG">
+
 </Section>
 
 

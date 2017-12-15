@@ -29,6 +29,11 @@
 ##  root of the field defining polynomial in cases when  the root is different
 ##  from <A>gen</A>.
 ##  <P/>
+##  The followng tex packages must be used: array, amssymb, amsmath
+##  <P/>
+##  A full example of the various WriteTEX* functions can be seen in figures
+##  at the end of this section.
+##  <P/>
 ##  <#/GAPDoc>
 
 
@@ -179,6 +184,8 @@ DeclareGlobalFunction( "WriteMatrix" );
 ##  generator
 ##  <A>gen</A> of the field <A>F</A> (to avoid using a generator of the subfield
 ##  in case <A>ffe</A> is a subfield element).<P/>
+##  NOTE: for both WriteTEXMatrix functions the begin{displaymath}  and
+##  end{displaymath} wrappers must be added manually!<P/>
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -186,6 +193,9 @@ DeclareGlobalFunction( "WriteMatrix" );
 DeclareGlobalFunction( "WriteTEXFF" );
 DeclareGlobalFunction( "WriteTEXFFE" );
 DeclareGlobalFunction( "WriteTEXFFEByGeneratorNC" );
+DeclareGlobalFunction( "WriteTEXFFEByGeneratorNCM" );
+DeclareGlobalFunction( "WriteTEXFFEVec" );
+DeclareGlobalFunction( "WriteTEXFFEVecByGenerator" );
 DeclareGlobalFunction( "WriteTEXFFEByGenerator" );
 DeclareGlobalFunction( "WriteTEXMatrix" );
 DeclareGlobalFunction( "WriteTEXMatrixByGenerator" );
@@ -199,7 +209,8 @@ DeclareGlobalFunction( "WriteTEXMatrixByGenerator" );
 ##  <Func Name="WriteTEXUnivarFFPolyByGenerator" Arg="output, F, f, indet"/>
 ##  <Func Name="WriteTEXFieldPolyByGenerator" Arg="output, F"/>
 ##  <Func Name="WriteTEXLFSRPolyByGenerator" Arg="output, F, l"/>
-##  <Func Name="WriteTEXMultivarFFPolyByGenerator" Arg="output, F, f"/>
+##  <Func Name="WriteTEXMultivarFFPolyByGenerator"
+##  Arg="output, F, clist, mlist, strGen, gen"/>
 ##
 ##  <Description>
 ##  <C>WriteTEXUnivarFFPolyByGenerator</C> writes the polynomial <A>f</A> in
@@ -210,7 +221,12 @@ DeclareGlobalFunction( "WriteTEXMatrixByGenerator" );
 ##  <C>WriteTEXFieldPolyByGenerator</C> and <C>WriteTEXLFSRPolyByGenerator</C>
 ##  call <C>WriteTEXUnivarFFPolyByGenerator</C> with <A>strIndet</A> set to "x"
 ##  and "y" respectively. <P/>
-##  <C>WriteTEXMultivarFFPolyByGenerator</C> TO DO
+##  <C>WriteTEXMultivarFFPolyByGenerator</C> writes the multuivariate polynomial
+##  with indterminates from the  <Ref Func="ChooseField" /> call. The polynomial
+##  itself is passed via two lists, the coefficients list <A>clist</A> and the
+##  monomial list <A>mlist</A>. The coefficients from  <A>clist</A> are written
+##  as powers of a chosen generator <A>gen</A> of the field <A>F</A>.
+##
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -219,7 +235,7 @@ DeclareGlobalFunction( "WriteTEXUnivarFFPolyByGenerator" );
 DeclareGlobalFunction( "WriteTEXFieldPolyByGenerator" );
 DeclareGlobalFunction( "WriteTEXLFSRPolyByGenerator" );
 DeclareGlobalFunction( "WriteTEXMultivarFFPolyByGenerator" );
-# TO DO (will need indet list)
+
 
 #############################################################################
 ##
@@ -255,14 +271,6 @@ DeclareGlobalFunction( "WriteTEXMultivarFFPolyByGenerator" );
 ##  The output file contains additional information: defining polynomial of
 ##  <A>F</A>, basis elements of <A>B</A> as powers of generator <A>gen</A>,
 ## <P/>
-##  An example of the the <C>WriteTEXElementTableByGenerator</C>
-##output can be seen in figure below: <P/>
-##  <Alt Only="LaTeX">\begin{figure}\centering
-##  \includegraphics[scale=0.7]{WriteTEXelmTablesnap}
-##  \caption{Sample output of WriteTEXElementTableByGenerator}\end{figure}</Alt>
-##  <Alt Only="HTML">&lt;img src="WriteTEXelmTablesnap.jpg" align="center" /></Alt>
-##  <Alt Only="Text">/See diagrams in HTML and PDF versions of the manual/</Alt>
-##  <P/>
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -270,6 +278,22 @@ DeclareGlobalFunction( "WriteTEXMultivarFFPolyByGenerator" );
 DeclareGlobalFunction( "WriteTEXGeneratorWRTDefiningPolynomial");
 DeclareGlobalFunction( "WriteTEXBasisByGenerator");
 DeclareGlobalFunction( "WriteTEXElementTableByGenerator");
+
+
+###############################################################################
+##
+##  <#GAPDoc Label="outputsEG">
+##  <Alt Only="LaTeX">\begin{figure}\centering
+##  \includegraphics[scale=0.8]{testTEXpic1}
+##  \caption{Sample output of varoius WriteTEX* functions}\end{figure}</Alt>
+##  <Alt Only="HTML">&lt;img src="testTEXpic1.jpg" align="center" /></Alt>
+##  <Alt Only="Text">/See diagrams in HTML and PDF versions of the manual/</Alt>
+##  <Alt Only="LaTeX">\begin{figure}\centering
+##  \includegraphics[scale=0.8]{testTEXpic2}
+##  \caption{Sample output of WriteTEXElementTableByGenerator}\end{figure}</Alt>
+##  <Alt Only="HTML">&lt;img src="testTEXpic2.jpg" align="center" /></Alt>
+##  <Alt Only="Text">/See diagrams in HTML and PDF versions of the manual/</Alt>
+##  <#/GAPDoc>
 
 Print("outputs.gd OK,\t");
 #E  output.gd  . . . . . . . . . . . . . . . . . . . . . . . . . . . ends here

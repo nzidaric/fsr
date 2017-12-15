@@ -58,7 +58,7 @@ end);
 #############################################################################
 ##
 #A  Threshold( <fsr> )
-#(if LFSR and primitive thats one period plus one length of FSR + 1)
+#(if LFSR and primitive thats one period plus one length of FSR + l)
 #(if NLFSR and primitive thats one max possible period plus one length of FSR )
 
 InstallMethod(Threshold, "threshold for the length of seq", [IsFSR], function(x)
@@ -71,6 +71,7 @@ local l,t,s;
 	SetThreshold(x,s);
 	return s;
 end);
+
 
 
 #############################################################################
@@ -521,10 +522,10 @@ end);
 InstallMethod(RunFSR, "run FSR",
 [IsFSR,  IsFFECollection, IsFFECollection, IsBool],
 function(x,  ist, elmvec, pr)
-local  sequence,  treshold, num, nrsteps, seq , i, B, m;
+local  sequence,  treshold, num, nrsteps, seq , seq0, i, B, m;
 
 # load FSR
-	seq := LoadFSR(x,ist); # the seq_0 element
+	seq0 := LoadFSR(x,ist); # the seq_0 element
 	if pr then
 			B := x!.basis;
 		Print("using basis B := ",BasisVectors(B),"\t\n");
@@ -548,8 +549,8 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m;
 		Print( "  with taps  ",OutputTap(x),"\n");
 		Print(IntFFExt(B,Zero(UnderlyingField(x))),"\t\t");
 		Print((IntVecFFExt(B,x!.state)));  				# NOT reversed !!!!
-		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
-		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
+		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq0) , "\n");
+		else  Print("\t\t",  IntVecFFExt(B,seq0) , "\n");
 		fi;
 	fi;
 
@@ -578,7 +579,7 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m;
 
 
 
-	Add(sequence,seq,1);	# seq_0 at the beginning
+	Add(sequence,seq0,1);	# seq_0 at the beginning
 	return sequence;
 end);
 

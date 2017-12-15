@@ -21,49 +21,49 @@
 ##  <Meth Name="PrintAll" Arg='fsr [,b] ' />
 ##
 ##  <Description>
-##  Different detail on <A>fsr</A> created either by <Ref Func="LFSR" /> or 
+##  Different detail on <A>fsr</A> created either by <Ref Func="LFSR" /> or
 ##  <Ref Func="NLFSR" />:
 ##  <List>
-##  <Item> <C>Display/View</C>:  
+##  <Item> <C>Display/View</C>:
 ##  			<List>
-##						<Item> for LFSR: show the <C>FeedbackPoly</C> and wheter or 
+##						<Item> for LFSR: show the <C>FeedbackPoly</C> and wheter or
 ##  not the <A>fsr</A> is empty</Item>
-##  					<Item> for NLFSR: show the <C>MultivarPoly</C> and wheter or 
+##  					<Item> for NLFSR: show the <C>MultivarPoly</C> and wheter or
 ##  not the <A>fsr</A> is empty</Item>
 ##				</List>
 ##  </Item>
-##  <Item> <C>Print</C>: same as <C>Display/View</C> if <A>fsr</A> is empty, 
-##  otherwise it also shows the values of components  <C>state</C> , 
+##  <Item> <C>Print</C>: same as <C>Display/View</C> if <A>fsr</A> is empty,
+##  otherwise it also shows the values of components  <C>state</C> ,
 ##  <C>numsteps</C> and <C>basis</C></Item>
-##  <Item> <C>PrintAll</C>: same as <C>Print</C> if <A>fsr</A> is empty, 
-##  otherwise it also shows the values of all four components <C>init</C>, 
+##  <Item> <C>PrintAll</C>: same as <C>Print</C> if <A>fsr</A> is empty,
+##  otherwise it also shows the values of all four components <C>init</C>,
 ##  <C>state</C> , <C>numsteps</C> and <C>basis</C>
 ##  with additional information about the underlying field and the tap positions
 ##  </Item>
-##  </List> 
-##  Both <C>Print</C> and <C>PrintAll</C> can be used with optional parameter 
-##  <A>b</A> for desiered output format: when <C>true</C> the output will use 
-##  the currently chosen basis. 
+##  </List>
+##  Both <C>Print</C> and <C>PrintAll</C> can be used with optional parameter
+##  <A>b</A> for desiered output format: when <C>true</C> the output will use
+##  the currently chosen basis.
 ##  <P/>
-##  Examples below show different outputs for an LFSR: 
+##  Examples below show different outputs for an LFSR:
 ##  <Example>
 ##  <![CDATA[
 ##  gap> K := GF(2);; x := X(K, "x");;
-##  gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; 
+##  gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);;
 ##  gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
 ##  gap> test := LFSR(K, f, l);;
-##  gap> Print(test);           
+##  gap> Print(test);
 ##  empty LFSR over GF(2^4) given by FeedbackPoly = y^4+y+Z(2^4)
 ##  gap> ist := [ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ];; LoadFSR(test, ist);
 ##  Z(2)^0
-##  gap> Print(test);                         
+##  gap> Print(test);
 ##  LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4)
 ##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
 ##  with current state =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ]
 ##  after  0 steps
 ##  gap> RunFSR(test,5);
 ##  [ Z(2^2), Z(2^4), 0*Z(2), Z(2^4)^2, Z(2^4)^11 ]
-##  gap> Print(test);   
+##  gap> Print(test);
 ##  LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4)
 ##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
 ##  with current state =[ Z(2^2), Z(2^4)^2, Z(2^4)^2, Z(2^4)^11 ]
@@ -80,39 +80,39 @@
 ##  LFSR over GF(2^4) defined by FieldPoly=x^4+x^3+Z(2)^0  given by FeedbackPoly = y^4\
 ##  +y+Z(2^4)
 ##  with basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ]
-##  with feedback coeff =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 0, 0, 0 ], 
+##  with feedback coeff =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 0, 0, 0 ],
 ##    [ 0, 1, 1, 0 ] ]
-##  with initial state  =[ [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ], 
+##  with initial state  =[ [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ],
 ##    [ 1, 0, 0, 0 ] ]
-##  with current state  =[ [ 1, 1, 0, 1 ], [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ], 
+##  with current state  =[ [ 1, 1, 0, 1 ], [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ],
 ##    [ 0, 1, 1, 1 ] ]
 ##  after 5 steps
 ##  with output from stage S_0
 ##  ]]>
-##  </Example> 
-##  Examples below show different outputs for an NLFSR: 
+##  </Example>
+##  Examples below show different outputs for an NLFSR:
 ##  <Example>
 ##  <![CDATA[
 ##  gap>  F := GF(2);; ChooseField(F);
 ##  You can now create an NLFSR with up to 100 stages
 ##  with up to  100 nonzero terms
 ##  gap>  clist := [One(F), One(F)];; mlist := [x_0*x_1, x_2];;
-##  gap>  test := NLFSR(F, clist, mlist, 3);                                         
+##  gap>  test := NLFSR(F, clist, mlist, 3);
 ##  < empty NLFSR of length 3 over GF(2),
-##    given by MultivarPoly = x_0*x_1+x_2> 
-##  gap> Display(test);                                      
+##    given by MultivarPoly = x_0*x_1+x_2>
+##  gap> Display(test);
 ##  < empty NLFSR of length 3 over GF(2),
-##   given by MultivarPoly = x_0*x_1+x_2> 
+##   given by MultivarPoly = x_0*x_1+x_2>
 ##  gap> PrintAll(test,true);
 ##  empty NLFSR of length 3 over GF(2),
 ##    given by MultivarPoly = x_0*x_1+x_2
 ##  with basis =[ Z(2)^0 ]
 ##  with initial state  =[ [ 0 ], [ 0 ], [ 0 ] ]
 ##  with current state  =[ [ 0 ], [ 0 ], [ 0 ] ]
-##  after initialization 
+##  after initialization
 ##  with output from stage S_0
 ##  ]]>
-##  </Example> 
+##  </Example>
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -124,30 +124,6 @@ DeclareOperation("PrintObj", [IsFSR]);
 DeclareOperation("PrintAll", [IsFSR, IsBool]);
 DeclareOperation("PrintAll", [IsFSR]);
 
-#############################################################################
-##
-#F  WriteTEXFF( <output>, <F> ) . . . . . . same as PrintAll, but to a file
-##
-##  <#GAPDoc Label="WriteTEXFF">
-##  <ManSection>
-##  <Func Name="WriteTEXFF" Arg="output, F"/>
-##  <Func Name="WriteTEXFFE" Arg="output, F, ffe"/> # in case its a subfield elm
-##  <Func Name="WriteTEXUnivarFFPoly" Arg="output, F, f, indet"/>
-##  <Func Name="WriteTEXMultivarFFPoly" Arg="output, F, f"/>
-##  <Func Name="WriteTEXFieldPoly" Arg="output, F"/>
-##  <Func Name="WriteTEXLFSRPoly" Arg="output, F, l"/>
-##
-##  <Description>
-##  </Description>
-##  </ManSection>
-##  <#/GAPDoc>
-DeclareGlobalFunction( "WriteTEXFF" );
-DeclareGlobalFunction( "WriteTEXFFE" );
-DeclareGlobalFunction( "WriteTEXUnivarFFPoly" );
-#DeclareGlobalFunction( "WriteTEXMultivarFFPoly" ); TO DO (will need indet list)
-DeclareGlobalFunction( "WriteTEXFieldPoly" );
-DeclareGlobalFunction( "WriteTEXLFSRPoly" );
-
 
 
 #############################################################################
@@ -157,50 +133,54 @@ DeclareGlobalFunction( "WriteTEXLFSRPoly" );
 ##  <#GAPDoc Label="WriteAllFSR">
 ##  <ManSection>
 ##  <Func Name="WriteAllFSR" Arg="output, fsr"/>
+##  <Func Name="WriteTEXAllFSR" Arg="output, fsr"/>
 ##
 ##  <Description>
-##  Equivalent to PrintAll, but it writes to an output stream. NOTE: The basis
-##   switch must be present and if <E>true</E>, the currently set basis of the
-##   <A>fsr</A> is used. 
+##  <C>WriteAllFSR</C> is equivalent to PrintAll, but it writes to an output
+##  stream. <C>WriteTEXAllFSR</C> formats the output for *.tex files. <P/>
+##  NOTE: For both versions, the basis switch must be present and if <E>true</E>, the
+##  currently set basis of the
+##   <A>fsr</A> is used.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
 DeclareGlobalFunction( "WriteAllFSR" );
+DeclareGlobalFunction( "WriteTEXAllFSR" );
 
 
 
 #############################################################################
 ##
-#F  WriteSequenceFSR ( <output>, <fsr>, <sequence> ) 
+#F  WriteSequenceFSR ( <output>, <fsr>, <sequence> )
 ##. . . . write output sequence to file
 ##
 ##  <#GAPDoc Label="WriteSequenceFSR">
 ##  <ManSection>
 ##  <Func Name="WriteSequenceFSR" Arg="output, fsr, sequence"/>
 ##  <Func Name="WriteTBSequenceFSR" Arg="output, fsr, sequence"/>
-##  <Func Name="WriteTEXSequenceByGenerator" 
+##  <Func Name="WriteTEXSequenceByGenerator"
 ##  Arg="output, fsr, sequence, strGen, gen"/>
 ##
 ##  <Description>
-##  <C>WriteSequenceFSR</C> writes the sequence generated by some version of 
-##  RunFSR(lfsr)  to *.txt file, with addition of separating sequences from 
-##  different taps and writing them in currently set 
+##  <C>WriteSequenceFSR</C> writes the sequence generated by some version of
+##  RunFSR(lfsr)  to *.txt file, with addition of separating sequences from
+##  different taps and writing them in currently set
 ##  basis of the <A>fsr</A>.
 ##  <P/>
-##  <C>WriteTBSequenceFSR</C> is a version of <C>WriteSequenceFSR</C> 
-##   intended for testbenching purposes: the generated sequence is written 
-##  to *.txt file, with sequences from different taps separated into 
-##  <E>columns</E> separated by "\t". Again the 
-##  currently set basis of the <A>fsr</A> is used. 
-##  The order of columns is determined by  <C>OutputTap(<A>fsr</A>)</C>. 
+##  <C>WriteTBSequenceFSR</C> is a version of <C>WriteSequenceFSR</C>
+##   intended for testbenching purposes: the generated sequence is written
+##  to *.txt file, with sequences from different taps separated into
+##  <E>columns</E> separated by "\t". Again the
+##  currently set basis of the <A>fsr</A> is used.
+##  The order of columns is determined by  <C>OutputTap(<A>fsr</A>)</C>.
 ##  <P/>
-##  <C>WriteTEXSequenceByGenerator</C> is a *.tex version of 
-##  <C>WriteSequenceFSR</C>  but allows to 
+##  <C>WriteTEXSequenceByGenerator</C> is a *.tex version of
+##  <C>WriteSequenceFSR</C>  but allows to
 ##  write the sequence elements as powers of a chosen generator <A>gen</A>.
-##  Generator <A>gen</A> is used to get the exponents of the elements, and the 
-##  elements themselfs are printed as for example <M>\alpha^{exponent}</M>, 
-##  where <A>strGen</A> is set to "alpha" ( it must be a string representing 
-##  a greek letter in *.tex). Use of "omega" is not allowed. 
+##  Generator <A>gen</A> is used to get the exponents of the elements, and the
+##  elements themselfs are printed as for example <M>\alpha^{exponent}</M>,
+##  where <A>strGen</A> is set to "alpha" ( it must be a string representing
+##  a greek letter in *.tex). Use of "omega" is not allowed.
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
@@ -208,7 +188,8 @@ DeclareGlobalFunction( "WriteAllFSR" );
 
 DeclareGlobalFunction("WriteSequenceFSR");
 DeclareGlobalFunction("WriteTBSequenceFSR");
-DeclareGlobalFunction("WriteTEXSequenceByGenerator" );
+DeclareGlobalFunction("WriteTEXSequenceFSR" );
+DeclareGlobalFunction("WriteTEXSequenceFSRByGenerator" );
 
 #############################################################################
 ##
@@ -221,29 +202,29 @@ DeclareGlobalFunction("WriteTEXSequenceByGenerator" );
 ##
 ##  <Description>
 ##  <C>WriteRunFSR</C> is an output to *.txt version of RunFSR(<A>fsr</A>,
-##   <A>ist</A>, <A>num</A>), with addition of separating sequences from 
-##  different taps and writing them in currently set basis 
-##  of the <A>fsr</A>. Before the run begins and after loading, the 
-##  <C>WriteAllFSR(output,  x, true)</C> is called to record the FSR being used. 
-##  When the run is finished, <C>WriteSequenceFSR</C> is called to record the 
-##  output sequence in compact version. 
+##   <A>ist</A>, <A>num</A>), with addition of separating sequences from
+##  different taps and writing them in currently set basis
+##  of the <A>fsr</A>. Before the run begins and after loading, the
+##  <C>WriteAllFSR(output,  x, true)</C> is called to record the FSR being used.
+##  When the run is finished, <C>WriteSequenceFSR</C> is called to record the
+##  output sequence in compact version.
 ##  <C>WriteRunFSR</C> returns the sequence generated by this run.
 ##  <P/>
 ##  <C>WriteNonlinRunFSR</C> is an output to *.txt version of RunFSR(<A>fsr</A>,
-##   <A>ist</A>, <A>elmvec</A>). <C>WriteNonlinRunFSR</C> returns a sequence 
-##  generated by this run, however, the length of returned sequence is 
-##  Length(<A>elmvec</A>)+1, because the first element of 
-##  the output sequence is the element that was loaded with <A>ist</A>. <P/> 
+##   <A>ist</A>, <A>elmvec</A>). <C>WriteNonlinRunFSR</C> returns a sequence
+##  generated by this run, however, the length of returned sequence is
+##  Length(<A>elmvec</A>)+1, because the first element of
+##  the output sequence is the element that was loaded with <A>ist</A>. <P/>
 ##  An example of the the <C>WriteRunFSR</C>  output can be seen in figure below: <P/>
 ##  <Alt Only="LaTeX">\begin{figure}\centering
-##  \includegraphics[scale=0.75]{WriteRunFSR1}\caption{Sample output of WriteRunFSR}\end{figure}</Alt>
-##  <Alt Only="HTML">&lt;img src="WriteRunFSR1.jpg" align="center" /></Alt>
+##  \includegraphics[scale=0.6]{testLFSRtxt1}\caption{Sample output of WriteRunFSR}\end{figure}</Alt>
+##  <Alt Only="HTML">&lt;img src="testLFSRtxt11.jpg" align="center" /></Alt>
 ##  <Alt Only="Text">/See diagrams in HTML and PDF versions of the manual/</Alt>
 ##  <P/>
 ##  An example of the the <C>WriteNonlinRunFSR</C>  output can be seen in figure below: <P/>
 ##  <Alt Only="LaTeX">\begin{figure}\centering
-##  \includegraphics[scale=0.55]{WriteNonlinRunFSR1}\caption{Sample output of WriteNonlinRunFSR}\end{figure}</Alt>
-##  <Alt Only="HTML">&lt;img src="WriteNonlinRunFSR1.jpg" align="center" /></Alt>
+##  \includegraphics[scale=0.6]{testLFSRtxt2}\caption{Sample output of WriteNonlinRunFSR}\end{figure}</Alt>
+##  <Alt Only="HTML">&lt;img src="testLFSRtxt2.jpg" align="center" /></Alt>
 ##  <Alt Only="Text">/See diagrams in HTML and PDF versions of the manual/</Alt>
 ##  <P/>
 ##  </Description>
@@ -263,35 +244,35 @@ DeclareGlobalFunction( "WriteNonlinRunFSR" );
 ##  <Func Name="WriteTEXRunFSRByGenerator" Arg="output, fsr, ist, numsteps, strGen, gen"/>
 ##
 ##  <Description>
-##  <C>WriteTEXRunFSR</C> is an output to *.tex version of RunFSR(<A>fsr</A>, 
-##  <A>ist</A>, <A>num</A>), which writes a table that can be included dircetly 
+##  <C>WriteTEXRunFSR</C> is an output to *.tex version of RunFSR(<A>fsr</A>,
+##  <A>ist</A>, <A>num</A>), which writes a table that can be included dircetly
 ##  (except for the label). Rows of the table represent the steps of the FSR and
-##   include the state of the FSR and the elements from stages specfied by 
+##   include the state of the FSR and the elements from stages specfied by
 ##  outputTap, that is the sequence outputs at this step.
-##  The table entries (FFEs) are printed using currently set basis of the <A>fsr</A>.  
+##  The table entries (FFEs) are printed using currently set basis of the <A>fsr</A>.
 ##  When the run is finished, <C>WriteTEXSequenceByGenerator</C>
-##  is called to record the output sequence in compact version. 
+##  is called to record the output sequence in compact version.
 ##  <C>WriteTEXRunFSR</C> returns the sequence generated by this run.
 ##  <P/>
 ##  An example of the the <C>WriteTEXRunFSR</C>  output can be seen in figure below: <P/>
 ##  <Alt Only="LaTeX">\begin{figure}\centering
-##  \includegraphics[scale=0.65]{WriteTEXRunFSRsnap}\caption{Sample output of WriteTEXRunFSR}\end{figure}</Alt>
-##  <Alt Only="HTML">&lt;img src="WriteTEXRunFSRsnap.jpg" align="center" /></Alt>
+##  \includegraphics[scale=0.65]{testLFSRtex1}\caption{Sample output of WriteTEXRunFSR}\end{figure}</Alt>
+##  <Alt Only="HTML">&lt;img src="testLFSRtex1.jpg" align="center" /></Alt>
 ##  <Alt Only="Text">/See diagrams in HTML and PDF versions of the manual/</Alt>
 ##  <P/>
-##  <C>WriteTEXNonlinRunFSR</C> TO DO 
+##  <C>WriteTEXNonlinRunFSR</C> TO DO
 ##  <P/>
-##  <C>WriteTEXRunFSRByGenerator</C>  is a *.tex version of <C>WriteTEXRunFSR</C>  
-##  but instead of using the currently set basis of the <A>fsr</A>, the table 
+##  <C>WriteTEXRunFSRByGenerator</C>  is a *.tex version of <C>WriteTEXRunFSR</C>
+##  but instead of using the currently set basis of the <A>fsr</A>, the table
 ##  entries are printed as  powers of a chosen generator <A>gen</A>.
-##  Generator <A>gen</A> is used to get the exponents of the elements, and the 
-##  elements themselfs are printed as for example <M>\alpha^{exponent}</M>, where 
-##  <A>strGen</A> is set to "alpha" ( it must be a string representing a greek 
+##  Generator <A>gen</A> is used to get the exponents of the elements, and the
+##  elements themselfs are printed as for example <M>\alpha^{exponent}</M>, where
+##  <A>strGen</A> is set to "alpha" ( it must be a string representing a greek
 ##  letter in *.tex). Use of "omega" is not allowed. <P/>
 ##  An example of the the <C>WriteTEXRunFSRByGenerator</C>  output can be seen in figure below: <P/>
 ##  <Alt Only="LaTeX">\begin{figure}\centering
-##  \includegraphics[scale=0.65]{WriteTEXRunFSRbygensnap}\caption{Sample output of WriteTEXRunFSRByGenerator}\end{figure}</Alt>
-##  <Alt Only="HTML">&lt;img src="WriteTEXRunFSRbygensnap.jpg" align="center" /></Alt>
+##  \includegraphics[scale=0.65]{testLFSRtex2}\caption{Sample output of WriteTEXRunFSRByGenerator}\end{figure}</Alt>
+##  <Alt Only="HTML">&lt;img src="testLFSRtex2.jpg" align="center" /></Alt>
 ##  <Alt Only="Text">/See diagrams in HTML and PDF versions of the manual/</Alt>
 ##  <P/>
 
@@ -299,43 +280,9 @@ DeclareGlobalFunction( "WriteNonlinRunFSR" );
 ##  </ManSection>
 ##  <#/GAPDoc>
 DeclareGlobalFunction( "WriteTEXRunFSR" );
-DeclareGlobalFunction( "WriteTEXGeneratorWRTDefiningPolynomial");
 DeclareGlobalFunction( "WriteTEXRunFSRByGenerator" );
 
 
-#############################################################################
-##
-#F  WriteTEXElementTableByGenerator( <output>, <F>, <B>, <strGen>, <gen> ) . . . . . . .
-## ...................... write elms table with pwrs of generators to file
-##
-##  <#GAPDoc Label="WriteTEXElementTableByGenerator">
-##  <ManSection>
-##  <Func Name="WriteTEXElementTableByGenerator" Arg="output, F, B, strGen, gen" />
-##
-##  <Description>
-##  <C>WriteTEXElementTableByGenerator</C> provides the context information for  
-##  <C>WriteTEXSequenceByGenerator</C> and <C>WriteTEXRunFSRByGenerator</C>. 
-##  Its output is a *.tex file with a table containing the elements of <A>F</A> 
-##  represented in basis <A>B</A> and their representation as powers of a 
-##  chosen generator <A>gen</A>, printed as for example <M>\alpha^{exponent}</M>,
-##   where <A>strGen</A> is set to "alpha" ( it must be a string representing a 
-##  greek  letter in *.tex). Use of "omega" is not allowed.  There
-##   is an extra table column containing the order of each element. 
-##  The output file contains additional information: defining polynomial of 
-##  <A>F</A>, basis elements of <A>B</A> as powers of generator <A>gen</A>, 
-## <P/>
-##  An example of the the <C>WriteTEXElementTableByGenerator</C>  output can be seen in figure below: <P/>
-##  <Alt Only="LaTeX">\begin{figure}\centering
-##  \includegraphics[scale=0.7]{WriteTEXelmTablesnap}\caption{Sample output of WriteTEXElementTableByGenerator}\end{figure}</Alt>
-##  <Alt Only="HTML">&lt;img src="WriteTEXelmTablesnap.jpg" align="center" /></Alt>
-##  <Alt Only="Text">/See diagrams in HTML and PDF versions of the manual/</Alt>
-##  <P/>
-
-##  </Description>
-##  </ManSection>
-##  <#/GAPDoc>
-
-DeclareGlobalFunction( "WriteTEXElementTableByGenerator"); 
 
 Print("outfsr.gd OK,\t");
 #E  outlfsr.gd  . . . . . . . . . . . . . . . . . . . . . . . . . . . ends here

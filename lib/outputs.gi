@@ -354,6 +354,9 @@ SetPrintFormattingStatus(output, false);
 	return;
 end);
 
+
+
+
 #############################################################################
 ##
 ## WriteTEXFFEByGeneratorNC
@@ -376,6 +379,27 @@ local exp;
 	return;
 end);
 
+#############################################################################
+##
+## WriteTEXFFEByGeneratorNCM
+##
+InstallGlobalFunction(WriteTEXFFEByGeneratorNCM,
+ function(output,  ffe, strGen, gen)
+local exp;
+
+      if IsZero(ffe) then
+          AppendTo(output,  "0");
+      elif IsOne(ffe) then
+          AppendTo(output,  "1");
+      else
+         exp := LogFFE(ffe,gen);
+         if exp = 1 then 			 AppendTo(output,  "\\",strGen);
+         else 		AppendTo(output,  "\\",strGen,"^{",exp,"}");
+         fi;
+      fi;
+
+	return;
+end);
 
 #############################################################################
 ##
@@ -404,6 +428,75 @@ SetPrintFormattingStatus(output, false);
 	return;
 end);
 
+#############################################################################
+##
+## WriteTEXFFEVec
+##
+InstallGlobalFunction(WriteTEXFFEVec,
+ function(output, B, vec)
+ local F, ffe,j;
+ F := UnderlyingLeftModule(B);
+
+SetPrintFormattingStatus(output, false);
+	 if IsField(F) and IsFinite(F) then
+	 	if	IsFFECollection(vec) then
+			AppendTo(output,  "[ ");
+				for j in [1.. Length(vec)] do
+					ffe := vec[j];
+			        AppendTo(output,  "$",VecToString(B,ffe),"$");
+					if j < Length(vec) then
+						AppendTo(output,  ",\\,");
+					fi;
+				od;
+				AppendTo(output,  " ]");
+			else
+				Error(vec," is not a finite field vector!!!!\n");
+			fi;
+		else
+		Error(F," is not a finite field !!!!\n");
+		fi;
+
+	return;
+end);
+
+#############################################################################
+##
+## WriteTEXFFEVecByGenerator
+##
+InstallGlobalFunction(WriteTEXFFEVecByGenerator,
+ function(output, F, vec, strGen, gen)
+ local  ffe, j;
+
+
+SetPrintFormattingStatus(output, false);
+if IsField(F) and IsFinite(F) then
+	if IsString(strGen) and  strGen <> "omega" then
+		if Order(gen)=Size(F)-1 then
+	 		if IsFFECollection(vec) then
+				AppendTo(output,  "[ ");
+				for j in [1.. Length(vec)] do
+					ffe := vec[j];
+			      	WriteTEXFFEByGeneratorNC(output, ffe, strGen, gen);
+					if j < Length(vec) then
+						AppendTo(output,  ",\\,");
+					fi;
+				od;
+			AppendTo(output,  " ]");
+			else
+				Error(vec," is not a finite field vector!!!!\n");
+			fi;
+		else
+      Error(gen," is not a generator of ",F,"!!!!\n");
+    fi;
+  else
+    Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
+  fi;
+else
+	Error(F," is not a finite field !!!!\n");
+fi;
+
+	return;
+end);
 
 #############################################################################
 ##
@@ -423,14 +516,14 @@ SetPrintFormattingStatus(output, false);
 		drows := d[1];
 		dcols := d[2];
 
-			AppendTo(output, "\\begin{displaymath}\\tiny \n");
+#			AppendTo(output, "\\begin{displaymath}\\tiny \n");
 			AppendTo(output, "\\left[ \n");
 			AppendTo(output, "\\setcounter{MaxMatrixCols}{", dcols, "} \n\\begin{matrix} \n");
 			for i in [1..drows] do
 				row := M[i];
 				for j in [1..dcols] do
 					ffe := row[j];
-					AppendTo(output,"$", VecToString(B, ffe),"$");
+					AppendTo(output, VecToString(B, ffe));
 					if j<dcols then AppendTo(output, "&");
 					else  AppendTo(output, "\\");
 					fi;
@@ -438,7 +531,7 @@ SetPrintFormattingStatus(output, false);
 				AppendTo(output, "\\\n");
 			od;
 		AppendTo(output, "\\end{matrix} \\right] \n");
-		AppendTo(output, "\\end{displaymath} \n");
+#		AppendTo(output, "\\end{displaymath} \n");
 	else
 		  Error(M," is not over a finite field !!!!\n");
 	  fi;
@@ -468,14 +561,14 @@ SetPrintFormattingStatus(output, false);
 		drows := d[1];
 		dcols := d[2];
 
-			AppendTo(output, "\\begin{displaymath}\\tiny \n");
+#			AppendTo(output, "\\begin{displaymath}\\tiny \n");
 			AppendTo(output, "\\left[ \n");
 			AppendTo(output, "\\setcounter{MaxMatrixCols}{", dcols, "} \n\\begin{matrix} \n");
 			for i in [1..drows] do
 				row := M[i];
 				for j in [1..dcols] do
 				  ffe := row[j];
-				  WriteTEXFFEByGeneratorNC(output,  ffe, strGen, gen);
+				  WriteTEXFFEByGeneratorNCM(output,  ffe, strGen, gen);
 
 					if j<dcols then AppendTo(output, "&");
 					else  AppendTo(output, "\\");
@@ -484,7 +577,7 @@ SetPrintFormattingStatus(output, false);
 				AppendTo(output, "\\\n");
 			od;
 		AppendTo(output, "\\end{matrix} \\right] \n");
-		AppendTo(output, "\\end{displaymath} \n");
+#		AppendTo(output, "\\end{displaymath} \n");
 		else
 			Error(gen," is not a generator of ",F,"!!!!\n");
 			fi;
@@ -525,14 +618,14 @@ SetPrintFormattingStatus(output, false);
         if IsZero(ffe) then
          continue;
         elif IsOne(ffe) then
-            AppendTo(output, strIndet, "^{",m-i,"}+");
+            AppendTo(output, strIndet, "^{",m-(i-1),"}+");
         else
            exp := LogFFE(ffe,gen);
            if exp = 1 then
-           		 AppendTo(output, "\\",strGen," ", strIndet, "^{",m-i,"}+");
+           		 AppendTo(output, "\\",strGen," ", strIndet, "^{",m-(i-1),"}+");
            else
               AppendTo(output, "\\", strGen,"^{",exp,"} ");
-              AppendTo(output, strIndet, "^{",m-i,"}+");
+              AppendTo(output, strIndet, "^{",m-(i-1),"}+");
 
            fi;
         fi;
@@ -695,7 +788,7 @@ AppendTo(output,  "$");
 
 InstallGlobalFunction( WriteTEXGeneratorWRTDefiningPolynomial,
 function(output, F, strGen, gen)
-local genvec, i;
+local genvec, i, plus;
 
 SetPrintFormattingStatus(output, false);
 
@@ -707,20 +800,30 @@ SetPrintFormattingStatus(output, false);
   WriteTEXFieldPolyByGenerator(output,  F, DefiningPolynomial(F), strGen, gen);
 
 			else
-				genvec := GeneratorWRTDefiningPolynomial(F);
-				AppendTo(output, ", where $\\",strGen,"=");
+				genvec := Coefficients(Basis(F), gen);
+				plus := false;
+				AppendTo(output, " where $\\",strGen,"=");
 				if genvec[1] = One(F) then
-					AppendTo(output, "1 +");
+					AppendTo(output, "1");
+					plus := true;
 				fi;
 				for i in [2.. Length(genvec)-1] do
 					if genvec[i] = One(F) then
-						AppendTo(output, "\\omega^", i-1, " +");
+						if plus then
+							AppendTo(output, "+");
+							plus := false;
+						fi;
+						AppendTo(output, "\\omega^{", i-1,"}");
+						plus := true;
 					fi;
 				od;
 				if genvec[Length(genvec)] = One(F) then
-					AppendTo(output, "\\omega^",Length(genvec)-1, "$");
+					if plus then
+						AppendTo(output, "+");
+					fi;
+					AppendTo(output, "\\omega^{",Length(genvec)-1, "}");
 				fi;
-		AppendTo(output, " and $\\omega$ is a root of ");
+		AppendTo(output, "$ and $\\omega$ is a root of ");
 WriteTEXFieldPolyByGenerator(output,  F, DefiningPolynomial(F), strGen, gen);
 
 			fi;
@@ -742,39 +845,22 @@ InstallGlobalFunction(WriteTEXBasisByGenerator,
 local  i,j, elms,  tmp,  m, divs, eb, exp, elm, roots;
 
 SetPrintFormattingStatus(output, false);
-	 if IsField(F) and IsFinite(F) then
-		 if IsBasis(B) then
-			if IsString(strGen) and  strGen <> "omega" then
-				if Order(gen)=Size(F)-1 then
-							m:= DegreeOverPrimeField(F);
-							divs := DivisorsInt(m);
-							if m>1 and (not  m > Length(B)) and \in(Length(B),divs) then
-               # basis ok for field
 
-								AppendTo(output,  "B = [$\\beta_i$] = [");
-								for j in [1.. Length(B)] do
-									elm := BasisVectors(B)[j];
-									WriteTEXFFEByGeneratorNC(output, elm, strGen, gen);
-									if j < Length(B) then
-										AppendTo(output,  ",");
-									fi;
-								od;
-								AppendTo(output,  " ]");
+	 if IsBasis(B) then
+			m:= DegreeOverPrimeField(F);
+							divs := DivisorsInt(m);
+			if m>1 and (not  m > Length(B)) and \in(Length(B),divs) then
+               # basis ok for field
+					AppendTo(output,  "B = [$\\beta_i$] = ");
+					WriteTEXFFEVecByGenerator(output, F, BasisVectors(B), strGen, gen);
      			else
      				Error("basis does not match the field!\n" );
      			fi;
-   			else
-   				Error(gen," is not a generator of ",F,"!!!!\n");
-   			fi;
- 			else
- 				Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
- 			fi;
+
 	else
 		Error(B,"is not a basis !!!!\n");
 	fi;
-else
-	Error(F,"is not a finite field !!!!\n");
-fi;
+
    return;
 end);
 
@@ -834,38 +920,30 @@ AppendTo(output,"elm&\\multicolumn{",Length(B),"}{c|}{given basis B}& \\\\\n");
 											AppendTo(output,  "\\hline\n");
 											AppendTo(output,  "\\end{tabular}}\n");
 
- AppendTo(output,"\\caption{{\\footnotesize Element table for $\\mathbb{F}_{{");
-AppendTo(output,Characteristic(F),"}^{",m,"}}$");
- AppendTo(output," with generator $\\",strGen,"$:\\quad");
-								WriteTEXGeneratorWRTDefiningPolynomial(output, F, strGen, gen);
+ AppendTo(output,"\\caption{{\\footnotesize Element table for ");
+ WriteTEXFF(output, F);
+ AppendTo(output," using basis ");
+WriteTEXBasisByGenerator(output, F, B, strGen, gen);
+ AppendTo(output," with generator $\\",strGen,"$\\quad");
+	WriteTEXGeneratorWRTDefiningPolynomial(output, F, strGen, gen);
 										AppendTo(output, ".}}\\label{LABEL}");
+
 										AppendTo(output,  "\\end{center}\n\\end{table}\n}");
 
-	 							   AppendTo(output,  "\n\n \n\nBasis B = [$\\beta_i$] = [");
-												for j in [1.. Length(B)] do
-												   	elm := BasisVectors(B)[j];
- 											  		WriteTEXFFEByGeneratorNC(output, elm, strGen, gen);
-														if j < Length(B) then
-															AppendTo(output,  ",");
-														fi;
-												od;
 
-										AppendTo(output,  " ]\n");
-										AppendTo(output,  "\\\\ \n");
+# AppendTo(output,  "\n\n \n\nThe generator $\\",strGen);
+#            if gen=RootOfDefiningPolynomial(F) then
+#AppendTo(output,  "$ is a root of defining polynomial ");
+#WriteTEXFieldPolyByGenerator(output,  F, DefiningPolynomial(F), strGen, gen);
+#            else
+#AppendTo(output,  "=$");
+#WriteTEXGeneratorWRTDefiningPolynomial(output, F, strGen, gen);
+#AppendTo(output,  ", where $\\omega$ is a root of defining polynomial ");
+#WriteTEXFieldPolyByGenerator(output,  F, DefiningPolynomial(F), strGen, gen);
 
- AppendTo(output,  "\n\n \n\nThe generator $\\",strGen);
-            if gen=RootOfDefiningPolynomial(F) then
-AppendTo(output,  "$ is a root of defining polynomial ");
-WriteTEXFieldPolyByGenerator(output,  F, DefiningPolynomial(F), strGen, gen);
-            else
-AppendTo(output,  "=$");
-WriteTEXGeneratorWRTDefiningPolynomial(output, F, strGen, gen);
-AppendTo(output,  ", where $\\omega$ is a root of defining polynomial ");
-WriteTEXFieldPolyByGenerator(output,  F, DefiningPolynomial(F), strGen, gen);
+#fi;
 
-fi;
-
-									   AppendTo(output,  "\\\\ \n");
+									   AppendTo(output,  " \n");
 							else
 							Error("basis does not match the field!\n" );
 							fi;

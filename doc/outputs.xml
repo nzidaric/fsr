@@ -1,5 +1,5 @@
 <Chapter Label="Outputs">
-<Heading>Output formatting functions and TEX drawing functions</Heading>    
+<Heading>Output formatting functions and TEX drawing functions</Heading>
 
 <Section Label="View">
 <Heading>View/Display/Print/PrintAll</Heading>
@@ -15,7 +15,7 @@
 <#Include Label="WriteSequenceFSR">
 <#Include Label="WriteRunFSR">
 <#Include Label="WriteTEXRunFSR">
-<#Include Label="WriteTEXElementTableByGenerator">
+
 </Section>
 
 

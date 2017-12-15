@@ -1,6 +1,6 @@
 #############################################################################
-##  
-##  PackageInfo.g for the package `FSR'                  
+##
+##  PackageInfo.g for the package `FSR'
 #
 SetPackageInfo( rec(
 PackageName := "FSR",
@@ -14,7 +14,7 @@ Date := "16/03/2017",
 ##  <#/GAPDoc>
 
 Persons := [
-  rec( 
+  rec(
     LastName      := "Zidaric",
     FirstNames    := "Nusa",
     IsAuthor      := true,
@@ -29,8 +29,8 @@ Persons := [
     Place         := "Waterloo",
     Institution   := "UW-ComSec Lab"
   ),
- 
-  rec( 
+
+  rec(
     LastName      := "Aagaard",
     FirstNames    := "Mark",
     IsAuthor      := true,
@@ -44,8 +44,8 @@ Persons := [
                        "ON N2L 3G1" ] ),
     Place         := "Waterloo",
     Institution   := "UW-ComSec Lab"
-  ),  
-   rec( 
+  ),
+   rec(
       LastName      := "Gong",
       FirstNames    := "Guang",
       IsAuthor      := true,
@@ -59,13 +59,13 @@ Persons := [
                          "ON N2L 3G1" ] ),
       Place         := "Waterloo",
       Institution   := "UW-ComSec Lab"
-  ),  
+  ),
 ],
 
 Status := "other",
 
 
-PackageDoc := rec(    
+PackageDoc := rec(
   BookName  := "FSR",
   PDFFile   := "doc/fsr.pdf",
   SixFile   := "doc/manual.six",
@@ -74,11 +74,11 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := "4.8",
+  GAP := "4.7",
   NeededOtherPackages := [["GAPDoc", "1.5"]],
   SuggestedOtherPackages := [],
   ExternalConditions := []
-                      
+
 ),
 
 AvailabilityTest := ReturnTrue,
@@ -88,4 +88,3 @@ TestFile := "tst/testall.tst",
 Keywords := ["package FSR", "LFSR" , "finite fields", "sequences"]
 
 ));
-
