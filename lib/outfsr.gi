@@ -11,27 +11,26 @@
 
 #############################################################################
 ##
-#M  ViewObj( <nlfsr> ) . . . . . . . . . . . . . . .
+#M  ViewObj( <fsr> ) . . . . . . . . . . . . . . . fixed for FSRFIL
 ##
 InstallMethod( ViewObj,    "for FSR",    true,    [ IsFSR ],  0, function( x )
 local uf;
 	uf := UnderlyingField(x);
 	if x!.numsteps=-1 then
-			if IsLFSR(x) then
-					Print("< empty LFSR over ",uf," given by FeedbackPoly = ");
-					Print( FeedbackPoly(x), " >");
-			else
-				Print("< empty NLFSR of length ",Length(x)," over ",uf);
-				Print(",\n  given by MultivarPoly = ", MultivarPoly(x), "> ");
-			fi;
+		Print("< empty ");
 	else
-			if IsLFSR(x) then
-					Print("< LFSR over ",uf,"  given by FeedbackPoly = ");
-					Print(FeedbackPoly(x), " >");
-			else
-					Print("< NLFSR of length ",Length(x)," over ",uf);
-					Print(",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
-			fi;
+		Print("< ");  	
+	fi;
+
+	if IsLFSR(x) then
+			Print("LFSR over ",uf,"  given by FeedbackPoly = ");
+			Print(FeedbackPoly(x), " >");
+	elif IsNLFSR(x) then
+			Print("NLFSR of length ",Length(x)," over ",uf);
+			Print(",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
+	else 
+		Print("FSRFIL of length ",Length(x)," over ",uf);
+		Print(",\n  with the MultivarPoly = ", MultivarPoly(x), "> ");			
 	fi;
 end );
 
@@ -44,43 +43,41 @@ end );
 
 #############################################################################
 ##
-#M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .
+#M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .fixed for FSRFIL
 ##
 InstallMethod( PrintObj, "for FSR", true, [IsFSR,  IsBool ], 0, function( x, b )
 local uf, B;
 	uf := UnderlyingField(x);
 	if x!.numsteps=-1 then
-			if IsLFSR(x) then
-			Print("empty LFSR over ",uf," given by FeedbackPoly = ", FeedbackPoly(x));
-			else
-				Print("empty NLFSR of length ",Length(x)," over ",uf);
-				Print(",\n  given by MultivarPoly = ", MultivarPoly(x));
-			fi;
-	else
+		Print("empty ");
+	fi;	
+	if IsLFSR(x) then
+		Print("LFSR over ",uf," given by FeedbackPoly = ", FeedbackPoly(x));
+	elif IsNLFSR(x) then
+		Print("NLFSR of length ",Length(x)," over ",uf);
+		Print(",\n  given by MultivarPoly = ", MultivarPoly(x));
+	else 
+		Print("FSRFIL of length ",Length(x)," over ",uf);
+		Print(",\n  with the MultivarPoly = ", MultivarPoly(x));	
+	fi;
 
-			B := x!.basis;
-			if IsLFSR(x) then
-				Print("LFSR over ",uf,"  given by FeedbackPoly = ", FeedbackPoly(x));
-			else
-				Print("NLFSR of length ",Length(x)," over ",uf);
-				Print(",\n given by MultivarPoly = ", MultivarPoly(x));
-			fi;
+	B := x!.basis;
+	Print("\nwith basis =");
+	Print(BasisVectors(B));
 
-			Print("\nwith basis =");
-			Print(BasisVectors(B));
-
-			Print("\nwith current state =");
-				if b  then 	Print((IntVecFFExt(B, x!.state)));# NOT reversed !!!!
-				else 	Print(((x!.state)));# NOT reversed !!!!
-				fi;
-			Print("\nafter  ",x!.numsteps," steps\n");
+	Print("\nwith current state =");
+		if b  then 	Print((IntVecFFExt(B, x!.state)));# NOT reversed !!!!
+		else 	Print(((x!.state)));# NOT reversed !!!!
 		fi;
+	if not IsFSRFIL(x) then 			
+				Print("\nafter  ",x!.numsteps," steps\n");
+	fi;
 
 end );
 
 #############################################################################
 ##
-#M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .
+#M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .fixed for FSRFIL
 ##
 InstallOtherMethod( PrintObj, "for FSR",true,  [ IsFSR ],    0,  function( x )
 	PrintObj( x, false);
@@ -91,25 +88,22 @@ end );
 #############################################################################
 ##
 #M  PrintAll( <lfsr> , <b> ) . . . . . . . as binary vectors in a given basis
-##
-InstallMethod( PrintAll,"for NLFSR",true, [IsFSR,  IsBool ], 0, function( x, b )
+##																			fixed for FSRFIL
+InstallMethod( PrintAll,"for FSR",true, [IsFSR,  IsBool ], 0, function( x, b )
 local uf, tap, i, B;
 
 	uf := UnderlyingField(x);
 	if x!.numsteps=-1 then
-			if IsLFSR(x) then
-			Print("empty LFSR over ",uf," given by FeedbackPoly = ", FeedbackPoly(x));
-			else
-				Print("empty NLFSR of length ",Length(x)," over ",uf);
-				Print(",\n  given by MultivarPoly = ", MultivarPoly(x));
-			fi;
-	else
-			if IsLFSR(x) then
-				Print("LFSR over ",uf,"  given by FeedbackPoly = ", FeedbackPoly(x));
-			else
-				Print("NLFSR of length ",Length(x)," over ",uf);
-				Print(",\n given by MultivarPoly = ", MultivarPoly(x));
-			fi;
+		Print("empty ");
+	fi;
+	if IsLFSR(x) then	
+		Print("LFSR over ",uf," given by FeedbackPoly = ", FeedbackPoly(x));
+	elif IsNLFSR(x) then
+		Print("NLFSR of length ",Length(x)," over ",uf);
+		Print(",\n  given by MultivarPoly = ", MultivarPoly(x));
+	else 
+		Print("FSRFIL of length ",Length(x)," over ",uf);
+		Print(",\n  with the MultivarPoly = ", MultivarPoly(x));	
 	fi;
 	B := x!.basis;
 	Print("\nwith basis =");
@@ -121,27 +115,31 @@ local uf, tap, i, B;
 			else 		Print((FeedbackVec(x))); # NOT reversed !!!!
 			fi;
 	fi;
-	Print("\nwith initial state  =");
-			if b  then 	Print((IntVecFFExt(B, x!.init))); # NOT reversed !!!!
-			else 			Print(((x!.init))); # NOT reversed !!!!
-			fi;
-	Print("\nwith current state  =");
+	if not IsFSRFIL(x)  then 	
+		Print("\nwith initial state  =");
+				if b  then 	Print((IntVecFFExt(B, x!.init))); # NOT reversed !!!!
+				else 			Print(((x!.init))); # NOT reversed !!!!
+				fi;
+	fi;
+		Print("\nwith current state  =");
 			if b  then 	Print((IntVecFFExt(B, x!.state)));# NOT reversed !!!!
 			else 	Print(((x!.state)));# NOT reversed !!!!
 			fi;
-	Print("\nafter ");
-	if x!.numsteps>0 then
-		Print(x!.numsteps," steps\n");
-	elif x!.numsteps=0 then
-		Print("loading\n");
-	else 	Print("initialization \n");
-	fi;
-
-	tap := OutputTap(x);
-	if Length(tap)=1 then
-		Print("with output from stage S_",tap[1],"\n");
-	else
-		Print("with output from stages S_",tap,"\n");
+	if not IsFSRFIL(x) then 			
+		Print("\nafter ");
+		if x!.numsteps>0 then
+			Print(x!.numsteps," steps\n");
+		elif x!.numsteps=0 then
+			Print("loading\n");
+		else 	Print("initialization \n");
+		fi;
+	
+		tap := OutputTap(x);
+		if Length(tap)=1 then
+			Print("with output from stage S_",tap[1],"\n");
+		else
+			Print("with output from stages S_",tap,"\n");
+		fi;
 	fi;
 
 end );
@@ -150,8 +148,8 @@ end );
 
 #############################################################################
 ##
-#M  PrintAll( <nlfsr> ) . . . . . using GAP native representation of field elms
-##
+#M  PrintAll( <fsr> ) . . . . . using GAP native representation of field elms
+##																				fixed for FSRFIL
 InstallMethod( PrintAll, "for FSR",    true,    [ IsFSR ],    0,  function( x )
 	PrintAll(x, false);
 end );
@@ -164,6 +162,8 @@ end );
 #
 #F WriteAllLFSR( <output>, <lfsr> , <b>) . . .. . . view a GF2 vector
 ##
+##																				fixed for FSRFIL
+
 InstallGlobalFunction( WriteAllFSR, function(output,  x, b)
 local uf, tap, i, B;
 	if (IsOutputStream( output )) then
@@ -171,22 +171,19 @@ SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
  			uf := UnderlyingField(x);
 			if x!.numsteps=-1 then
-					if IsLFSR(x) then
-						AppendTo(output,"empty LFSR over ",uf);
-						AppendTo(output," given by FeedbackPoly = ", FeedbackPoly(x));
-					else
-					 	AppendTo(output,"empty NLFSR of length ",Length(x)," over ",uf);
-						AppendTo(output,",\n  given by MultivarPoly = ", MultivarPoly(x));
-					fi;
-			else
-					if IsLFSR(x) then
-						AppendTo(output,"LFSR over ",uf);
-						AppendTo(output,"  given by FeedbackPoly = ", FeedbackPoly(x));
-					else
-						AppendTo(output,"NLFSR of length ",Length(x)," over ",uf);
-						AppendTo(output,",\n given by MultivarPoly = ", MultivarPoly(x));
-					fi;
+					AppendTo(output,"empty ");		
 			fi;
+			if IsLFSR(x) then
+				AppendTo(output,"LFSR over ",uf);
+				AppendTo(output," given by FeedbackPoly = ", FeedbackPoly(x));
+			elif IsNLFSR(x) then
+			 	AppendTo(output,"NLFSR of length ",Length(x)," over ",uf);
+				AppendTo(output,",\n  given by MultivarPoly = ", MultivarPoly(x));
+			else					
+				AppendTo(output,"FSRFIL of length ",Length(x)," over ",uf);
+				AppendTo(output,",\n given by MultivarPoly = ", MultivarPoly(x));					
+			fi;
+			
 			B := x!.basis;
 
 			AppendTo(output,"\nwith basis =");
@@ -195,34 +192,38 @@ SetPrintFormattingStatus(output, false);
 			if IsLFSR(x) then
 					AppendTo(output,"\nwith feedback coeff =");
 					if b  then
-					 AppendTo(output,VecToString(B, FeedbackVec(x))); # NOT reversed !!!!
+				 AppendTo(output,VecToString(B, FeedbackVec(x))); # NOT reversed !!!
 					else 		AppendTo(output,(FeedbackVec(x))); # NOT reversed !!!!
 					fi;
 			fi;
+			if not IsFSRFIL(x) then 		
 			AppendTo(output,"\nwith initial state  =");
 					if b  then
-							AppendTo(output,(VecToString(B, x!.init))); # NOT reversed !!!!
+					AppendTo(output,(VecToString(B, x!.init))); # NOT reversed !!!!
 					else 			AppendTo(output,((x!.init))); # NOT reversed !!!!
 					fi;
+			fi;
 			AppendTo(output,"\nwith current state  =");
 					if b  then
-						AppendTo(output,(VecToString(B, x!.state)));# NOT reversed !!!!
+						AppendTo(output,(VecToString(B, x!.state)));# NOT reversed !!!
 					else 	AppendTo(output,((x!.state)));# NOT reversed !!!!
 					fi;
-			AppendTo(output,"\nafter ");
-			if x!.numsteps>0 then
-				AppendTo(output,x!.numsteps," steps\n");
-			elif x!.numsteps=0 then
-				AppendTo(output,"loading\n");
-			else 	AppendTo(output,"initialization \n");
-			fi;
-
-			tap := OutputTap(x);
-			if Length(tap)=1 then
-				AppendTo(output,"with output from stage S_",tap[1],"\n");
-			else
-				AppendTo(output,"with output from stages S_",tap,"\n");
-			fi;
+			if not IsFSRFIL(x)  then 						
+				AppendTo(output,"\nafter ");
+				if x!.numsteps>0 then
+					AppendTo(output,x!.numsteps," steps\n");
+				elif x!.numsteps=0 then
+					AppendTo(output,"loading\n");
+				else 	AppendTo(output,"initialization \n");
+				fi;
+				
+				tap := OutputTap(x);
+				if Length(tap)=1 then
+					AppendTo(output,"with output from stage S_",tap[1],"\n");
+				else
+					AppendTo(output,"with output from stages S_",tap,"\n");
+				fi;	
+			fi;		
 
 		else
 		Error("IsFSR(",x,")=false !!!!\n");
@@ -242,36 +243,33 @@ end);
 #
 #F WriteTEXAllLFSR( <output>, <lfsr> , <b>) . . .. . . view a GF2 vector
 ##
+##																				fixed for FSRFIL
+
 InstallGlobalFunction( WriteTEXAllFSR, function(output,  x, b, strGen, gen)
 local uf, tap, i, B;
 	if (IsOutputStream( output )) then
+
 SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
- 			uf := UnderlyingField(x);
+	 	 			uf := UnderlyingField(x);
 			if x!.numsteps=-1 then
-					if IsLFSR(x) then
-						AppendTo(output,"empty LFSR over ");
+				AppendTo(output,"empty ");
+			fi;
+			if IsLFSR(x) then
+						AppendTo(output,"LFSR over ");
 						WriteTEXFF(output,uf);
 						AppendTo(output," given by FeedbackPoly = ");
-				WriteTEXLFSRPolyByGenerator(output,  uf, FeedbackPoly(x), strGen, gen);
-					else
-					 	AppendTo(output,"empty NLFSR of length ",Length(x)," over ");
+			WriteTEXLFSRPolyByGenerator(output,  uf, FeedbackPoly(x), strGen, gen);
+			elif IsNLFSR(x) then
+					 	AppendTo(output,"NLFSR of length ",Length(x)," over ");
 						WriteTEXFF(output,uf);
 						AppendTo(output,",\\\\\n  given by MultivarPoly = ");
-  WriteTEXMultivarFFPolyByGenerator(output,  uf,  FeedbackVec(x),  TermList(x),  strGen, gen);
-					fi;
-			else
-				if IsLFSR(x) then
-					AppendTo(output,"empty LFSR over ");
-					WriteTEXFF(output,uf);
-					AppendTo(output," given by FeedbackPoly = ");
-		WriteTEXLFSRPolyByGenerator(output,  uf, FeedbackPoly(x), strGen, gen);
-				else
-					AppendTo(output,"empty NLFSR of length ",Length(x)," over ");
-					WriteTEXFF(output,uf);
-					AppendTo(output,",\\\\\n  given by MultivarPoly = ");
-  WriteTEXMultivarFFPolyByGenerator(output,  uf,  FeedbackVec(x),  TermList(x),  strGen, gen);
-				fi;
+  WriteTEXMultivarFFPolyByGenerator(output,  uf,  FeedbackVec(x),  MonomialList(x),  strGen, gen);
+			else  
+ 					 	AppendTo(output,"FSRFIL of length ",Length(x)," over ");
+						WriteTEXFF(output,uf);
+						AppendTo(output,",\\\\\n  given by MultivarPoly = ");
+  WriteTEXMultivarFFPolyByGenerator(output,  uf,  FeedbackVec(x),  MonomialList(x),  strGen, gen); 
 			fi;
 			B := x!.basis;
 
@@ -285,16 +283,19 @@ SetPrintFormattingStatus(output, false);
 					else 	WriteTEXFFEVecByGenerator(output, uf, FeedbackVec(x), strGen, gen);
 					fi;
 			fi;
+		if not IsFSRFIL(x) then 			
 			AppendTo(output,"\\\\\nwith initial state  =");
 			if b  then
 							WriteTEXFFEVec(output, B,  x!.init);
 			else 	WriteTEXFFEVecByGenerator(output, uf,  x!.init , strGen, gen);
 			fi;
+		fi;
 			AppendTo(output,"\\\\\nwith current state  =");
 			if b  then
 							WriteTEXFFEVec(output, B,  x!.state);
 			else 	WriteTEXFFEVecByGenerator(output, uf, x!.state , strGen, gen);
 			fi;
+		if not IsFSRFIL(x) then 		
 			AppendTo(output,"\\\\\nafter ");
 			if x!.numsteps>0 then
 				AppendTo(output,x!.numsteps," steps\\\\\n");
@@ -302,14 +303,15 @@ SetPrintFormattingStatus(output, false);
 				AppendTo(output,"loading\\\\\n");
 			else 	AppendTo(output,"initialization \\\\\n");
 			fi;
-
+				
 			tap := OutputTap(x);
 			if Length(tap)=1 then
 				AppendTo(output,"with output from stage $S_{",tap[1],"}$\n");
 			else
 				AppendTo(output,"with output from stages $S_{",tap,"}$\n");
 			fi;
-
+		fi;
+		
 		else
 		Error("IsFSR(",x,")=false !!!!\n");
 		fi;
@@ -326,15 +328,16 @@ end);
 ##
 #F  WriteSequenceFSR ( <output>, <lfsr>, <sequence> ) . . . . write elm to file
 ##
-InstallGlobalFunction( WriteSequenceFSR, function(output, x, sequence)
+##																				fixed for FSRFIL
 
+InstallGlobalFunction( WriteSequenceFSR, function(output, x, sequence)
 local  i,j, tmp, B, m;
 
 SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
 		B := x!.basis;
 		# now append the whole sequence(s)
-			if Length(OutputTap(x))=1 then
+			if Length(OutputTap(x))=1 or IsFSRFIL(x) then 
 				AppendTo(output,"\nThe whole sequence:\n");
 				for i in [1.. Length(sequence)-1] do
 					AppendTo(output,(VecToString(B, sequence[i])), ",\t");
@@ -366,15 +369,16 @@ end);
 ##
 #F  WriteTBSequenceFSR ( <output>, <lfsr>, <sequence> ) . . .. write elm to file
 ##
-InstallGlobalFunction( WriteTBSequenceFSR, function(output, x, sequence)
+##																				fixed for FSRFIL
 
+InstallGlobalFunction( WriteTBSequenceFSR, function(output, x, sequence)
 local  i,j, tmp, B, m;
 
 SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
 		B := x!.basis;
 		# now append the whole sequence(s)
-			if Length(OutputTap(x))=1 then
+			if Length(OutputTap(x))=1  or IsFSRFIL(x) then
 
 				for i in [1.. Length(sequence)] do
 					tmp := sequence[i]; # outputs on step i
@@ -403,18 +407,20 @@ end);
 ##
 #F  WriteTEXSequenceFSR( <output>, <lfsr>, <sequence> ) . write to file
 ##
+##																				fixed for FSRFIL
+
 InstallGlobalFunction(WriteTEXSequenceFSR,
-function(output, x, sequence)
+function(output, x, sequence, strGen, gen)
+local  i, j, tmp, B, F, ffe;
 
-local  i, j, tmp, B;
-
+F := UnderlyingField(x);
 SetPrintFormattingStatus(output, false);
 if IsField(F) and IsFinite(F) then
 if IsString(strGen) and  strGen <> "omega" then
 	if Order(gen)=Size(F)-1 then
 	 if IsFSR(x) then
 	 		B := x!.basis;
-	 	if Length(OutputTap(x))=1 then
+	 	if Length(OutputTap(x))=1  or IsFSRFIL(x) then
  			AppendTo(output,"\nThe whole sequence:\n");
 			for j in [1.. Length(sequence)] do
 				ffe := sequence[j];
@@ -461,17 +467,18 @@ end);
 ##
 #F  WriteTEXSequenceFSRByGenerator( <output>, <lfsr>, <sequence> ) . write to file
 ##
+##																				fixed for FSRFIL
+
 InstallGlobalFunction(WriteTEXSequenceFSRByGenerator,
 function(output, x, sequence, strGen, gen)
-
-local  i,j, tmp, ffe, exp, m;
-
+local  i,j, tmp, ffe, exp, m, F;
+F := UnderlyingField(x);
 SetPrintFormattingStatus(output, false);
 if IsField(F) and IsFinite(F) then
 if IsString(strGen) and  strGen <> "omega" then
 	if Order(gen)=Size(F)-1 then
 	 if IsFSR(x) then
-	 	if Length(OutputTap(x))=1 then
+	 	if Length(OutputTap(x))=1  or IsFSRFIL(x) then
  			AppendTo(output,"\nThe whole sequence: \n");
 			for j in [1.. Length(sequence)] do
 				ffe := sequence[j];
@@ -515,18 +522,19 @@ end);
 
 #############################################################################
 ##
-#F  WriteRunLFSR( <output>, <lfsr>, <ist>, <numsteps> )  . . . write to file
+#F  WriteRunFSR( <output>, <fsr>, <ist>, <numsteps> )  . . . write to file
 ##
+##																				fixed for FSRFIL
 
 InstallGlobalFunction( WriteRunFSR, function(output, x, ist, num)
-local  i,j, sequence,  seq, tmp, treshold, B, m;
+local  i,j, sequence,  seq, tmp, treshold, B, m, F;
 
 # [IsOutputStream,IsLFSR,IsFFECollection, IsPosInt]
 #only check the output stream here,
 #others will be checked by individual function calls !!!
 
 
-if (IsOutputStream( output )) then
+F := UnderlyingField(x);
 SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
 
@@ -595,10 +603,6 @@ SetPrintFormattingStatus(output, false);
 		else
 		Error("IsFSR(",x,")=false !!!!\n");
 		fi;
-
-	else
-	Error("outputstream not valid !!!!\n");
-	fi;
 
 	return sequence;
 end);
@@ -805,9 +809,11 @@ SetPrintFormattingStatus(output, false);
 			AppendTo(output,  " over ");
 			WriteTEXFF(output, UnderlyingField(x));
 	elif IsNLFSR(x) then
- 		AppendTo(output,  "\\caption{{\\footnotesize NLFSR with feedback $");
- 		AppendTo(output,  MultivarPoly(x),"$ over ");
- 		WriteTEXFF(output, UnderlyingField(x));
+ 		 		AppendTo(output,  "\\caption{{\\footnotesize NLFSR with feedback ");
+			
+			WriteTEXMultivarFFPolyByGenerator(output, UnderlyingField(x), FeedbackVec(x), MonomialList(x), strGen, gen);
+			 		AppendTo(output, " over ");
+			 		WriteTEXFF(output, UnderlyingField(x));
  	fi;
   AppendTo(output,  " with basis ");
   WriteTEXBasisByGenerator(output,  UnderlyingField(x), B, strGen, gen);
@@ -817,7 +823,7 @@ SetPrintFormattingStatus(output, false);
  	AppendTo(output,  "\\end{center}\n\\end{table}\n}");
 
 	AppendTo(output,  "\n\n");
-	WriteTEXSequenceFSR(output, x, sequence);
+	WriteTEXSequenceFSR(output, x, sequence, strGen, gen);
 		else
 		Error("IsFSR(",x,")=false !!!!\n");
 		fi;
@@ -1013,8 +1019,10 @@ AppendTo(output,"&\\multicolumn{",Length(OutputTap(x)),"}{c|}{sequence}\\\\\n");
 					AppendTo(output,  " over ");
 					WriteTEXFF(output, UnderlyingField(x));
 			elif IsNLFSR(x) then
-			 		AppendTo(output,  "\\caption{{\\footnotesize NLFSR with feedback $");
-			 		AppendTo(output,  MultivarPoly(x),"$ over ");
+			 		AppendTo(output,  "\\caption{{\\footnotesize NLFSR with feedback ");
+			
+			WriteTEXMultivarFFPolyByGenerator(output, UnderlyingField(x), FeedbackVec(x), MonomialList(x), strGen, gen);
+			 		AppendTo(output, " over ");
 			 		WriteTEXFF(output, UnderlyingField(x));
 		 	fi;
 		  AppendTo(output,  " with basis ");

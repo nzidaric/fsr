@@ -31,9 +31,40 @@ end );
 #M  GeneratorOfUnderlyingField( <fsr> )    . . . .. get generator of zechs log
 ##
 
-InstallMethod(  GeneratorOfUnderlyingField, "generator of underlying field",  [IsFSR], function(x)
+InstallMethod(  GeneratorOfUnderlyingField, "generator of underlying field",  
+	[IsFSR], function(x)
 	return GeneratorOfField(UnderlyingField(x));
 end);
+
+
+#############################################################################
+##
+#M  FFEextCoefficients( <fsr> )    . . . .. get generator of zechs log
+##
+
+
+InstallMethod( FFExtCoefficients, "Coefficients from extension field",
+  [IsFSR], function(x)
+
+local fb, t, tlist, len, i, K, idxlist, n;
+K := PrimeField(UnderlyingField(x));
+fb := FeedbackVec(x);
+len := Length(fb);
+tlist := [];
+idxlist := [];
+n := Length(x);
+
+for i in [1.. len] do
+	if not (fb[i] = Zero(K) or fb[i] = One(K)) then
+		Add(tlist,fb[i]);
+		Add(idxlist, n-i);
+	fi;
+od;
+
+return [tlist, idxlist];
+end);
+
+
 
 
 
@@ -41,7 +72,8 @@ end);
 ##
 #A  InternalStateSize( <fsr> )
 ##  still works after the move :)
-InstallMethod(InternalStateSize, "size of FSR's internal state", [IsFSR], function(x)
+InstallMethod(InternalStateSize, "size of FSR's internal state", [IsFSR], 	
+	function(x)
 local n, poly, s;
 	n := Length(x);
 	poly := FieldPoly(x);
@@ -109,11 +141,57 @@ InstallMethod(WhichBasis, "which basis is currently set ?", [IsFSR], function(x)
 end);
 
 
+#############################################################################
+##
+#O  LoadFSR( <lfsr>, <ist> )						fixed for IsFSRFIL
+##
+##  almost identical for both
+##
+InstallMethod(LoadFSR, "load FSR with initial state ist",
+ [IsFSR,  IsFFE], function(x, ist)
+local i, F, tap, seq, tist, scist;
+	tist := [ist];
+	if Length(tist) <> Length(x) then
+		Error( "initial state length doesnt match" );		return fail;
+	fi;
+	F := UnderlyingField(x);
+	for i in [1..Length(tist)] do
+		if not (\in(tist[i], F)) then
+	Error("element at index=",i,"is not an element of the underlying field !!!");
+					return fail;
+		fi;
+	od;
+
+# update fields
+	# NOT reversed !!!!
+	scist := ShallowCopy((tist)); 	# without this the original ist outside here was changing too :(
+	x!.init := Immutable(scist);
+	x!.state := scist;
+
+	#### LFSR, NLFSR vs FSRFIL
+	if not IsFSRFIL(x) then 
+		x!.numsteps := 0; ## load doesnt update numsteps for FSRFIL
+			# sequence starts with seq_0, seq_1, ...
+		tap := OutputTap(x);
+		if Length(tap)=1 then
+			seq := ist[Length(x)-tap[1]];
+		else  # this is rare !!! so dont make seq a list if not necessary
+			seq := [];
+			for i in [1.. Length(tap)] do
+		 		seq[i] :=  ist[Length(x)-tap[i]]; # to get the corresponding index
+		 	od;
+		fi;
+	else
+		seq := Zero(F);
+	fi;
+	return seq;	
+end);
+
 
 
 #############################################################################
 ##
-#O  LoadFSR( <lfsr>, <ist> )
+#O  LoadFSR( <lfsr>, <ist> )						fixed for IsFSRFIL
 ##
 ##  almost identical for both
 ##
@@ -126,7 +204,7 @@ local i, F, tap, seq, scist;
 	F := UnderlyingField(x);
 	for i in [1..Length(ist)] do
 		if not (\in(ist[i], F)) then
-			Error( "initial state element at index=",i,"is not an element of the underlying field !!!" );
+	Error("element at index=",i,"is not an element of the underlying field !!!");
 					return fail;
 		fi;
 	od;
@@ -136,34 +214,25 @@ local i, F, tap, seq, scist;
 	scist := ShallowCopy((ist)); 	# without this the original ist outside here was changing too :(
 	x!.init := Immutable(scist);
 	x!.state := scist;
-	x!.numsteps := 0;
 
-## TO DO : UPDATE THE BoolState field for NLFSR
-# not having BoolState for NLFSR anymore !!!
-# which makes it the same for LFSR and NLFSR :)
-## this TO DO = DONE
-
-# sequence starts with seq_0, seq_1, ...
-	tap := OutputTap(x);
-	if Length(tap)=1 then
-	#	Print("Length=",Length(x)," and tap =",tap[1]," and index =",Length(x)-tap[1],"\n");
-		seq := ist[Length(x)-tap[1]];
-	else  # this is rare !!! so dont make seq a list if not necessary
-		seq := [];
-		for i in [1.. Length(tap)] do
-	 		seq[i] :=  ist[Length(x)-tap[i]]; # to get the corresponding index
-	 	od;
+	#### LFSR, NLFSR vs FSRFIL
+	if not IsFSRFIL(x) then 
+		x!.numsteps := 0; ## load doesnt update numsteps for FSRFIL
+			# sequence starts with seq_0, seq_1, ...
+		tap := OutputTap(x);
+		if Length(tap)=1 then
+			seq := ist[Length(x)-tap[1]];
+		else  # this is rare !!! so dont make seq a list if not necessary
+			seq := [];
+			for i in [1.. Length(tap)] do
+		 		seq[i] :=  ist[Length(x)-tap[i]]; # to get the corresponding index
+		 	od;
+		fi;
+	else
+		seq := Zero(F);
 	fi;
-
-	return seq; #must return first output seq_0, but numsteps=0
+	return seq;	
 end);
-
-#############################################################################
-##
-#O  StepFSR( <fsr> , <print>)
-##
-
-
 
 # StepFSR is done for two cases, IsLFSR and IsNLFSR
 # since this is the only one of Load, Step Run functions with the distinction
@@ -172,171 +241,238 @@ end);
 # having a StepFSR(FSR) which would then call StepFSR(LFSR) or StepFSR(NLFSR)
 # also: smaller code in terms of lines of code
 
-
-##this one is more commonly used
-## so whats faster: GAP calling the next menthod with elm = 0
-## or having an almost identical copy of the method (difference is only in the computation of new)
-
-InstallMethod(StepFSR, "one step of FSR", [IsFSR], function(x )
-local fb, st, new, tap,i, seq, n, F, indlist, xlist, slist, idx;
-
+InstallMethod(FeedbackFSR, "compute feedback", [IsFSR], function(x )
+local fb, st, new, F, i, indlist, xlist, slist, idx;
 	if x!.numsteps < 0 then
-		Error( "the LFSR is NOT loaded !!!" );
-				return fail;
+		Error( "the is NOT loaded !!!\n" );
+		return fail;
 	fi;
+
 	F := UnderlyingField(x);
-	n := Length(x);
 	fb := FeedbackVec(x);
 	st := x!.state;
 
-# the step
-
-
+	# feedback computation
 	if IsLFSR(x) then
 		new := fb * st;
-	elif IsNLFSR(x) then
+	else  
 		xlist :=[]; slist :=[];
 		indlist := IndetList(x);
 		for i in [1.. Length(indlist)] do
 			idx := indlist[i];
 			Add(xlist,Indeterminate(F,800+idx));
-			Add(slist,st[Length(x)-idx]); ## because states are DOWNTO !!!
 		od;
-#		Print(xlist,"\n");
-#		Print(slist,"\n");
-
+		if IsNLFSR(x) then 
+			for i in [1.. Length(indlist)] do
+				idx := indlist[i];
+				Add(slist,st[Length(x)-idx]); ## because states are DOWNTO !!!
+			od;	
+		elif IsFSRFIL(x) then 
+			slist := st;
+		fi;		
+			
 		new := Value(MultivarPoly(x), xlist, slist);
-#		Print("new=",new,"\n");
-	else
-		Error("Youre trying to perform StepFSR on something thats neither an LFSR nor NLFSR!!!"); return fail;
 
 	fi;
 
 	if not(\in(new,F)) then
-		Error( "computed feedback is not an element of the underlying field !!!" );		return fail;
+		Error( "computed feedback is not an element of the underlying field !!!");		
+		return fail;
+	else 
+		return new;
 	fi;
-
-
-	RightShiftRowVector(st,1,new);	# NOT reversed !!!!  -> hence right shift to get rid of the lowst one
-	Remove(st, n+1);
-# if we didnt use the downto notation then:
-#	LeftShiftRowVector(st,1);
-#	st[n] := new;
-
-
-
-# sequence starts with seq_0, seq_1, ...
-	tap := OutputTap(x);
-	if Length(tap)=1 then
-		seq := st[n-tap[1]];
-	else  # this is rare !!! so dont make seq a list if not necessary
-		seq := [];
-		for i in [1.. Length(tap)] do
-	 		seq[i] :=  st[n-tap[i]]; # to get the corresponding index
-	 	od;
-	fi;
-
-# update fields
-	x!.state := st;
-	x!.numsteps := x!.numsteps + 1;
-
-	return seq;
 end);
+
+
+
+#############################################################################
+##
+#O  StepFSR			fixed for IsFSRFIL for both regular and nonlin step
+##
+
+
+InstallMethod(StepFSR, "one step of FSR", [IsFSR], function(x )
+local fb, st, new, tap, i, seq, n;
+
+	new := FeedbackFSR(x);	# regular step
+	x!.numsteps := x!.numsteps + 1; #update for all three of em 
+
+	#### LFSR, NLFSR vs FSRFIL
+	if not IsFSRFIL(x) then 
+		# update state
+			n := Length(x);
+			st := x!.state;	
+			RightShiftRowVector(st,1,new);	
+			Remove(st, n+1);
+			x!.state := st;
+						# if we didnt use the downto notation then:
+						#	LeftShiftRowVector(st,1);	st[n] := new;	
+		# sequence starts with seq_0, seq_1, ...
+			tap := OutputTap(x);
+			if Length(tap)=1 then
+				seq := st[n-tap[1]];
+			else  # this is rare !!! so dont make seq a list if not necessary
+				seq := [];
+				for i in [1.. Length(tap)] do
+			 		seq[i] :=  st[n-tap[i]]; # to get the corresponding index
+			 	od;
+			fi;
+		return seq;
+	else 
+		return new; #IsFSRFIL
+	fi;
+	
+end);
+
+
 
 
 
 InstallMethod(StepFSR, "one step of FSR with an external input", [IsFSR, IsFFE],
  function(x, elm)
 local fb, st, new, tap,i, seq, F, n, idx, indlist, slist, xlist;
-	if x!.numsteps < 0 then
-		Error( "the FSR is NOT loaded !!!" );
-		return fail;
-	fi;
-	F := UnderlyingField(x);
-	if not (\in(elm, F)) then
-		Error( "argument ",elm," is not an element of the underlying field !!!" );
-		return fail;
-	fi;
-
-	n := Length(x);
-	fb := FeedbackVec(x);
-	st := x!.state;
-
-# the step
-#	new := (fb * st) + elm;
-
-	if IsLFSR(x) then
-		new := (fb * st) + elm;
-	elif IsNLFSR(x) then
-		xlist :=[]; slist :=[];
-		indlist := IndetList(x);
-		for i in [1.. Length(indlist)] do
-			idx := indlist[i];
-			Add(xlist,Indeterminate(F,800+idx));
-			Add(slist,st[Length(x)-idx]); ## because states are DOWNTO !!!
-		od;
-#		Print(xlist,"\n");
-#		Print(slist,"\n");
-
-		new := Value(MultivarPoly(x), xlist, slist) + elm;
-#		Print("new=",new,"\n");
-	else
-		Error("Youre trying to perform StepFSR on something thats not an FSR!!!");
-    return fail;
-
-	fi;
-
-
-
-	if not(\in(new,F)) then
-		Error( "computed feedback is not an element of the underlying field !!!" );
-    	return fail;
-	fi;
-
-	RightShiftRowVector(st,1,new);	# NOT reversed !!!!  -> hence right shift to get rid of the lowst one
-	Remove(st, n+1);
-
-
-# sequence starts with seq_0, seq_1, ...
-	tap := OutputTap(x);
-	if Length(tap)=1 then
-		seq := st[n-tap[1]];
-	else  # this is rare !!! so dont make seq a list if not necessary
-		seq := [];
-		for i in [1.. Length(tap)] do
-	 		seq[i] :=  st[n-tap[i]]; # to get the corresponding index
-	 	od;
-	fi;
-
-# update fields
-	x!.state := st;
+	
+	new := FeedbackFSR(x) + elm; # nonlinear step
 	x!.numsteps := x!.numsteps + 1;
 
-	return seq;
+	if not IsFSRFIL(x) then 
+		# update state
+		n := Length(x);
+		st := x!.state;	
+		RightShiftRowVector(st,1,new);	# NOT reversed !!!!  
+		Remove(st, n+1);
+		x!.state := st;		
+	# sequence starts with seq_0, seq_1, ...
+		tap := OutputTap(x);
+		n := Length(x);
+		if Length(tap)=1 then
+			seq := st[n-tap[1]];
+		else  # this is rare !!! so dont make seq a list if not necessary
+			seq := [];
+			for i in [1.. Length(tap)] do
+		 		seq[i] :=  st[n-tap[i]]; # to get the corresponding index
+		 	od;
+		fi;
+		return seq;
+	else 
+		return new;		#IsFSRFIL 
+	fi;	
+	
 end);
 
 
 
 
 #############################################################################
-##
+##     StepFSRFIL one step at a time !!!!
+
+InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
+[IsFSRFIL, IsFFECollection, IsBool],
+ function(x, ist,  pr)
+local  i,  seq,  B ;
+
+# load FSR
+	LoadFSR(x,ist); # the seq_0 element
+# start run
+	seq := StepFSR(x);
+# print 
+	if pr then
+		B := x!.basis;
+		Print("using basis B := ",BasisVectors(B),"\t\n");
+		Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t");  # NOT reversed !!!!
+		Print("\t\t", IntFFExt(B,seq) , "\n");
+	fi;	
+
+	return seq;
+end);
+
+InstallMethod(StepFSRFIL, " nonlinear run FSRFIL = load + 1step", 
+[IsFSRFIL, IsFFECollection, IsFFE, IsBool],
+ function(x,  ist, elm, pr)
+local  i,  seq,  B;
+
+# load FSR
+	LoadFSR(x,ist); # the seq_0 element
+# start run
+	seq := StepFSR(x, elm);
+# print 
+	if pr then
+		B := x!.basis;
+		Print("using basis B := ",BasisVectors(B),"\t\n");
+		Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t"); # NOT reversed !!!!
+		Print("\t\t", IntFFExt(B,seq) , "\n");
+	fi;	
+
+	return seq;
+end);
 
 
+InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
+[IsFSRFIL, IsFFECollection],
+ function(x, ist);
+	return StepFSRFIL(x, ist, false);
+end);
+ 
+InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
+[IsFSRFIL, IsFFECollection, IsFFE],
+ function(x, ist, elm);
+	return StepFSRFIL(x, ist, elm, false);
+end);
+
+
+InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
+[IsFSRFIL, IsFFE, IsBool],
+ function(x, ist,  pr)
+return StepFSRFIL(x, [ist], pr);
+end);
+
+
+
+InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
+[IsFSRFIL, IsFFE],
+ function(x, ist)
+return StepFSRFIL(x, [ist], false);
+end);
+
+
+InstallMethod(StepFSRFIL, " nonlinear run FSRFIL = load + 1step", 
+[IsFSRFIL, IsFFE, IsFFE, IsBool],
+ function(x,  ist, elm, pr)
+
+return StepFSRFIL(x, [ist], elm, pr);
+end);
+
+InstallMethod(StepFSRFIL, " nonlinear run FSRFIL = load + 1step", 
+[IsFSRFIL, IsFFE, IsFFE],
+ function(x,  ist, elm)
+
+return StepFSRFIL(x, [ist], elm, false);
+end);
+
+
+
+
+
+
+#############################################################################
 
 # Ib. run for num steps with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt, IsBool], function(x, num, pr)
 local seq, sequence, nrsteps, treshold, i, B;
+	if IsFSRFIL(x) then 
+		Error("Must provide input values for the indeterminates!!!\n");
+		return;
+	fi;
 
 
 # check num
-		treshold := Threshold(x);
-
+	treshold := Threshold(x);
 	if num > treshold then
-		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
+		Print("over the threshold, will only output the first ",treshold);
+		Print(" elements of the sequence\n");
 		nrsteps := treshold;
 	else 	nrsteps := num;
 	fi;
-
 
 #start run
 	sequence := [];
@@ -348,9 +484,8 @@ local seq, sequence, nrsteps, treshold, i, B;
 
 #print on every step
 		if pr  then
-
-			Print("\t\t", IntVecFFExt(B, x!.state));  				# NOT reversed !!!!
-			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
+			Print("\t\t", IntVecFFExt(B, x!.state));  		# NOT reversed !!!!
+			if   Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
 			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
 			fi;
 		fi;
@@ -384,36 +519,21 @@ InstallMethod(RunFSR, "run FSR", [IsFSR], function(x)
 end);
 
 
-# PRIMARY METHOD FOR ALL PRACTICAL PURPOSES: because otherwise u need to handle the seq_0 elm urself
+ 
+# PRIMARY METHOD FOR ALL PRACTICAL PURPOSES: 
+# because otherwise u need to handle the seq_0 elm urself
 # load with <ist> then call   RunFSR( FSR, num-1 , pr)
 # Vb. load new initial state then run for num-1 steps with/without print to shell
 
 
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsPosInt, IsBool],
- function(x,ist, num, pr)
-local  i, sequence,treshold , seq, taps, B, nrsteps, m;
-
-		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
-		else m:= 1;
-		fi;
-
-# check num
-		treshold := Threshold(x);
-	if num > treshold then
-		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
-		nrsteps := treshold;
-	else 	nrsteps := num;
-	fi;
-
-# load FSR
-	seq := LoadFSR(x,ist); # the seq_0 element
-# print header, init state and seq_0
-
-	if pr then
-			B := x!.basis;
+InstallMethod(PrintHeaderRunFSR, "print header for run FSR", [IsFSR, IsFFE, IsPosInt],
+ function(x, seq, m)
+local  i, taps, B, nrsteps;
+		B := x!.basis;
 		Print("using basis B := ",BasisVectors(B),"\t\n");
-
 		Print("elm");
+
+	if not IsFSRFIL(x) then
 		for i in [1..m] do Print("\t"); od;
 		Print( "[ ",Length(x)-1,",");
 		for i in [2.. Length(x)-1] do
@@ -426,16 +546,141 @@ local  i, sequence,treshold , seq, taps, B, nrsteps, m;
 		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
 		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
 		fi;
+	else 
+		for i in [1..m] do Print("\t"); od;
+		Print("input");
+		for i in [2.. Length(x)-1] do
+			Print("\t...");
+		od;	
+		Print("\t\t");
+		Print( " with output   \n");			
+	
 	fi;
+	
+return;
+end);
+
+InstallMethod(PrintHeaderRunFSR, "print header for run FSR", [IsFSR, IsFFE, IsFFE, IsPosInt],
+ function(x, elm, seq, m)
+local  i, taps, B, nrsteps;
+		B := x!.basis;
+		Print("using basis B := ",BasisVectors(B),"\t\n");
+		Print("elm");
+
+	if not IsFSRFIL(x) then
+		for i in [1..m] do Print("\t"); od;
+		Print( "[ ",Length(x)-1,",");
+		for i in [2.. Length(x)-1] do
+			Print("\t...");
+		od;
+		Print(",0 ]");
+		Print( "  with taps  ",OutputTap(x),"\n");
+		Print(IntFFExt(B,elm));
+		Print("\t\t", (IntVecFFExt(B,x!.state)));  				# NOT reversed !!!!
+		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
+		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
+		fi;
+	else 
+		for i in [1..m] do Print("\t"); od;
+		Print("input");
+		for i in [2.. Length(x)-1] do
+			Print("\t...");
+		od;	
+		Print("\t\t");
+		Print( " with output   \n");			
+	
+	fi;
+	
+return;
+end);
+
+
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsPosInt, IsBool],
+ function(x,ist, num, pr)
+local  i, sequence,treshold , seq, taps, B, nrsteps, m;
+	sequence :=[];
+	if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
+	else m:= 1;
+	fi;
+	
+	if not IsFSRFIL(x) then 
+# check num
+		treshold := Threshold(x);
+		if num > treshold then
+			Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
+			nrsteps := treshold;
+		else 	nrsteps := num;
+		fi;
+
+# load FSR
+
+		seq := LoadFSR(x,ist); # the seq_0 element
+
 # start run
-	sequence := RunFSR(x, 	nrsteps, pr);
-	Add(sequence,seq,1);	# seq_0 at the beginning
+
+	# print header, init state and seq_0
+		if pr then
+			PrintHeaderRunFSR(x, seq, m);
+		fi;
+		sequence := RunFSR(x, nrsteps, pr);
+		Add(sequence,seq,1);	# seq_0 at the beginning
+	else # FSRFIL 
+		if pr then
+			PrintHeaderRunFSR(x, One(UnderlyingField(x)), m);
+		fi;
+
+		for i in [1.. Length(ist)] do 
+			seq := StepFSRFIL(x, ist[i]);
+			Add(sequence, seq);
+		od;
+	fi;
 
 	return sequence;
 end);
 
 
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollColl, IsPosInt, IsBool],
+ function(x,ist, num, pr)
+local  i, sequence,treshold , seq, taps, B, nrsteps, m;
+	sequence :=[];
+	if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
+	else m:= 1;
+	fi;
+	
+	if not IsFSRFIL(x) then 
+# check num
+		treshold := Threshold(x);
+		if num > treshold then
+			Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
+			nrsteps := treshold;
+		else 	nrsteps := num;
+		fi;
 
+# load FSR
+
+		seq := LoadFSR(x,ist); # the seq_0 element
+
+# start run
+
+	# print header, init state and seq_0
+		if pr then
+			PrintHeaderRunFSR(x, seq, m);
+		fi;
+		sequence := RunFSR(x, nrsteps, pr);
+		Add(sequence,seq,1);	# seq_0 at the beginning
+	else # FSRFIL 
+		if pr then
+			PrintHeaderRunFSR(x, One(UnderlyingField(x)), m);
+		fi;
+
+		for i in [1.. Length(ist)] do 
+			seq := StepFSRFIL(x, ist[i]);
+			Add(sequence, seq);
+		od;
+	fi;
+
+	return sequence;
+end);
 
 # VI. load new initial state then run for num-1 steps without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR,IsFFECollection, IsPosInt],
@@ -443,18 +688,45 @@ function(x, ist, num)
 	return RunFSR(x, ist, num, false);
 end);
 
+InstallMethod(RunFSR, "run FSR", [IsFSR,IsFFECollColl, IsPosInt],
+function(x, ist, num)
+	return RunFSR(x, ist, num, false);
+end);
+
+
 # VIIb. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsBool],
 function(x, ist , pr)
-	return RunFSR(x, ist, Threshold(x)   , pr);
+	if IsFSRFIL(x) then 
+		RunFSR(x, ist, 1  , pr);
+	else 
+		return RunFSR(x, ist, Threshold(x)   , pr);
+	fi;
 end);
-
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollColl, IsBool],
+function(x, ist , pr)
+	if IsFSRFIL(x) then 
+		RunFSR(x, ist, 1  , pr);
+	else 
+		return RunFSR(x, ist, Threshold(x)   , pr);
+	fi;
+end);
 
 # VII. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection], function(x, ist )
-	return RunFSR(x,  ist, Threshold(x),  false);
+	if IsFSRFIL(x) then 
+		return RunFSR(x, ist, 1   , false);
+	else 
+		return RunFSR(x, ist, Threshold(x)   , false);
+	fi;
 end);
-
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollColl], function(x, ist )
+	if IsFSRFIL(x) then 
+		return RunFSR(x, ist, 1   , false);
+	else 
+		return RunFSR(x, ist, Threshold(x)   , false);
+	fi;
+end);
 
 
 # NONLINEAR STEP
@@ -463,10 +735,11 @@ end);
 # VIIIb. run for num steps with the same nonlinear input on each step and with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt, IsBool],
  function(x, elm, num, pr)
-local seq, sequence, nrsteps, treshold, i, B,m ;
-#		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
-#		else m:= 1;
-#		fi;
+local seq, sequence, nrsteps, treshold, i, B;
+	if IsFSRFIL(x) then 
+		Error("Can only do one step at a time!!!\n");
+		return;
+	fi;
 # check num
 		treshold := Threshold(x);
 	if num > treshold then
@@ -523,38 +796,19 @@ InstallMethod(RunFSR, "run FSR",
 [IsFSR,  IsFFECollection, IsFFECollection, IsBool],
 function(x,  ist, elmvec, pr)
 local  sequence,  treshold, num, nrsteps, seq , seq0, i, B, m;
-
+	if IsFSRFIL(x) then
+		if Length(ist) <> Length(elmvec) then  
+			Error("use two lists of same lengrth !!!\n");
+			return;
+		fi;
+	fi;
+	if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
+	else m:= 1;
+	fi;	
+			B := x!.basis;
+ if not IsFSRFIL(x) then 
 # load FSR
 	seq0 := LoadFSR(x,ist); # the seq_0 element
-	if pr then
-			B := x!.basis;
-		Print("using basis B := ",BasisVectors(B),"\t\n");
-	fi;
-		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
-		else m:= 1;
-		fi;
-
-# print header, init state and seq_0
-	if pr then
-
-
-
-		Print("elm");
-		for i in [1..m] do Print("\t"); od;
-		Print( "[ ",Length(x)-1,",");
-		for i in [2.. Length(x)-1] do
-			Print("\t...");
-		od;
-		Print(",0 ]");
-		Print( "  with taps  ",OutputTap(x),"\n");
-		Print(IntFFExt(B,Zero(UnderlyingField(x))),"\t\t");
-		Print((IntVecFFExt(B,x!.state)));  				# NOT reversed !!!!
-		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq0) , "\n");
-		else  Print("\t\t",  IntVecFFExt(B,seq0) , "\n");
-		fi;
-	fi;
-
-
 	treshold := Threshold(x);
 	num := Length(elmvec);
 	if num > treshold then
@@ -562,24 +816,40 @@ local  sequence,  treshold, num, nrsteps, seq , seq0, i, B, m;
 		nrsteps := treshold;
 	else 	nrsteps := num;
 	fi;
+	
+# print header, init state and seq_0
+
 #start run
-	sequence := [];
-	for i in [1.. nrsteps] do
-		seq := StepFSR(x,elmvec[i]);
-		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
-#print on every step
-		if pr then
-			Print(IntFFExt(B,elmvec[i]),"\t\t");  				# NOT reversed !!!!
-			Print(IntVecFFExt(B,x!.state));  				# NOT reversed !!!!
-			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
-			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+		# print header, init state and seq_0
+			if pr then
+				PrintHeaderRunFSR(x,Zero(UnderlyingField(x)), seq0, m);
 			fi;
-		fi;
-	od;
+sequence := [];
+	for i in [1.. nrsteps] do
+			seq := StepFSR(x,elmvec[i]);
+			Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
+#print on every step
+			if pr then
+				Print(IntFFExt(B,elmvec[i]),"\t\t");  				# NOT reversed !!!!
+				Print(IntVecFFExt(B,x!.state));  				# NOT reversed !!!!
+				if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
+				else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+				fi;
+			fi;
+		od;
+		Add(sequence,seq0,1);	# seq_0 at the beginning
+	else # FSRFIL 
+			if pr then
+				PrintHeaderRunFSR(x, One(UnderlyingField(x)), m);
+			fi;
+			sequence :=[];
+			for i in [1.. Length(ist)] do 
+				seq := StepFSRFIL(x, ist[i]);
+				Add(sequence, seq);
+			od;
+	fi;
 
 
-
-	Add(sequence,seq0,1);	# seq_0 at the beginning
 	return sequence;
 end);
 
@@ -596,6 +866,11 @@ end);
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsFFECollection, IsBool],
  function(x, z, elmvec, pr)
 local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
+	if IsFSRFIL(x) then 
+		Error("use RunFSR with two sequences!!!\n");
+		return;
+	fi;
+
 
 		if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
 		else m:= 1;

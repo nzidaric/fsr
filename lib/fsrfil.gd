@@ -1,12 +1,12 @@
 #############################################################################
 ##
-#W  nlfsr.gd                   GAP Package                   nusa zidaric
+#W  fsrfil.gd                   GAP Package                   nusa zidaric
 ##
 ##
 
 
 
-###to do mpoly constructors
+
 
 #############################################################################
 ##
@@ -14,31 +14,27 @@
 ##. . . .  create an LFSR object 	# len 4
 #F  NLFSR( <K>, <fieldpol>,  <clist>, <mlist> , <len> ) 
 ## . . . .  create an LFSR object 	# len 5
-#F  NLFSR( <K>, <clist>, <mlist> , <len> , <tap>) 
-## . . . .  create an LFSR object 	# len 5
-#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len>, <tap> )  
-##. . . .  create an LFSR object 	# len 6
 ##
-##  <#GAPDoc Label="NLFSR">
+##  <#GAPDoc Label="FSRFIL">
 ##  <ManSection>
-##  <Func Name="NLFSR" Arg='K, clist , mlist, len[, tap]' />
-##  <Func Name="NLFSR" Arg='K, fieldpoly, clist , mlist, len[, tap]' 
+##  <Func Name="FSRFIL" Arg='F, clist , mlist, len' />
+##  <Func Name="FSRFIL" Arg='F, fieldpoly, clist , mlist, len' 
 ##  Label="with field defining polynomial"/>
 ##  <Returns>
-##  An empty <C>NLFSR</C>  with components <C>init</C>, <C>state</C>,
-##   <C>numsteps</C> and <C>basis</C>.
+##  An empty <C>FSRFIL</C>  with components <C>init</C>, <C>state</C>,
+##   <C>numsteps</C> and <C>basis</C>. 
 ##  </Returns>	
 ##  <Description>
-##  Function NLFSR provides different ways to create an <C>NLFSR</C> object;   
-##  the main difference is in the
-##  construction of the underlying finite field. The <C>NLFSR</C> is uniquely 
+##  Function FSRFIL provides two ways to create an <C>FSRFIL</C> object;    
+##  they differ in the way the underlying finite field is constructed.
+##  The <C>FSRFIL</C> is uniquely 
 ##  described with a a multivariate polynomial, which is given by two lists: 
 ##  a list of monomials <A>mlist</A>, and a list of their corresponding 
-##  coefficients <A>clist</A>. Both of lists must always be provided (the 
-##  creation of a random NLFSR is currently not implemented). <P/>    
-##  NOTE: before creating the <C>NLFSR</C>, we must always create the
+##  coefficients <A>clist</A>, just as is requiered by the 
+##  <Ref Func="NLFSR" /> function. <P/>    
+##  NOTE: before creating the <C>FSRFIL</C>, we must always create the
 ##  indeterminates to be used for the feedback using <Ref Func="ChooseField" /> 
-##  function call! Please see the example below.
+##  function call!
 ##  <P/>
 ##  Inputs:
 ##  <List>
@@ -49,23 +45,16 @@
 ##  <Item> <A>clist</A> - the list of coefficients for the monomials in 
 ##  <A>mlist</A>. </Item>
 ##  <Item> <A>mlist</A> - the list of monomials.  </Item>
-##  <Item> <A>len</A> - the length of <C>NLFSR</C>. The <E>range</E> of the 
-##  <C>NLFSR</C> is <M>[0, len -1]</M>.</Item>
-##  <Item> <A>tap</A> - an optional parameter: the output tap (a positive
-##   integer or a list of positive integers), which will be changed to the  
-##  default S_0 if the specified integer(s) fall out of <C>NLFSR</C> range.
 ##  </Item>
 ##  </List>
 ##  NOTE: the lists <A>clist</A> and <A>mlist</A> must be of same length, and 
 ##  all elements 
-##  in <A>clist</A> must belong to the underlying field. Monomials in 
-##  <A>mlist</A> must not include any indeterminates that are out of range 
-##  specified by <A>len</A>: stages of <C>NLFSR</C> are represented by 
-##  indeterminants and the feedback is not allowed to use a stage that doesnt 
-##  exist. A second constraint on <A>mlist</A> requires that it must contain at
-##  least one monomial of degree <M>>1</M>, otherwise we must create an 
-##  <C>LFSR</C>. <P/> 
-##  Compoents:
+##  in <A>clist</A> must belong to the underlying field. Indetermincates in  
+##  <A>mlist</A> define the length of components <C>init</C> and <C>state</C>. 
+##  <P/> 
+##  Compoents: because of similarities between with the <C>NLFSR</C>, it is 
+##  convenient to be able to reuse the allready existing functions. Hence, the  
+##  <C>FSRFIL</C> is a member of the FSRFamily
 ##  <List>
 ##  <Item> <C>init</C> - <A>FFE</A> vector of length 
 ##  <M>n=</M>Degree(<A>feedbackpoly</A>), 
@@ -121,7 +110,7 @@
 
 
 
-DeclareGlobalFunction( "NLFSR" );
+DeclareGlobalFunction( "FSRFIL" );
 
 
 
@@ -130,43 +119,47 @@ DeclareGlobalFunction( "NLFSR" );
 
 #############################################################################
 ##
-#P  IsNonLinearFeedback( <nlfsr> )
-#F  IsNLFSR( <nlfsr> )
+#P  IsFSRFilter( <fsrfil> )
+#F  IsFSRFIL( <fsrfil> )
 ##
-##  <#GAPDoc Label="IsNonLinearFeedback">
+##  <#GAPDoc Label="IsFSRFilter">
 ##  <ManSection>
-##  <Prop Name="IsNonLinearFeedback" Arg='nlfsr'/>
-##  <Filt Name="IsNLFSR" Arg='nlfsr' />
+##  <Prop Name="IsFSRFilter" Arg='fsrfil'/>
+##  <Filt Name="IsFSRFIL" Arg='fsrfil' />
 ##
 ##  <Description>
-##  For the multivariate polynomial given by <A>clist</A>  and <A>mlist</A>, 
-##  <Ref Meth="DegreeOfPolynomial" /> greter than 1 sets 
-##  <C>IsNonLinearFeedback</C> to 
-##  <E>true</E>. This property is set during the creation of the <C>NLFSR</C> 
-##  using <Ref Func="NLFSR" />, which will print an error message instructing 
-##  to use the <Ref Func="LFSR" /> constructor instead. 
+##  <C>IsFSRFilter</C> is set to <E>true</E> at the creation time of the 
+##  <C>FSRFIL</C>, and at the same time, properties <C>IsLinearFeedback</C> and 
+##  <C>IsNonLinearFeedback</C> are set to <E>false</E> to differentiate the 
+##  FSRFIL from LFSR and NLFSR. The filter <C>IsFSRFIL</C> is defined as 
+##  and-filter of <C>IsFSR</C> and <C>IsFSRFilter</C>.
 ##  <P/>
-##  The filter <C>IsNLFSR</C> is defined as and-filter of <C>IsFSR</C>  and 
-##  <C>IsNonLinearFeedback</C>. 
+##  For the multivariate polynomial given by <A>clist</A>  and <A>mlist</A>, 
+##  the <Ref Meth="DegreeOfPolynomial" /> sets the values for  
+##  <C>IsNonLinearFSRFilter</C> and <C>IsLinearFSRFilter</C>   
 ##  <P/>
 ##  </Description>
 ##  </ManSection>
 ##  <#/GAPDoc>
 ##
-#DeclareProperty( "IsNonLinearFeedback", IsFSR );
-#DeclareSynonym( "IsNLFSR", IsFSR and IsNonLinearFeedback);
+ 
+
+
+
+DeclareProperty( "IsLinearFSRFilter", IsFSRFIL);
+DeclareProperty( "IsNonLinearFSRFilter", IsFSRFIL );
 
 #############################################################################
 ##
-#A  MultivarPoly( <nlfsr> )
-#A  MonomialList(<nlfsr>)
-#A  IndetList( <nlfsr> )
+#A  MultivarPoly( <fsrfil> )
+#A  MonomialList(<fsrfil>)
+#A  IndetList( <fsrfil> )
 ##
 ##  <#GAPDoc Label="MultivarPoly">
 ##  <ManSection>
-##  <Attr Name="MultivarPoly" Arg='nlfsr' />
-##  <Attr Name="MonomialList" Arg='nlfsr' />
-##  <Attr Name="IndetList" Arg='nlfsr' />
+##  <Attr Name="MultivarPoly" Arg='fsrfil' />
+##  <Attr Name="MonomialList" Arg='fsrfil' />
+##  <Attr Name="IndetList" Arg='fsrfil' />
 ##  <Description>
 ##  <C>MultivarPoly</C> holds the multivariate function defining 
 ##  the feedback of the <C>NLFSR</C>. <P/>
@@ -197,9 +190,9 @@ DeclareGlobalFunction( "NLFSR" );
 ##  </ManSection>
 ##  <#/GAPDoc>
 ##
-DeclareAttribute( "MultivarPoly", IsNLFSR );
-DeclareAttribute( "MonomialList", IsNLFSR );
-DeclareAttribute( "IndetList", IsNLFSR );
+DeclareAttribute( "MultivarPoly", IsFSRFIL );
+DeclareAttribute( "MonomialList", IsFSRFIL );
+DeclareAttribute( "IndetList", IsFSRFIL );
 
 
 
@@ -207,11 +200,11 @@ DeclareAttribute( "IndetList", IsNLFSR );
 
 #############################################################################
 ##
-#M  ConstTermOfNLFSR( <nlfsr> )
+#M  ConstTermOfNLFSR( <fsrfil> )
 ##
 ##  <#GAPDoc Label="ConstTermOfNLFSR">
 ##  <ManSection>
-##  <Meth Name="ConstTermOfNLFSR" Arg='nlfsr' />
+##  <Meth Name="ConstTermOfNLFSR" Arg='fsrfil' />
 ##
 ##  <Description>
 ##  Returns the constant term of the multivariate polynomial defining the 
@@ -236,6 +229,6 @@ DeclareAttribute( "IndetList", IsNLFSR );
 ##  </ManSection>
 ##  <#/GAPDoc>
 
-DeclareOperation( "ConstTermOfNLFSR",  [IsNLFSR]);
+DeclareOperation( "ConstTermOfFSRFIL",  [IsFSRFIL]);
 
-Print("nlfsr.gd OK,\t");
+Print("fsrfil.gd OK,\t");

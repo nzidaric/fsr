@@ -713,7 +713,7 @@ local ffe, i, j,mof, idx, pwr, m, exp;
 		fi;
 	od;
 
- 	mof := MonomialsOverField(F, mlist);
+ 	mof := ReduceMonomialsOverField(F, mlist);
 	# multpol := clist * mof;
 
 AppendTo(output,  "$");

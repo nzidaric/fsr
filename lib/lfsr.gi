@@ -6,8 +6,10 @@
 
 
 
+
 #############################################################################
 ##
+#F  LFSR( <F> )  . . . . . . . . . .  create an LFSR object 	# len 1 B
 #F  LFSR( <F>, <feedbackpol> )  . . . . . . . . . .  create an LFSR object 	# len 2 B
 #F  LFSR( <F>, <feedbackpol>, <B> )  . . . . . . . . . .  create an LFSR object 	# len 3 B
 #F  LFSR( <K>, <fieldpol>, <feedbackpol>)					# len 3 B
@@ -23,20 +25,21 @@
 InstallGlobalFunction( LFSR,  function(arg)
 
 local K, F, feedbackpol, fieldpol, p, m, n, tap,y,	# for args
-    fam, fb, st, coefs, lfsr, d, i, basis, B;		# for constructor
+    fam, fb, st, coefs, lfsr, d, i,  B, lin;		# for constructor
 
 # figure out which constructor is being used
 # 2 input constructors 
+
 if Length(arg)=2 and IsUnivariatePolynomial( arg[2]) then  
  	if  IsPrimeField(arg[1])  then				
  		#F  LFSR( <K>, <feedbackpol> )				#correct functionality :) 
-		K := arg[1]; F := arg[1]; fieldpol := 1; feedbackpol := arg[2]; tap := [0]; B := CanonicalBasis(F);
+		K := arg[1]; F := arg[1]; fieldpol := 1; feedbackpol := arg[2];
 	elif IsField(arg[1]) then  		
 		#F  LFSR( <F>, <feedbackpol>) 
-		F := arg[1]; K := PrimeField(F); fieldpol := DefiningPolynomial(F); feedbackpol := arg[2]; 
-		tap := [0]; B := CanonicalBasis(F);
+		F := arg[1]; K := PrimeField(F); fieldpol := DefiningPolynomial(F); 
 	else Error("check the args!!!"); # we dont allow anything thats not a field here
 	fi;
+	feedbackpol := arg[2]; tap := [0]; B := CanonicalBasis(F); 	
 # 3 input constructors 	
 elif  Length(arg)=3 then 
 # problem with no-method found error on IsPrimeInt(GF(2)) and on IsPrimeField(2)!!!
@@ -214,29 +217,34 @@ elif  Length(arg)=5 then
 # whatever input constructors - undefined
 else Error("check the args!!!"); 		return fail;
 fi;
-
 #feedback and state
+	lin := IsUnivariatePolynomial(feedbackpol);
 	coefs := CoefficientsOfUnivariatePolynomial(feedbackpol);  
 	coefs := TrimLeadCoeff(coefs);
 	fb := Reversed(coefs);						# reversed !!!! 
-	st := 0 * fb; 
+	st := 0 * fb;
+	 
 	
 # length  and tap
 	d := Degree(feedbackpol);
 	for i in [1.. Length(tap)] do 
-		if (tap[i]<0 or tap[i]>d) then 
+		if (tap[i]<0 or tap[i]>=d) then 
 			Print("argument tap[",i,"]=",tap[i]," is out of range 0..",d-1,", or not given => im taking S_0 instead!\n");
 			tap[i] := 0;
 		fi;
 	od;	
 # new LFSR :) 
 	fam :=FSRFamily(Characteristic(K));
-	lfsr := Objectify(NewType(fam, IsLFSRRep),   rec(init:=st, state:= st, numsteps := -1, basis := B));
+	lfsr := Objectify(NewType(fam, IsFSRRep),   rec(init:=st, state:= st, numsteps := -1, basis := B));
+
+
 
 	SetFieldPoly(lfsr,fieldpol);
 	SetUnderlyingField(lfsr,F);
 	SetFeedbackPoly(lfsr,feedbackpol);  
-	SetIsLinearFeedback(lfsr,IsUnivariatePolynomial(feedbackpol));  
+	SetIsLinearFeedback(lfsr, lin);  
+	SetIsNonLinearFeedback(lfsr, not lin);  
+	SetIsFSRFilter(lfsr, false);  
 	SetFeedbackVec(lfsr,fb);    
 	SetLength(lfsr,d); 
 	SetOutputTap(lfsr,tap); # this is S_tap or default S_0

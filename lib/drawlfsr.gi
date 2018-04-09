@@ -20,7 +20,7 @@ local  n, nzt, i, len;
 SetPrintFormattingStatus(output, false);
 	if (IsLFSR(x)) then
 		n := Length(x);
-		nzt := IdxNonzeroCoeffs2(FeedbackVec(x)); #nonzerotaps
+		nzt := IdxNonzeroCoeffs(FeedbackVec(x)); #nonzerotaps
 		len := Length(nzt);
 	#	Print(nzt);
 
@@ -89,7 +89,7 @@ end);
 
 
 
-InstallGlobalFunction( TikzNSimple_LFSR, function(output, x)
+InstallGlobalFunction( TikzNSimple_LFSR, function(output, x, strGen, gen)
 local  n, nzt, i, len;
 
 # [IsOutputStream,IsLFSR,IsFFECollection, IsPosInt]
@@ -99,7 +99,7 @@ if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	if (IsLFSR(x)) then
 		n := Length(x);
-		nzt := IdxNonzeroCoeffs2(FeedbackVec(x)); #nonzerotaps
+		nzt := IdxNonzeroCoeffs(FeedbackVec(x)); #nonzerotaps
 		len := Length(nzt);
 	#	Print(nzt);
 
@@ -177,7 +177,7 @@ if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	if (IsLFSR(x)) then
 		n := Length(x);
-		nzt := IdxNonzeroCoeffs2(FeedbackVec(x)); #nonzerotaps
+		nzt := IdxNonzeroCoeffs(FeedbackVec(x)); #nonzerotaps
 		len := Length(nzt);
 	#	Print(nzt);
 
@@ -250,7 +250,7 @@ if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	if (IsLFSR(x)) then
 		n := Length(x);
-		nzt := IdxNonzeroCoeffs2(FeedbackVec(x)); #nonzerotaps
+		nzt := IdxNonzeroCoeffs(FeedbackVec(x)); #nonzerotaps
 		len := Length(nzt);
 	#	Print(nzt);
 
@@ -321,7 +321,7 @@ if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	if (IsLFSR(x)) then
 		n := Length(x);
-		nzt := IdxNonzeroCoeffs2(FeedbackVec(x)); #nonzerotaps
+		nzt := IdxNonzeroCoeffs(FeedbackVec(x)); #nonzerotaps
 		simple := []; complex := [];
 		len := Length(nzt);
 		for i in [1..len-1] do # last tap doesnt count here
@@ -477,7 +477,7 @@ if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	if (IsLFSR(x)) then
 		n := Length(x);
-		nzt := IdxNonzeroCoeffs2(FeedbackVec(x)); #nonzerotaps
+		nzt := IdxNonzeroCoeffs(FeedbackVec(x)); #nonzerotaps
 		simple := []; complex := [];
 		len := Length(nzt);
 		for i in [1..len-1] do # last tap doesnt count here
@@ -606,7 +606,7 @@ if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	if (IsLFSR(x)) then
 		n := Length(x);
-		nzt := IdxNonzeroCoeffs2(FeedbackVec(x)); #nonzerotaps
+		nzt := IdxNonzeroCoeffs(FeedbackVec(x)); #nonzerotaps
 		simple := []; complex := [];
 		len := Length(nzt);
 		for i in [1..len-1] do # last tap doesnt count here
@@ -740,7 +740,7 @@ if (IsOutputStream( output )) then
 SetPrintFormattingStatus(output, false);
 	if (IsLFSR(x)) then
 		n := Length(x);
-		nzt := IdxNonzeroCoeffs2(FeedbackVec(x)); #nonzerotaps
+		nzt := IdxNonzeroCoeffs(FeedbackVec(x)); #nonzerotaps
 		simple := []; complex := [];
 		len := Length(nzt);
 		for i in [1..len-1] do # last tap doesnt count here

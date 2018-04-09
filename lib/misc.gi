@@ -22,11 +22,11 @@ InstallGlobalFunction( ChooseField, function( F )
 
 	if(IsField(F)) then
 		x := X(F, "x");
-		MaxNLFSRLen := 100;
-		MaxNrOfPresentMonomials := 100;
+		MaxNLFSRLen := 200;
+		MaxNrOfPresentMonomials := 200;
 		if not IsBoundGlobal("MaxNLFSRLen") then
-			BindGlobal("MaxNLFSRLen" , 100);
-			BindGlobal("MaxNrOfPresentMonomials" , 100);
+			BindGlobal("MaxNLFSRLen" , 200);
+			BindGlobal("MaxNrOfPresentMonomials" , 200);
 			MakeReadWriteGlobal("MaxNLFSRLen");
 			MakeReadWriteGlobal("MaxNrOfPresentMonomials");
 		fi;
@@ -49,7 +49,7 @@ InstallGlobalFunction( ChooseField, function( F )
 		if not IsBoundGlobal("xlist") then
 			BindGlobal("xlist" , xlist);
 		fi;
-		Print("You can now create an NLFSR with up to ", MaxNLFSRLen ," stages\n");
+	Print("You can now create an NLFSR with up to ", MaxNLFSRLen ," stages\n");
 		Print("with up to  ", MaxNrOfPresentMonomials ," nonzero terms\n");
 	else
 	    Error("F is not a field !!!! \n");
@@ -80,42 +80,17 @@ return trimmed;
 end);
 
 
-#InstallMethod( IdxNonzeroCoeffs, "Indeces of nonzero coefficients off the list",  [IsFFECollection and IsRowVector], function(coefs)
-## doesnt work coz coefs not mutable !!!!
-#local t, tlist,len , c;
 
-#len := Length(coefs)+1;
-#tlist := [];
-#t := PositionNonZero(coefs);
-#if (t < len) then
-#	Add(tlist,t);
-#	coefs[t] := 0*Z(2); # doesnt work coz coefs not mutable !!!!
-#fi;
-
-#while (t < len) do
-#	t := PositionNonZero(coefs);
-#	if (t < len) then
-#		Add(tlist,t);
-#		coefs[t] := 0*Z(2);
-#	fi;
-#od;
-
-
-
-#return tlist;
-#end);
-
-
-
-InstallMethod( IdxNonzeroCoeffs2, "Indeces of nonzero coefficients of the list",
+InstallMethod( IdxNonzeroCoeffs, "Indeces of nonzero coefficients of the list",
   [IsFFECollection and IsRowVector], function(coefs)
 
-local t, tlist, len, i;
+local t, tlist, len, i, K;
 len := Length(coefs);
 tlist := [];
+K := PrimeField(DefaultField(coefs));
 
 for i in [1.. len] do
-	if not (coefs[i] = 0*Z(2)) then
+	if not (coefs[i] = Zero(K)) then
 		Add(tlist,i);
 	fi;
 od;
@@ -125,31 +100,90 @@ end);
 
 InstallMethod( NrNonzeroCoeffs, "Number of nonzero indeces",
 [IsFFECollection and IsRowVector], function(coefs)
-local tlist;
 
-	tlist := IdxNonzeroCoeffs2(coefs);
+return Length(IdxNonzeroCoeffs(coefs));
+end);
 
-return Length(tlist);
+
+
+InstallMethod( LeadingTerm, "leading term with coefficient w.r.t. K",
+[ IsField, IsPolynomial], function(K, mon)
+local lmlist, term , i;
+	lmlist := LeadingMonomial(mon);
+	term := LeadingCoefficient(mon);
+	if (not term in K) then 
+			Error("coefficient ",term," does not belong to field ",K, "!!!\n");
+				return fail;
+	fi;
+
+		for i in [1..Length(lmlist)-1] do
+			if IsOddInt(i) then
+				term := term * Indeterminate(K, lmlist[i])^(lmlist[i+1] );
+			fi;
+		od;
+
+
+return term;
 end);
 
 
 
 
-InstallMethod( MonomialsOverField, "reduce expomnents of monomials",
+InstallMethod( TermOverField, "reduce exponents of leading monomial",
 [IsField, IsPolynomial], function(K, mon)
-local lmlist, term , m, i;
+local cm, lmlist, term , m, i;
+
+
 	lmlist := LeadingMonomial(mon);
 	term := LeadingCoefficient(mon);
+	if (not term in K) then 
+			Error("coefficient ",term," does not belong to field ",K, "!!!\n");
+				return fail;
+	fi;
 #	Print(lmlist,"\n");	Print(term,"\n");
 	if (IsPrimeField(K) and Characteristic(K)=2) then
 		for i in [1..Length(lmlist)] do
 			if IsOddInt(i) then
 				term := term * Indeterminate(K, lmlist[i]);
-#				Print(term,"\t");
+	#			Print(term,"\t");
 				 # in F_2: a^n = a for all n>0
 			fi;
 		od;
-#		Print("\n");
+	#	Print("\n");
+	else
+		m := Size(K)-1;
+		for i in [1..Length(lmlist)-1] do
+			if IsOddInt(i) then
+				term := term * Indeterminate(K, lmlist[i])^(lmlist[i+1] mod m);
+			fi;
+		od;
+	fi;
+
+
+return term;
+end);
+
+InstallMethod( MonomialOverField, "reduce exponents of leading monomial",
+[IsField, IsPolynomial], function(K, mon)
+local cm, lmlist, term , m, i;
+
+
+	lmlist := LeadingMonomial(mon);
+	term := One(K);
+	if (not term in K) then 
+			Error("coefficient ",term," does not belong to field ",K, "!!!\n");
+				return fail;
+	fi;
+#	Print(lmlist,"\n");	Print(term,"\n");
+	if (IsPrimeField(K) and Characteristic(K)=2) then
+		for i in [1..Length(lmlist)] do
+			if IsOddInt(i) then
+				term := term * Indeterminate(K, lmlist[i]);
+	#			Print(term,"\t");
+				 # in F_2: a^n = a for all n>0
+			fi;
+		od;
+	#	Print("\n");
 	else
 		m := Size(K)-1;
 		for i in [1..Length(lmlist)-1] do
@@ -164,35 +198,174 @@ return term;
 end);
 
 
-InstallMethod( MonomialsOverField, "reduce expomnents of monomials",
- [IsField, IsList],  function(K, mon)
+
+InstallMethod( SplitCoeffsAndMonomials, "split to clist and mlist",
+[ IsField, IsPolynomial], function(K, poly)
+local clist, mlist, i, condition, term, cf;
+	clist := [];
+	mlist := [];
+	i := 0;
+#	condition := (not poly in K);
+#	condition := IsPolynomial(poly);
+#	condition := not IsFFE(poly);
+	condition := not IsConstantRationalFunction(poly);
+#	Print(poly,"-> ",condition,":\t");
+#	Display(KnownTruePropertiesOfObject(poly));
+#	Display(KnownAttributesOfObject(poly));
+
+	while (condition) do
+	
+		term := LeadingTerm(K, poly);
+#		Print(i," -> ",term,"\n");
+		cf := LeadingCoefficient(poly);
+		if (not cf in K) then 
+			Error("coefficient ",cf," does not belong to field ",K, "!!!\n");
+				return fail;
+		fi;
+
+		Add(clist, cf);
+		Add(mlist, term*Inverse(cf)); # cant be 0 :)
+		poly := poly - term;
+		i := i+1;
+#		condition := (not poly in K);
+#	condition := IsPolynomial(poly);
+#	condition := not IsFFE(poly);
+	condition := not IsConstantRationalFunction(poly);
+#		Print(poly,"-> ",condition,":\t");
+#		Display(KnownTruePropertiesOfObject(poly));
+#		Display(KnownAttributesOfObject(poly));
+	od;
+	
+	if not IsZero(poly) then # original poly had a constant term 
+		Add(clist, LeadingCoefficient(poly));
+		Add(mlist, One(K)); 	
+	fi;
+
+	if Length(clist) <> Length(mlist) then 
+	Error("something went wrong: clist and mlist are of different lengths!!!\n");
+		return fail;
+	fi;
+
+return [clist, mlist];
+end);
+
+InstallMethod(ReduceMonomialsOverField, "reduce expomnents of monomials in list",
+ [IsField, IsList],  function(K, mlist)
 local newlist, i;
 		newlist := [];
-		for i in [1..Length(mon)] do
+		for i in [1..Length(mlist)] do
 
-			if IsPolynomial(mon[i]) then
-				newlist[i] := MonomialsOverField(K, mon[i]);
+			if IsPolynomial(mlist[i]) then
+				newlist[i] := TermOverField(K, mlist[i]);
 			else
-				newlist[i] := mon[i];   # to account for case when we have constants
+				newlist[i] := mlist[i];  
+				# to account for case when we have constants
 			fi;
 		od;
 return newlist;
 end);
 
 
-InstallMethod( DegreeOfPolynomial, "degree of polynomial",  [IsPolynomial],
- function(mon)
-local lmlist, d, i;
 
-	lmlist := LeadingMonomial(mon);
+InstallMethod( ReduceMonomialsOverField, "reduce expomnents of monomials",
+[IsField, IsPolynomial], function(K, mon)
+local cm, clist, mlist, poly;
+
+cm := SplitCoeffsAndMonomials(K, mon); 
+# will return fail if some coefficient not a member of K
+clist := cm[1];
+mlist := cm[2];
+mlist := ReduceMonomialsOverField(K, mlist);
+poly := clist * mlist; #exponents w.r.t. K
+
+return poly;
+
+end);
+
+
+InstallMethod( LeadingTermOverField, "reduce expomnents of monomials",
+[IsField, IsPolynomial], function(K, mon)
+local  poly;
+
+	poly := ReduceMonomialsOverField(K, mon); #exponents w.r.t. K
+
+if not IsConstantRationalFunction(poly) then 
+	return TermOverField(K, poly);
+else
+#	Print("tu \n");
+	return poly;
+fi;
+end);
+
+InstallMethod( LeadingMonomialOverField, "reduce expomnents of monomials",
+[IsField, IsPolynomial], function(K, mon)
+local term;
+
+	term := LeadingTermOverField(K, mon); #exponents w.r.t. K
+	#Print(term,"-> \t");
+	return SplitCoeffsAndMonomials(K, term)[2][1]; 	
+	
+	
+end);
+
+
+
+
+
+InstallMethod( DegreeOfPolynomialOverField, "degree of polynomial", 
+ [IsField, IsPolynomial], function( K, mon)
+local rmon, lmon, lmlist, d, i;
+	rmon := ReduceMonomialsOverField(K, mon); #exponents w.r.t. K
+
 	d := 0;
-	for i in [1..Length(lmlist)] do
-		if IsEvenInt(i) then
-			d := d + lmlist[i];
-		fi;
-	od;
+ 	if IsConstantRationalFunction(rmon) then 
+	#if \in(rmon, K) then # reduces to a constant 
 
-return d;
+		return d;
+	else 
+
+		lmon := LeadingMonomialOverField(K, rmon);
+		lmlist := LeadingMonomial(lmon);
+
+		for i in [1..Length(lmlist)] do
+			if IsEvenInt(i) then
+				d := d + lmlist[i];
+			fi;
+		od;
+		return d;
+	fi;
+end);
+
+
+#InstallMethod( DegreeOfPolynomial, "degree of polynomial", 
+# [IsField, IsPolynomial], function(F, mon)
+#local lmon, temp, lmlist, d, i;
+#	lmon := MonomialOverField(F, mon);
+#	temp := mon - CoefficientOfLeadingMonomial
+	
+#	lmlist := LeadingMonomial(lmon);
+#	d := 0;
+#	for i in [1..Length(lmlist)] do
+#		if IsEvenInt(i) then
+#			d := d + lmlist[i];
+#		fi;
+#	od;
+
+#return d;
+#end);
+
+
+
+InstallMethod( DegreeOfPolynomialOverField, "degree of multivariate polynomial", 
+ [IsField, IsFFECollection, IsList], function(F, clist, mlist)
+local mon;
+	if Length(clist)<>Length(mlist) then 
+		Error("coeff and monomial lists must have same length!!!");
+				return fail;
+	fi;
+	mon := ReduceMonomialsOverField(F, mlist);
+	
+return DegreeOfPolynomialOverField(clist * mon);
 end);
 
 
