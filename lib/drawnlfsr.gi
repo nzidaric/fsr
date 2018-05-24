@@ -23,7 +23,8 @@ local  n, nzt, i, len, simple, complex, idx;
 if (IsOutputStream( output )) then
 	if (IsLFSR(x)) then 
 		n := Length(x);	
-		nzt := IdxNonzeroCoeffs2(FeedbackVec(x)); #nonzerotaps
+		#nzt := IdxNonzeroCoeffs2(FeedbackVec(x)); #nonzerotaps
+		nzt := IdxNonzeroCoeffs(FeedbackVec(x)); #nonzerotaps
 		simple := []; complex := [];
 		len := Length(nzt);
 		for i in [1..len-1] do # last tap doesnt count here

@@ -1,6 +1,6 @@
 gap> F := GF(2);; B:= Basis(F);; ChooseField(F);; 
-You can now create an NLFSR with up to 100 stages
-with up to  100 nonzero terms
+You can now create an NLFSR with up to 200 stages
+with up to  200 nonzero terms
 gap> clist := [One(F), One(F)];;
 gap> mlist := [x_0*x_1, x_2];;
 gap> nl := NLFSR(F, clist, mlist, 3);
@@ -80,7 +80,7 @@ elm	[ 2,	...,0 ]  with taps  [ 0 ]
 [ 1 ]		[ [ 1 ], [ 0 ], [ 0 ] ]		[ 0 ]
 [ 1 ]		[ [ 0 ], [ 1 ], [ 0 ] ]		[ 0 ]
 [ 1 ]		[ [ 1 ], [ 0 ], [ 1 ] ]		[ 1 ]
-[ Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0 ]
+[ 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0 ]
 gap> clist := [One(F), One(F), One(F), One(F)];;
 gap> mlist := [x_0, x_1, x_1*x_2*x_3, One(F)];;
 gap> nl := NLFSR(F, clist, mlist, 4);
@@ -93,8 +93,8 @@ over the threshold, will only output the first 20 elements of the sequence
   0*Z(2), 0*Z(2), Z(2)^0 ]
 gap> K := GF(2);; x := X(K, "x");; f:= x^4+x^3+Z(2)^0 ;;  F := FieldExtension(K, f);;                               
 gap>  B:= Basis(F);; ChooseField(F);; 
-You can now create an NLFSR with up to 100 stages
-with up to  100 nonzero terms
+You can now create an NLFSR with up to 200 stages
+with up to  200 nonzero terms
 gap> clist := [Z(2^4)^7, One(F), One(F), One(F)];;
 gap> mlist := [x_0, x_1^5, x_1*x_2*x_3, One(F)];;
 gap> nl := NLFSR(F, clist, mlist, 4);
@@ -127,8 +127,8 @@ after initialization
 with output from stage S_0
 gap> K := GF(2);; x := X(K, "x");; f:= x^3+x+Z(2)^0 ;;  F := FieldExtension(K, f);;                               
 gap>  B:= Basis(F);; ChooseField(F);; 
-You can now create an NLFSR with up to 100 stages
-with up to  100 nonzero terms
+You can now create an NLFSR with up to 200 stages
+with up to  200 nonzero terms
 gap> clist := [ One(F), One(F)];;
 gap> mlist := [x_0, x_0*x_1*x_2];;
 gap> nl := NLFSR(F, clist, mlist, 3);
