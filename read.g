@@ -18,7 +18,7 @@ ReadPackage( "FSR", "lib/lfsr.gi" ); # the top-level functions
 
 ReadPackage( "FSR", "lib/nlfsr.gi" ); # the top-level functions
 
-ReadPackage( "FSR", "lib/fsrfil.gi" ); # the top-level functions
+ReadPackage( "FSR", "lib/filfun.gi" ); # the top-level functions
 
 ReadPackage( "FSR", "lib/outfsr.gi" ); # the output formatting functions
 

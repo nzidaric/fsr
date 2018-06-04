@@ -69,7 +69,7 @@ local uf, B;
 		if b  then 	Print((IntVecFFExt(B, x!.state)));# NOT reversed !!!!
 		else 	Print(((x!.state)));# NOT reversed !!!!
 		fi;
-	if not IsFSRFIL(x) then 			
+	if not IsFILFUN(x) then 			
 				Print("\nafter  ",x!.numsteps," steps\n");
 	fi;
 
@@ -115,7 +115,7 @@ local uf, tap, i, B;
 			else 		Print((FeedbackVec(x))); # NOT reversed !!!!
 			fi;
 	fi;
-	if not IsFSRFIL(x)  then 	
+	if not IsFILFUN(x)  then 	
 		Print("\nwith initial state  =");
 				if b  then 	Print((IntVecFFExt(B, x!.init))); # NOT reversed !!!!
 				else 			Print(((x!.init))); # NOT reversed !!!!
@@ -125,7 +125,7 @@ local uf, tap, i, B;
 			if b  then 	Print((IntVecFFExt(B, x!.state)));# NOT reversed !!!!
 			else 	Print(((x!.state)));# NOT reversed !!!!
 			fi;
-	if not IsFSRFIL(x) then 			
+	if not IsFILFUN(x) then 			
 		Print("\nafter ");
 		if x!.numsteps>0 then
 			Print(x!.numsteps," steps\n");
@@ -196,7 +196,7 @@ SetPrintFormattingStatus(output, false);
 					else 		AppendTo(output,(FeedbackVec(x))); # NOT reversed !!!!
 					fi;
 			fi;
-			if not IsFSRFIL(x) then 		
+			if not IsFILFUN(x) then 		
 			AppendTo(output,"\nwith initial state  =");
 					if b  then
 					AppendTo(output,(VecToString(B, x!.init))); # NOT reversed !!!!
@@ -208,7 +208,7 @@ SetPrintFormattingStatus(output, false);
 						AppendTo(output,(VecToString(B, x!.state)));# NOT reversed !!!
 					else 	AppendTo(output,((x!.state)));# NOT reversed !!!!
 					fi;
-			if not IsFSRFIL(x)  then 						
+			if not IsFILFUN(x)  then 						
 				AppendTo(output,"\nafter ");
 				if x!.numsteps>0 then
 					AppendTo(output,x!.numsteps," steps\n");
@@ -283,7 +283,7 @@ SetPrintFormattingStatus(output, false);
 					else 	WriteTEXFFEVecByGenerator(output, uf, FeedbackVec(x), strGen, gen);
 					fi;
 			fi;
-		if not IsFSRFIL(x) then 			
+		if not IsFILFUN(x) then 			
 			AppendTo(output,"\\\\\nwith initial state  =");
 			if b  then
 							WriteTEXFFEVec(output, B,  x!.init);
@@ -295,7 +295,7 @@ SetPrintFormattingStatus(output, false);
 							WriteTEXFFEVec(output, B,  x!.state);
 			else 	WriteTEXFFEVecByGenerator(output, uf, x!.state , strGen, gen);
 			fi;
-		if not IsFSRFIL(x) then 		
+		if not IsFILFUN(x) then 		
 			AppendTo(output,"\\\\\nafter ");
 			if x!.numsteps>0 then
 				AppendTo(output,x!.numsteps," steps\\\\\n");
@@ -337,7 +337,7 @@ SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
 		B := x!.basis;
 		# now append the whole sequence(s)
-			if Length(OutputTap(x))=1 or IsFSRFIL(x) then 
+			if Length(OutputTap(x))=1 or IsFILFUN(x) then 
 				AppendTo(output,"\nThe whole sequence:\n");
 				for i in [1.. Length(sequence)-1] do
 					AppendTo(output,(VecToString(B, sequence[i])), ",\t");
@@ -378,7 +378,7 @@ SetPrintFormattingStatus(output, false);
 	 if IsFSR(x) then
 		B := x!.basis;
 		# now append the whole sequence(s)
-			if Length(OutputTap(x))=1  or IsFSRFIL(x) then
+			if Length(OutputTap(x))=1  or IsFILFUN(x) then
 
 				for i in [1.. Length(sequence)] do
 					tmp := sequence[i]; # outputs on step i
@@ -420,7 +420,7 @@ if IsString(strGen) and  strGen <> "omega" then
 	if Order(gen)=Size(F)-1 then
 	 if IsFSR(x) then
 	 		B := x!.basis;
-	 	if Length(OutputTap(x))=1  or IsFSRFIL(x) then
+	 	if Length(OutputTap(x))=1  or IsFILFUN(x) then
  			AppendTo(output,"\nThe whole sequence:\n");
 			for j in [1.. Length(sequence)] do
 				ffe := sequence[j];
@@ -478,7 +478,7 @@ if IsField(F) and IsFinite(F) then
 if IsString(strGen) and  strGen <> "omega" then
 	if Order(gen)=Size(F)-1 then
 	 if IsFSR(x) then
-	 	if Length(OutputTap(x))=1  or IsFSRFIL(x) then
+	 	if Length(OutputTap(x))=1  or IsFILFUN(x) then
  			AppendTo(output,"\nThe whole sequence: \n");
 			for j in [1.. Length(sequence)] do
 				ffe := sequence[j];

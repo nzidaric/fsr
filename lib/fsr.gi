@@ -143,7 +143,7 @@ end);
 
 #############################################################################
 ##
-#O  LoadFSR( <lfsr>, <ist> )						fixed for IsFSRFIL
+#O  LoadFSR( <lfsr>, <ist> )						fixed for IsFILFUN
 ##
 ##  almost identical for both
 ##
@@ -169,7 +169,7 @@ local i, F, tap, seq, tist, scist;
 	x!.state := scist;
 
 	#### LFSR, NLFSR vs FSRFIL
-	if not IsFSRFIL(x) then 
+	if not IsFILFUN(x) then 
 		x!.numsteps := 0; ## load doesnt update numsteps for FSRFIL
 			# sequence starts with seq_0, seq_1, ...
 		tap := OutputTap(x);
@@ -191,7 +191,7 @@ end);
 
 #############################################################################
 ##
-#O  LoadFSR( <lfsr>, <ist> )						fixed for IsFSRFIL
+#O  LoadFSR( <lfsr>, <ist> )						fixed for IsFILFUN
 ##
 ##  almost identical for both
 ##
@@ -216,7 +216,7 @@ local i, F, tap, seq, scist;
 	x!.state := scist;
 
 	#### LFSR, NLFSR vs FSRFIL
-	if not IsFSRFIL(x) then 
+	if not IsFILFUN(x) then 
 		x!.numsteps := 0; ## load doesnt update numsteps for FSRFIL
 			# sequence starts with seq_0, seq_1, ...
 		tap := OutputTap(x);
@@ -267,7 +267,7 @@ local fb, st, new, F, i, indlist, xlist, slist, idx;
 				idx := indlist[i];
 				Add(slist,st[Length(x)-idx]); ## because states are DOWNTO !!!
 			od;	
-		elif IsFSRFIL(x) then 
+		elif IsFILFUN(x) then 
 			slist := st;
 		fi;		
 			
@@ -287,7 +287,7 @@ end);
 
 #############################################################################
 ##
-#O  StepFSR			fixed for IsFSRFIL for both regular and nonlin step
+#O  StepFSR			fixed for IsFILFUN for both regular and nonlin step
 ##
 
 
@@ -298,7 +298,7 @@ local fb, st, new, tap, i, seq, n;
 	x!.numsteps := x!.numsteps + 1; #update for all three of em 
 
 	#### LFSR, NLFSR vs FSRFIL
-	if not IsFSRFIL(x) then 
+	if not IsFILFUN(x) then 
 		# update state
 			n := Length(x);
 			st := x!.state;	
@@ -319,7 +319,7 @@ local fb, st, new, tap, i, seq, n;
 			fi;
 		return seq;
 	else 
-		return new; #IsFSRFIL
+		return new; #IsFILFUN
 	fi;
 	
 end);
@@ -335,7 +335,7 @@ local fb, st, new, tap,i, seq, F, n, idx, indlist, slist, xlist;
 	new := FeedbackFSR(x) + elm; # nonlinear step
 	x!.numsteps := x!.numsteps + 1;
 
-	if not IsFSRFIL(x) then 
+	if not IsFILFUN(x) then 
 		# update state
 		n := Length(x);
 		st := x!.state;	
@@ -355,7 +355,7 @@ local fb, st, new, tap,i, seq, F, n, idx, indlist, slist, xlist;
 		fi;
 		return seq;
 	else 
-		return new;		#IsFSRFIL 
+		return new;		#IsFILFUN 
 	fi;	
 	
 end);
@@ -367,7 +367,7 @@ end);
 ##     StepFSRFIL one step at a time !!!!
 
 InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
-[IsFSRFIL, IsFFECollection, IsBool],
+[IsFILFUN, IsFFECollection, IsBool],
  function(x, ist,  pr)
 local  i,  seq,  B ;
 
@@ -387,7 +387,7 @@ local  i,  seq,  B ;
 end);
 
 InstallMethod(StepFSRFIL, " nonlinear run FSRFIL = load + 1step", 
-[IsFSRFIL, IsFFECollection, IsFFE, IsBool],
+[IsFILFUN, IsFFECollection, IsFFE, IsBool],
  function(x,  ist, elm, pr)
 local  i,  seq,  B;
 
@@ -408,20 +408,20 @@ end);
 
 
 InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
-[IsFSRFIL, IsFFECollection],
+[IsFILFUN, IsFFECollection],
  function(x, ist);
 	return StepFSRFIL(x, ist, false);
 end);
  
 InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
-[IsFSRFIL, IsFFECollection, IsFFE],
+[IsFILFUN, IsFFECollection, IsFFE],
  function(x, ist, elm);
 	return StepFSRFIL(x, ist, elm, false);
 end);
 
 
 InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
-[IsFSRFIL, IsFFE, IsBool],
+[IsFILFUN, IsFFE, IsBool],
  function(x, ist,  pr)
 return StepFSRFIL(x, [ist], pr);
 end);
@@ -429,21 +429,21 @@ end);
 
 
 InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
-[IsFSRFIL, IsFFE],
+[IsFILFUN, IsFFE],
  function(x, ist)
 return StepFSRFIL(x, [ist], false);
 end);
 
 
 InstallMethod(StepFSRFIL, " nonlinear run FSRFIL = load + 1step", 
-[IsFSRFIL, IsFFE, IsFFE, IsBool],
+[IsFILFUN, IsFFE, IsFFE, IsBool],
  function(x,  ist, elm, pr)
 
 return StepFSRFIL(x, [ist], elm, pr);
 end);
 
 InstallMethod(StepFSRFIL, " nonlinear run FSRFIL = load + 1step", 
-[IsFSRFIL, IsFFE, IsFFE],
+[IsFILFUN, IsFFE, IsFFE],
  function(x,  ist, elm)
 
 return StepFSRFIL(x, [ist], elm, false);
@@ -459,7 +459,7 @@ end);
 # Ib. run for num steps with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt, IsBool], function(x, num, pr)
 local seq, sequence, nrsteps, treshold, i, B;
-	if IsFSRFIL(x) then 
+	if IsFILFUN(x) then 
 		Error("Must provide input values for the indeterminates!!!\n");
 		return;
 	fi;
@@ -533,7 +533,7 @@ local  i, taps, B, nrsteps;
 		Print("using basis B := ",BasisVectors(B),"\t\n");
 		Print("elm");
 
-	if not IsFSRFIL(x) then
+	if not IsFILFUN(x) then
 		for i in [1..m] do Print("\t"); od;
 		Print( "[ ",Length(x)-1,",");
 		for i in [2.. Length(x)-1] do
@@ -567,7 +567,7 @@ local  i, taps, B, nrsteps;
 		Print("using basis B := ",BasisVectors(B),"\t\n");
 		Print("elm");
 
-	if not IsFSRFIL(x) then
+	if not IsFILFUN(x) then
 		for i in [1..m] do Print("\t"); od;
 		Print( "[ ",Length(x)-1,",");
 		for i in [2.. Length(x)-1] do
@@ -603,7 +603,7 @@ local  i, sequence,treshold , seq, taps, B, nrsteps, m;
 	else m:= 1;
 	fi;
 	
-	if not IsFSRFIL(x) then 
+	if not IsFILFUN(x) then 
 # check num
 		treshold := Threshold(x);
 		if num > treshold then
@@ -647,7 +647,7 @@ local  i, sequence,treshold , seq, taps, B, nrsteps, m;
 	else m:= 1;
 	fi;
 	
-	if not IsFSRFIL(x) then 
+	if not IsFILFUN(x) then 
 # check num
 		treshold := Threshold(x);
 		if num > treshold then
@@ -697,7 +697,7 @@ end);
 # VIIb. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsBool],
 function(x, ist , pr)
-	if IsFSRFIL(x) then 
+	if IsFILFUN(x) then 
 		RunFSR(x, ist, 1  , pr);
 	else 
 		return RunFSR(x, ist, Threshold(x)   , pr);
@@ -705,7 +705,7 @@ function(x, ist , pr)
 end);
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollColl, IsBool],
 function(x, ist , pr)
-	if IsFSRFIL(x) then 
+	if IsFILFUN(x) then 
 		RunFSR(x, ist, 1  , pr);
 	else 
 		return RunFSR(x, ist, Threshold(x)   , pr);
@@ -714,14 +714,14 @@ end);
 
 # VII. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection], function(x, ist )
-	if IsFSRFIL(x) then 
+	if IsFILFUN(x) then 
 		return RunFSR(x, ist, 1   , false);
 	else 
 		return RunFSR(x, ist, Threshold(x)   , false);
 	fi;
 end);
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollColl], function(x, ist )
-	if IsFSRFIL(x) then 
+	if IsFILFUN(x) then 
 		return RunFSR(x, ist, 1   , false);
 	else 
 		return RunFSR(x, ist, Threshold(x)   , false);
@@ -736,7 +736,7 @@ end);
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt, IsBool],
  function(x, elm, num, pr)
 local seq, sequence, nrsteps, treshold, i, B;
-	if IsFSRFIL(x) then 
+	if IsFILFUN(x) then 
 		Error("Can only do one step at a time!!!\n");
 		return;
 	fi;
@@ -796,7 +796,7 @@ InstallMethod(RunFSR, "run FSR",
 [IsFSR,  IsFFECollection, IsFFECollection, IsBool],
 function(x,  ist, elmvec, pr)
 local  sequence,  treshold, num, nrsteps, seq , seq0, i, B, m;
-	if IsFSRFIL(x) then
+	if IsFILFUN(x) then
 		if Length(ist) <> Length(elmvec) then  
 			Error("use two lists of same lengrth !!!\n");
 			return;
@@ -806,7 +806,7 @@ local  sequence,  treshold, num, nrsteps, seq , seq0, i, B, m;
 	else m:= 1;
 	fi;	
 			B := x!.basis;
- if not IsFSRFIL(x) then 
+ if not IsFILFUN(x) then 
 # load FSR
 	seq0 := LoadFSR(x,ist); # the seq_0 element
 	treshold := Threshold(x);
@@ -866,7 +866,7 @@ end);
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsFFECollection, IsBool],
  function(x, z, elmvec, pr)
 local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
-	if IsFSRFIL(x) then 
+	if IsFILFUN(x) then 
 		Error("use RunFSR with two sequences!!!\n");
 		return;
 	fi;

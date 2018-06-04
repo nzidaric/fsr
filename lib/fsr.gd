@@ -65,7 +65,7 @@ IsAttributeStoringRep and IsFSR, ["init", "state", "numsteps", "basis"] );
 
 
 DeclareProperty( "IsFSRFilter", IsFSR );
-DeclareSynonym( "IsFSRFIL", IsFSR and IsFSRFilter);
+DeclareSynonym( "IsFILFUN", IsFSR and IsFSRFilter);
 DeclareProperty( "IsNonLinearFeedback", IsFSR );
 DeclareSynonym( "IsNLFSR", IsFSR and IsNonLinearFeedback);
 DeclareProperty( "IsLinearFeedback", IsFSR );
@@ -299,15 +299,15 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 
 # load + 1step
 
-DeclareOperation("StepFSRFIL", [IsFSRFIL, IsFFECollection, IsBool]);
-DeclareOperation("StepFSRFIL", [IsFSRFIL, IsFFECollection, IsFFE, IsBool]);
-DeclareOperation("StepFSRFIL", [IsFSRFIL, IsFFE, IsBool]);
-DeclareOperation("StepFSRFIL", [IsFSRFIL, IsFFE, IsFFE, IsBool]);
+DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFECollection, IsBool]);
+DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFECollection, IsFFE, IsBool]);
+DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFE, IsBool]);
+DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFE, IsFFE, IsBool]);
 
-DeclareOperation("StepFSRFIL", [IsFSRFIL, IsFFECollection]);
-DeclareOperation("StepFSRFIL", [IsFSRFIL, IsFFECollection, IsFFE]);
-DeclareOperation("StepFSRFIL", [IsFSRFIL, IsFFE]);
-DeclareOperation("StepFSRFIL", [IsFSRFIL, IsFFE, IsFFE]);
+DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFECollection]);
+DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFECollection, IsFFE]);
+DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFE]);
+DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFE, IsFFE]);
 
 
 

@@ -20,7 +20,7 @@ ReadPackage( "FSR", "lib/lfsr.gd" ); # the top-level functions
 
 ReadPackage( "FSR", "lib/nlfsr.gd" ); # the top-level functions
 
-ReadPackage( "FSR", "lib/fsrfil.gd" ); # the top-level functions
+ReadPackage( "FSR", "lib/filfun.gd" ); # the top-level functions
 
 ReadPackage( "FSR", "lib/outfsr.gd" ); # the output formatting functions
 
