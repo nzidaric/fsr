@@ -6,14 +6,16 @@
 
 #############################################################################
 ##
-#F  NLFSR( <K>, <mpoly> , <len> )  . . . .  create an NLFSR object 	# len 3
-#F  NLFSR( <K>, <clist>, <mlist> , <len> )  . . . .  create an NLFSR object 	# len 4
-#F  NLFSR( <K>, <fieldpol>,  <mpoly>, <len> )  . . . .  create an NLFSR object 	# len 4
-#F  NLFSR( <K>, <mpoly> , <len> , <tap>)  . . . .  create an NLFSR object 	# len 4
-#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len> )  . . . .  create an NLFSR object 	# len 5
-#F  NLFSR( <K>, <clist>, <mlist> , <len> , <tap>)  . . . .  create an NLFSR object 	# len 5
-#F  NLFSR( <K>, <fieldpol>, <mpoly> , <len>, <tap> )  . . . .  create an NLFSR object 	# len 5
-#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len>, <tap> )  . . . .  create an NLFSR object 	# len 6
+## create an NLFSR object 
+##
+#F  NLFSR( <K>, <mpoly> , <len> ) . . . . . . . . . . . . . . . . . . .  # len 3
+#F  NLFSR( <K>, <clist>, <mlist> , <len> )  . . . . . . . . . . . . . .  # len 4
+#F  NLFSR( <K>, <fieldpol>,  <mpoly>, <len> ) . . . . . . . . . . . . .  # len 4
+#F  NLFSR( <K>, <mpoly> , <len> , <tap>)    . . . . . . . . . . . . . .  # len 4
+#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len> )  . . . . . . . .  # len 5
+#F  NLFSR( <K>, <clist>, <mlist> , <len> , <tap>)   . . . . . . . . . .  # len 5
+#F  NLFSR( <K>, <fieldpol>, <mpoly> , <len>, <tap> )  . . . . . . . . .  # len 5
+#F  NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len>, <tap> ) . . . . .  # len 6
 
 InstallGlobalFunction( NLFSR,  function(arg)
 
@@ -25,10 +27,10 @@ local K, F, multpol, fieldpol, clist, mlist, m, n, tap, y, mpol, cm,	# for args
 # figure out which constructor is being used
 
 if Length(arg)=3 then 
-	if IsField(arg[1]) and IsPolynomial(arg[2]) then 	
-			#F   FSRFIL( <K>, <mpoly> ) 
+	if IsField(arg[1]) and IsPolynomial(arg[2]) and IsPosInt(arg[3]) then 	
+			#F   FILFUN( <K>, <mpoly>, <len>  ) 
 			if IsPrimeField(arg[1]) then K:= arg[1];  F := arg[1]; fieldpol := 1;
-			else F := arg[1]; K := PrimeField(F);  fieldpol := DefiningPolynomial(F);
+			else F := arg[1]; K := PrimeField(F);fieldpol := DefiningPolynomial(F);
 			fi;
 			mpol := arg[2];
 			cm := SplitCoeffsAndMonomials(F, mpol);
@@ -40,7 +42,8 @@ if Length(arg)=3 then
 
 
 elif  Length(arg)=4 then
-	if IsField(arg[1]) and IsPolynomial(arg[2]) and IsPolynomial(arg[3]) and IsPosInt(arg[4]) then 	
+	if IsField(arg[1]) and IsPolynomial(arg[2]) and IsPolynomial(arg[3]) 
+		and IsPosInt(arg[4]) then 	
 			#F  NLFSR( <K>, <fieldpol>,  <mpoly>, <len> ) 
 			K := arg[1]; fieldpol := arg[2]; 
 			if not IsIrreducibleRingElement(PolynomialRing(K),  fieldpol) then 
@@ -80,7 +83,8 @@ elif  Length(arg)=4 then
 	else Error("check the args!!!"); 		return fail;
 	fi;
 elif  Length(arg)=5 then
-	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsFFECollection(arg[3]) and IsList(arg[4]) and IsPosInt(arg[5]) then 	
+	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsFFECollection(arg[3]) 
+		 and IsList(arg[4]) and IsPosInt(arg[5]) then 	
 			#F   NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len> )
 			K := arg[1]; fieldpol := arg[2]; 
 			if not IsIrreducibleRingElement(PolynomialRing(K),  fieldpol) then 
@@ -90,11 +94,13 @@ elif  Length(arg)=5 then
 			F := FieldExtension(K,fieldpol);
 			clist := arg[3]; mlist := arg[4];
 			d := arg[5]; tap := [0];			
-	elif IsField(arg[1]) and IsFFECollection(arg[2]) and IsList(arg[3]) and IsPosInt(arg[4])  then 			
+	elif IsField(arg[1]) and IsFFECollection(arg[2]) and IsList(arg[3]) 
+			and IsPosInt(arg[4])  then 			
 			#F NLFSR( <K>, <clist>, <mlist> , <len> , <tap>) 
-			# we dont allow anything thats not a prime here, coz primepower is already an extension
+			# we dont allow anything thats not a prime here,
+			# coz primepower is already an extension
 			if IsPrimeField(arg[1]) then K:= arg[1];  F := arg[1]; fieldpol := 1;
-			else F := arg[1]; K := PrimeField(F);  fieldpol := DefiningPolynomial(F);
+			else F := arg[1]; K := PrimeField(F);fieldpol := DefiningPolynomial(F);
 			fi;
 			clist := arg[2]; mlist := arg[3];
 			d := arg[4]; 
@@ -103,9 +109,10 @@ elif  Length(arg)=5 then
 			elif  IsRowVector(arg[5]) then 			tap := arg[5];
 			else 	Error("check the tap arg !!!"); 		return fail;
 			fi;
-	elif IsField(arg[1]) and IsPolynomial(arg[2]) and IsPolynomial(arg[3]) and IsPosInt(arg[4]) then 	
+	elif IsField(arg[1]) and IsPolynomial(arg[2]) and IsPolynomial(arg[3]) 
+			and IsPosInt(arg[4]) then 	
 	#F  NLFSR( <K>, <fieldpol>, <mpoly> , <len>, <tap> )  . . . .  create an NLFSR object 	# len 5
-			#F  NLFSR( <K>, <fieldpol>,  <mpoly>, <len> ) 
+
 			K := arg[1]; fieldpol := arg[2]; 
 			if not IsIrreducibleRingElement(PolynomialRing(K),  fieldpol) then 
 				Error("defining polynomial of the extension field must be irreducible!!!");
@@ -125,7 +132,8 @@ elif  Length(arg)=5 then
 	else Error("check the args!!!"); 		return fail;
 	fi;
 elif  Length(arg)=6 then
-	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsFFECollection(arg[3]) and IsList(arg[4]) and IsPosInt(arg[5]) then 	
+	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsFFECollection(arg[3]) 
+			and IsList(arg[4]) and IsPosInt(arg[5]) then 	
 			#F   NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len>, <tap> ) 
 			K := arg[1]; fieldpol := arg[2]; 
 			if not IsIrreducibleRingElement(PolynomialRing(K),  fieldpol) then 
@@ -195,7 +203,8 @@ ml := SplitCoeffsAndMonomials(F, multpol)[2];
 					if idx >= d then 
 						Error("Feedback needs an element from a stage that does not exist ( out of range) !!!"); 	return fail;
 					fi;
-					Add(indlist, m[j] - 800 ); # get all the indeterminates in this monomial
+					Add(indlist, m[j] - 800 ); 
+					# get all the indeterminates in this monomial
 				fi;
 			od;
 		fi;
@@ -226,13 +235,15 @@ ml := SplitCoeffsAndMonomials(F, multpol)[2];
 
 	for i in [1.. Length(tap)] do 
 		if (tap[i]<0 or tap[i]>d) then 
-			Print("argument tap[",i,"]=",tap[i]," is out of range 0..",d-1,", or not given => im taking S_0 instead!\n");
+			Print("argument tap[",i,"]=",tap[i]," is out of range 0..",d-1);
+			Print(", or not given => im taking S_0 instead!\n");
 			tap[i] := 0;
 		fi;
 	od;	
 # new LFSR :) 
 	fam :=FSRFamily(Characteristic(K));
-	nlfsr := Objectify(NewType(fam, IsFSRRep),   rec(init:=st, state:= st, numsteps := -1, basis := CanonicalBasis(F)));
+	nlfsr := Objectify(NewType(fam, IsFSRRep),   
+			rec(init:=st, state:= st, numsteps := -1, basis := CanonicalBasis(F)));
 
 	SetFieldPoly(nlfsr,fieldpol);
 	SetUnderlyingField(nlfsr,F);
@@ -255,7 +266,8 @@ end);
 
 
 
-InstallMethod( ConstTermOfNLFSR, "const term of the multivariate polynomial",  [IsNLFSR], function(x)
+InstallMethod( ConstTermOfNLFSR, "const term of the multivariate polynomial",  	
+	[IsNLFSR], function(x)
 local F, tlist, clist, i, const;
 	F := UnderlyingField(x);
 	const := Zero(F);
@@ -273,12 +285,14 @@ end);
 
 #new := Value(MultivarPoly, strlist, statelist);
 # looks like GAP will compute the result in a larger field 
-#(that constains the default fields of all the values that enter computation as subfield)
+#(that constains the default fields of all the values that enter
+# computation as subfield)
 #must manually check if : new in F
 
 
 #	if not(\in(new,F)) then
-#		Error( "computed feedback is not an element of the underlying field !!!" );		return fail;
+#	Error( "computed feedback is not an element of the underlying field !!!" );
+#		return fail;
 #	fi;
 
 

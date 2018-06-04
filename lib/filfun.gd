@@ -25,10 +25,12 @@
 ##   <C>numsteps</C> and <C>basis</C>. 
 ##  </Returns>	
 ##  <Description>
-##  Function FILFUN provides two ways to create an <C>FILFUN</C> object;    
-##  they differ in the way the underlying finite field is constructed.
+##  Function FILFUN provides four ways to create an <C>FILFUN</C> object;    
+##  they differ in the way the underlying finite field is constructed and/or
+##  in the way the multivariate polynomial is defined.
 ##  The <C>FILFUN</C> is uniquely 
-##  described with a a multivariate polynomial, which is given by two lists: 
+##  described with a a multivariate polynomial <C>mpoly</C>. It can also be 
+##  given by two lists: 
 ##  a list of monomials <A>mlist</A>, and a list of their corresponding 
 ##  coefficients <A>clist</A>, just as is requiered by the 
 ##  <Ref Func="NLFSR" /> function. <P/>    

@@ -182,6 +182,13 @@ gap> ist := [Z(2^3)^2,Z(2^3),One(F)];; RunFSR(nl,ist);
   Z(2)^0, Z(2^3)^2, Z(2^3)^4, Z(2^3)^2, Z(2^3)^4, Z(2^3)^6, Z(2^3)^3, Z(2^3)^3, Z(2^3), Z(2^3), Z(2^3)^2, Z(2^3)^2, Z(2^3)^6, Z(2^3)^5, Z(2)^0, Z(2^3)^3, Z(2^3)^6, Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^2, Z(2^3), 
   Z(2^3)^2, Z(2^3)^3, Z(2^3)^5, Z(2^3)^5, Z(2^3)^4, Z(2^3)^4, Z(2^3), Z(2^3), Z(2^3)^3, Z(2^3)^6, Z(2)^0, Z(2^3)^5, Z(2^3)^3, Z(2^3)^3, Z(2)^0, Z(2^3)^4, Z(2^3), Z(2^3)^4, Z(2^3), Z(2^3)^5, Z(2^3)^6, 
   Z(2^3)^6, Z(2^3)^2, Z(2^3)^2, Z(2^3)^4, Z(2^3)^4 ]
+gap> F := GF(2);; B:= Basis(F);; ChooseField(F);; 
+You can now create an NLFSR with up to 200 stages
+with up to  200 nonzero terms
+gap> mpoly := x_0*x_1 + x_2;;
+gap> nl := NLFSR(F, mpoly, 3);       
+< empty NLFSR of length 3 over GF(2),
+ given by MultivarPoly = x_0*x_1+x_2> 
 
 
 

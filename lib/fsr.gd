@@ -299,15 +299,15 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 
 # load + 1step
 
-DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFECollection, IsBool]);
-DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFECollection, IsFFE, IsBool]);
-DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFE, IsBool]);
-DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFE, IsFFE, IsBool]);
+DeclareOperation("StepFILFUN", [IsFILFUN, IsFFECollection, IsBool]);
+DeclareOperation("StepFILFUN", [IsFILFUN, IsFFECollection, IsFFE, IsBool]);
+DeclareOperation("StepFILFUN", [IsFILFUN, IsFFE, IsBool]);
+DeclareOperation("StepFILFUN", [IsFILFUN, IsFFE, IsFFE, IsBool]);
 
-DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFECollection]);
-DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFECollection, IsFFE]);
-DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFE]);
-DeclareOperation("StepFSRFIL", [IsFILFUN, IsFFE, IsFFE]);
+DeclareOperation("StepFILFUN", [IsFILFUN, IsFFECollection]);
+DeclareOperation("StepFILFUN", [IsFILFUN, IsFFECollection, IsFFE]);
+DeclareOperation("StepFILFUN", [IsFILFUN, IsFFE]);
+DeclareOperation("StepFILFUN", [IsFILFUN, IsFFE, IsFFE]);
 
 
 

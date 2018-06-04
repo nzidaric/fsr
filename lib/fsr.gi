@@ -39,7 +39,7 @@ end);
 
 #############################################################################
 ##
-#M  FFEextCoefficients( <fsr> )    . . . .. get generator of zechs log
+#M  FFEextCoefficients( <fsr> )    . . . coefs from ext field and their indices 
 ##
 
 
@@ -168,9 +168,9 @@ local i, F, tap, seq, tist, scist;
 	x!.init := Immutable(scist);
 	x!.state := scist;
 
-	#### LFSR, NLFSR vs FSRFIL
+	#### LFSR, NLFSR vs FILFUN
 	if not IsFILFUN(x) then 
-		x!.numsteps := 0; ## load doesnt update numsteps for FSRFIL
+		x!.numsteps := 0; ## load doesnt update numsteps for FILFUN
 			# sequence starts with seq_0, seq_1, ...
 		tap := OutputTap(x);
 		if Length(tap)=1 then
@@ -215,9 +215,9 @@ local i, F, tap, seq, scist;
 	x!.init := Immutable(scist);
 	x!.state := scist;
 
-	#### LFSR, NLFSR vs FSRFIL
+	#### LFSR, NLFSR vs FILFUN
 	if not IsFILFUN(x) then 
-		x!.numsteps := 0; ## load doesnt update numsteps for FSRFIL
+		x!.numsteps := 0; ## load doesnt update numsteps for FILFUN
 			# sequence starts with seq_0, seq_1, ...
 		tap := OutputTap(x);
 		if Length(tap)=1 then
@@ -297,7 +297,7 @@ local fb, st, new, tap, i, seq, n;
 	new := FeedbackFSR(x);	# regular step
 	x!.numsteps := x!.numsteps + 1; #update for all three of em 
 
-	#### LFSR, NLFSR vs FSRFIL
+	#### LFSR, NLFSR vs FILFUN
 	if not IsFILFUN(x) then 
 		# update state
 			n := Length(x);
@@ -364,9 +364,9 @@ end);
 
 
 #############################################################################
-##     StepFSRFIL one step at a time !!!!
+##     StepFILFUN one step at a time !!!!
 
-InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
+InstallMethod(StepFILFUN, "run FILFUN = load + 1step", 
 [IsFILFUN, IsFFECollection, IsBool],
  function(x, ist,  pr)
 local  i,  seq,  B ;
@@ -386,7 +386,7 @@ local  i,  seq,  B ;
 	return seq;
 end);
 
-InstallMethod(StepFSRFIL, " nonlinear run FSRFIL = load + 1step", 
+InstallMethod(StepFILFUN, " nonlinear run FILFUN = load + 1step", 
 [IsFILFUN, IsFFECollection, IsFFE, IsBool],
  function(x,  ist, elm, pr)
 local  i,  seq,  B;
@@ -407,46 +407,46 @@ local  i,  seq,  B;
 end);
 
 
-InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
+InstallMethod(StepFILFUN, "run FILFUN = load + 1step", 
 [IsFILFUN, IsFFECollection],
  function(x, ist);
-	return StepFSRFIL(x, ist, false);
+	return StepFILFUN(x, ist, false);
 end);
  
-InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
+InstallMethod(StepFILFUN, "run FILFUN = load + 1step", 
 [IsFILFUN, IsFFECollection, IsFFE],
  function(x, ist, elm);
-	return StepFSRFIL(x, ist, elm, false);
+	return StepFILFUN(x, ist, elm, false);
 end);
 
 
-InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
+InstallMethod(StepFILFUN, "run FILFUN = load + 1step", 
 [IsFILFUN, IsFFE, IsBool],
  function(x, ist,  pr)
-return StepFSRFIL(x, [ist], pr);
+return StepFILFUN(x, [ist], pr);
 end);
 
 
 
-InstallMethod(StepFSRFIL, "run FSRFIL = load + 1step", 
+InstallMethod(StepFILFUN, "run FILFUN = load + 1step", 
 [IsFILFUN, IsFFE],
  function(x, ist)
-return StepFSRFIL(x, [ist], false);
+return StepFILFUN(x, [ist], false);
 end);
 
 
-InstallMethod(StepFSRFIL, " nonlinear run FSRFIL = load + 1step", 
+InstallMethod(StepFILFUN, " nonlinear run FILFUN = load + 1step", 
 [IsFILFUN, IsFFE, IsFFE, IsBool],
  function(x,  ist, elm, pr)
 
-return StepFSRFIL(x, [ist], elm, pr);
+return StepFILFUN(x, [ist], elm, pr);
 end);
 
-InstallMethod(StepFSRFIL, " nonlinear run FSRFIL = load + 1step", 
+InstallMethod(StepFILFUN, " nonlinear run FILFUN = load + 1step", 
 [IsFILFUN, IsFFE, IsFFE],
  function(x,  ist, elm)
 
-return StepFSRFIL(x, [ist], elm, false);
+return StepFILFUN(x, [ist], elm, false);
 end);
 
 
@@ -624,13 +624,13 @@ local  i, sequence,treshold , seq, taps, B, nrsteps, m;
 		fi;
 		sequence := RunFSR(x, nrsteps, pr);
 		Add(sequence,seq,1);	# seq_0 at the beginning
-	else # FSRFIL 
+	else # FILFUN 
 		if pr then
 			PrintHeaderRunFSR(x, One(UnderlyingField(x)), m);
 		fi;
 
 		for i in [1.. Length(ist)] do 
-			seq := StepFSRFIL(x, ist[i]);
+			seq := StepFILFUN(x, ist[i]);
 			Add(sequence, seq);
 		od;
 	fi;
@@ -668,13 +668,13 @@ local  i, sequence,treshold , seq, taps, B, nrsteps, m;
 		fi;
 		sequence := RunFSR(x, nrsteps, pr);
 		Add(sequence,seq,1);	# seq_0 at the beginning
-	else # FSRFIL 
+	else # FILFUN 
 		if pr then
 			PrintHeaderRunFSR(x, One(UnderlyingField(x)), m);
 		fi;
 
 		for i in [1.. Length(ist)] do 
-			seq := StepFSRFIL(x, ist[i]);
+			seq := StepFILFUN(x, ist[i]);
 			Add(sequence, seq);
 		od;
 	fi;
@@ -838,13 +838,13 @@ sequence := [];
 			fi;
 		od;
 		Add(sequence,seq0,1);	# seq_0 at the beginning
-	else # FSRFIL 
+	else # FILFUN 
 			if pr then
 				PrintHeaderRunFSR(x, One(UnderlyingField(x)), m);
 			fi;
 			sequence :=[];
 			for i in [1.. Length(ist)] do 
-				seq := StepFSRFIL(x, ist[i]);
+				seq := StepFILFUN(x, ist[i]);
 				Add(sequence, seq);
 			od;
 	fi;

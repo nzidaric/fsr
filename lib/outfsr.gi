@@ -11,7 +11,7 @@
 
 #############################################################################
 ##
-#M  ViewObj( <fsr> ) . . . . . . . . . . . . . . . fixed for FSRFIL
+#M  ViewObj( <fsr> ) . . . . . . . . . . . . . . . fixed for FILFUN
 ##
 InstallMethod( ViewObj,    "for FSR",    true,    [ IsFSR ],  0, function( x )
 local uf;
@@ -29,7 +29,7 @@ local uf;
 			Print("NLFSR of length ",Length(x)," over ",uf);
 			Print(",\n given by MultivarPoly = ", MultivarPoly(x), "> ");
 	else 
-		Print("FSRFIL of length ",Length(x)," over ",uf);
+		Print("FILFUN of length ",Length(x)," over ",uf);
 		Print(",\n  with the MultivarPoly = ", MultivarPoly(x), "> ");			
 	fi;
 end );
@@ -43,7 +43,7 @@ end );
 
 #############################################################################
 ##
-#M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .fixed for FSRFIL
+#M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .fixed for FILFUN
 ##
 InstallMethod( PrintObj, "for FSR", true, [IsFSR,  IsBool ], 0, function( x, b )
 local uf, B;
@@ -57,7 +57,7 @@ local uf, B;
 		Print("NLFSR of length ",Length(x)," over ",uf);
 		Print(",\n  given by MultivarPoly = ", MultivarPoly(x));
 	else 
-		Print("FSRFIL of length ",Length(x)," over ",uf);
+		Print("FILFUN of length ",Length(x)," over ",uf);
 		Print(",\n  with the MultivarPoly = ", MultivarPoly(x));	
 	fi;
 
@@ -77,7 +77,7 @@ end );
 
 #############################################################################
 ##
-#M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .fixed for FSRFIL
+#M  PrintObj( <nlfsr> ) . . . . . . . . . . . . . . . . .fixed for FILFUN
 ##
 InstallOtherMethod( PrintObj, "for FSR",true,  [ IsFSR ],    0,  function( x )
 	PrintObj( x, false);
@@ -88,7 +88,7 @@ end );
 #############################################################################
 ##
 #M  PrintAll( <lfsr> , <b> ) . . . . . . . as binary vectors in a given basis
-##																			fixed for FSRFIL
+##																			fixed for FILFUN
 InstallMethod( PrintAll,"for FSR",true, [IsFSR,  IsBool ], 0, function( x, b )
 local uf, tap, i, B;
 
@@ -102,7 +102,7 @@ local uf, tap, i, B;
 		Print("NLFSR of length ",Length(x)," over ",uf);
 		Print(",\n  given by MultivarPoly = ", MultivarPoly(x));
 	else 
-		Print("FSRFIL of length ",Length(x)," over ",uf);
+		Print("FILFUN of length ",Length(x)," over ",uf);
 		Print(",\n  with the MultivarPoly = ", MultivarPoly(x));	
 	fi;
 	B := x!.basis;
@@ -149,7 +149,7 @@ end );
 #############################################################################
 ##
 #M  PrintAll( <fsr> ) . . . . . using GAP native representation of field elms
-##																				fixed for FSRFIL
+##																				fixed for FILFUN
 InstallMethod( PrintAll, "for FSR",    true,    [ IsFSR ],    0,  function( x )
 	PrintAll(x, false);
 end );
@@ -162,7 +162,7 @@ end );
 #
 #F WriteAllLFSR( <output>, <lfsr> , <b>) . . .. . . view a GF2 vector
 ##
-##																				fixed for FSRFIL
+##																				fixed for FILFUN
 
 InstallGlobalFunction( WriteAllFSR, function(output,  x, b)
 local uf, tap, i, B;
@@ -180,7 +180,7 @@ SetPrintFormattingStatus(output, false);
 			 	AppendTo(output,"NLFSR of length ",Length(x)," over ",uf);
 				AppendTo(output,",\n  given by MultivarPoly = ", MultivarPoly(x));
 			else					
-				AppendTo(output,"FSRFIL of length ",Length(x)," over ",uf);
+				AppendTo(output,"FILFUN of length ",Length(x)," over ",uf);
 				AppendTo(output,",\n given by MultivarPoly = ", MultivarPoly(x));					
 			fi;
 			
@@ -243,7 +243,7 @@ end);
 #
 #F WriteTEXAllLFSR( <output>, <lfsr> , <b>) . . .. . . view a GF2 vector
 ##
-##																				fixed for FSRFIL
+##																				fixed for FILFUN
 
 InstallGlobalFunction( WriteTEXAllFSR, function(output,  x, b, strGen, gen)
 local uf, tap, i, B;
@@ -266,7 +266,7 @@ SetPrintFormattingStatus(output, false);
 						AppendTo(output,",\\\\\n  given by MultivarPoly = ");
   WriteTEXMultivarFFPolyByGenerator(output,  uf,  FeedbackVec(x),  MonomialList(x),  strGen, gen);
 			else  
- 					 	AppendTo(output,"FSRFIL of length ",Length(x)," over ");
+ 					 	AppendTo(output,"FILFUN of length ",Length(x)," over ");
 						WriteTEXFF(output,uf);
 						AppendTo(output,",\\\\\n  given by MultivarPoly = ");
   WriteTEXMultivarFFPolyByGenerator(output,  uf,  FeedbackVec(x),  MonomialList(x),  strGen, gen); 
@@ -328,7 +328,7 @@ end);
 ##
 #F  WriteSequenceFSR ( <output>, <lfsr>, <sequence> ) . . . . write elm to file
 ##
-##																				fixed for FSRFIL
+##																				fixed for FILFUN
 
 InstallGlobalFunction( WriteSequenceFSR, function(output, x, sequence)
 local  i,j, tmp, B, m;
@@ -369,7 +369,7 @@ end);
 ##
 #F  WriteTBSequenceFSR ( <output>, <lfsr>, <sequence> ) . . .. write elm to file
 ##
-##																				fixed for FSRFIL
+##																				fixed for FILFUN
 
 InstallGlobalFunction( WriteTBSequenceFSR, function(output, x, sequence)
 local  i,j, tmp, B, m;
@@ -407,7 +407,7 @@ end);
 ##
 #F  WriteTEXSequenceFSR( <output>, <lfsr>, <sequence> ) . write to file
 ##
-##																				fixed for FSRFIL
+##																				fixed for FILFUN
 
 InstallGlobalFunction(WriteTEXSequenceFSR,
 function(output, x, sequence, strGen, gen)
@@ -467,7 +467,7 @@ end);
 ##
 #F  WriteTEXSequenceFSRByGenerator( <output>, <lfsr>, <sequence> ) . write to file
 ##
-##																				fixed for FSRFIL
+##																				fixed for FILFUN
 
 InstallGlobalFunction(WriteTEXSequenceFSRByGenerator,
 function(output, x, sequence, strGen, gen)
@@ -524,7 +524,7 @@ end);
 ##
 #F  WriteRunFSR( <output>, <fsr>, <ist>, <numsteps> )  . . . write to file
 ##
-##																				fixed for FSRFIL
+##																				fixed for FILFUN
 
 InstallGlobalFunction( WriteRunFSR, function(output, x, ist, num)
 local  i,j, sequence,  seq, tmp, treshold, B, m, F;

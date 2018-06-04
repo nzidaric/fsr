@@ -1,4 +1,12 @@
 gap> K := GF(2);;  y := X(K, "y");; B := Basis(K);;
+gap> l := y + 1;;
+gap> t1 :=  LFSR(K, l);
+< empty LFSR over GF(2)  given by FeedbackPoly = y+Z(2)^0 >
+gap> Length(t1);
+1
+gap> LoadFSR(t1, [One(K)]);
+Z(2)^0
+gap> K := GF(2);;  y := X(K, "y");; B := Basis(K);;
 gap> l := y^3 + y + 1;;
 gap> t1 :=  LFSR(K, l);
 < empty LFSR over GF(2) given by FeedbackPoly = y^3+y+Z(2)^0 >

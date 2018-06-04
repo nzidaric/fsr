@@ -120,7 +120,7 @@ DeclareOperation( "MonomialOverField",  [IsField, IsPolynomial]);
 ##
 #O  SplitCoeffsAndMonomials(<F>, <poly>) 			Degree of polynomial
 ##
-##  <#GAPDoc Label="SplitCoeffsAndMonomials">
+##  <#GAPDoc Label="MonomialsOverField">
 ##  <ManSection>
 ##  <Meth Name="SplitCoeffsAndMonomials" Arg='F, poly' />
 ##  <Meth Name="ReduceMonomialsOverField" Arg='F, poly'   />
@@ -224,7 +224,7 @@ DeclareOperation( "LeadingMonomialOverField",  [IsField, IsPolynomial]);
 ##
 #O  DegreeOfPolynomial(<poly>) 			Degree of polynomial
 ##
-##  <#GAPDoc Label="DegreeOfPolynomialOverField">
+##  <#GAPDoc Label="DegreeOfPolynomial">
 ##  <ManSection>
 ##  <Meth Name="DegreeOfPolynomialOverField" Arg='F, poly' />
 ##  <Meth Name="DegreeOfPolynomialOverField" Arg='F, clist, mlist' />
