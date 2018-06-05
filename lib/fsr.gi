@@ -364,9 +364,9 @@ end);
 
 
 #############################################################################
-##     StepFILFUN one step at a time !!!!
+##     LoadStepFSR one step at a time !!!!
 
-InstallMethod(StepFILFUN, "run FILFUN = load + 1step", 
+InstallMethod(LoadStepFSR, "run FILFUN = load + 1step", 
 [IsFILFUN, IsFFECollection, IsBool],
  function(x, ist,  pr)
 local  i,  seq,  B ;
@@ -386,7 +386,7 @@ local  i,  seq,  B ;
 	return seq;
 end);
 
-InstallMethod(StepFILFUN, " nonlinear run FILFUN = load + 1step", 
+InstallMethod(LoadStepFSR, " nonlinear run FILFUN = load + 1step", 
 [IsFILFUN, IsFFECollection, IsFFE, IsBool],
  function(x,  ist, elm, pr)
 local  i,  seq,  B;
@@ -407,46 +407,46 @@ local  i,  seq,  B;
 end);
 
 
-InstallMethod(StepFILFUN, "run FILFUN = load + 1step", 
+InstallMethod(LoadStepFSR, "run FILFUN = load + 1step", 
 [IsFILFUN, IsFFECollection],
  function(x, ist);
-	return StepFILFUN(x, ist, false);
+	return LoadStepFSR(x, ist, false);
 end);
  
-InstallMethod(StepFILFUN, "run FILFUN = load + 1step", 
+InstallMethod(LoadStepFSR, "run FILFUN = load + 1step", 
 [IsFILFUN, IsFFECollection, IsFFE],
  function(x, ist, elm);
-	return StepFILFUN(x, ist, elm, false);
+	return LoadStepFSR(x, ist, elm, false);
 end);
 
 
-InstallMethod(StepFILFUN, "run FILFUN = load + 1step", 
+InstallMethod(LoadStepFSR, "run FILFUN = load + 1step", 
 [IsFILFUN, IsFFE, IsBool],
  function(x, ist,  pr)
-return StepFILFUN(x, [ist], pr);
+return LoadStepFSR(x, [ist], pr);
 end);
 
 
 
-InstallMethod(StepFILFUN, "run FILFUN = load + 1step", 
+InstallMethod(LoadStepFSR, "run FILFUN = load + 1step", 
 [IsFILFUN, IsFFE],
  function(x, ist)
-return StepFILFUN(x, [ist], false);
+return LoadStepFSR(x, [ist], false);
 end);
 
 
-InstallMethod(StepFILFUN, " nonlinear run FILFUN = load + 1step", 
+InstallMethod(LoadStepFSR, " nonlinear run FILFUN = load + 1step", 
 [IsFILFUN, IsFFE, IsFFE, IsBool],
  function(x,  ist, elm, pr)
 
-return StepFILFUN(x, [ist], elm, pr);
+return LoadStepFSR(x, [ist], elm, pr);
 end);
 
-InstallMethod(StepFILFUN, " nonlinear run FILFUN = load + 1step", 
+InstallMethod(LoadStepFSR, " nonlinear run FILFUN = load + 1step", 
 [IsFILFUN, IsFFE, IsFFE],
  function(x,  ist, elm)
 
-return StepFILFUN(x, [ist], elm, false);
+return LoadStepFSR(x, [ist], elm, false);
 end);
 
 
@@ -630,7 +630,7 @@ local  i, sequence,treshold , seq, taps, B, nrsteps, m;
 		fi;
 
 		for i in [1.. Length(ist)] do 
-			seq := StepFILFUN(x, ist[i]);
+			seq := LoadStepFSR(x, ist[i]);
 			Add(sequence, seq);
 		od;
 	fi;
@@ -674,7 +674,7 @@ local  i, sequence,treshold , seq, taps, B, nrsteps, m;
 		fi;
 
 		for i in [1.. Length(ist)] do 
-			seq := StepFILFUN(x, ist[i]);
+			seq := LoadStepFSR(x, ist[i]);
 			Add(sequence, seq);
 		od;
 	fi;
@@ -844,7 +844,7 @@ sequence := [];
 			fi;
 			sequence :=[];
 			for i in [1.. Length(ist)] do 
-				seq := StepFILFUN(x, ist[i]);
+				seq := LoadStepFSR(x, ist[i]);
 				Add(sequence, seq);
 			od;
 	fi;
