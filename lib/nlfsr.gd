@@ -21,7 +21,11 @@
 ##
 ##  <#GAPDoc Label="NLFSR">
 ##  <ManSection>
-##  <Func Name="NLFSR" Arg='K, clist , mlist, len[, tap]' />
+##  <Func Name="NLFSR" Arg='K, mpoly, len[, tap]' />
+##  <Func Name="NLFSR" Arg='K, fieldpoly, mpoly, len[, tap]' 
+##  Label="with field defining polynomial "/>
+##  <Func Name="NLFSR" Arg='K, clist , mlist, len[, tap]' 
+##  Label="with clist and mlist"/>
 ##  <Func Name="NLFSR" Arg='K, fieldpoly, clist , mlist, len[, tap]' 
 ##  Label="with field defining polynomial"/>
 ##  <Returns>
@@ -30,15 +34,17 @@
 ##  </Returns>	
 ##  <Description>
 ##  Function NLFSR provides different ways to create an <C>NLFSR</C> object;   
-##  the main difference is in the
+##  the main differences are in multivariate polynomial specification and in 
 ##  construction of the underlying finite field. The <C>NLFSR</C> is uniquely 
-##  described with a a multivariate polynomial, which is given by two lists: 
+##  described with a a multivariate polynomial, which is either given directly
+##  as <A>mpoly</A> or by two lists: 
 ##  a list of monomials <A>mlist</A>, and a list of their corresponding 
-##  coefficients <A>clist</A>. Both of lists must always be provided (the 
-##  creation of a random NLFSR is currently not implemented). <P/>    
-##  NOTE: before creating the <C>NLFSR</C>, we must always create the
+##  coefficients <A>clist</A>, i.e. <M>mpoly = clist \cdot mlist</M>.
+##  Both of lists must always be provided and be of same length. The 
+##  creation of a random NLFSR is currently not implemented. <P/>    
+##  <!-- NOTE: before creating the <C>NLFSR</C>, we must always create the
 ##  indeterminates to be used for the feedback using <Ref Func="ChooseField" /> 
-##  function call! Please see the example below.
+##  function call! Please see the example below.-->
 ##  <P/>
 ##  Inputs:
 ##  <List>
@@ -46,6 +52,7 @@
 ##   or a prime field).</Item>
 ##  <Item> <A>fieldpoly</A> - the defifning polynomial of the extension field 
 ##  (must be irreducible). </Item>
+##  <Item> <A>mpoly</A> - the feedback polynomial. </Item>
 ##  <Item> <A>clist</A> - the list of coefficients for the monomials in 
 ##  <A>mlist</A>. </Item>
 ##  <Item> <A>mlist</A> - the list of monomials.  </Item>
@@ -62,7 +69,9 @@
 ##  <A>mlist</A> must not include any indeterminates that are out of range 
 ##  specified by <A>len</A>: stages of <C>NLFSR</C> are represented by 
 ##  indeterminants and the feedback is not allowed to use a stage that doesnt 
-##  exist. A second constraint on <A>mlist</A> requires that it must contain at
+##  exist. Currently, 200 variables are available, which puts the maximum length 
+##  of the NLFSR too 200 stages. A second constraint on <A>mlist</A> requires 
+##  that it must contain at
 ##  least one monomial of degree <M>>1</M>, otherwise we must create an 
 ##  <C>LFSR</C>. <P/> 
 ##  Compoents:
@@ -98,17 +107,7 @@
 ##  the function returns <C>fail</C>.
 ##  <Example>
 ##  <![CDATA[
-##  gap>  F := GF(2);;  clist := [One(F), One(F)];; mlist := [x_0, x_1*x_2];;
-##  Error, Variable: 'x_0' must have a value
-##  not in any function at line 2 of *stdin*
-##  gap> test := NLFSR(F, clist, mlist, 3);
-##  Error, Variable: 'mlist' must have a value
-##  not in any function at line 3 of *stdin*
-##  brk> quit;
-##  gap> ChooseField(F);
-##  You can now create an NLFSR with up to 200 stages
-##  with up to  200 nonzero terms
-##  gap> mlist := [x_0, x_1*x_2];;                                          
+##  gap>  F := GF(2);;  clist := [One(F), One(F)];; mlist := [x_0, x_1*x_2];;                                        
 ##  gap> test := NLFSR(F, clist, mlist, 3);
 ##  < empty NLFSR of length 3 over GF(2),
 ##    given by MultivarPoly = x_1*x_2+x_0> 

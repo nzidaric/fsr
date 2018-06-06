@@ -368,23 +368,16 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 
 # load + 1step
 #regular step
-DeclareOperation("LoadStepFSR", [IsFSR, IsFFECollection, IsBool]);
 DeclareOperation("LoadStepFSR", [IsFSR, IsFFECollection]);
 
 #external step
-DeclareOperation("LoadStepFSR", [IsFSR, IsFFECollection, IsFFE, IsBool]);
 DeclareOperation("LoadStepFSR", [IsFSR, IsFFECollection, IsFFE]);
 
 #regular step
-DeclareOperation("LoadStepFSR", [IsFSR, IsFFE, IsBool]);
 DeclareOperation("LoadStepFSR", [IsFSR, IsFFE]);
 
 #external step
-DeclareOperation("LoadStepFSR", [IsFSR, IsFFE, IsFFE, IsBool]);
 DeclareOperation("LoadStepFSR", [IsFSR, IsFFE, IsFFE]);
-
-
-
 
 
 
@@ -585,68 +578,51 @@ DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsFFE, IsFFE, IsPosInt]);
 
 
 
+# IsPosInt when i want to specify #steps performed 
+# IsBool for the printswitch
 
-DeclareOperation("RunFSR", [IsFSR, IsPosInt, IsBool]);
-#Ib.   run for num steps with/without print to shell 
-
-DeclareOperation("RunFSR", [IsFSR, IsPosInt]);
-#II.  run for num steps without print to shell  
-
-DeclareOperation("RunFSR", [IsFSR,  IsBool]);
-#IIIb. run with/without print to shell  
-
-DeclareOperation("RunFSR", [IsFSR ]);
-#IV.  run without print to shell  
-
-DeclareOperation("RunFSR", [IsFSR,  IsFFECollection, IsPosInt, IsBool]);
-DeclareOperation("RunFSR", [IsFSR,  IsFFECollColl, IsPosInt, IsBool]);
-#Vb. load new initial state then run for num-1 steps with/without print to shell
+# I. just run , assuming allready loaded
+DeclareOperation("RunFSR", [IsFSR, IsPosInt, IsBool]);  	# I.
+DeclareOperation("RunFSR", [IsFSR, IsPosInt]);				# Ia.
+DeclareOperation("RunFSR", [IsFSR, IsBool]);					# Ib.
+DeclareOperation("RunFSR", [IsFSR ]);							# Ic.
 
 
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt]);
-DeclareOperation("RunFSR", [IsFSR, IsFFECollColl, IsPosInt]);
-#VI.  load new initial state then run for num-1 steps without print to shell  
-
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsBool]);
-DeclareOperation("RunFSR", [IsFSR, IsFFECollColl, IsBool]);
-#VIIb. load new initial state then run without print to shell  
-
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection]);
-DeclareOperation("RunFSR", [IsFSR, IsFFECollColl]);
-#VII. load new initial state then run without print to shell  
+# II. load + run
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt, IsBool]);	# II.
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt]);			# IIa.
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsBool]);				# IIb.
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection]);							# IIc.
 
 ## external versions
-DeclareOperation("RunFSR", [IsFSR,  IsFFE, IsPosInt, IsBool]);
-#VIIIb. run for num steps with the same external input on each step and 
-#with/without print to shell  
-
-DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt]);
-#IX. run for num steps with the same external input on each step 
-#without print to shell  
-
-DeclareOperation("RunFSR", [IsFSR, IsFFE, IsBool]);
-#Xb.   run with the same external input on each step without print to shell  
-
-DeclareOperation("RunFSR", [IsFSR, IsFFE]);
-#X.   run with the same external input on each step without print to shell  
-
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection, IsBool]);
-# XIb. run for num steps with the different external input on each step and 
-#with/without print to shell  
-
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection]);
-# XI. run for num steps with the different external input on each step and 
-#with/without print to shell  
+# III. run for num steps with the same external input on each step 
+DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt, IsBool]);				# III.
+DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt]);							# IIIa.
+DeclareOperation("RunFSR", [IsFSR, IsFFE, IsBool]);							# IIIb.
+DeclareOperation("RunFSR", [IsFSR, IsFFE]);										# IIIc.
+ 
+# IV. load and run for num steps with a different external input on each step
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection, IsBool]); # IV.
+DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection]);			 # Iva.
 
 
-DeclareOperation("RunFSR", [IsFSR, IsZero, IsFFECollection, IsBool]);
-# XIIb. run for num steps with the different external input on each step and 
-#with/without print to shell  
+# V. continue a run with a different external input on each step
+DeclareOperation("RunFSR", [IsFSR, IsZero, IsFFECollection, IsBool]);	# V.
+DeclareOperation("RunFSR", [IsFSR, IsZero, IsFFECollection]);				# Va.
 
-DeclareOperation("RunFSR", [IsFSR, IsZero, IsFFECollection]);
-# XII. run for num steps with the different external input on each step and 
-#with/without print to shell  
+# run for FILFUN
 
+# VI. run for FILFUN, using LoadStepFSR calls
+DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl, IsBool]);		# VI.
+DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl]);				# VIa.
+
+# VII. run with the same external input on each step 
+DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl, IsFFE, IsBool]); 	# VII.
+DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl, IsFFE]);				# VIIa.
+
+# VIII. run with a different external input on each step 
+DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl, IsFFECollection, IsBool]);	# VIII.
+DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl, IsFFECollection]);										# VIIIa.
 
 
 

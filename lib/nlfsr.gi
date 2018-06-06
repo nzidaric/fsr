@@ -188,9 +188,6 @@ cl := SplitCoeffsAndMonomials(F, multpol)[1];
 ml := SplitCoeffsAndMonomials(F, multpol)[2];	
 	
 
-
-
-	
 	indlist := []; 
 # get all the indeterminates in all monomials
 	for i in [1 .. Length(ml)] do 
@@ -240,7 +237,7 @@ ml := SplitCoeffsAndMonomials(F, multpol)[2];
 			tap[i] := 0;
 		fi;
 	od;	
-# new LFSR :) 
+# new NLFSR :) 
 	fam :=FSRFamily(Characteristic(K));
 	nlfsr := Objectify(NewType(fam, IsFSRRep),   
 			rec(init:=st, state:= st, numsteps := -1, basis := CanonicalBasis(F)));
