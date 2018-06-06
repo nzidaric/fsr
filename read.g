@@ -27,4 +27,8 @@ ReadPackage( "FSR", "lib/drawlfsr.gi" ); # NLFSR drawing functions - outputs a *
 ReadPackage( "FSR", "lib/drawnlfsr.gi" ); # NLFSR drawing functions - outputs a *.tex file
 
 Print("read.g done!!!\n");
+
+ChooseField(GF(2^16));
+
+
 #E  read.g . . . . . . . . . . . . . . . . . . . . . . . . . . . .  ends here

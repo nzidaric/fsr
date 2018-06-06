@@ -287,11 +287,11 @@ end);
 
 #############################################################################
 ##
-#O  StepFSR			fixed for IsFILFUN for both regular and nonlin step
+#O  StepFSR			fixed for IsFILFUN for both regular and external step
 ##
 
 
-InstallMethod(StepFSR, "one step of FSR", [IsFSR], function(x )
+InstallMethod(StepFSR, "one regular step of FSR", [IsFSR], function(x )
 local fb, st, new, tap, i, seq, n;
 
 	new := FeedbackFSR(x);	# regular step
@@ -328,11 +328,11 @@ end);
 
 
 
-InstallMethod(StepFSR, "one step of FSR with an external input", [IsFSR, IsFFE],
+InstallMethod(StepFSR, "one external step of FSR", [IsFSR, IsFFE],
  function(x, elm)
 local fb, st, new, tap,i, seq, F, n, idx, indlist, slist, xlist;
 	
-	new := FeedbackFSR(x) + elm; # nonlinear step
+	new := FeedbackFSR(x) + elm; #external step
 	x!.numsteps := x!.numsteps + 1;
 
 	if not IsFILFUN(x) then 
@@ -366,13 +366,15 @@ end);
 #############################################################################
 ##     LoadStepFSR one step at a time !!!!
 
-InstallMethod(LoadStepFSR, "run FILFUN = load + 1step", 
-[IsFILFUN, IsFFECollection, IsBool],
+InstallMethod(LoadStepFSR, "load + 1 regular step", 
+[IsFSR, IsFFECollection, IsBool],
  function(x, ist,  pr)
-local  i,  seq,  B ;
+local  i,  seq, seqlist,  B ;
 
+seqlist := [];
 # load FSR
-	LoadFSR(x,ist); # the seq_0 element
+	seq := LoadFSR(x,ist); # the seq_0 element
+	Add(seqlist, seq);
 # start run
 	seq := StepFSR(x);
 # print 
@@ -382,17 +384,22 @@ local  i,  seq,  B ;
 		Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t");  # NOT reversed !!!!
 		Print("\t\t", IntFFExt(B,seq) , "\n");
 	fi;	
-
-	return seq;
+	if IsFILFUN(x) then
+		return seq;
+	else 
+		Add(seqlist, seq);
+		return seqlist;
+	fi;
 end);
 
-InstallMethod(LoadStepFSR, " nonlinear run FILFUN = load + 1step", 
-[IsFILFUN, IsFFECollection, IsFFE, IsBool],
+InstallMethod(LoadStepFSR, " load + 1 external step", 
+[IsFSR, IsFFECollection, IsFFE, IsBool],
  function(x,  ist, elm, pr)
-local  i,  seq,  B;
+local  i,  seq, seqlist, B;
 
 # load FSR
-	LoadFSR(x,ist); # the seq_0 element
+	seq := LoadFSR(x,ist); # the seq_0 element
+	Add(seqlist, seq);
 # start run
 	seq := StepFSR(x, elm);
 # print 
@@ -402,48 +409,51 @@ local  i,  seq,  B;
 		Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t"); # NOT reversed !!!!
 		Print("\t\t", IntFFExt(B,seq) , "\n");
 	fi;	
-
-	return seq;
+	if IsFILFUN(x) then
+		return seq;
+	else 
+		Add(seqlist, seq);
+		return seqlist;
+	fi;
 end);
 
 
-InstallMethod(LoadStepFSR, "run FILFUN = load + 1step", 
-[IsFILFUN, IsFFECollection],
+InstallMethod(LoadStepFSR, "load + 1 regular step", [IsFSR, IsFFECollection],
  function(x, ist);
 	return LoadStepFSR(x, ist, false);
 end);
  
-InstallMethod(LoadStepFSR, "run FILFUN = load + 1step", 
-[IsFILFUN, IsFFECollection, IsFFE],
+InstallMethod(LoadStepFSR, "load + 1 external step", 
+[IsFSR, IsFFECollection, IsFFE],
  function(x, ist, elm);
 	return LoadStepFSR(x, ist, elm, false);
 end);
 
 
-InstallMethod(LoadStepFSR, "run FILFUN = load + 1step", 
-[IsFILFUN, IsFFE, IsBool],
+InstallMethod(LoadStepFSR, "load + 1 regular step", 
+[IsFSR, IsFFE, IsBool],
  function(x, ist,  pr)
 return LoadStepFSR(x, [ist], pr);
 end);
 
 
 
-InstallMethod(LoadStepFSR, "run FILFUN = load + 1step", 
-[IsFILFUN, IsFFE],
+InstallMethod(LoadStepFSR, "load + 1 regular step", 
+[IsFSR, IsFFE],
  function(x, ist)
 return LoadStepFSR(x, [ist], false);
 end);
 
 
-InstallMethod(LoadStepFSR, " nonlinear run FILFUN = load + 1step", 
-[IsFILFUN, IsFFE, IsFFE, IsBool],
+InstallMethod(LoadStepFSR, "load + 1 external step", 
+[IsFSR, IsFFE, IsFFE, IsBool],
  function(x,  ist, elm, pr)
 
 return LoadStepFSR(x, [ist], elm, pr);
 end);
 
-InstallMethod(LoadStepFSR, " nonlinear run FILFUN = load + 1step", 
-[IsFILFUN, IsFFE, IsFFE],
+InstallMethod(LoadStepFSR, "load + 1 external step", 
+[IsFSR, IsFFE, IsFFE],
  function(x,  ist, elm)
 
 return LoadStepFSR(x, [ist], elm, false);
@@ -526,8 +536,8 @@ end);
 # Vb. load new initial state then run for num-1 steps with/without print to shell
 
 
-InstallMethod(PrintHeaderRunFSR, "print header for run FSR", [IsFSR, IsFFE, IsPosInt],
- function(x, seq, m)
+InstallMethod(PrintHeaderRunFSR, "print header for run FSR", 
+[IsFSR, IsFFE, IsPosInt], function(x, seq, m)
 local  i, taps, B, nrsteps;
 		B := x!.basis;
 		Print("using basis B := ",BasisVectors(B),"\t\n");
@@ -560,8 +570,8 @@ local  i, taps, B, nrsteps;
 return;
 end);
 
-InstallMethod(PrintHeaderRunFSR, "print header for run FSR", [IsFSR, IsFFE, IsFFE, IsPosInt],
- function(x, elm, seq, m)
+InstallMethod(PrintHeaderRunFSR, "print header for run FSR",
+ [IsFSR, IsFFE, IsFFE, IsPosInt],  function(x, elm, seq, m)
 local  i, taps, B, nrsteps;
 		B := x!.basis;
 		Print("using basis B := ",BasisVectors(B),"\t\n");
@@ -607,7 +617,8 @@ local  i, sequence,treshold , seq, taps, B, nrsteps, m;
 # check num
 		treshold := Threshold(x);
 		if num > treshold then
-			Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
+			Print("over the threshold, will only output the first ",treshold);
+			Print(" elements of the sequence\n");
 			nrsteps := treshold;
 		else 	nrsteps := num;
 		fi;
@@ -651,7 +662,8 @@ local  i, sequence,treshold , seq, taps, B, nrsteps, m;
 # check num
 		treshold := Threshold(x);
 		if num > treshold then
-			Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
+			Print("over the threshold, will only output the first ",treshold);
+			Print(" elements of the sequence\n");
 			nrsteps := treshold;
 		else 	nrsteps := num;
 		fi;
@@ -729,10 +741,10 @@ InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollColl], function(x, ist )
 end);
 
 
-# NONLINEAR STEP
+# EXTERNAL STEP
 # rationale behind copied code is speed: could be a very long sequence, dont want to many functions calling eachother
 
-# VIIIb. run for num steps with the same nonlinear input on each step and with/without print to shell
+# VIIIb. run for num steps with the same external input on each step and with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt, IsBool],
  function(x, elm, num, pr)
 local seq, sequence, nrsteps, treshold, i, B;
@@ -743,7 +755,8 @@ local seq, sequence, nrsteps, treshold, i, B;
 # check num
 		treshold := Threshold(x);
 	if num > treshold then
-		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
+			Print("over the threshold, will only output the first ",treshold);
+			Print(" elements of the sequence\n");
 		nrsteps := treshold;
 	else 	nrsteps := num;
 	fi;
@@ -760,7 +773,7 @@ local seq, sequence, nrsteps, treshold, i, B;
 #print on every step
 		if pr then
 			Print("\t\t", IntVecFFExt(B, x!.state));  				# NOT reversed !!!!
-			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
+			if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
 			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
 			fi;
 		fi;
@@ -771,19 +784,19 @@ end);
 
 
 
-# IX. run for num steps with the same nonlinear input on each step without print to shell
+# IX. run for num steps with the same external input on each step without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt], function(x, elm, num)
 	return RunFSR(x, elm, num, false);
 end);
 
 
-# Xb. run for num steps with the same nonlinear input on each step without print to shell
+# Xb. run for num steps with the same external input on each step without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsBool], function(x, elm, pr)
 	return RunFSR(x,  elm,   Threshold(x) , pr); ## change num to something huge then the called method will set the threshold
 end);
 
 
-# X. run for num steps with the same nonlinear input on each step without print to shell
+# X. run for num steps with the same external input on each step without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE], function(x, elm)
 	return RunFSR(x,  elm,  Threshold(x) , false); ## change num to something huge then the called method will set the threshold
 end);
@@ -791,7 +804,7 @@ end);
 
 
 
-# XIb. run for num steps with the different nonlinear input on each step with/without print to shell
+# XIb. run for num steps with the different external input on each step with/without print to shell
 InstallMethod(RunFSR, "run FSR",
 [IsFSR,  IsFFECollection, IsFFECollection, IsBool],
 function(x,  ist, elmvec, pr)
@@ -812,7 +825,8 @@ local  sequence,  treshold, num, nrsteps, seq , seq0, i, B, m;
 	treshold := Threshold(x);
 	num := Length(elmvec);
 	if num > treshold then
-		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
+			Print("over the threshold, will only output the first ",treshold);
+			Print(" elements of the sequence\n");
 		nrsteps := treshold;
 	else 	nrsteps := num;
 	fi;
@@ -854,14 +868,14 @@ sequence := [];
 end);
 
 
-# XI. run for num steps with the different nonlinear input on each step with/without print to shell
+# XI. run for num steps with the different external input on each step with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsFFECollection],
  function(x, ist, elmvec)
 	return RunFSR(x, ist, elmvec, false);
 
 end);
 
-# XIIb. run for num steps with the different nonlinear input on each step with/without print to shell,
+# XIIb. run for num steps with the different external input on each step with/without print to shell,
 # without loading first
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsFFECollection, IsBool],
  function(x, z, elmvec, pr)
@@ -902,7 +916,8 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
 	treshold := Threshold(x);
 	num := Length(elmvec);
 	if num > treshold then
-		Print("over the threshold, will only output the first ",treshold," elements of the sequence\n");
+			Print("over the threshold, will only output the first ",treshold);
+			Print(" elements of the sequence\n");
 		nrsteps := treshold;
 	else 	nrsteps := num;
 	fi;
@@ -915,7 +930,7 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
 		if pr then
 			Print(IntFFExt(B,elmvec[i]),"\t\t");  				# NOT reversed !!!!
 			Print(IntVecFFExt(B,x!.state));  				# NOT reversed !!!!
-			if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
+			if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
 			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
 			fi;
 		fi;
@@ -928,8 +943,9 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
 end);
 
 
-# XII. run for num steps with the different nonlinear input on each step with/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsFFECollection], function(x, z, elmvec)
+# XII. run for num steps with the different external input on each step with/without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsFFECollection], 
+function(x, z, elmvec)
 	return RunFSR(x, z, elmvec, false);
 
 end);

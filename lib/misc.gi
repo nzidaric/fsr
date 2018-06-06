@@ -15,21 +15,22 @@
 ## ugly, take a second look at it !!!!
 ##
 
-
+MaxNLFSRLen := 200;
+MaxNrOfPresentMonomials := 200;
 
 InstallGlobalFunction( ChooseField, function( F )
-    local x, i , str, MaxNLFSRLen, MaxNrOfPresentMonomials, xlist ;
+    local x, i , str,  xlist ;
 
 	if(IsField(F)) then
 		x := X(F, "x");
-		MaxNLFSRLen := 200;
-		MaxNrOfPresentMonomials := 200;
-		if not IsBoundGlobal("MaxNLFSRLen") then
-			BindGlobal("MaxNLFSRLen" , 200);
-			BindGlobal("MaxNrOfPresentMonomials" , 200);
-			MakeReadWriteGlobal("MaxNLFSRLen");
-			MakeReadWriteGlobal("MaxNrOfPresentMonomials");
-		fi;
+#		MaxNLFSRLen := 200;
+#		MaxNrOfPresentMonomials := 200;
+#		if not IsBoundGlobal("MaxNLFSRLen") then
+#			BindGlobal("MaxNLFSRLen" , 200);
+#			BindGlobal("MaxNrOfPresentMonomials" , 200);
+#			MakeReadWriteGlobal("MaxNLFSRLen");
+#			MakeReadWriteGlobal("MaxNrOfPresentMonomials");
+#		fi;
 
 		xlist := [];
 		for i in [1..MaxNLFSRLen] do
@@ -49,8 +50,11 @@ InstallGlobalFunction( ChooseField, function( F )
 		if not IsBoundGlobal("xlist") then
 			BindGlobal("xlist" , xlist);
 		fi;
-	Print("You can now create an NLFSR with up to ", MaxNLFSRLen ," stages\n");
-		Print("with up to  ", MaxNrOfPresentMonomials ," nonzero terms\n");
+#Print("\nYou can now create an NLFSR or FILFUN with up to ", MaxNLFSRLen );
+#Print("variables\n with up to  ", MaxNrOfPresentMonomials ," nonzero terms\n");
+
+Print("\nYou can now use ", MaxNLFSRLen );
+Print(" variables x_0 ...x_", MaxNLFSRLen -1 ,"\n");
 	else
 	    Error("F is not a field !!!! \n");
 	  fi;
