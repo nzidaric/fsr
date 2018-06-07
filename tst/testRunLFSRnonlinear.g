@@ -1,8 +1,8 @@
-#testing the run of the LFSR with a nonlinear input
+#testing the run of the LFSR with a external input
 
 sequence1:=[];sequence2 :=[];sequence3 :=[];sequence4 :=[];sequence5 :=[];sequence6 :=[];
 #############################################################################
-#O  RunLFSR(<lfsr>, <elm>, <num>, <pr>) ...... VIII. run for num steps with the same nonlinear input on each step and with/without print to shell
+#O  RunLFSR(<lfsr>, <elm>, <num>, <pr>) ...... VIII. run for num steps with the same external input on each step and with/without print to shell
 K := GF(2); 
 y := X(K, "y");
 l := y^3 + y + 1;
@@ -17,7 +17,7 @@ Add(sequence1,seq0,1);
 Print(IntVecFFExt(sequence1));Print("\n"); 
 PrintAll(t1);
 Print("\n"); Print("\n"); 
-#O  RunLFSR(<lfsr>, <elm>)			  #IX.   run with the same nonlinear input on each step without print to shell
+#O  RunLFSR(<lfsr>, <elm>)			  #IX.   run with the same external input on each step without print to shell
 seq0 := LoadLFSR(t1,ist1);
 Print("test for RunLFSR(<lfsr>, <elm>) IX.\n");
 sequence2 := RunLFSR(t1,elm);
@@ -34,7 +34,7 @@ od;
 
 Print("check if sequences from the two tests equal? : ",check1 ,"\n");
 
-#O  RunLFSR(<lfsr>, <ist>, <elmvec>, <pr> ) .. X.    run for num steps with the different nonlinear input on each step with/without print to shell
+#O  RunLFSR(<lfsr>, <ist>, <elmvec>, <pr> ) .. X.    run for num steps with the different external input on each step with/without print to shell
 elmvec := [Z(2)^0,Z(2)^0,Z(2)^0,Z(2)^0,Z(2)^0,Z(2)^0,Z(2)^0,Z(2)^0,Z(2)^0,Z(2)^0];
 
 Print("test for RunLFSR(<lfsr>, <ist>, <elmvec>, <pr> ) X.\n");
@@ -53,7 +53,7 @@ Print(IntVecFFExt(sequence2));Print("\n");
 Print(IntVecFFExt(sequence3));Print("\n"); 
 Print("\n"); Print("\n"); Print("\n"); 
 #############################################################################
-#O  RunLFSR(<lfsr>, <ist>, <elmvec>, <pr> ) .. X.    run for num steps with the different nonlinear input on each step with/without print to shell
+#O  RunLFSR(<lfsr>, <ist>, <elmvec>, <pr> ) .. X.    run for num steps with the different external input on each step with/without print to shell
 elmvec := [Z(2)^0,0*Z(2),Z(2)^0,Z(2)^0,0*Z(2),0*Z(2),Z(2)^0,Z(2)^0,0*Z(2),Z(2)^0];
 sequence4 := RunLFSR(t1,ist1,elmvec,true);
 Print(IntVecFFExt(sequence4));Print("\n"); 

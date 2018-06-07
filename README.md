@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/nzidaric/gap-fsr.svg?branch=master)](https://travis-ci.org/nzidaric/gap-fsr)
-[![Code Coverage](https://codecov.io/github/nzidaric/gap-fsr/coverage.svg?branch=master&token=)](https://codecov.io/gh/nzidaric/gap-fsr)
+[![Build Status](https://travis-ci.org/nzidaric/fsr.svg?branch=master)](https://travis-ci.org/nzidaric/fsr)
+[![Code Coverage](https://codecov.io/github/nzidaric/fsr/coverage.svg?branch=master&token=)](https://codecov.io/gh/nzidaric/fsr)
 
 The FSR package 
 

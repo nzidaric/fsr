@@ -46,8 +46,8 @@ FSRMANUALFILES:=[
 "../lib/lfsr.gd",
 "../lib/nlfsr.gd",
 "../lib/outfsr.gd",
-"../lib/outputs.gd",
 "../lib/misc.gd",
+"../lib/outputs.gd",
 ];
 Print(FSRMANUALFILES,"\n");
 
@@ -57,9 +57,8 @@ Print(FSRMANUALFILES,"\n");
 ##
 FSRBuildManual := function()
 local path, main, files, bookname;
-path:=Concatenation(
-               GAPInfo.PackagesInfo.("fsr")[1].InstallationPath,"/doc/");
-main:="manual.xml";
+path:="doc";
+main:="manual";
 bookname:="fsr";
 MakeGAPDocDoc( path, main, FSRMANUALFILES, bookname, "../../..", "MathJax" );  
 #MakeGAPDocDoc( path, main, FSRMANUALFILES, bookname ); 
