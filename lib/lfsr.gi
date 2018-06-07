@@ -378,9 +378,11 @@ local  l, period,  F;
 	elif IsIrreducibleRingElement(PolynomialRing(F),  l) then 
 		period := PeriodIrreducible(F, l);
 		Print("warning: the polynomial is irreducible !!!\n");
+				SetIsMaxSeqLFSR(x,false);
 	else 
 		period := PeriodReducible(F, l);
 		Print("warning: the polynomial is reducible !!!\n");
+				SetIsMaxSeqLFSR(x,false);
 	fi;
  
 	SetPeriod(x,period);

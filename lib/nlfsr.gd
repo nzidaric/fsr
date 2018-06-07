@@ -21,12 +21,12 @@
 ##
 ##  <#GAPDoc Label="NLFSR">
 ##  <ManSection>
-##  <Func Name="NLFSR" Arg='K, mpoly, len[, tap]' />
-##  <Func Name="NLFSR" Arg='K, fieldpoly, mpoly, len[, tap]' 
+##  <Func Name="NLFSR" Arg='F, mpoly, len[, tap]' />
+##  <Func Name="NLFSR" Arg='F, fieldpoly, mpoly, len[, tap]' 
 ##  Label="with field defining polynomial "/>
-##  <Func Name="NLFSR" Arg='K, clist , mlist, len[, tap]' 
+##  <Func Name="NLFSR" Arg='F, clist , mlist, len[, tap]' 
 ##  Label="with clist and mlist"/>
-##  <Func Name="NLFSR" Arg='K, fieldpoly, clist , mlist, len[, tap]' 
+##  <Func Name="NLFSR" Arg='F, fieldpoly, clist , mlist, len[, tap]' 
 ##  Label="with field defining polynomial"/>
 ##  <Returns>
 ##  An empty <C>NLFSR</C>  with components <C>init</C>, <C>state</C>,
@@ -107,7 +107,11 @@
 ##  the function returns <C>fail</C>.
 ##  <Example>
 ##  <![CDATA[
-##  gap>  F := GF(2);;  clist := [One(F), One(F)];; mlist := [x_0, x_1*x_2];;                                        
+##  gap>  F := GF(2);;                                         
+##  gap> test := NLFSR(F, x_0*x_3*x_1 + x_2, 5);  
+##  < empty NLFSR of length 5 over GF(2),
+##     given by MultivarPoly = x_0*x_1*x_3+x_2> 
+##  clist := [One(F), One(F)];; mlist := [x_0, x_1*x_2];; 
 ##  gap> test := NLFSR(F, clist, mlist, 3);
 ##  < empty NLFSR of length 3 over GF(2),
 ##    given by MultivarPoly = x_1*x_2+x_0> 

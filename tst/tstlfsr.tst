@@ -693,7 +693,36 @@ gap> K := GF(2);; x := X(K, "x");;test := LFSR(K, x^3 + 1);
 gap> Period(test);
 warning: the polynomial is reducible !!!
 3
-
-
-
-
+gap> K := GF(2);; x := X(K, "x");;
+gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
+gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
+gap> tap := 1;;
+gap> t6 := LFSR(F, l, tap);   
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> t6 := LFSR(F, l, 8);  
+argument tap[1]=8 is out of range 0..3, or not given => im taking S_0 instead!
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> K := GF(2);; x := X(K, "x");;
+gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
+gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
+gap> tap := 1;;
+gap> t6 := LFSR(F, l, tap);   
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> t6 := LFSR(F, l, 8);  
+argument tap[1]=8 is out of range 0..3, or not given => im taking S_0 instead!
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> K := GF(2);; x := X(K, "x");;
+gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
+gap> y := X(F, "y");; l := y^4 + y^3 + y + Z(2^4);;
+gap> test := LFSR(K, f, l);;
+gap> Period(test);
+65535
+gap> test  := LFSR (F, x^13+x^12+x^10+x^9+Z(2)^0);;
+gap> Period(test);
+warning: the polynomial is irreducible !!!
+8191
+gap> K := GF(2);; x := X(K, "x");;
+gap> test  := LFSR (K, x^14+x^11+x^10+x^9+x^7+x^5+x^4+x+Z(2)^0);;
+gap> Period(test);  
+warning: the polynomial is irreducible !!!
+5461

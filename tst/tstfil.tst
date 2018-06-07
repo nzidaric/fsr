@@ -59,6 +59,3 @@ gap> fil := FILFUN(F, mpoly);
   with the MultivarPoly = x_0*x_2+Z(2)^0> 
 gap> ConstTermOfFILFUN(fil);
 Z(2)^0
-
-
-

@@ -390,4 +390,15 @@ gap> nl := NLFSR(F, mpoly, 3);
  given by MultivarPoly = x_0*x_1+x_2> 
 gap> ConstTermOfNLFSR(nl);
 0*Z(2)
-
+gap> F := GF(2);; B:= Basis(F);;
+gap> mpoly := x_0*x_1 + x_2;;
+gap> mpoly := x_0*x_1 + x_2 + 1;; 
+gap> nl := NLFSR(F, mpoly, 5);   
+< empty NLFSR of length 5 over GF(2),
+ given by MultivarPoly = x_0*x_1+x_2+Z(2)^0> 
+gap> ConstTermOfNLFSR(nl);
+Z(2)^0
+gap> nl := NLFSR(F, mpoly, 5, 8);
+argument tap[1]=8 is out of range 0..4, or not given => im taking S_0 instead!
+< empty NLFSR of length 5 over GF(2),
+ given by MultivarPoly = x_0*x_1+x_2+Z(2)^0> 
