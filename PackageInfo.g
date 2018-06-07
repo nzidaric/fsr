@@ -103,7 +103,7 @@ Dependencies := rec(
 
 AvailabilityTest := ReturnTrue,
 
-TestFile := "tst/testall.tst",
+TestFile := "tst/testall.g",
 
 Keywords := ["package FSR", "LFSR" , "finite fields", "sequences"]
 

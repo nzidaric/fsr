@@ -20,7 +20,7 @@ needed-pkgs:
       url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
 
 www: https://nzidaric.github.io/FSR
-readme: README
+readme: README.md
 packageinfo: https://nzidaric.github.io/FSR/PackageInfo.g
 
 downloads:
@@ -31,7 +31,7 @@ abstract: |
 
 status: other
 doc-html: doc/chap0.html
-doc-pdf: doc/fsr.pdf
+doc-pdf: doc/manual.pdf
 keywords: |
     package FSR, LFSR, finite fields, sequences.
 citeas: |
@@ -48,11 +48,14 @@ citeas: |
 bibtex: |
     @misc{ FSR1.2.0,
       author =           {Zidaric, N. and Aagaard, M. and Gong, G.},
-      title =            {{FSR}, FSR - Feedback Shift Register Package, {V}ersion 1.2.0},
+      title =            {{FSR},   FSR   -   Feedback  Shift  Register  Package,
+                          {V}ersion 1.2.0},
       month =            {Mar},
       year =             {2018},
       note =             {GAP package},
-      howpublished =     {\href {https://nzidaric.github.io/FSR} {\texttt{https://nzidaric.github.io/}\discretionary {}{}{}\texttt{FSR}}},
+      howpublished =     {\href                 {https://nzidaric.github.io/FSR}
+                          {\texttt{https://nzidaric.github.io/}\discretionary
+                          {}{}{}\texttt{FSR}}},
       keywords =         {package FSR; LFSR; finite fields; sequences},
       printedkey =       {ZAG18}
     }
