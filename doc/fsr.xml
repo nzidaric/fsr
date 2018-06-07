@@ -13,7 +13,9 @@
 <#Include Label="Length">
 <#Include Label="ChangeBasis">
 <#Include Label="LoadFSR">
+<#Include Label="FeedbackFSR">
 <#Include Label="StepFSR">
+<#Include Label="LoadStepFSR">
 <#Include Label="RunFSR">
 </Section>
 
@@ -31,7 +33,7 @@
 
 <Section Label="XMLnlfsr">
 <Heading>NLFSR specific funcionality</Heading>
-<#Include Label="ChooseField">
+<!--<#Include Label="ChooseField">-->
 <#Include Label="NLFSR">
 <#Include Label="IsNonLinearFeedback">
 <#Include Label="MultivarPoly">

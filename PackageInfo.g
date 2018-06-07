@@ -65,11 +65,31 @@ Persons := [
 Status := "other",
 
 
+SourceRepository := rec(
+    Type := "git",
+    URL := Concatenation( "https://github.com/nzidaric/", ~.PackageName ),
+),
+IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
+PackageWWWHome  := Concatenation( "https://nzidaric.github.io/", ~.PackageName ),
+README_URL      := Concatenation( ~.PackageWWWHome, "/README.md" ),
+PackageInfoURL  := Concatenation( ~.PackageWWWHome, "/PackageInfo.g" ),
+ArchiveURL      := Concatenation( ~.SourceRepository.URL,
+                                 "/releases/download/v", ~.Version,
+                                 "/", ~.PackageName, "-", ~.Version ),
+
+ArchiveFormats := ".tar.gz",
+
+AbstractHTML := "",
+
+
+
 PackageDoc := rec(
   BookName  := "FSR",
-  PDFFile   := "doc/fsr.pdf",
+  ArchiveURLSubset := ["doc"],
+  HTMLStart := "doc/chap0.html",
+  PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "FSR - Feedback Shift Register Package",
+  LongTitle := "Feedback Shift Register Package",
   Autoload := true
 ),
 
@@ -83,7 +103,7 @@ Dependencies := rec(
 
 AvailabilityTest := ReturnTrue,
 
-TestFile := "tst/testall.tst",
+TestFile := "tst/testall.g",
 
 Keywords := ["package FSR", "LFSR" , "finite fields", "sequences"]
 

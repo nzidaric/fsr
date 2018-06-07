@@ -225,7 +225,7 @@ SetPrintFormattingStatus(output, false);
 		od;
 		AppendTo(output,  OutputTap(x)[Length(OutputTap(x))], "}{\n");
 		AppendTo(output, "\\pgfmathtruncatemacro{\\x}{\\n-\\t-1};\n \\draw [->,thick] (\\x+1.5,0)-- ++(0,-\\s) --++(1+\\t,0)  node [right] {$s_{\\t}$};\n }\n");
-		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$ and additional ``nonlinear'' input}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
+		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$ and additional ``external'' input}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
 
 	else
 	Error("not a SIMPLE  LFSR  !!!!\n");
@@ -298,7 +298,7 @@ SetPrintFormattingStatus(output, false);
 		od;
 		AppendTo(output,  OutputTap(x)[Length(OutputTap(x))], "}{\n");
 		AppendTo(output, "\\pgfmathtruncatemacro{\\x}{\\n-\\t-1};\n \\draw [->,thick] (\\x+1.5,0.5)-- ++(0,-\\s) --++(1+\\t,0)  node [right] {$s_{\\t}$};\n }\n");
-		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$ and additional ``nonlinear'' input}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
+		AppendTo(output, "\\end{tikzpicture}\n \\caption{LFSR with feedback polynomial $", FeedbackPoly(x),"$ and additional ``external'' input}\\label{LABEL}\n \\end{figure}\n \\end{center}\n");
 
 	else
 	Error("not a SIMPLE  LFSR  !!!!\n");
