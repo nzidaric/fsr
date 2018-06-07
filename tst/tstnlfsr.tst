@@ -94,6 +94,9 @@ gap> mlist := [x_0, x_1^5, x_1*x_2*x_3, One(F)];;
 gap> nl := NLFSR(F, clist, mlist, 4);
 < empty NLFSR of length 4 over GF(2^4),
  given by MultivarPoly = x_1^5+x_1*x_2*x_3+Z(2^4)^7*x_0+Z(2)^0> 
+gap> nl := NLFSR(F, clist, mlist, 4, [0,1]);
+< empty NLFSR of length 4 over GF(2^4),
+ given by MultivarPoly = x_1^5+x_1*x_2*x_3+Z(2^4)^7*x_0+Z(2)^0> 
 gap> nl := NLFSR(K, f,  clist, mlist, 4);
 < empty NLFSR of length 4 over GF(2^4),
  given by MultivarPoly = x_1^5+x_1*x_2*x_3+Z(2^4)^7*x_0+Z(2)^0> 
@@ -256,6 +259,25 @@ gap> mpoly := x_0*x_1 + x_2;;
 gap> nl := NLFSR(F, mpoly, 3);       
 < empty NLFSR of length 3 over GF(2),
  given by MultivarPoly = x_0*x_1+x_2> 
+gap> nl := NLFSR(F, mpoly, 3, [2]);
+< empty NLFSR of length 3 over GF(2),
+ given by MultivarPoly = x_0*x_1+x_2> 
+gap> PrintAll(nl);
+empty NLFSR of length 3 over GF(2),
+  given by MultivarPoly = x_0*x_1+x_2
+with basis =[ Z(2)^0 ]
+with initial state  =[ 0*Z(2), 0*Z(2), 0*Z(2) ]
+with current state  =[ 0*Z(2), 0*Z(2), 0*Z(2) ]
+after initialization 
+with output from stage S_2
+gap> K := GF(2);; x := X(K, "x");; f:= x^4+x^3+Z(2)^0 ;;                                
+gap> F := FieldExtension(K, f);;  B:= Basis(F);; 
+gap> nl := NLFSR(K, f, mpoly, 3, [2]);                  
+< empty NLFSR of length 3 over GF(2^4),
+ given by MultivarPoly = x_0*x_1+x_2> 
+gap> nl := NLFSR(K, f, mpoly, 3);     
+< empty NLFSR of length 3 over GF(2^4),
+ given by MultivarPoly = x_0*x_1+x_2> 
 gap> K := GF(2);; x := X(K, "x");; f:= x^4+x^3+Z(2)^0 ;;                                
 gap> F := FieldExtension(K, f);;  B:= Basis(F);; 
 gap> n1 := NLFSR(F, x_0^3+1, 1); 
@@ -361,4 +383,11 @@ gap> RunFSR(nl,Z(2)^0, false);
   Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, 
   Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, 
   Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0, Z(2^3), Z(2^3)^6, Z(2)^0 ]
+gap> F := GF(2);; B:= Basis(F);;
+gap> mpoly := x_0*x_1 + x_2;;
+gap> nl := NLFSR(F, mpoly, 3);    
+< empty NLFSR of length 3 over GF(2),
+ given by MultivarPoly = x_0*x_1+x_2> 
+gap> ConstTermOfNLFSR(nl);
+0*Z(2)
 

@@ -53,3 +53,12 @@ gap> fil := FILFUN(K, f, clist, mlist);;
 gap> ist := [[Zero(K),Z(2^3),One(K)], [ Z(2^3)^3, Z(2^3)^4, 0*Z(2)], [Z(2^3)^2,Z(2^3)^4,One(K)]];;
 gap> RunFSR(fil,ist);
 [ 0*Z(2), Z(2^3)^3, Z(2)^0 ]
+gap> F := GF(2);; mpoly := x_0*x_2 + 1;;
+gap> fil := FILFUN(F, mpoly); 
+< FILFUN of length 2 over GF(2),
+  with the MultivarPoly = x_0*x_2+Z(2)^0> 
+gap> ConstTermOfFILFUN(fil);
+Z(2)^0
+
+
+

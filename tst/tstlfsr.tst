@@ -623,7 +623,76 @@ Z(2)^0
                 [ [ 0 ], [ 0 ], [ 1 ] ]         [ 1 ]
 over the threshold, will only output the first 11 elements of the sequence
 [ 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0 ]
-
+gap> K := GF(2);;  y := X(K, "y");; B := Basis(K);;
+gap> l := y^3 + y + 1;;
+gap> t1 :=  LFSR(K, l);
+< empty LFSR over GF(2)  given by FeedbackPoly = y^3+y+Z(2)^0 >
+gap> t1 :=  LFSR(K, l, Basis(K));
+< empty LFSR over GF(2)  given by FeedbackPoly = y^3+y+Z(2)^0 >
+gap> t1 :=  LFSR(K, l, 2);       
+< empty LFSR over GF(2)  given by FeedbackPoly = y^3+y+Z(2)^0 >
+gap> PrintAll(t1);
+empty LFSR over GF(2) given by FeedbackPoly = y^3+y+Z(2)^0
+with basis =[ Z(2)^0 ]
+with feedback coeff =[ 0*Z(2), Z(2)^0, Z(2)^0 ]
+with initial state  =[ 0*Z(2), 0*Z(2), 0*Z(2) ]
+with current state  =[ 0*Z(2), 0*Z(2), 0*Z(2) ]
+after initialization 
+with output from stage S_2
+gap> t1 :=  LFSR(K, l, Basis(K), 2);
+< empty LFSR over GF(2)  given by FeedbackPoly = y^3+y+Z(2)^0 >
+gap> PrintAll(t1);                  
+empty LFSR over GF(2) given by FeedbackPoly = y^3+y+Z(2)^0
+with basis =[ Z(2)^0 ]
+with feedback coeff =[ 0*Z(2), Z(2)^0, Z(2)^0 ]
+with initial state  =[ 0*Z(2), 0*Z(2), 0*Z(2) ]
+with current state  =[ 0*Z(2), 0*Z(2), 0*Z(2) ]
+after initialization 
+with output from stage S_2
+gap> K := GF(2);; x := X(K, "x");;
+gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
+gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
+gap> tap := 1;;
+gap> t6 := LFSR(K, f, l, tap);
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> K := GF(2);; x := X(K, "x");;
+gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
+gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
+gap> tap := 1;;
+gap> t6 := LFSR(K, f, l, tap);
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> t6 := LFSR(K, f, l, B, tap); 
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> t6 := LFSR(K, f, l, B);     
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> t6 := LFSR(K, f, l);   
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> t6 := LFSR(F, l);   
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> t6 := LFSR(F, l, B, tap);
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> t6 := LFSR(F, l, B);                
+< empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
+gap> IsPeriodic(t6);
+true
+gap> Period(t6);
+warning: the polynomial is reducible !!!
+255
+gap> K := GF(2);; x := X(K, "x");; f := x^4 + x^3 + 1;;
+gap> F := FieldExtension(K, f);; B := Basis(F);;
+gap> gen := Z(2^4);; strGen := "alpha";;
+gap> y := X(F, "y");; l := y^4 + y + gen;;
+gap> test := LFSR(K, f, l);;
+gap> Period(test);
+warning: the polynomial is reducible !!!
+255
+gap> IsMaxSeqLFSR(test);
+false
+gap> K := GF(2);; x := X(K, "x");;test := LFSR(K, x^3 + 1);
+< empty LFSR over GF(2)  given by FeedbackPoly = x^3+Z(2)^0 >
+gap> Period(test);
+warning: the polynomial is reducible !!!
+3
 
 
 

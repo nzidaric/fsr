@@ -4,7 +4,7 @@
 ##
 ##
 
-
+##codecov note: LFSR(p, m n)  and LFSR(p, m , n , tap) use RANDOM primitive poly 
 
 
 #############################################################################
@@ -85,7 +85,17 @@ elif  Length(arg)=3 then
 			elif  	IsRowVector(arg[3]) then 			tap := arg[3];
 			else 	Error("check the tap=",arg[3],"  !!!"); 	return fail;
 			fi;	
+	elif IsField(arg[1]) and IsUnivariatePolynomial( arg[2]) and IsBasis(arg[3])  then 		#new
 
+			# LFSR( <F>, <feedbackpol>, <B> )
+		F := arg[1]; K := PrimeField(F); fieldpol := DefiningPolynomial(F); feedbackpol := arg[2];	
+			tap := [0];
+			if DegreeOverPrimeField(F) = Length(arg[3]) then 
+				B := arg[3];
+			else 
+				Print("Basis does not match field F!!! using canonical basis instead\n");
+				 B := CanonicalBasis(F);
+			fi;
 	elif IsField(arg[1]) and IsUnivariatePolynomial( arg[2])  then 		
 
 			#F  LFSR( <F>, <feedbackpol>, <tap>)
@@ -96,7 +106,8 @@ elif  Length(arg)=3 then
 			elif  	IsRowVector(arg[3]) then 			tap := arg[3];
 			else 	Error("check the tap=",arg[3],"  !!!"); 	return fail;
 			fi;
-		
+	
+	
 	else Error("check the args!!!"); 		return fail;
 	fi;
 # 3 input constructors 	
@@ -333,12 +344,17 @@ local flist, i, plist, blist, e, t, b, f, o;
 #Print(flist,"\n");
 #Print(plist,"\n");
 #Print(blist,"\n");
+
+plist := Compacted(plist);
+blist := Compacted(blist);
+
 		e := Lcm(plist);
 		b := Maximum(blist);
 		t := LogInt(b, Characteristic(F)); # is plus 1 really there ????
 		if  Characteristic(F)^t < b then 
 			t := t+1;
 		fi;
+	
 #Print(e, " ", Characteristic(F), " ",t,"\n");		
 	return e*Characteristic(F)^t;
  #### are u sure thats still correct once over extension field ???
@@ -361,8 +377,10 @@ local  l, period,  F;
 		SetIsMaxSeqLFSR(x,true);
 	elif IsIrreducibleRingElement(PolynomialRing(F),  l) then 
 		period := PeriodIrreducible(F, l);
+		Print("warning: the polynomial is irreducible !!!\n");
 	else 
 		period := PeriodReducible(F, l);
+		Print("warning: the polynomial is reducible !!!\n");
 	fi;
  
 	SetPeriod(x,period);
