@@ -71,7 +71,7 @@ end );
 ##
 
 InstallMethod( TrimLeadCoeff, "Trim the leading coefficient off the list",
-[IsFFECollection and IsRowVector], function(coefs)
+[IsRingElementCollection and IsRowVector], function(coefs)
 
 local trimmed, i;
 
@@ -86,7 +86,7 @@ end);
 
 
 InstallMethod( IdxNonzeroCoeffs, "Indeces of nonzero coefficients of the list",
-  [IsFFECollection and IsRowVector], function(coefs)
+  [IsRingElementCollection and IsRowVector], function(coefs)
 
 local t, tlist, len, i, K;
 len := Length(coefs);
@@ -103,7 +103,7 @@ return tlist;
 end);
 
 InstallMethod( NrNonzeroCoeffs, "Number of nonzero indeces",
-[IsFFECollection and IsRowVector], function(coefs)
+[IsRingElementCollection and IsRowVector], function(coefs)
 
 return Length(IdxNonzeroCoeffs(coefs));
 end);
@@ -211,7 +211,7 @@ local clist, mlist, i, condition, term, cf;
 	i := 0;
 #	condition := (not poly in K);
 #	condition := IsPolynomial(poly);
-#	condition := not IsFFE(poly);
+#	condition := not IsRingElement(poly);
 	condition := not IsConstantRationalFunction(poly);
 #	Print(poly,"-> ",condition,":\t");
 #	Display(KnownTruePropertiesOfObject(poly));
@@ -233,7 +233,7 @@ local clist, mlist, i, condition, term, cf;
 		i := i+1;
 #		condition := (not poly in K);
 #	condition := IsPolynomial(poly);
-#	condition := not IsFFE(poly);
+#	condition := not IsRingElement(poly);
 	condition := not IsConstantRationalFunction(poly);
 #		Print(poly,"-> ",condition,":\t");
 #		Display(KnownTruePropertiesOfObject(poly));
@@ -361,7 +361,7 @@ end);
 
 
 InstallMethod( DegreeOfPolynomialOverField, "degree of multivariate polynomial", 
- [IsField, IsFFECollection, IsList], function(F, clist, mlist)
+ [IsField, IsRingElementCollection, IsList], function(F, clist, mlist)
 local mon;
 	if Length(clist)<>Length(mlist) then 
 		Error("coeff and monomial lists must have same length!!!");

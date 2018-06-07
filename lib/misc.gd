@@ -41,9 +41,9 @@ DeclareGlobalFunction( "ChooseField" );
 ##  </ManSection>
 ##  <#/GAPDoc>
 ##
-DeclareOperation( "TrimLeadCoeff",  [IsFFECollection and IsRowVector]);
-DeclareOperation( "IdxNonzeroCoeffs",  [IsFFECollection and IsRowVector]);
-DeclareOperation( "NrNonzeroCoeffs",  [IsFFECollection and IsRowVector]);
+DeclareOperation( "TrimLeadCoeff",  [IsRingElementCollection and IsRowVector]);
+DeclareOperation( "IdxNonzeroCoeffs",  [IsRingElementCollection and IsRowVector]);
+DeclareOperation( "NrNonzeroCoeffs",  [IsRingElementCollection and IsRowVector]);
 
 
 
@@ -255,7 +255,7 @@ DeclareOperation( "LeadingMonomialOverField",  [IsField, IsPolynomial]);
 ##
 
 DeclareOperation( "DegreeOfPolynomialOverField", [IsField, IsPolynomial]);
-DeclareOperation( "DegreeOfPolynomialOverField", [IsField, IsFFECollection, IsList]);
+DeclareOperation( "DegreeOfPolynomialOverField", [IsField, IsRingElementCollection, IsList]);
 
 
 

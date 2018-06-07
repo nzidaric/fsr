@@ -58,7 +58,7 @@ elif  Length(arg)=4 then
 			d := arg[4]; tap := [0];
 
 
-	elif IsField(arg[1]) and IsFFECollection(arg[2]) and IsList(arg[3]) and IsPosInt(arg[4]) then 	
+	elif IsField(arg[1]) and IsRingElementCollection(arg[2]) and IsList(arg[3]) and IsPosInt(arg[4]) then 	
 			#F  NLFSR( <K>, <clist>, <mlist> , <len> )
 			# we dont allow anything thats not a prime here, coz primepower is already an extension
 			if IsPrimeField(arg[1]) then K:= arg[1];  F := arg[1]; fieldpol := 1;
@@ -83,7 +83,7 @@ elif  Length(arg)=4 then
 	else Error("check the args!!!"); 		return fail;
 	fi;
 elif  Length(arg)=5 then
-	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsFFECollection(arg[3]) 
+	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsRingElementCollection(arg[3]) 
 		 and IsList(arg[4]) and IsPosInt(arg[5]) then 	
 			#F   NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len> )
 			K := arg[1]; fieldpol := arg[2]; 
@@ -94,7 +94,7 @@ elif  Length(arg)=5 then
 			F := FieldExtension(K,fieldpol);
 			clist := arg[3]; mlist := arg[4];
 			d := arg[5]; tap := [0];			
-	elif IsField(arg[1]) and IsFFECollection(arg[2]) and IsList(arg[3]) 
+	elif IsField(arg[1]) and IsRingElementCollection(arg[2]) and IsList(arg[3]) 
 			and IsPosInt(arg[4])  then 			
 			#F NLFSR( <K>, <clist>, <mlist> , <len> , <tap>) 
 			# we dont allow anything thats not a prime here,
@@ -132,7 +132,7 @@ elif  Length(arg)=5 then
 	else Error("check the args!!!"); 		return fail;
 	fi;
 elif  Length(arg)=6 then
-	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsFFECollection(arg[3]) 
+	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsRingElementCollection(arg[3]) 
 			and IsList(arg[4]) and IsPosInt(arg[5]) then 	
 			#F   NLFSR( <K>, <fieldpol>, <clist>, <mlist> , <len>, <tap> ) 
 			K := arg[1]; fieldpol := arg[2]; 

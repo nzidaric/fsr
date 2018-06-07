@@ -80,14 +80,14 @@
 
 #T test file tstfsroutputs.tst
 
-DeclareOperation( "IntFFExt", [IsBasis, IsFFE]);
-DeclareOperation( "IntFFExt", [IsFFE]);
+DeclareOperation( "IntFFExt", [IsBasis, IsRingElement]);
+DeclareOperation( "IntFFExt", [IsRingElement]);
 
-DeclareOperation( "IntVecFFExt" ,[IsBasis, IsFFECollection]);
-DeclareOperation( "IntVecFFExt" ,[IsFFECollection]);
+DeclareOperation( "IntVecFFExt" ,[IsBasis, IsRingElementCollection]);
+DeclareOperation( "IntVecFFExt" ,[IsRingElementCollection]);
 
-DeclareOperation( "IntMatFFExt" , [IsBasis, IsFFECollColl]);
-DeclareOperation( "IntMatFFExt" , [IsFFECollColl]);
+DeclareOperation( "IntMatFFExt" , [IsBasis, IsRingElementCollColl]);
+DeclareOperation( "IntMatFFExt" , [IsRingElementCollColl]);
 
 #############################################################################
 ##
