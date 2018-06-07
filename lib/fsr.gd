@@ -248,8 +248,8 @@ DeclareOperation("WhichBasis", [IsFSR]);
 ##  <#/GAPDoc>
 ##
 
-DeclareOperation("LoadFSR", [IsFSR,  IsFFECollection]);
-DeclareOperation("LoadFSR", [IsFSR,  IsFFE]);  # is it ever used ? 
+DeclareOperation("LoadFSR", [IsFSR,  IsRingElementCollection]);
+DeclareOperation("LoadFSR", [IsFSR,  IsRingElement]);  # is it ever used ? 
 
 #DeclareProperty("IsEmpty", IsFSR); DONT coz once set cant change again
 
@@ -336,7 +336,7 @@ DeclareOperation("FeedbackFSR", [IsFSR]);
 #regular step
 DeclareOperation("StepFSR", [IsFSR]);
 #external step
-DeclareOperation("StepFSR", [IsFSR, IsFFE]);
+DeclareOperation("StepFSR", [IsFSR, IsRingElement]);
 
 
 
@@ -368,21 +368,21 @@ DeclareOperation("StepFSR", [IsFSR, IsFFE]);
 
 # load + 1step
 #regular step
-DeclareOperation("LoadStepFSR", [IsFSR, IsFFECollection]);
+DeclareOperation("LoadStepFSR", [IsFSR, IsRingElementCollection]);
 
 #external step
-DeclareOperation("LoadStepFSR", [IsFSR, IsFFECollection, IsFFE]);
+DeclareOperation("LoadStepFSR", [IsFSR, IsRingElementCollection, IsRingElement]);
 
 #regular step
-DeclareOperation("LoadStepFSR", [IsFSR, IsFFE]);
+DeclareOperation("LoadStepFSR", [IsFSR, IsRingElement]);
 
 #external step
-DeclareOperation("LoadStepFSR", [IsFSR, IsFFE, IsFFE]);
+DeclareOperation("LoadStepFSR", [IsFSR, IsRingElement, IsRingElement]);
 
 
 
-DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsFFE, IsPosInt]);
-DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsFFE, IsFFE, IsPosInt]);
+DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsRingElement, IsPosInt]);
+DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsRingElement, IsRingElement, IsPosInt]);
 
 
 
@@ -571,7 +571,7 @@ DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsFFE, IsFFE, IsPosInt]);
 # although IsBool is only used with true when IsBasis is set (doesnt make sense
 ##   to have basis if we dont print steps)
 # it is left too add an argument so method selection doesnt get confused
-# problem with method selection: a basis will also have IsFFECollection = true
+# problem with method selection: a basis will also have IsRingElementCollection = true
 # so basis might get mistaken for initial state
 # by having an extra parameter IsBool the number of arguments is different and 
 # this problem is avoided
@@ -589,40 +589,40 @@ DeclareOperation("RunFSR", [IsFSR ]);							# Ic.
 
 
 # II. load + run
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt, IsBool]);	# II.
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsPosInt]);			# IIa.
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsBool]);				# IIb.
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection]);							# IIc.
+DeclareOperation("RunFSR", [IsFSR, IsRingElementCollection, IsPosInt, IsBool]);	# II.
+DeclareOperation("RunFSR", [IsFSR, IsRingElementCollection, IsPosInt]);			# IIa.
+DeclareOperation("RunFSR", [IsFSR, IsRingElementCollection, IsBool]);				# IIb.
+DeclareOperation("RunFSR", [IsFSR, IsRingElementCollection]);							# IIc.
 
 ## external versions
 # III. run for num steps with the same external input on each step 
-DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt, IsBool]);				# III.
-DeclareOperation("RunFSR", [IsFSR, IsFFE, IsPosInt]);							# IIIa.
-DeclareOperation("RunFSR", [IsFSR, IsFFE, IsBool]);							# IIIb.
-DeclareOperation("RunFSR", [IsFSR, IsFFE]);										# IIIc.
+DeclareOperation("RunFSR", [IsFSR, IsRingElement, IsPosInt, IsBool]);				# III.
+DeclareOperation("RunFSR", [IsFSR, IsRingElement, IsPosInt]);							# IIIa.
+DeclareOperation("RunFSR", [IsFSR, IsRingElement, IsBool]);							# IIIb.
+DeclareOperation("RunFSR", [IsFSR, IsRingElement]);										# IIIc.
  
 # IV. load and run for num steps with a different external input on each step
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection, IsBool]); # IV.
-DeclareOperation("RunFSR", [IsFSR, IsFFECollection, IsFFECollection]);			 # Iva.
+DeclareOperation("RunFSR", [IsFSR, IsRingElementCollection, IsRingElementCollection, IsBool]); # IV.
+DeclareOperation("RunFSR", [IsFSR, IsRingElementCollection, IsRingElementCollection]);			 # Iva.
 
 
 # V. continue a run with a different external input on each step
-DeclareOperation("RunFSR", [IsFSR, IsZero, IsFFECollection, IsBool]);	# V.
-DeclareOperation("RunFSR", [IsFSR, IsZero, IsFFECollection]);				# Va.
+DeclareOperation("RunFSR", [IsFSR, IsZero, IsRingElementCollection, IsBool]);	# V.
+DeclareOperation("RunFSR", [IsFSR, IsZero, IsRingElementCollection]);				# Va.
 
 # run for FILFUN
 
 # VI. run for FILFUN, using LoadStepFSR calls
-DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl, IsBool]);		# VI.
-DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl]);				# VIa.
+DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsBool]);		# VI.
+DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl]);				# VIa.
 
 # VII. run with the same external input on each step 
-DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl, IsFFE, IsBool]); 	# VII.
-DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl, IsFFE]);				# VIIa.
+DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsRingElement, IsBool]); 	# VII.
+DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsRingElement]);				# VIIa.
 
 # VIII. run with a different external input on each step 
-DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl, IsFFECollection, IsBool]);	# VIII.
-DeclareOperation("RunFSR", [IsFILFUN, IsFFECollColl, IsFFECollection]);										# VIIIa.
+DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsRingElementCollection, IsBool]);	# VIII.
+DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsRingElementCollection]);										# VIIIa.
 
 
 

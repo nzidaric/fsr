@@ -150,7 +150,7 @@ end);
 ##  almost identical for both
 ##
 InstallMethod(LoadFSR, "load FSR with initial state ist",
- [IsFSR,  IsFFECollection], function(x, ist)
+ [IsFSR,  IsRingElementCollection], function(x, ist)
 local i, F, tap, seq, scist;
 	if Length(ist) <> Length(x) then
 		Error( "initial state length doesnt match" );		return fail;
@@ -190,7 +190,7 @@ end);
 
 
 InstallMethod(LoadFSR, "load FSR with initial state ist",
- [IsFSR,  IsFFE], function(x, ist)
+ [IsFSR,  IsRingElement], function(x, ist)
  return LoadFSR(x ,[ist]);
 end);
 
@@ -289,7 +289,7 @@ end);
 
 
 
-InstallMethod(StepFSR, "one external step of FSR", [IsFSR, IsFFE],
+InstallMethod(StepFSR, "one external step of FSR", [IsFSR, IsRingElement],
  function(x, elm)
 local fb, st, new, tap,i, seq, F, n, idx, indlist, slist, xlist;
 	
@@ -328,7 +328,7 @@ end);
 ##     LoadStepFSR one step at a time !!!!
 
 InstallMethod(LoadStepFSR, "load + 1 regular step", 
-[IsFSR, IsFFECollection],
+[IsFSR, IsRingElementCollection],
  function(x, ist)
 local  i,  seq, seqlist;
 
@@ -348,7 +348,7 @@ seqlist := [];
 end);
 
 InstallMethod(LoadStepFSR, " load + 1 external step", 
-[IsFSR, IsFFECollection, IsFFE],
+[IsFSR, IsRingElementCollection, IsRingElement],
  function(x,  ist, elm)
 local  i,  seq, seqlist;
 	seqlist := [];
@@ -369,7 +369,7 @@ end);
 
 
 InstallMethod(LoadStepFSR, "load + 1 regular step", 
-[IsFSR, IsFFE],
+[IsFSR, IsRingElement],
  function(x, ist)
 return LoadStepFSR(x, [ist]);
 end);
@@ -377,7 +377,7 @@ end);
 
 
 InstallMethod(LoadStepFSR, "load + 1 external step", 
-[IsFSR, IsFFE, IsFFE],
+[IsFSR, IsRingElement, IsRingElement],
  function(x,  ist, elm)
 
 return LoadStepFSR(x, [ist], elm);
@@ -445,7 +445,7 @@ end);
 
 
 InstallMethod(PrintHeaderRunFSR, "print header for run FSR", 
-[IsFSR, IsFFE, IsPosInt], function(x, seq, m)
+[IsFSR, IsRingElement, IsPosInt], function(x, seq, m)
 local  i, taps, B;
 		B := x!.basis;
 		Print("using basis B := ",BasisVectors(B),"\t\n");
@@ -479,7 +479,7 @@ return;
 end);
 
 InstallMethod(PrintHeaderRunFSR, "print header for run FSR",
- [IsFSR, IsFFE, IsFFE, IsPosInt],  function(x, elm, seq, m)
+ [IsFSR, IsRingElement, IsRingElement, IsPosInt],  function(x, elm, seq, m)
 local  i, taps, B;
 		B := x!.basis;
 		Print("using basis B := ",BasisVectors(B),"\t\n");
@@ -521,7 +521,7 @@ end);
 # Vb. load new initial state then run for num-1 steps with/without print to shell
 # load + run
 # II. load initial state then run for num-1 steps without/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsPosInt, IsBool],
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsPosInt, IsBool],
  function(x,ist, num, pr)
 local  i, sequence,treshold , seq, taps, B, m;
 	sequence :=[];
@@ -546,19 +546,19 @@ end);
 
 
 # IIa. load new initial state then run for num-1 steps without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsPosInt],
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsPosInt],
 function(x, ist, num)
 	return RunFSR(x, ist, num, false);
 end);
 
 # IIb. load new initial state then run without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsBool],
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsBool],
 function(x, ist , pr)
 		return RunFSR(x, ist, Threshold(x)   , pr);
 end);
 
 # IIc. load new initial state then run without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection], function(x, ist )
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection], function(x, ist )
 		return RunFSR(x, ist, Threshold(x)   , false);
 end);
 
@@ -568,7 +568,7 @@ end);
 # rationale behind copied code is speed: could be a very long sequence, dont want to many functions calling eachother
 
 # III. run for num steps with the same external input on each step and with/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt, IsBool],
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElement, IsPosInt, IsBool],
  function(x, elm, num, pr)
 local seq, sequence, nrsteps, treshold, i, B;
 		sequence := [];
@@ -606,19 +606,19 @@ end);
 
 
 # IIIa. run for num steps with the same external input on each step without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsPosInt], function(x, elm, num)
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElement, IsPosInt], function(x, elm, num)
 	return RunFSR(x, elm, num, false);
 end);
 ## change num to something huge then the called method will set the threshold
 
 # IIIb. run with the same external input on each step without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE, IsBool], function(x, elm, pr)
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElement, IsBool], function(x, elm, pr)
 	return RunFSR(x,  elm,   Threshold(x) , pr); 
 end);
 
 
 # IIIc. run with the same external input on each step without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFE], function(x, elm)
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElement], function(x, elm)
 	return RunFSR(x,  elm,  Threshold(x) , false); 
 end);
 
@@ -627,7 +627,7 @@ end);
 # LOAD + RUN
 # IV. load and run for num steps with a different external input on each step with/without print to shell
 InstallMethod(RunFSR, "run FSR",
-[IsFSR,  IsFFECollection, IsFFECollection, IsBool],
+[IsFSR,  IsRingElementCollection, IsRingElementCollection, IsBool],
 function(x,  ist, elmvec, pr)
 local  sequence,  treshold, num, nrsteps, seq , seq0, i, B, m;
 	
@@ -674,7 +674,7 @@ end);
 
 
 # IVb. run for num steps with the different external input on each step with/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsFFECollection, IsFFECollection],
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsRingElementCollection],
  function(x, ist, elmvec)
 	return RunFSR(x, ist, elmvec, false);
 end);
@@ -685,7 +685,7 @@ end);
 
 # V. continue run with the different external input on each step with/without print to shell,
 # without loading first
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsFFECollection, IsBool],
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsRingElementCollection, IsBool],
  function(x, z, elmvec, pr)
 local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
 
@@ -743,7 +743,7 @@ end);
 
 
 # Va. run for num steps with the different external input on each step with/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsFFECollection], 
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsRingElementCollection], 
 function(x, z, elmvec)
 	return RunFSR(x, z, elmvec, false);
 end);
@@ -752,7 +752,7 @@ end);
 #FILFUN RUN
 
 # VI. run for FILFUN with diff ist on each step (using LoadStepFSR)
-InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsFFECollColl,  IsBool],
+InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl,  IsBool],
  function(x,ist, pr)
 local  i, sequence, seq, taps, B, m;
 	sequence :=[];
@@ -780,7 +780,7 @@ end);
 
 
 # VIa. run for FILFUN with diff ist on each step (using LoadStepFSR) without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsFFECollColl],
+InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl],
 function(x, ist)
 	return RunFSR(x, ist, false);
 end);
@@ -790,7 +790,7 @@ end);
 
 
 # VII. run for FILFUN with diff ist  but same external elm on each step (using LoadStepFSR)
-InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsFFECollColl,  IsFFE, IsBool],
+InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl,  IsRingElement, IsBool],
  function(x, ist, elm, pr)
 local  i, sequence, seq, taps, B, m;
 	sequence :=[];
@@ -818,7 +818,7 @@ end);
 
 
 # VIIa. run for FILFUN with diff ist but the same external elm  on each step (using LoadStepFSR) without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsFFECollColl, IsFFE],
+InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl, IsRingElement],
 function(x, ist, elm)
 	return RunFSR(x, ist, elm, false);
 end);
@@ -826,7 +826,7 @@ end);
 
 
 # VIII. run for FILFUN with diff ist  and diff  external elm on each step (using LoadStepFSR)
-InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsFFECollColl,  IsFFECollection, IsBool],
+InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl,  IsRingElementCollection, IsBool],
  function(x, ist, elmvec, pr)
 local  i, sequence, seq, taps, B, m;
 	if Length(ist) <> Length(elmvec) then
@@ -857,7 +857,7 @@ end);
 
 
 # VIIIa. run for FILFUN with diff ist on each step (using LoadStepFSR) without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsFFECollColl, IsFFECollection],
+InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl, IsRingElementCollection],
 function(x, ist, elmvec)
 	return RunFSR(x, ist, elmvec, false);
 end);

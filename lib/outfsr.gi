@@ -529,7 +529,7 @@ end);
 InstallGlobalFunction( WriteRunFSR, function(output, x, ist, num)
 local  i,j, sequence,  seq, tmp, treshold, B, m, F;
 
-# [IsOutputStream,IsLFSR,IsFFECollection, IsPosInt]
+# [IsOutputStream,IsLFSR,IsRingElementCollection, IsPosInt]
 #only check the output stream here,
 #others will be checked by individual function calls !!!
 
@@ -616,7 +616,7 @@ end);
 InstallGlobalFunction( WriteNonlinRunFSR, function(output, x, ist, elmvec)
 local  i,j, sequence,  seq, tmp, treshold, B, m, num;
 
-# [IsOutputStream,IsLFSR,IsFFECollection, IsPosInt]
+# [IsOutputStream,IsLFSR,IsRingElementCollection, IsPosInt]
 #only check the output stream here,
 # others will be checked by individual function calls !!!
 
@@ -706,7 +706,7 @@ end);
 InstallGlobalFunction( WriteTEXRunFSR, function(output, x,ist, num, strGen, gen)
 local  i,j, sequence,  seq,  tmp, state, outtap, treshold, B;
 
-# [IsOutputStream,IsLFSR,IsFFECollection, IsPosInt]
+# [IsOutputStream,IsLFSR,IsRingElementCollection, IsPosInt]
 #only check the output stream here,
 # others will be checked by individual function calls !!!
 
@@ -843,7 +843,7 @@ InstallGlobalFunction( WriteTEXRunFSRByGenerator,
 
 local  i,j, sequence, seq, tmp, state, outtap, treshold, B, exp, elm, genvec;
 
-# [IsOutputStream,IsLFSR,IsFFECollection, IsPosInt]
+# [IsOutputStream,IsLFSR,IsRingElementCollection, IsPosInt]
 #only check the output stream here,
 # others will be checked by individual function calls !!!
 

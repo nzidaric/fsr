@@ -34,7 +34,7 @@ if Length(arg)=2 then
 
 
 elif  Length(arg)=3 then
-	if IsField(arg[1]) and IsFFECollection(arg[2]) and IsList(arg[3]) then 	
+	if IsField(arg[1]) and IsRingElementCollection(arg[2]) and IsList(arg[3]) then 	
 			#F   FILFUN( <K>, <clist>, <mlist> ) 
 			# we dont allow anything thats not a prime here, coz primepower is already an extension
 			if IsPrimeField(arg[1]) then K:= arg[1];  F := arg[1]; fieldpol := 1;
@@ -44,7 +44,7 @@ elif  Length(arg)=3 then
 	else Error("check the args!!!"); 		return fail;
 	fi;
 elif  Length(arg)=4 then
-	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsFFECollection(arg[3]) 
+	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsRingElementCollection(arg[3]) 
 			and IsList(arg[4]) then 	
 			#F   NLFSR( <K>, <fieldpol>, <clist>, <mlist> )
 			K := arg[1]; fieldpol := arg[2]; 

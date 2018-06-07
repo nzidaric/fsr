@@ -13,12 +13,12 @@
 
 # -----------------------------------#
 #O  IntFFExt( [<B>,] <ffe> )
-InstallMethod(IntFFExt, "print nicely", [IsBasis, IsFFE], function(B,x)
+InstallMethod(IntFFExt, "print nicely", [IsBasis, IsRingElement], function(B,x)
 	return IntVecFFE(Coefficients(B, x)); 			# human friendly vector
 end);
 
 #  non-basis version
-InstallMethod(IntFFExt, "print nicely", [IsFFE], function(x)
+InstallMethod(IntFFExt, "print nicely", [IsRingElement], function(x)
 local F , B, hfv;
 	hfv := [];
 	F := DefaultField(x);
@@ -34,7 +34,7 @@ end);
 
 # -----------------------------------#
 #O  IntVecFFExt( [<B>,] <vec> )
-InstallMethod(IntVecFFExt, "print nicely", [IsBasis, IsFFECollection], function(B, x)
+InstallMethod(IntVecFFExt, "print nicely", [IsBasis, IsRingElementCollection], function(B, x)
 local i, F ,  hfv;
 	hfv := [];
 	for i in [1..Length(x)] do
@@ -47,7 +47,7 @@ end);
 
 #  non-basis version calling the basis version
 
-InstallMethod(IntVecFFExt, "print nicely", [IsFFECollection], function(x)
+InstallMethod(IntVecFFExt, "print nicely", [IsRingElementCollection], function(x)
 local  i, F , B, hfv;
 	hfv := [];
 	F := DefaultField(x);
@@ -62,7 +62,7 @@ end);
 
 # -----------------------------------#
 #O  IntMatFFExt( [<B>,] <M> )
-InstallMethod(IntMatFFExt, "print nicely", [IsBasis, IsFFECollColl],
+InstallMethod(IntMatFFExt, "print nicely", [IsBasis, IsRingElementCollColl],
 function(B, x)
 local  i, j, F , H, row, hfv;
 	H := [];
@@ -81,7 +81,7 @@ end);
 
 #  non-basis version calling the basis version
 
-InstallMethod(IntMatFFExt, "print nicely", [IsFFECollColl], function(x)
+InstallMethod(IntMatFFExt, "print nicely", [IsRingElementCollColl], function(x)
 local  i, j, F , B, H, row, hfv;
 	H := [];
 	F := DefaultFieldOfMatrix(x);
@@ -106,17 +106,17 @@ InstallMethod(VecToString, "print nicely", [IsBasis, IsVector], function(B, x)
 local  vec, i, j, d, F , elm, hfv, str, tmp, temp, H;
 	str := [];
 	hfv := []; # human friendly vector
-	if IsFFE(x) then
+	if IsRingElement(x) then
 		hfv := IntFFExt(B, x);
 		tmp := List(hfv, String);
 		str := JoinStringsWithSeparator(tmp, "");
-	elif IsFFECollection(x) then
+	elif IsRingElementCollection(x) then
 		F := DefaultField(x);
 		if IsPrimeField(F) then
 			hfv := IntVecFFE(x);
 			tmp := List(hfv, String);
 			str := JoinStringsWithSeparator(hfv, "");
-#			Print(" i ended up IsFFECollection(x) PrimeField ....", x, " with string", str, "and ",tmp,"\n");
+#			Print(" i ended up IsRingElementCollection(x) PrimeField ....", x, " with string", str, "and ",tmp,"\n");
 
 		else
 			hfv := IntVecFFExt(B, x);
@@ -124,7 +124,7 @@ local  vec, i, j, d, F , elm, hfv, str, tmp, temp, H;
 				tmp := List(hfv[i], String);
 				str[i] := JoinStringsWithSeparator(tmp, "");
 			 od;
-#			Print(" i ended up IsFFECollection(x) ....", x, " with string", str,"and ",tmp,"\n");
+#			Print(" i ended up IsRingElementCollection(x) ....", x, " with string", str,"and ",tmp,"\n");
 #if i want a true string (but thats not practical !!!  i want to be able to get a string for each component ... thats something i can use, if i have a true string i have to parse it at the commas AGAIN )
 #						hfv := IntVecFFExt(B, x);
 #						tmp := List(hfv[1], String);
@@ -170,8 +170,8 @@ InstallMethod(VecToString, "print nicely", [IsVector], function(x)
 local  vec, i, j, d, F, B , elm, hfv, str, tmp, temp, H;
 	str := [];
 	hfv := [];
-	if IsFFECollection(x) or IsFFE(x) then
-#		Print(" i ended up IsFFECollection or IsFFE ....", x, "\n");
+	if IsRingElementCollection(x) or IsRingElement(x) then
+#		Print(" i ended up IsRingElementCollection or IsRingElement ....", x, "\n");
 		F := DefaultField(x);
 		B := Basis(F);
 		str := VecToString(B, x);
@@ -206,8 +206,8 @@ InstallGlobalFunction( WriteVector,  function(output, B, vec)
 local j, m, str;
 SetPrintFormattingStatus(output, false);
 	if IsBasis(B) then
-		if (IsRowVector(vec) or IsFFE(vec) or IsInt(vec) or IsFFECollColl(vec)) then
-			if IsFFE(vec) then  # zech log in whatever field
+		if (IsRowVector(vec) or IsRingElement(vec) or IsInt(vec) or IsRingElementCollColl(vec)) then
+			if IsRingElement(vec) then  # zech log in whatever field
 				vec := IntFFExt(B, vec);
 			fi;
 			if IsInt(vec) then # prime subfield
@@ -439,7 +439,7 @@ InstallGlobalFunction(WriteTEXFFEVec,
 
 SetPrintFormattingStatus(output, false);
 	 if IsField(F) and IsFinite(F) then
-	 	if	IsFFECollection(vec) then
+	 	if	IsRingElementCollection(vec) then
 			AppendTo(output,  "[ ");
 				for j in [1.. Length(vec)] do
 					ffe := vec[j];
@@ -472,7 +472,7 @@ SetPrintFormattingStatus(output, false);
 if IsField(F) and IsFinite(F) then
 	if IsString(strGen) and  strGen <> "omega" then
 		if Order(gen)=Size(F)-1 then
-	 		if IsFFECollection(vec) then
+	 		if IsRingElementCollection(vec) then
 				AppendTo(output,  "[ ");
 				for j in [1.. Length(vec)] do
 					ffe := vec[j];
@@ -510,7 +510,7 @@ F := UnderlyingLeftModule(B);
 
 SetPrintFormattingStatus(output, false);
 
- if (IsMatrix(M) or IsFFECollColl(M)) then
+ if (IsMatrix(M) or IsRingElementCollColl(M)) then
 		if IsField(F) and IsFinite(F) then
 		d := DimensionsMat(M);
 		drows := d[1];
@@ -553,7 +553,7 @@ local d, drows, dcols, i, j, row, ffe;
 
 SetPrintFormattingStatus(output, false);
  if IsField(F) and IsFinite(F) then
-  if (IsMatrix(M) or IsFFECollColl(M)) then
+  if (IsMatrix(M) or IsRingElementCollColl(M)) then
 
 	if IsString(strGen) and  strGen <> "omega" then
 	 if Order(gen)=Size(F)-1 then
