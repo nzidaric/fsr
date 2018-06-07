@@ -1,0 +1,607 @@
+  
+  [1X2 [33X[0;0YFSR (Feedback Shift Register)[133X[101X
+  
+  
+  [1X2.1 [33X[0;0YCommon functionality[133X[101X
+  
+  [33X[0;0YWe  define  an  object  [5XFSR[105X (Feedback Shift Register), which can come in two
+  flavours:  with  linear  feedback  [2XLFSR[102X  ([14X2.2-1[114X) and external feedback [2XNLFSR[102X
+  ([14X2.3-1[114X).  A third FSR object, called FILFUN, i.e. ``filtering function'' can
+  be  created  as  an  FSR.  A  filtering  function  is  simply a multivariate
+  function,  and  because  of the similarities between filtering functions and
+  NLFSR  feedbacks,  the  FILFUN is created as an FSR object, which allows the
+  reuse of most NLFSR methods. Because of many similarities between the three,
+  the  basic  common  functionality  can  be  found  here,  while  specialized
+  functions  (such  as [10XLFSR[110X, [10XNLFSR[110X and [10XFILFUN[110X object creation) can be found in
+  the  corresponding sections. Three basic functionalities are defined for [5XFSR[105X
+  objects of both types:[133X
+  
+  [30X    [33X[0;6Y[10XLoadFSR[110X - load the initial state.[133X
+  
+  [30X    [33X[0;6Y[10XStepFSR[110X - perform one step[133X
+  
+  [30X    [33X[0;6Y[10XRunFSR[110X - perform a sequence of steps.[133X
+  
+  [33X[0;0YDefining the FILFUN as an FSR calls for a fourth method:[133X
+  
+  [30X    [33X[0;6Y[10XLoadStepFSR[110X - load the initial state and perform one step.[133X
+  
+  [33X[0;0Y[10XLoadStepFSR[110X is implemented as [10XLoadFSR[110X, followed by [10XStepFSR[110X.[133X
+  
+  [1X2.1-1 IsFSR[101X
+  
+  [33X[1;0Y[29X[2XIsFSR[102X[32X filter[133X
+  
+  [33X[0;0YThis  is  the  category of [10XFSR[110X objects. Objects in this category are created
+  using functions [2XLFSR[102X ([14X2.2-1[114X) or [2XNLFSR[102X ([14X2.3-1[114X).[133X
+  
+  [1X2.1-2 FieldPoly[101X
+  
+  [33X[1;0Y[29X[2XFieldPoly[102X( [3Xfsr[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XUnderlyingField[102X( [3Xfsr[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XFeedbackVec[102X( [3Xfsr[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XOutputTap[102X( [3Xfsr[103X ) [32X attribute[133X
+  
+  [33X[0;0Y[10XFieldPoly[110X of the [3Xfsr[103X stores the irreducible polynomial used to construct the
+  extension field or 1 in case of a prime field.[133X
+  
+  [33X[0;0Y[10XUnderlyingField[110X of the [3Xfsr[103X is the finite field over which the [3Xfsr[103X is defined
+  (all indeterminates and constants are from this field).[133X
+  
+  [33X[0;0YNOTE:  it  may  seem  redundant to store both [10XFieldPoly[110X and [10XUnderlyingField[110X,
+  especially  since  they can also be accessed from the basis component of the
+  [3Xfsr[103X, however, they are used by other functions in the package.[133X
+  
+  [33X[0;0Y[10XFeedbackVec[110X  of  the [3Xfsr[103X stores the coefficients of the [10XFeedbackPoly[110X without
+  its  leading term in case of [10XLFSR[110X, and coefficients of the nonzero monomials
+  present in the multivariate function defining the feedback in case of [10XNLFSR[110X.[133X
+  
+  [33X[0;0Y[10XOutputTap[110X  holds the output tap position(s): the sequence elements are taken
+  from the stage(s) listed in [10XOutputTap[110X.[133X
+  
+  [1X2.1-3 GeneratorOfUnderlyingField[101X
+  
+  [33X[1;0Y[29X[2XGeneratorOfUnderlyingField[102X( [3Xfsr[103X ) [32X method[133X
+  
+  [33X[0;0Y[10XGeneratorOfUnderlyingField[110X  returns  the  root of the defining polynomial if
+  the  root  is  also a generator, otherwise it returns the first element [22Xx ∋:
+  order(x)=Size(F)-1[122X by calling [10XGeneratorOfField[110X.[133X
+  
+  [1X2.1-4 Length[101X
+  
+  [33X[1;0Y[29X[2XLength[102X( [3Xfsr[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XInternalStateSize[102X( [3Xfsr[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XThreshold[102X( [3Xfsr[103X ) [32X attribute[133X
+  
+  [33X[0;0Y[10XLength[110X of the [3Xfsr[103X is the number of its stages.[133X
+  
+  [33X[0;0Y[10XInternalStateSize[110X  of  the  [3Xfsr[103X  is  size  in bits needed to store the state
+  computed      as      [22Xlength      ⋅      width[122X,      where      [22Xwidth      =
+  DegreeOverPrimeField(UnderlyingField([3Xfsr[103X))[122X.[133X
+  
+  [33X[0;0Y[10XThreshold[110X  of  the  [3Xfsr[103X  is  currently set to [22XCharacteristic([3Xfsr[103X)^t+ℓ[122X, where
+  [22Xt=InternalStateSize([3Xfsr[103X)[122X  and [22Xℓ=Length([3Xfsr[103X)[122X. [10XThreshold[110X is not related to the
+  [3Xfsr[103X  itself,  but  to the number of times the [3Xfsr[103X can be clocked, that is it
+  serves as the upper threshold to the length of the sequence produced.[133X
+  
+  [1X2.1-5 ChangeBasis[101X
+  
+  [33X[1;0Y[29X[2XChangeBasis[102X( [3Xfsr[103X, [3XB[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XWhichBasis[102X( [3Xfsr[103X ) [32X method[133X
+  
+  [33X[0;0Y[10XChangeBasis[110X  allows changing the basis of the [3Xfsr[103X to basis [3XB[103X. The argument [3XB[103X
+  must be given for the [10XUnderlyingField(fsr)[110X over its prime subfield.[133X
+  
+  [33X[0;0Y[10XWhichBasis[110X  returns the basis currently set for the [3Xfsr[103X. Elements in the [3Xfsr[103X
+  state  are still represented in [5XGAP[105X native representation, but the functions
+  with  basis switch turned on will print the elements w.r.t. to currently set
+  basis.[133X
+  
+  [1X2.1-6 LoadFSR[101X
+  
+  [33X[1;0Y[29X[2XLoadFSR[102X( [3Xfsr[103X, [3Xist[103X ) [32X method[133X
+  
+  [33X[0;0YLoading  the  [3Xfsr[103X  with the initial state [3Xist[103X, which is a [3XFFE[103X vector of same
+  length  as [3Xfsr[103X and with elements from its underlying finite field. If either
+  of  those  two  requirements  is  violated,  loading fails and error message
+  appears.  At  the  time  of  loading  the initial sequence element(s) (i.e.,
+  zeroth element(s)) are obtained and [10Xnumsteps[110X is set to 0.[133X
+  
+  [1X2.1-7 FeedbackFSR[101X
+  
+  [33X[1;0Y[29X[2XFeedbackFSR[102X( [3Xfsr[103X ) [32X method[133X
+  [6XReturns:[106X  [33X[0;10YThe new element computed by evaluating the feedback function using
+            the  current values from the [10Xstate[110X component of the [3Xfsr[103X or returns
+            an error if the [3Xfsr[103X is not loaded.[133X
+  
+  [1X2.1-8 StepFSR[101X
+  
+  [33X[1;0Y[29X[2XStepFSR[102X( [3Xfsr[103X[, [3Xelm[103X] ) [32X method[133X
+  [6XReturns:[106X  [33X[0;10YThe  next  sequence element(s) generated by [3Xfsr[103X in case of (N)LFSR
+            and  the  new  value in case of FILFUN. An error if the [3Xfsr[103X is not
+            loaded.[133X
+  
+  [33X[0;0Y[10XStepFSR[110X performs one step the [3Xfsr[103X, i.e., call [2XFeedbackFSR[102X ([14X2.1-7[114X) to compute
+  the  feedback  value  [22Xfb  =[122X [10XFeedbackFSR[110X([22Xfsr[122X) and then obtain the new element
+  using one of two options:[133X
+  
+  [30X    [33X[0;6Y[13Xregular  step[113X  -  the  new  state depends only of the feedback and the
+        current state (call [10XStepFSR[110X([3Xfsr[103X)): [22Xnew = fb[122X[133X
+  
+  [30X    [33X[0;6Y[13Xexternal  step[113X  -  the optional parameter [3Xelm[103X is used and then the new
+        element  is  computed  as  a  sum of the computed feedback [22Xfb[122X and [3Xelm[103X,
+        i.e.,  new  state  depends  on the feedback, the current state and the
+        input  [3Xelm[103X  (call  [10XStepFSR[110X([3Xfsr[103X,  [3Xelm[103X)): [22Xnew = fb + elm[122X The element [3Xelm[103X
+        must be an element of the underlying finite field.[133X
+  
+  [33X[0;0YIn  case  of the two true feedback shift registers LFSR and NLFSR, the [10Xstate[110X
+  and  [10Xnumsteps[110X are updated, then the sequence element(s) denoted by [10XOutputTap[110X
+  are  returned.  The  state  is  updated  by  shifting  the current state and
+  updating  the  vacant  stage with [22Xnew[122X computed either as regular or external
+  step.  In  case  of the FILFUN, there is no notion of shifting or registers;
+  the [10Xstate[110X and [10Xnumspets[110X are not updated, and the value [22Xnew[122X if returned by the
+  [10XStepFSR[110X.[133X
+  
+  [1X2.1-9 LoadStepFSR[101X
+  
+  [33X[1;0Y[29X[2XLoadStepFSR[102X( [3Xfsr[103X[, [3Xelm[103X, [3Xpr[103X] ) [32X method[133X
+  [6XReturns:[106X  [33X[0;10YThe  next  sequence element(s) generated by [3Xfsr[103X in case of (N)LFSR
+            and the new value in case of FILFUN.[133X
+  
+  [33X[0;0Y[10XLoadStepFSR[110X  calls  [2XLoadFSR[102X  ([14X2.1-6[114X),  followed by [2XStepFSR[102X ([14X2.1-8[114X). Again, a
+  regular  and  an  external step are possible. The printswitch [3Xpr[103X can also be
+  used.  This  method is implememented maianly for the FILFUNs, but also works
+  for (N)LFSRs.[133X
+  
+  [1X2.1-10 RunFSR[101X
+  
+  [33X[1;0Y[29X[2XRunFSR[102X( [3Xfsr[103X[, [3Xist[103X, [3Xnum[103X, [3Xpr[103X] ) [32X method[133X
+  [33X[1;0Y[29X[2XRunFSR[102X( [3Xfsr[103X, [3Xelm[103X[, [3Xnum[103X, [3Xpr[103X] ) [32X method[133X
+  [33X[1;0Y[29X[2XRunFSR[102X( [3Xfsr[103X, [3Xist[103X, [3Xelmvec[103X[, [3Xpr[103X] ) [32X method[133X
+  [33X[1;0Y[29X[2XRunFSR[102X( [3Xfsr[103X, [3Xz[103X, [3Xelmvec[103X[, [3Xpr[103X] ) [32X method[133X
+  [6XReturns:[106X  [33X[0;10YA sequence of elements generated by the [10XFSR[110X.[133X
+  
+  [33X[0;0YAll  [10XRunFSR[110X  calls  perform a sequence of [5XFSR[105X steps. The [3Xfsr[103X will be run for
+  [22Xmin([3Xnum[103X,  Threshold([3Xfsr[103X))[122X  number  of steps: value Threshold([3Xfsr[103X) is used by
+  all   versions   without   explicit   [3Xnum[103X  and  enforced  when  [3Xnum[103X  exceeds
+  Threshold([3Xfsr[103X), see [2XThreshold[102X ([14X2.1-4[114X) for details.[133X
+  
+  [33X[0;0YThe  [10XRunFSR[110X  calls  where the initial state [3Xist[103X is passed as an argument are
+  the  load-and-run  calls.  As  with [2XStepFSR[102X ([14X2.1-8[114X), [10XRunFSR[110X also exists as a
+  [13Xregular[113X  and [13Xexternal[113X run. The external runs are [10XRunFSR[110X calls where either a
+  single  finite field element [3Xelm[103X or a vector of finite field elements [3Xelmvec[103X
+  are passed as an argument.[133X
+  
+  [33X[0;0YThere  is an optional printing switch [3Xpr[103X, with default set to [13Xfalse[113X; if [13Xtrue[113X
+  then  the  state and the output sequence element(s) are printed in [5XGAP[105X shell
+  on every step of the [3Xfsr[103X (we call this output for [10XRunFSR[110X), and the currently
+  set basis [3XB[103X is used for representation of elements.[133X
+  
+  [30X    [33X[0;6Y[10XRunFSR([3X   fsr[,   num,  pr]  [103X[10X)[110X  -  run  [3Xfsr[103X  for  [3Xnum[103X/[3Xthreshold[103X  steps
+        with/without output.[133X
+  
+  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  ist[,  num, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run [3Xfsr[103X for
+        [3Xnum[103X/[3Xthreshold[103X steps with/without output (i.e., [13Xregular[113X version).[133X
+  
+  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  elm  [,  num,  pr] [103X[10X)[110X - run [3Xfsr[103X for [3Xnum[103X/[3Xthreshold[103X steps,
+        whereby  the  SAME  element [3Xelm[103X is added to the feedback at each step,
+        with/without output (i.e., [13Xexternal[113X version).[133X
+  
+  [30X    [33X[0;6Y[10XRunFSR([3X  fsr,  ist,  elmvec [, pr] [103X[10X)[110X - load [3Xfsr[103X with [3Xist[103X, then run [3Xfsr[103X
+        for  [13XLength([3Xelmvec[103X)[113X  steps,  whereby one element of [3Xelmvec[103X is added to
+        the  feedback  at  each  step  (starting with [3Xelmvec[1][103X), with/without
+        output  (i.e.,  [13Xexternal[113X  version).  NOTE:  the  sequence returned has
+        length  [13XLength(elmvec)+1[113X,  because  the  zeroth  sequence  element  is
+        returned at the time of loading the [10XFSR[110X.[133X
+  
+  [30X    [33X[0;6Y[10XRunFSR([3X fsr, z, elmvec [, pr] [103X[10X)[110X - input [3Xz[103X must be set to 0 to indicate
+        we  want to continue a run with new [3Xelmvec[103X: run [3Xfsr[103X for [13XLength([3Xelmvec[103X)[113X
+        steps,  whereby one element of [3Xelmvec[103X is added to the feedback at each
+        step  (starting  with  [3Xelmvec[1][103X), with/without output (i.e., [13Xexternal[113X
+        version). NOTE: the sequence returned has length [13XLength(elmvec)[113X.[133X
+  
+  [33X[0;0YFor  the  load  and  run  versions,  element  seq[22X_0[122X  is a part of the output
+  sequence,    hence    the    output   sequence   has   the   length   [3Xnum+1[103X/
+  [3Xthreshold+1[103X/[3XLength(ffevec)+1[103X.[133X
+  
+  [33X[0;0YFor  versions without the loading of [3Xist[103X, calling [10XRunFSR[110X returns an error if
+  the [3Xfsr[103X is not loaded![133X
+  
+  [33X[0;0YThe ouput of [10XRunFSR[110X is:[133X
+  
+  [30X    [33X[0;6Ysequence of [3XFFE[103Xs: seq[22X_0[122X, seq[22X_1[122X, seq[22X_2[122X, [22Xdots ,[122X for [13XLength[113X([13XOutputTap[113X)[22X=1[122X.[133X
+  
+  [30X    [33X[0;6Ysequence  of  vectors,  each of them with [22Xt[122X [3XFFE[103Xs: seq[22X_0[122X, seq[22X_1[122X, seq[22X_2[122X,
+        [22Xdots ,[122X where seq[22X_i=([122Xseq[22X_i1[122X,[22Xdots ,[122Xseq[22X_it[122X) for [13XLength[113X([13XOutputTap[113X)[22X=t[122X.[133X
+  
+  [33X[0;0YExample  of  [10XRunFSR[110X  called  for an lfsr [10Xtest[110X over [22XF_2^4[122X, with initial state
+  [10Xist[110X, print switch [13Xtrue[113X, basis [10XB[110X, and with run length 5:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XK := GF(2);; x := X(K, "x");;[127X[104X
+    [4X[25Xgap>[125X [27Xf := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;[127X[104X
+    [4X[25Xgap>[125X [27Xy := X(F, "y");; l := y^4 + y^3 + y + Z(2^4);;[127X[104X
+    [4X[25Xgap>[125X [27Xtest := LFSR(K, f, l);;[127X[104X
+    [4X[28X< empty LFSR given by FeedbackPoly = y^4+y+Z(2^4)>[128X[104X
+    [4X[25Xgap>[125X [27Xist :=[0*Z(2), Z(2^4), Z(2^4)^5, Z(2)^0 ];;[127X[104X
+    [4X[25Xgap>[125X [27XRunFSR(test, ist, 5, true);[127X[104X
+    [4X[28Xusing basis B := [ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ][128X[104X
+    [4X[28Xelm		[ 3,	...	...,0 ]  with taps  [ 0 ][128X[104X
+    [4X[28X	[ [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ], [ 1, 0, 0, 0 ] ][128X[104X
+    [4X[28X                                                            	[ 1, 0, 0, 0 ][128X[104X
+    [4X[28X	[ [ 1, 0, 1, 1 ], [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ] ][128X[104X
+    [4X[28X                                                            	[ 1, 1, 0, 1 ][128X[104X
+    [4X[28X	[ [ 1, 1, 0, 0 ], [ 1, 0, 1, 1 ], [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ] ][128X[104X
+    [4X[28X                                                            	[ 0, 1, 1, 0 ][128X[104X
+    [4X[28X	[ [ 0, 1, 1, 1 ], [ 1, 1, 0, 0 ], [ 1, 0, 1, 1 ], [ 0, 0, 0, 0 ] ][128X[104X
+    [4X[28X                                                            	[ 0, 0, 0, 0 ][128X[104X
+    [4X[28X	[ [ 1, 1, 0, 0 ], [ 0, 1, 1, 1 ], [ 1, 1, 0, 0 ], [ 1, 0, 1, 1 ] ][128X[104X
+    [4X[28X                                                            	[ 1, 0, 1, 1 ][128X[104X
+    [4X[28X	[ [ 1, 0, 1, 0 ], [ 1, 1, 0, 0 ], [ 0, 1, 1, 1 ], [ 1, 1, 0, 0 ] ][128X[104X
+    [4X[28X                                                            	[ 1, 1, 0, 0 ][128X[104X
+    [4X[28X[ Z(2)^0, Z(2^2), Z(2^4), 0*Z(2), Z(2^4)^2, Z(2^4)^9 ][128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YExample  of  [10XRunFSR[110X  called  for an lfsr [10Xtest[110X over [22XF_2^4[122X, with initial state
+  [10Xist[110X, print switch [13Xtrue[113X, basis [10XB[110X, and with 5 external inputs given as [10Xelmvec[110X:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27Xelmvec := [Z(2^4)^2, Z(2^4)^2, Z(2^2), Z(2^4)^7, Z(2^4)^6];;[127X[104X
+    [4X[25Xgap>[125X [27XRunFSR(test, ist, elmvec, true);[127X[104X
+    [4X[28Xusing basis B := [ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ][128X[104X
+    [4X[28Xelm			[ 3,	...	...,0 ]  with taps  [ 0 ][128X[104X
+    [4X[28X[ 0, 0, 0, 0 ] [ [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ], [ 1, 0, 0, 0 ] ][128X[104X
+    [4X[28X                                                            	[ 1, 0, 0, 0 ][128X[104X
+    [4X[28X[ 1, 0, 1, 1 ] [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ] ][128X[104X
+    [4X[28X                                                            	[ 1, 1, 0, 1 ][128X[104X
+    [4X[28X[ 1, 0, 1, 1 ] [ [ 1, 1, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ] ][128X[104X
+    [4X[28X                                                            	[ 0, 1, 1, 0 ][128X[104X
+    [4X[28X[ 1, 1, 0, 1 ] [ [ 1, 0, 1, 0 ], [ 1, 1, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ][128X[104X
+    [4X[28X                                                            	[ 0, 0, 0, 0 ][128X[104X
+    [4X[28X[ 0, 1, 0, 0 ] [ [ 1, 1, 1, 0 ], [ 1, 0, 1, 0 ], [ 1, 1, 0, 0 ], [ 0, 0, 0, 0 ] ][128X[104X
+    [4X[28X                                                            	[ 0, 0, 0, 0 ][128X[104X
+    [4X[28X[ 0, 0, 0, 1 ] [ [ 0, 0, 1, 1 ], [ 1, 1, 1, 0 ], [ 1, 0, 1, 0 ], [ 1, 1, 0, 0 ] ][128X[104X
+    [4X[28X                                                            	[ 1, 1, 0, 0 ][128X[104X
+    [4X[28X[ Z(2)^0, Z(2^2), Z(2^4), 0*Z(2), 0*Z(2), Z(2^4)^9 ][128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YIn  both  examples  above  the there is a column [10Xelm[110X, which is in first case
+  empty,  because  the  first example is showing the [13Xregular[113X run, while in the
+  second  example,  this  column shows the element being added at each step of
+  the [13Xexternal[113X run (empty in first row - the loading step).[133X
+  
+  [33X[0;0YAlso  note  that in the two examples above, [10XRunFSR[110X will call [2XLoadFSR[102X ([14X2.1-6[114X)
+  first,  which  adds the elm seq[22X{_0}[122X to the sequence, so both sequences above
+  are of length [3Xnum+1[103X/[3XLength(elmvec)+1[103X, i.e.,6.[133X
+  
+  [33X[0;0YThe last row in both examples is the actual sequence obtained from this run,
+  and  is kept in Zechs logarithm representation. To represent the elements in
+  the  first 6 rows, the basis printed out at the beginning is used; it can be
+  changed by using [10XChangeBasis[110X call and repeating [10XRunFSR[110X. Not all of the above
+  [10XRunFSR[110X  calls  work  for the FILFUN objects, which have to use a sequence of
+  [2XLoadStepFSR[102X  ([14X2.1-9[114X) calls rather than a single [2XLoadFSR[102X ([14X2.1-6[114X), followed by
+  a sequence of [2XStepFSR[102X ([14X2.1-8[114X) calls.[133X
+  
+  [33X[0;0YEXAMPLE MISSING !!!![133X
+  
+  
+  [1X2.2 [33X[0;0YLFSR specific funcionality[133X[101X
+  
+  [1X2.2-1 LFSR[101X
+  
+  [33X[1;0Y[29X[2XLFSR[102X( [3XF[103X, [3Xfeedbackpoly[103X[, [3XB[103X, [3Xtap[103X] ) [32X function[133X
+  [33X[1;0Y[29X[2XLFSR[102X( [3XK[103X, [3Xfieldpoly[103X, [3Xfeedbackpoly[103X[, [3XB[103X, [3Xtap[103X] ) [32X function[133X
+  [33X[1;0Y[29X[2XLFSR[102X( [3Xp[103X, [3Xm[103X, [3Xn[103X[, [3Xtap[103X] ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10YAn empty [10XLFSR[110X with components [10Xinit[110X, [10Xstate[110X , [10Xnumsteps[110X and [10Xbasis[110X.[133X
+  
+  [33X[0;0YFunction  LFSR  provides  different  ways to create an [10XLFSR[110X object; the main
+  difference  is  in the construction of the underlying finite field. The [10XLFSR[110X
+  is  uniquely  described  with  a  feedback polynomial [3Xfeedbackpoly[103X. The call
+  [10XLFSR(p,  m,  n)[110X  will  randomly  choose  a  polynomial of degree [3Xn[103X, which is
+  primitive over the field [22XF_p^m[122X, and use it as feedback.[133X
+  
+  [33X[0;0YInputs:[133X
+  
+  [30X    [33X[0;6Y[3XF[103X  - the underlying finite field (either an extension field or a prime
+        field).[133X
+  
+  [30X    [33X[0;6Y[3XB[103X - the basis of [3XF[103X over its prime subfield.[133X
+  
+  [30X    [33X[0;6Y[3Xfeedbackpoly[103X - the [10XLFSR[110X defining polynomial.[133X
+  
+  [30X    [33X[0;6Y[3Xfieldpoly[103X  -  the  defining polynomial of the extension field (must be
+        irreducible).[133X
+  
+  [30X    [33X[0;6Y[3Xp[103X - the characteristic.[133X
+  
+  [30X    [33X[0;6Y[3Xm[103X - the degree of extension (degree of [3Xfieldpoly[103X).[133X
+  
+  [30X    [33X[0;6Y[3Xn[103X - the length of the [10XLFSR[110X (degree of [3Xfeedbackpoly[103X).[133X
+  
+  [30X    [33X[0;6Y[3Xtap[103X  -  optional parameter: the output tap (must be a positive integer
+        or a list of positive integers) and will be changed to the default S_0
+        if the specified integer is out of [10XLFSR[110X range.[133X
+  
+  [33X[0;0YComponents:[133X
+  
+  [30X    [33X[0;6Y[10Xinit[110X  -  [3XFFE[103X  vector  of  length  [22Xn=[122XDegree([3Xfeedbackpoly[103X),  storing the
+        [13Xinitial[113X state of the [10XLFSR[110X, with indices from [22Xn-1, dots, 0[122X.[133X
+  
+  [30X    [33X[0;6Y[10Xstate[110X  -  [3XFFE[103X  vector  of  length  [22Xn=[122XDegree([3Xfeedbackpoly[103X), storing the
+        [13Xcurrent[113X state of the [10XLFSR[110X, with indices from [22Xn-1, dots, 0[122X.[133X
+  
+  [30X    [33X[0;6Y[10Xnumsteps[110X  -  the number of steps performed thus far (initialized to -1
+        when  created,  set  to  0  when  loaded  using  [2XLoadFSR[102X  ([14X2.1-6[114X)  and
+        incremented by 1 with each step (using [2XStepFSR[102X ([14X2.1-8[114X))).[133X
+  
+  [30X    [33X[0;6Y[10Xbasis[110X  - basis of F over its prime subfield (if no basis is given this
+        component is set to canonical basis of F over its prime subfield) .[133X
+  
+  [33X[0;0YAttributes [2XFieldPoly[102X ([14X2.1-2[114X), [2XUnderlyingField[102X ([14X2.1-2[114X), [2XFeedbackPoly[102X ([14X2.2-3[114X),
+  [2XFeedbackVec[102X  ([14X2.1-2[114X),  [2XLength[102X ([14X2.1-4[114X) and [2XOutputTap[102X ([14X2.1-2[114X) and the property
+  [2XIsLinearFeedback[102X ([14X2.2-2[114X) are set during the construction of an [10XLFSR[110X.[133X
+  
+  [33X[0;0YIf there is something wrong with the arguments (e.g. attempting to create an
+  extension  field  using a reducible poynomial), an error message appears and
+  the function returns [10Xfail[110X.[133X
+  
+  [33X[0;0YExample  below  shows  how  to  create  an  empty [10XLFSR[110X over [22XF_2^4[122X created as
+  extension  of  [22XF_2[122X, called [13Xtest[113X, firstly without a specified basis (in which
+  case the canonical basis is used), and then with basis [3XB[103X:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27Xtest := LFSR(K, f, l);[127X[104X
+    [4X[28X< empty LFSR over GF(2^4) given by FeedbackPoly = y^4+y^3+y+Z(2^4) >[128X[104X
+    [4X[25Xgap>[125X [27XWhichBasis(test);[127X[104X
+    [4X[28XCanonicalBasis( GF(2^4) )[128X[104X
+    [4X[25Xgap>[125X [27XB := Basis(F, Conjugates(Z(2^4)^3));; test := LFSR(K, f, l, B);[127X[104X
+    [4X[28X< empty LFSR over GF(2^4) given by FeedbackPoly = y^4+y^3+y+Z(2^4) >[128X[104X
+    [4X[25Xgap>[125X [27XWhichBasis(test);[127X[104X
+    [4X[28XBasis( GF(2^4), [ Z(2^4)^3, Z(2^4)^6, Z(2^4)^12, Z(2^4)^9 ] )[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [1X2.2-2 IsLinearFeedback[101X
+  
+  [33X[1;0Y[29X[2XIsLinearFeedback[102X( [3Xlfsr[103X ) [32X property[133X
+  [33X[1;0Y[29X[2XIsLFSR[102X( [3Xlfsr[103X ) [32X filter[133X
+  
+  [33X[0;0YIf   we   were  to  represent  the  [3Xlsfr[103X  with  a  multivariate  polynomial,
+  DegreeOfPolynomial  would  return  1 - the feedback polynomial is linear and
+  [10XIsLinearFeedback[110X  is  set  to  [13Xtrue[113X.  (i.e.,  only linear terms are present:
+  monomials with only one variable )[133X
+  
+  [33X[0;0YFilter [10XIsLFSR[110X is defined as and-filter of [10XIsFSR[110X and [10XIsLinearFeedback[110X.[133X
+  
+  [1X2.2-3 FeedbackPoly[101X
+  
+  [33X[1;0Y[29X[2XFeedbackPoly[102X( [3Xlfsr[103X ) [32X attribute[133X
+  
+  [33X[0;0YAttribute holding the the LFSR feedback polynomial.[133X
+  
+  [1X2.2-4 IsPeriodic[101X
+  
+  [33X[1;0Y[29X[2XIsPeriodic[102X( [3Xlfsr[103X ) [32X property[133X
+  [33X[1;0Y[29X[2XIsUltPeriodic[102X( [3Xlfsr[103X ) [32X property[133X
+  [33X[1;0Y[29X[2XIsMaxSeqLFSR[102X( [3Xlfsr[103X ) [32X property[133X
+  [33X[1;0Y[29X[2XPeriod[102X( [3Xlfsr[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XPeriodPrimitive[102X( [3Xlfsr[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XPeriodIrreducible[102X( [3Xlfsr[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XPeriodReducible[102X( [3Xlfsr[103X ) [32X method[133X
+  
+  [33X[0;0YProperties,  attributes and methods concerning the periodicity of the output
+  sequence(s), generated by the [3Xlsfr[103X.[133X
+  
+  [33X[0;0YProperties:[133X
+  
+  [30X    [33X[0;6Y[10XIsPeriodic[110X:  true  if  constant  term of [10XFeedbackPoly[110X != 0 (8.11 lidl,
+        niederreiter).[133X
+  
+  [30X    [33X[0;6Y[10XIsUltPeriodic[110X: true if [10XIsLFSR[110X is true (8.7 lidl, niederreiter)[133X
+  
+  [30X    [33X[0;6Y[10XIsMaxSeqLFSR[110X:    true    if   [10XFeedbackPoly[110X   is   primitive   (10.2.36
+        mullen,panario).[133X
+  
+  [33X[0;0YAttributes:[133X
+  
+  [30X    [33X[0;6Y[10XPeriod[110X: holds the period of the LFSR.[133X
+  
+  [33X[0;0YMethods to compute the period:[133X
+  
+  [30X    [33X[0;6Y[10XPeriodPrimitive[110X: computed as [22Xq^n-1[122X, where [22XF_q[122X is the underlying finite
+        field and [22Xn=Degree([122XFeedbackPoly[22X([122X[3Xlfsr[103X[22X))[122X.[133X
+  
+  [30X    [33X[0;6Y[10XPeriodIrreducible[110X:  [22XOrder(ω)[122X  where  [22Xω[122X is a root of FeedbackPoly([3Xlfsr[103X)
+        (2.1.53 mullen,panario).[133X
+  
+  [30X    [33X[0;6Y[10XPeriodReducible[110X:  for  FeedbackPoly([3Xlfsr[103X)  =  [22Xa∏  f_i^bi[122X, the order is
+        given  by [22Xep^t[122X, where [22Xp[122X is the characteristic of the underlying finite
+        field,  [22Xe = Lcm(ord(f_i))[122X and [22Xt[122X is the smallest integer such that [22Xp^t≥
+        max(b_i)[122X (2.1.55 mullen,panario).[133X
+  
+  [33X[0;0YAlthough  the  last method should compute the period correctly for all three
+  cases, it is computationally more demanding, hence the first two methods are
+  used when applicable.[133X
+  
+  [33X[0;0YElxample  below  shows  a  LFSR  called  [10Xtest[110X  using  a  reducible  feedback
+  polynomial  [22Xℓ  =  y^4 + y + α=(y^2+y+α^7)(y^2+y+α^9)[122X, where [22Xα = Z(2^4)[122X, with
+  period [22X(2^4)^2 - 1 = 255[122X. Next, the period of an LFSR [10Xtest1[110X with a primitive
+  feedback  polynomial  [22Xℓ=y^4+y^3+y+α[122X,  where  [22Xα = Z(2^4)[122X, with maximum period
+  [22X(2^4)^4-1=65535[122X; the LFSR [10Xtest1[110X will produce an [22Xm[122X-sequence.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27Xl := y^4 + y + Z(2^4);; test := LFSR(K, f, l);[127X[104X
+    [4X[28X< empty LFSR over GF(2^4) given by FeedbackPoly = y^4+y+Z(2^4) >[128X[104X
+    [4X[25Xgap>[125X [27XPeriod(test); IsMaxSeqLFSR(test);[127X[104X
+    [4X[28X255[128X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xl := y^4 + y^3 + y + Z(2^4);; test1 := LFSR(K, f, l, B);[127X[104X
+    [4X[28X< empty LFSR over GF(2^4) given by FeedbackPoly = y^4+y^3+y+Z(2^4) >[128X[104X
+    [4X[25Xgap>[125X [27XPeriod(test1); IsMaxSeqLFSR(test1);[127X[104X
+    [4X[28X65535[128X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X2.3 [33X[0;0YNLFSR specific funcionality[133X[101X
+  
+  [1X2.3-1 NLFSR[101X
+  
+  [33X[1;0Y[29X[2XNLFSR[102X( [3XF[103X, [3Xmpoly[103X, [3Xlen[103X[, [3Xtap[103X] ) [32X function[133X
+  [33X[1;0Y[29X[2XNLFSR[102X( [3XF[103X, [3Xfieldpoly[103X, [3Xmpoly[103X, [3Xlen[103X[, [3Xtap[103X] ) [32X function[133X
+  [33X[1;0Y[29X[2XNLFSR[102X( [3XF[103X, [3Xclist[103X, [3Xmlist[103X, [3Xlen[103X[, [3Xtap[103X] ) [32X function[133X
+  [33X[1;0Y[29X[2XNLFSR[102X( [3XF[103X, [3Xfieldpoly[103X, [3Xclist[103X, [3Xmlist[103X, [3Xlen[103X[, [3Xtap[103X] ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10YAn empty [10XNLFSR[110X with components [10Xinit[110X, [10Xstate[110X, [10Xnumsteps[110X and [10Xbasis[110X.[133X
+  
+  [33X[0;0YFunction  NLFSR  provides different ways to create an [10XNLFSR[110X object; the main
+  differences are in multivariate polynomial specification and in construction
+  of  the  underlying  finite  field. The [10XNLFSR[110X is uniquely described with a a
+  multivariate  polynomial,  which is either given directly as [3Xmpoly[103X or by two
+  lists:  a  list  of  monomials  [3Xmlist[103X,  and  a  list  of their corresponding
+  coefficients [3Xclist[103X, i.e. [22Xmpoly = clist ⋅ mlist[122X. Both of lists must always be
+  provided  and be of same length. The creation of a random NLFSR is currently
+  not implemented.[133X
+  
+  [33X[0;0YInputs:[133X
+  
+  [30X    [33X[0;6Y[3XF[103X  - the underlying finite field (either an extension field or a prime
+        field).[133X
+  
+  [30X    [33X[0;6Y[3Xfieldpoly[103X  -  the defifning polynomial of the extension field (must be
+        irreducible).[133X
+  
+  [30X    [33X[0;6Y[3Xmpoly[103X - the feedback polynomial.[133X
+  
+  [30X    [33X[0;6Y[3Xclist[103X - the list of coefficients for the monomials in [3Xmlist[103X.[133X
+  
+  [30X    [33X[0;6Y[3Xmlist[103X - the list of monomials.[133X
+  
+  [30X    [33X[0;6Y[3Xlen[103X - the length of [10XNLFSR[110X. The [13Xrange[113X of the [10XNLFSR[110X is [22X[0, len -1][122X.[133X
+  
+  [30X    [33X[0;6Y[3Xtap[103X  -  an optional parameter: the output tap (a positive integer or a
+        list  of  positive integers), which will be changed to the default S_0
+        if the specified integer(s) fall out of [10XNLFSR[110X range.[133X
+  
+  [33X[0;0YNOTE:  the lists [3Xclist[103X and [3Xmlist[103X must be of same length, and all elements in
+  [3Xclist[103X  must  belong  to  the  underlying  field. Monomials in [3Xmlist[103X must not
+  include any indeterminates that are out of range specified by [3Xlen[103X: stages of
+  [10XNLFSR[110X  are  represented by indeterminants and the feedback is not allowed to
+  use a stage that doesnt exist. Currently, 200 variables are available, which
+  puts  the maximum length of the NLFSR too 200 stages. A second constraint on
+  [3Xmlist[103X  requires  that  it  must  contain at least one monomial of degree [22X>1[122X,
+  otherwise we must create an [10XLFSR[110X.[133X
+  
+  [33X[0;0YCompoents:[133X
+  
+  [30X    [33X[0;6Y[10Xinit[110X  -  [3XFFE[103X  vector  of  length  [22Xn=[122XDegree([3Xfeedbackpoly[103X),  storing the
+        initial state of the [10XNLFSR[110X, with indices from [22Xn-1, dots, 0[122X.[133X
+  
+  [30X    [33X[0;6Y[10Xstate[110X  -  [3XFFE[103X  vector  of  length  [22Xn=[122XDegree([3Xfeedbackpoly[103X), storing the
+        current state of the [10XNLFSR[110X, with indices from [22Xn-1, dots, 0[122X.[133X
+  
+  [30X    [33X[0;6Y[10Xnumsteps[110X  -  the number of steps performed thus far (initialized to -1
+        when  created,  set  to  0  when  loaded  using  [2XLoadFSR[102X  ([14X2.1-6[114X)  and
+        incremented by 1 with each step (using [2XStepFSR[102X ([14X2.1-8[114X)))[133X
+  
+  [30X    [33X[0;6Y[10Xbasis[110X - basis of F over its prime subfield. The component [10Xbasis[110X is set
+        to the canonical basis of [3XF[103X over its prime subfield. None of the [10XNLFSR[110X
+        calls  contain  the  basis  as argument: the basis is set to canonical
+        basis and must be later changed by [2XChangeBasis[102X ([14X2.1-5[114X).[133X
+  
+  [33X[0;0YAttributes [2XFieldPoly[102X ([14X2.1-2[114X), [2XUnderlyingField[102X ([14X2.1-2[114X), [2XMultivarPoly[102X ([14X2.3-3[114X),
+  [2XFeedbackVec[102X ([14X2.1-2[114X), [2XIndetList[102X ([14X2.3-3[114X), [2XLength[102X ([14X2.1-4[114X) and [2XOutputTap[102X ([14X2.1-2[114X)
+  and the property [2XIsNonLinearFeedback[102X ([14X2.3-2[114X) are set during the construction
+  of an [10XNLFSR[110X.[133X
+  
+  [33X[0;0YIf there is something wrong with the arguments (e.g. attempting to create an
+  extension  field  using a reducible poynomial), an error message appears and
+  the function returns [10Xfail[110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27X F := GF(2);;                                         [127X[104X
+    [4X[25Xgap>[125X [27Xtest := NLFSR(F, x_0*x_3*x_1 + x_2, 5);  [127X[104X
+    [4X[28X< empty NLFSR of length 5 over GF(2),[128X[104X
+    [4X[28X   given by MultivarPoly = x_0*x_1*x_3+x_2> [128X[104X
+    [4X[28Xclist := [One(F), One(F)];; mlist := [x_0, x_1*x_2];; [128X[104X
+    [4X[25Xgap>[125X [27Xtest := NLFSR(F, clist, mlist, 3);[127X[104X
+    [4X[28X< empty NLFSR of length 3 over GF(2),[128X[104X
+    [4X[28X  given by MultivarPoly = x_1*x_2+x_0> [128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [1X2.3-2 IsNonLinearFeedback[101X
+  
+  [33X[1;0Y[29X[2XIsNonLinearFeedback[102X( [3Xnlfsr[103X ) [32X property[133X
+  [33X[1;0Y[29X[2XIsNLFSR[102X( [3Xnlfsr[103X ) [32X filter[133X
+  
+  [33X[0;0YFor the multivariate polynomial given by [3Xclist[103X and [3Xmlist[103X, [2XDegreeOfPolynomial[102X
+  ([14X???DegreeOfPolynomial???[114X)  greter  than 1 sets [10XIsNonLinearFeedback[110X to [13Xtrue[113X.
+  This  property  is set during the creation of the [10XNLFSR[110X using [2XNLFSR[102X ([14X2.3-1[114X),
+  which  will  print  an  error  message  instructing  to use the [2XLFSR[102X ([14X2.2-1[114X)
+  constructor instead.[133X
+  
+  [33X[0;0YThe    filter    [10XIsNLFSR[110X   is   defined   as   and-filter   of   [10XIsFSR[110X   and
+  [10XIsNonLinearFeedback[110X.[133X
+  
+  [1X2.3-3 MultivarPoly[101X
+  
+  [33X[1;0Y[29X[2XMultivarPoly[102X( [3Xnlfsr[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XMonomialList[102X( [3Xnlfsr[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XIndetList[102X( [3Xnlfsr[103X ) [32X attribute[133X
+  
+  [33X[0;0Y[10XMultivarPoly[110X  holds  the  multivariate function defining the feedback of the
+  [10XNLFSR[110X.[133X
+  
+  [33X[0;0Y[10XMonomialList[110X  holds a copy of the initial monomial list [10Xmlist[110X used to create
+  the [10XNLFSR[110X.[133X
+  
+  [33X[0;0Y[10XIndetList[110X  holds all the indeterminates that are present in [10XMultivarPoly[110X and
+  [10XMonomialList[110X.  This  list  is  needed  for  the  computation of the feedback
+  element,  which  is computed from [10XMultivarPoly[110X, [10XIndetList[110X and [10Xstate[110X, and not
+  from  [10XFeedbackVec[110X.  [10XFeedbackVec[110X  now holds only the nonzero coefficients for
+  the  monomials  instead  of  stages,  i.e.,  it  holds a copy of the initial
+  coefficients  list  [10Xclist[110X,  (as  opposed to the [10XLFSR[110X, where this field holds
+  coefficients for all stages of the [10XFSR[110X).[133X
+  
+  [33X[0;0YExample  below shows the values of attributes [10XMultivarPoly[110X, [10XMonomialList[110X and
+  [10XIndetList[110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XMultivarPoly(test); MonomialList(test); IndetList(test);[127X[104X
+    [4X[28Xx_1*x_2+x_0[128X[104X
+    [4X[28X[ x_0, x_1*x_2 ][128X[104X
+    [4X[28X[ 0, 1, 2 ][128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [1X2.3-4 ConstTermOfNLFSR[101X
+  
+  [33X[1;0Y[29X[2XConstTermOfNLFSR[102X( [3Xnlfsr[103X ) [32X method[133X
+  
+  [33X[0;0YReturns  the  constant  term  of  the  multivariate  polynomial defining the
+  feedback  function.  Example below shows the constant term for two different
+  NLFSR,  first  the [3Xtest[103X example used in previous example, and then the [3Xtest1[103X
+  example with a different feedback.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XConstTermOfNLFSR(test);           [127X[104X
+    [4X[28X0*Z(2)[128X[104X
+    [4X[25Xgap>[125X [27Xmlist1 := [One(F), x_0, x_1*x_2];; clist1 := [One(F), One(F), One(F)];;[127X[104X
+    [4X[25Xgap>[125X [27Xtest1 := NLFSR(F, clist1, mlist1, 3);                                  [127X[104X
+    [4X[28X< empty NLFSR of length 3 over GF(2),[128X[104X
+    [4X[28X  given by MultivarPoly = x_1*x_2+x_0+Z(2)^0> [128X[104X
+    [4X[25Xgap>[125X [27XConstTermOfNLFSR(test1);                                               [127X[104X
+    [4X[28XZ(2)^0[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  

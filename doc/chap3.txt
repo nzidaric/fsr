@@ -1,0 +1,204 @@
+  
+  [1X3 [33X[0;0YOutput formatting functions and TEX drawing functions[133X[101X
+  
+  
+  [1X3.1 [33X[0;0YView/Display/Print/PrintAll[133X[101X
+  
+  [1X3.1-1 ViewObj[101X
+  
+  [33X[1;0Y[29X[2XViewObj[102X( [3Xfsr[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XPrintObj[102X( [3Xfsr[103X[, [3Xb[103X] ) [32X method[133X
+  [33X[1;0Y[29X[2XPrintAll[102X( [3Xfsr[103X[, [3Xb[103X] ) [32X method[133X
+  
+  [33X[0;0YDifferent detail on [3Xfsr[103X created either by [2XLFSR[102X ([14X2.2-1[114X) or [2XNLFSR[102X ([14X2.3-2[114X):[133X
+  
+  [30X    [33X[0;6Y[10XDisplay/View[110X:[133X
+  
+        [30X    [33X[0;12YLFSR: show the [2XFeedbackPoly[102X ([14X2.2-3[114X) and wheter or not the [3Xfsr[103X is
+              empty.[133X
+  
+        [30X    [33X[0;12YNLFSR:  show  the [2XMultivarPoly[102X ([14X2.3-4[114X) and wheter or not the [3Xfsr[103X
+              is empty.[133X
+  
+  [30X    [33X[0;6Y[10XPrint[110X:  same  as [10XDisplay/View[110X if [3Xfsr[103X is empty, otherwise it also shows
+        the values of components [10Xstate[110X, [10Xnumsteps[110X and [10Xbasis[110X.[133X
+  
+  [30X    [33X[0;6Y[10XPrintAll[110X:  same  as [10XPrint[110X if [3Xfsr[103X is empty, otherwise it also shows the
+        values  of  all  four components [10Xinit[110X, [10Xstate[110X , [10Xnumsteps[110X and [10Xbasis[110X with
+        additional   information  about  the  underlying  field  and  the  tap
+        positions .[133X
+  
+  [33X[0;0YNOTE:  both  [10XPrint[110X  and  [10XPrintAll[110X  can be used with optional parameter [3Xb[103X for
+  desiered  output  format:  when  [10Xtrue[110X  the output will use the currently set
+  basis.[133X
+  
+  [33X[0;0YExamples below show different outputs for an LFSR:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XK := GF(2);; x := X(K, "x");; f := x^4 + x^3 + 1;; [127X[104X
+    [4X[25Xgap>[125X [27XF := FieldExtension(K, f);; y := X(F, "y");; l := y^4 + y + Z(2^4);;[127X[104X
+    [4X[25Xgap>[125X [27Xtest := LFSR(K, f, l);; Print(test);[127X[104X
+    [4X[28Xempty LFSR over GF(2^4) given by FeedbackPoly = y^4+y+Z(2^4)[128X[104X
+    [4X[25Xgap>[125X [27Xist := [ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ];; LoadFSR(test, ist);;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(test);[127X[104X
+    [4X[28XLFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4)[128X[104X
+    [4X[28Xwith basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ][128X[104X
+    [4X[28Xwith current state =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ][128X[104X
+    [4X[28Xafter  0 steps[128X[104X
+    [4X[25Xgap>[125X [27XRunFSR(test,5);; Print(test);[127X[104X
+    [4X[28XLFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4)[128X[104X
+    [4X[28Xwith basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ][128X[104X
+    [4X[28Xwith current state =[ Z(2^2), Z(2^4)^2, Z(2^4)^2, Z(2^4)^11 ][128X[104X
+    [4X[28Xafter  5 steps[128X[104X
+    [4X[25Xgap>[125X [27XPrintAll(test);[127X[104X
+    [4X[28XLFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4)[128X[104X
+    [4X[28Xwith basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ][128X[104X
+    [4X[28Xwith feedback coeff =[ 0*Z(2), 0*Z(2), Z(2)^0, Z(2^4) ][128X[104X
+    [4X[28Xwith initial state  =[ 0*Z(2), Z(2^4), Z(2^2), Z(2)^0 ][128X[104X
+    [4X[28Xwith current state  =[ Z(2^2), Z(2^4)^2, Z(2^4)^2, Z(2^4)^11 ][128X[104X
+    [4X[28Xafter 5 steps[128X[104X
+    [4X[28Xwith output from stage S_0[128X[104X
+    [4X[25Xgap>[125X [27XPrintAll(test, true);[127X[104X
+    [4X[28XLFSR over GF(2^4) defined by FieldPoly=x^4+x^3+Z(2)^0  given by FeedbackPoly = y^4\[128X[104X
+    [4X[28X+y+Z(2^4)[128X[104X
+    [4X[28Xwith basis =[ Z(2)^0, Z(2^4)^7, Z(2^4)^14, Z(2^4)^6 ][128X[104X
+    [4X[28Xwith feedback coeff =[ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 0, 0, 0 ],[128X[104X
+    [4X[28X  [ 0, 1, 1, 0 ] ][128X[104X
+    [4X[28Xwith initial state  =[ [ 0, 0, 0, 0 ], [ 0, 1, 1, 0 ], [ 1, 1, 0, 1 ],[128X[104X
+    [4X[28X  [ 1, 0, 0, 0 ] ][128X[104X
+    [4X[28Xwith current state  =[ [ 1, 1, 0, 1 ], [ 1, 0, 1, 1 ], [ 1, 0, 1, 1 ],[128X[104X
+    [4X[28X  [ 0, 1, 1, 1 ] ][128X[104X
+    [4X[28Xafter 5 steps[128X[104X
+    [4X[28Xwith output from stage S_0[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YExamples below show different outputs for an NLFSR:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XF := GF(2);; ChooseField(F);[127X[104X
+    [4X[28XYou can now create an NLFSR with up to 100 stages[128X[104X
+    [4X[28Xwith up to  200 nonzero terms[128X[104X
+    [4X[25Xgap>[125X [27Xclist := [One(F), One(F)];; mlist := [x_0, x_1*x_2];;[127X[104X
+    [4X[25Xgap>[125X [27Xtest := NLFSR(F, clist, mlist, 3);[127X[104X
+    [4X[28X< empty NLFSR of length 3 over GF(2),[128X[104X
+    [4X[28X  given by MultivarPoly = x_1*x_2+x_0> [128X[104X
+    [4X[25Xgap>[125X [27XDisplay(test);[127X[104X
+    [4X[28X< empty NLFSR of length 3 over GF(2),[128X[104X
+    [4X[28X  given by MultivarPoly = x_1*x_2+x_0> [128X[104X
+    [4X[25Xgap>[125X [27XPrintAll(test,true);[127X[104X
+    [4X[28Xempty NLFSR of length 3 over GF(2),[128X[104X
+    [4X[28X  given by MultivarPoly = x_1*x_2+x_0[128X[104X
+    [4X[28Xwith basis =[ Z(2)^0 ][128X[104X
+    [4X[28Xwith initial state  =[ [ 0 ], [ 0 ], [ 0 ] ][128X[104X
+    [4X[28Xwith current state  =[ [ 0 ], [ 0 ], [ 0 ] ][128X[104X
+    [4X[28Xafter initialization [128X[104X
+    [4X[28Xwith output from stage S_0[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X3.2 [33X[0;0YWriting to *.txt or *.tex[133X[101X
+  
+  [1X3.2-1 WriteAllFSR[101X
+  
+  [33X[1;0Y[29X[2XWriteAllFSR[102X( [3Xoutput[103X, [3Xfsr[103X, [3Xb[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XWriteTEXAllFSR[102X( [3Xoutput[103X, [3Xfsr[103X, [3Xb[103X, [3XstrGen[103X, [3Xgen[103X ) [32X function[133X
+  
+  [33X[0;0Y[10XWriteAllFSR[110X  is  equivalent  to  PrintAll, but it writes to an output stream
+  (like a *.txt file).[133X
+  
+  [33X[0;0Y[10XWriteTEXAllFSR[110X  is  equivalent to PrintAll, but formats the output for *.tex
+  files.  Parameter [3XstrGen[103X is the string corresponding to a greek letter to be
+  used for the generator of the extension field.[133X
+  
+  [33X[0;0YNOTE:  both  versions  must  be used with mandatory parameter [3Xb[103X for desiered
+  output format: when [10Xtrue[110X the output will use the currently set basis.[133X
+  
+  [1X3.2-2 WriteSequenceFSR[101X
+  
+  [33X[1;0Y[29X[2XWriteSequenceFSR[102X( [3Xoutput[103X, [3Xfsr[103X, [3Xsequence[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XWriteTBSequenceFSR[102X( [3Xoutput[103X, [3Xfsr[103X, [3Xsequence[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XWriteTEXSequenceByGenerator[102X( [3Xoutput[103X, [3Xfsr[103X, [3Xsequence[103X, [3XstrGen[103X, [3Xgen[103X ) [32X function[133X
+  
+  [33X[0;0Y[10XWriteSequenceFSR[110X   writes   the   sequence  generated  by  some  version  of
+  RunFSR(lfsr)  to  *.txt  file,  with  addition  of separating sequences from
+  different taps and writing them in currently set basis of the [3Xfsr[103X.[133X
+  
+  [33X[0;0Y[10XWriteTBSequenceFSR[110X   is   a   version   of   [10XWriteSequenceFSR[110X  intended  for
+  testbenching purposes: the generated sequence is written to *.txt file, with
+  sequences  from  different  taps  separated  into [13Xcolumns[113X separated by "\t".
+  Again  the  currently  set basis of the [3Xfsr[103X is used. The order of columns is
+  determined by [10XOutputTap([3Xfsr[103X[10X)[110X.[133X
+  
+  [33X[0;0Y[10XWriteTEXSequenceByGenerator[110X  is  a  *.tex  version  of  [10XWriteSequenceFSR[110X but
+  allows  to  write the sequence elements as powers of a chosen generator [3Xgen[103X.
+  Generator [3Xgen[103X is used to get the exponents of the elements, and the elements
+  themselfs  are  printed  as  for  example [22Xα^exponent[122X, where [3XstrGen[103X is set to
+  "alpha"  ( it must be a string representing a greek letter in *.tex). Use of
+  "omega" is not allowed.[133X
+  
+  [1X3.2-3 WriteRunFSR[101X
+  
+  [33X[1;0Y[29X[2XWriteRunFSR[102X( [3Xoutput[103X, [3Xfsr[103X, [3Xist[103X, [3Xnumsteps[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XWriteNonlinRunFSR[102X( [3Xoutput[103X, [3Xfsr[103X, [3Xist[103X, [3Xelmvec[103X ) [32X function[133X
+  
+  [33X[0;0Y[10XWriteRunFSR[110X  is  an  output  to *.txt version of RunFSR([3Xfsr[103X, [3Xist[103X, [3Xnum[103X), with
+  addition  of  separating  sequences  from different taps and writing them in
+  currently set basis of the [3Xfsr[103X. Before the run begins and after loading, the
+  [10XWriteAllFSR(output,  x,  true)[110X  is called to record the FSR being used. When
+  the  run  is  finished,  [10XWriteSequenceFSR[110X  is  called  to  record the output
+  sequence  in  compact version. [10XWriteRunFSR[110X returns the sequence generated by
+  this run.[133X
+  
+  [33X[0;0Y[10XWriteNonlinRunFSR[110X is an output to *.txt version of RunFSR([3Xfsr[103X, [3Xist[103X, [3Xelmvec[103X).
+  [10XWriteNonlinRunFSR[110X  returns  a  sequence  generated by this run, however, the
+  length  of  returned sequence is Length([3Xelmvec[103X)+1, because the first element
+  of the output sequence is the element that was loaded with [3Xist[103X.[133X
+  
+  [33X[0;0YAn example of the the [10XWriteRunFSR[110X output can be seen in figure below:[133X
+  
+  [33X[0;0Y/See diagrams in HTML and PDF versions of the manual/[133X
+  
+  [33X[0;0YAn example of the the [10XWriteNonlinRunFSR[110X output can be seen in figure below:[133X
+  
+  [33X[0;0Y/See diagrams in HTML and PDF versions of the manual/[133X
+  
+  [1X3.2-4 WriteTEXRunFSR[101X
+  
+  [33X[1;0Y[29X[2XWriteTEXRunFSR[102X( [3Xoutput[103X, [3Xfsr[103X, [3Xist[103X, [3Xnumsteps[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XWriteTEXNonlinRunFSR[102X( [3Xoutput[103X, [3Xfsr[103X, [3Xist[103X, [3Xnumsteps[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XWriteTEXRunFSRByGenerator[102X( [3Xoutput[103X, [3Xfsr[103X, [3Xist[103X, [3Xnumsteps[103X, [3XstrGen[103X, [3Xgen[103X ) [32X function[133X
+  
+  [33X[0;0Y[10XWriteTEXRunFSR[110X is an output to *.tex version of RunFSR([3Xfsr[103X, [3Xist[103X, [3Xnum[103X), which
+  writes a table that can be included dircetly (except for the label). Rows of
+  the  table  represent  the steps of the FSR and include the state of the FSR
+  and  the  elements  from  stages specfied by outputTap, that is the sequence
+  outputs  at  this step. The table entries (FFEs) are printed using currently
+  set  basis of the [3Xfsr[103X. When the run is finished, [10XWriteTEXSequenceByGenerator[110X
+  is  called  to record the output sequence in compact version. [10XWriteTEXRunFSR[110X
+  returns the sequence generated by this run.[133X
+  
+  [33X[0;0YAn example of the the [10XWriteTEXRunFSR[110X output can be seen in figure below:[133X
+  
+  [33X[0;0Y/See diagrams in HTML and PDF versions of the manual/[133X
+  
+  [33X[0;0Y[10XWriteTEXNonlinRunFSR[110X TO DO[133X
+  
+  [33X[0;0Y[10XWriteTEXRunFSRByGenerator[110X  is  a *.tex version of [10XWriteTEXRunFSR[110X but instead
+  of  using  the currently set basis of the [3Xfsr[103X, the table entries are printed
+  as  powers  of  a  chosen  generator  [3Xgen[103X.  Generator [3Xgen[103X is used to get the
+  exponents  of  the  elements,  and the elements themselfs are printed as for
+  example  [22Xα^exponent[122X,  where  [3XstrGen[103X  is set to "alpha" ( it must be a string
+  representing a greek letter in *.tex). Use of "omega" is not allowed.[133X
+  
+  [33X[0;0YAn example of the the [10XWriteTEXRunFSRByGenerator[110X output can be seen in figure
+  below:[133X
+  
+  [33X[0;0Y/See diagrams in HTML and PDF versions of the manual/[133X
+  
+  
+  [1X3.3 [33X[0;0YTEX drawing functions[133X[101X
+  

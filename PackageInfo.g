@@ -1,102 +1,110 @@
 #############################################################################
-##  
-##  Demo PackageInfo.g for the GitHubPagesForGAP
 ##
-
+##  PackageInfo.g for the package `FSR'
+#
 SetPackageInfo( rec(
-
-PackageName := "GitHubPagesForGAP",
-
-Subtitle := "A GitHub Pages generator for GAP packages",
-Version := "0.2",
-Date := "04/02/2017", # dd/mm/yyyy format
+PackageName := "FSR",
+Subtitle := "FSR - Feedback Shift Register Package",
+Version := "1.2.0",
+Date := "25/03/2018",
+##  <#GAPDoc Label="PKGVERSIONDATA">
+##  <!ENTITY VERSION "1.1.0">
+##  <!ENTITY RELEASEDATE "22 March 2017">
+##  <!ENTITY RELEASEYEAR "2017">
+##  <#/GAPDoc>
 
 Persons := [
   rec(
-    LastName      := "Horn",
-    FirstNames    := "Max",
-    IsAuthor      := true,
-    IsMaintainer  := true,
-    Email         := "max.horn@math.uni-giessen.de",
-    WWWHome       := "http://www.quendi.de/math",
-    PostalAddress := Concatenation(
-                       "AG Algebra\n",
-                       "Mathematisches Institut\n",
-                       "Justus-Liebig-Universität Gießen\n",
-                       "Arndtstraße 2\n",
-                       "35392 Gießen\n",
-                       "Germany" ),
-    Place         := "Gießen",
-    Institution   := "Justus-Liebig-Universität Gießen"
-  ),
-
-  rec(
-    LastName      := "Thor",
-    FirstNames    := "A. U.",
+    LastName      := "Zidaric",
+    FirstNames    := "Nusa",
     IsAuthor      := true,
     IsMaintainer  := false,
-    #Email         := "author@example.com",
+    Email         := "nzidaric@uwaterloo.ca",
+    WWWHome       := "http://comsec.uwaterloo.ca/",
+    PostalAddress := Concatenation( [
+                       "200 University Ave W",
+                       "Waterloo",
+                       "Canada",
+                       "ON N2L 3G1" ] ),
+    Place         := "Waterloo",
+    Institution   := "UW-ComSec Lab"
   ),
 
   rec(
-    LastName      := "Itor",
-    FirstNames    := "Jan",
-    IsAuthor      := false,
-    IsMaintainer  := true,
-    #Email         := "janitor@example.com",
+    LastName      := "Aagaard",
+    FirstNames    := "Mark",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "maagaard@uwaterloo.ca",
+    WWWHome       := "http://comsec.uwaterloo.ca/",
+    PostalAddress := Concatenation( [
+                       "200 University Ave W",
+                       "Waterloo",
+                       "Canada",
+                       "ON N2L 3G1" ] ),
+    Place         := "Waterloo",
+    Institution   := "UW-ComSec Lab"
+  ),
+   rec(
+      LastName      := "Gong",
+      FirstNames    := "Guang",
+      IsAuthor      := true,
+      IsMaintainer  := false,
+      Email         := "ggong@uwaterloo.ca",
+      WWWHome       := "http://comsec.uwaterloo.ca/",
+      PostalAddress := Concatenation( [
+                         "200 University Ave W",
+                         "Waterloo",
+                         "Canada",
+                         "ON N2L 3G1" ] ),
+      Place         := "Waterloo",
+      Institution   := "UW-ComSec Lab"
   ),
 ],
 
 Status := "other",
 
-# The following are not strictly necessary in your own PackageInfo.g
-# (in the sense that update.g only looks at the usual fields
-# like PackageWWWHome, ArchiveURL etc.). But they are convenient
-# if you use exactly the scheme for your package website that we propose.
-GithubUser := "gap-system",
-GithubRepository := ~.PackageName,
-GithubWWW := Concatenation("https://github.com/", ~.GithubUser, "/", ~.GithubRepository),
 
-PackageWWWHome := Concatenation("https://", ~.GithubUser, ".github.io/", ~.GithubRepository, "/"),
-README_URL     := Concatenation( ~.PackageWWWHome, "README.md" ),
-PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
-# The following assumes you are using the Github releases system. If not, adjust
-# it accordingly.
-ArchiveURL     := Concatenation(~.GithubWWW,
-                    "/releases/download/v", ~.Version, "/",
-                    ~.GithubRepository, "-", ~.Version),
+SourceRepository := rec(
+    Type := "git",
+    URL := Concatenation( "https://github.com/nzidaric/", ~.PackageName ),
+),
+IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
+PackageWWWHome  := Concatenation( "https://nzidaric.github.io/", ~.PackageName ),
+README_URL      := Concatenation( ~.PackageWWWHome, "/README.md" ),
+PackageInfoURL  := Concatenation( ~.PackageWWWHome, "/PackageInfo.g" ),
+ArchiveURL      := Concatenation( ~.SourceRepository.URL,
+                                 "/releases/download/v", ~.Version,
+                                 "/", ~.PackageName, "-", ~.Version ),
 
-ArchiveFormats := ".tar.gz .tar.bz2",
+ArchiveFormats := ".tar.gz",
 
-AbstractHTML := 
-  "This is a pseudo package that contains no actual\
-  <span class=\"pkgname\">GAP</span> code. Instead, it is a template for other\
-  GAP packages that allows to quickly setup GitHub Pages.",
+AbstractHTML := "",
+
+
 
 PackageDoc := rec(
-  BookName  := "GitHubPagesForGAP",
+  BookName  := "FSR",
   ArchiveURLSubset := ["doc"],
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "A GitHub Pages generator for GAP packages",
+  LongTitle := "Feedback Shift Register Package",
+  Autoload := true
 ),
 
-# The following dependencies are fake and for testing / demo purposes
 Dependencies := rec(
-  GAP := ">=4.8.1",
-  NeededOtherPackages := [
-    ["GAPDoc", ">= 1.2"],
-    ["IO", ">= 4.1"],
-  ],
-  SuggestedOtherPackages := [["orb", ">= 4.2"]],
+  GAP := "4.7",
+  NeededOtherPackages := [["GAPDoc", "1.5"]],
+  SuggestedOtherPackages := [],
   ExternalConditions := []
+
 ),
 
 AvailabilityTest := ReturnTrue,
 
-Keywords := ["GitHub Pages", "GAP"]
+TestFile := "tst/testall.tst",
+
+Keywords := ["package FSR", "LFSR" , "finite fields", "sequences"]
 
 ));
-
-
