@@ -48,14 +48,11 @@ citeas: |
 bibtex: |
     @misc{ FSR1.2.0,
       author =           {Zidaric, N. and Aagaard, M. and Gong, G.},
-      title =            {{FSR},   FSR   -   Feedback  Shift  Register  Package,
-                          {V}ersion 1.2.0},
+      title =            {{FSR}, FSR - Feedback Shift Register Package, {V}ersion 1.2.0},
       month =            {Mar},
       year =             {2018},
       note =             {GAP package},
-      howpublished =     {\href                 {https://nzidaric.github.io/FSR}
-                          {\texttt{https://nzidaric.github.io/}\discretionary
-                          {}{}{}\texttt{FSR}}},
+      howpublished =     {\href {https://nzidaric.github.io/FSR} {\texttt{https://nzidaric.github.io/}\discretionary {}{}{}\texttt{FSR}}},
       keywords =         {package FSR; LFSR; finite fields; sequences},
       printedkey =       {ZAG18}
     }
