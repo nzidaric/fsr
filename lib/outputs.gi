@@ -106,7 +106,32 @@ InstallMethod(VecToString, "print nicely", [IsBasis, IsVector], function(B, x)
 local  vec, i, j, d, F , elm, hfv, str, tmp, temp, H;
 	str := [];
 	hfv := []; # human friendly vector
-	if IsRingElement(x) then
+
+	if IsMatrix(x) then
+		F := DefaultFieldOfMatrix(x);
+		if IsPrimeField(F) then
+			for i in [1..Length(x)] do
+				elm := IntVecFFE(x[i]);
+				tmp := List(elm, String);
+				str[i] := JoinStringsWithSeparator(tmp, "");
+			od;
+		else
+			H := IntMatFFExt(B,x);
+			d := DimensionsMat(x);
+			for i in [1 .. d[1]] do #rows
+				hfv := H[i];
+				temp:=[];
+				for j in [1..Length(hfv)] do
+					elm := hfv[j];
+					tmp := List(elm, String);
+					temp[j] := JoinStringsWithSeparator(tmp, "");
+				 od;
+				Add(str,temp);
+			od;
+		fi;
+
+
+	elif IsRingElement(x) then
 		hfv := IntFFExt(B, x);
 		tmp := List(hfv, String);
 		str := JoinStringsWithSeparator(tmp, "");
@@ -136,28 +161,6 @@ local  vec, i, j, d, F , elm, hfv, str, tmp, temp, H;
 #							str := Concatenation(str, ",", tmp);
 #						 od;
 		fi;
-	elif IsMatrix(x) then
-		F := DefaultFieldOfMatrix(x);
-		if IsPrimeField(F) then
-			for i in [1..Length(x)] do
-				elm := IntVecFFE(x[i]);
-				tmp := List(elm, String);
-				str[i] := JoinStringsWithSeparator(tmp, "");
-			od;
-		else
-			H := IntMatFFExt(B,x);
-			d := DimensionsMat(x);
-			for i in [1 .. d[1]] do #rows
-				hfv := H[i];
-				temp:=[];
-				for j in [1..Length(hfv)] do
-					elm := hfv[j];
-					tmp := List(elm, String);
-					temp[j] := JoinStringsWithSeparator(tmp, "");
-				 od;
-				Add(str,temp);
-			od;
-		fi;
 	else
 		tmp := List(x, String);
 		str := JoinStringsWithSeparator(tmp, "");
@@ -170,16 +173,19 @@ InstallMethod(VecToString, "print nicely", [IsVector], function(x)
 local  vec, i, j, d, F, B , elm, hfv, str, tmp, temp, H;
 	str := [];
 	hfv := [];
-	if IsRingElementCollection(x) or IsRingElement(x) then
-#		Print(" i ended up IsRingElementCollection or IsRingElement ....", x, "\n");
-		F := DefaultField(x);
-		B := Basis(F);
-		str := VecToString(B, x);
-	elif IsMatrix(x) then
+
+	if IsMatrix(x) then
 #		Print(" i ended up IsMatrix ....", x, "\n");
 		F := DefaultFieldOfMatrix(x);
 		B := Basis(F);
 		str := VecToString(B, x);
+	elif IsRingElementCollection(x) or IsRingElement(x) then
+#		Print(" i ended up IsRingElementCollection or IsRingElement ....", x, "\n");
+		F := DefaultField(x);
+		B := Basis(F);
+		str := VecToString(B, x);		
+		
+		
 	elif IsInt(x) then
 #		Print(" i ended up IsInt ....", x, "\n");
 		str := String(x);
