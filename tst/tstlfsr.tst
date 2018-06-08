@@ -1,3 +1,6 @@
+gap> LFSR(2,5,7);;
+gap> LFSR(2,5,7,0);;
+gap> LFSR(2,5,7,[0,2]);;
 gap> K := GF(2);;  y := X(K, "y");; B := Basis(K);;
 gap> l := y + 1;;
 gap> t1 :=  LFSR(K, l);
@@ -726,3 +729,18 @@ gap> test  := LFSR (K, x^14+x^11+x^10+x^9+x^7+x^5+x^4+x+Z(2)^0);;
 gap> Period(test);  
 warning: the polynomial is irreducible !!!
 5461
+gap> K := GF(2);;  y := X(K, "y");; B := Basis(K);;
+gap> l := y + 1;;
+gap> t1 :=  LFSR(K, l);
+< empty LFSR over GF(2)  given by FeedbackPoly = y+Z(2)^0 >
+gap> IsMaxSeqLFSR(t1);
+true
+gap> K := GF(2);; x := X(K, "x");;
+gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
+gap> y := X(F, "y");; l := y^4+ y+ Z(2^4);;
+gap> ReciprocalPolynomial(F,l);
+Z(2^4)*x^4+x^3+Z(2)^0
+gap> IdxNonzeroCoeffs(CoefficientsOfUnivariatePolynomial(l));
+[ 1, 2, 5 ]
+gap> NrNonzeroCoeffs(CoefficientsOfUnivariatePolynomial(l)); 
+3

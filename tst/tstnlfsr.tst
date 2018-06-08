@@ -402,3 +402,18 @@ gap> nl := NLFSR(F, mpoly, 5, 8);
 argument tap[1]=8 is out of range 0..4, or not given => im taking S_0 instead!
 < empty NLFSR of length 5 over GF(2),
  given by MultivarPoly = x_0*x_1+x_2+Z(2)^0> 
+gap> K := GF(2);; x := X(K, "x");; f:= x^3+x+Z(2)^0 ;;                              
+gap> F := FieldExtension(K, f);;    B:= Basis(F);; 
+gap> clist := [ One(F), One(F)];;
+gap> mlist := [x_0, x_0*x_1*x_2];;
+gap> DegreeOfPolynomialOverField(F, clist*mlist);
+3
+gap> m := clist *mlist;;
+gap> DegreeOfPolynomialOverField(F, m);           
+3
+gap> DegreeOfPolynomialOverField(F, clist,mlist);
+3
+gap> MonomialOverField(F, x_0^800 );             
+x_0^2
+gap> MonomialOverField(F, x_1*x_2^500);          
+x_1*x_2^3

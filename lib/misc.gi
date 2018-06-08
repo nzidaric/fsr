@@ -369,7 +369,7 @@ local mon;
 	fi;
 	mon := ReduceMonomialsOverField(F, mlist);
 	
-return DegreeOfPolynomialOverField(clist * mon);
+return DegreeOfPolynomialOverField(F, clist * mon);
 end);
 
 
