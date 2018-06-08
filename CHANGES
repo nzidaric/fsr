@@ -1,4 +1,15 @@
 -------===========-------
+Version 1.2.0: 04.06.2018 - 08.06.2018
+* tst==, ISFFE -> IsRingElement, release 
+
+-------===========-------
+Version 1.2.0: sometimes in april 2018
+added FSRFIL , later renamed to FILFUN as an FSR object
+
+-------===========-------
+lazy ppl dont keep track ....
+
+-------===========-------
 Version 1.0.4: 17.01.2017
 * starting to migrate some methods/attributes/properties to fsr.gd/gi:
 - FeedbackVec, FieldPoly, OutputTap moved OK
