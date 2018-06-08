@@ -1,6 +1,6 @@
 name: FSR
-version: 1.2.0
-date: 2018-03-25
+version: 1.2.1
+date: 2018-06-08
 description: |
     FSR - Feedback Shift Register Package
 
@@ -25,7 +25,7 @@ packageinfo: https://nzidaric.github.io/FSR/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/nzidaric/FSR/releases/download/v1.2.0/FSR-1.2.0.tar.gz
+      url: https://github.com/nzidaric/FSR/releases/download/v1.2.1/FSR-1.2.1.tar.gz
 
 abstract: |
 
@@ -38,7 +38,7 @@ citeas: |
     <p class='BibEntry'>
     [<span class='BibKey'>ZAG18</span>]   <b class='BibAuthor'>Zidaric, N., Aagaard, M. and Gong, G.</b>,
      <i class='BibTitle'>FSR, FSR - Feedback Shift Register Package,
-             Version 1.2.0</i>
+             Version 1.2.1</i>
      (<span class='BibYear'>2018</span>)<br />
     (<span class='BibNote'>GAP package</span>),
     <span class='BibHowpublished'><a href="https://nzidaric.github.io/FSR">https://nzidaric.github.io/FSR</a></span>.
@@ -46,13 +46,16 @@ citeas: |
     
 
 bibtex: |
-    @misc{ FSR1.2.0,
+    @misc{ FSR1.2.1,
       author =           {Zidaric, N. and Aagaard, M. and Gong, G.},
-      title =            {{FSR}, FSR - Feedback Shift Register Package, {V}ersion 1.2.0},
-      month =            {Mar},
+      title =            {{FSR},   FSR   -   Feedback  Shift  Register  Package,
+                          {V}ersion 1.2.1},
+      month =            {Jun},
       year =             {2018},
       note =             {GAP package},
-      howpublished =     {\href {https://nzidaric.github.io/FSR} {\texttt{https://nzidaric.github.io/}\discretionary {}{}{}\texttt{FSR}}},
+      howpublished =     {\href                 {https://nzidaric.github.io/FSR}
+                          {\texttt{https://nzidaric.github.io/}\discretionary
+                          {}{}{}\texttt{FSR}}},
       keywords =         {package FSR; LFSR; finite fields; sequences},
       printedkey =       {ZAG18}
     }

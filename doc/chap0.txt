@@ -6,10 +6,10 @@
                                       [1X...[101X
   
   
-                                 Version 1.1.0
+                                 Version 1.2.1
   
   
-                                 22 March 2017
+                                  08 june 2018
   
   
                                   Nusa Zidaric
@@ -37,7 +37,7 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y© 2017-2017 by Nusa Zidaric, Mark Aagaard, Guang Gong[133X
+  [33X[0;0Y© 2017-2018 by Nusa Zidaric, Mark Aagaard, Guang Gong[133X
   
   [33X[0;0Y[5XFSR[105X  is  free  software;  you can redistribute it and/or modify it under the
   terms  of  the  GNU General Public License as published by the Free Software
