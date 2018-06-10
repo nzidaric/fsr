@@ -405,13 +405,6 @@ DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsRingElement, IsRingElement, IsPo
 #O  RunFSR( <FSR> , <ist>)
 ##         ................ VII. load new initial state then run
 ##                               without print to shell
-## external versions
-#O  RunFSR(<FSR>, <elm>, <num>, <pr>)
-##                   ...... VIIIb. run for num steps with the same external
-##                          input on each step and with/without print to shell
-#O  RunFSR(<FSR>, <elm>, <num>)
-##             ............ IX.   run for num steps with the same external
-##                          input on each step without print to shell
 #O  RunFSR(<FSR>, <ist>, <elmevec>, <pr> )
 ##                       .. Xb.    run for num steps with the different
 ##                     external input on each step with/without print to shell
@@ -419,8 +412,6 @@ DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsRingElement, IsRingElement, IsPo
 ##  <#GAPDoc Label="RunFSR">
 ##  <ManSection>
 ##  <Meth Name="RunFSR" Arg='fsr [, ist, num, pr]'/>
-##  <Meth Name="RunFSR" Arg='fsr , elm [, num, pr]'
-##  Label="with same external input"/>
 ##  <Meth Name="RunFSR" Arg='fsr , ist, elmvec [, pr]'
 ##  Label="load and run with different external input"/>
 ##  <Meth Name="RunFSR" Arg='fsr , z, elmvec [, pr]'
@@ -439,9 +430,8 @@ DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsRingElement, IsRingElement, IsPo
 ##  argument are the load-and-run calls. As with <Ref Meth="StepFSR" />, 
 ##  <C>RunFSR</C> 
 ##  also exists as a <E>regular</E> and <E>external</E> run. The external runs 
-##  are <C>RunFSR</C> calls where either a single finite field element <A>elm</A>
-##  or a vector of finite field elements <A>elmvec</A> are passed as an 
-##  argument. 
+##  are <C>RunFSR</C> calls with a vector of finite field elements 
+##  <A>elmvec</A> passed as an argument. 
 ##  <P/>
 ##  There is an optional printing switch <A>pr</A>,
 ##  with default set to <E>false</E>; if <E>true</E> then the state and the
@@ -454,10 +444,6 @@ DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsRingElement, IsRingElement, IsPo
 ##  <Item> <C>RunFSR(<A> fsr, ist[, num, pr] </A>)</C> - load <A>fsr</A> with
 ##  <A>ist</A>, then run <A>fsr</A> for <A>num</A>/<A>threshold</A> steps
 ##  with/without output (i.e., <E>regular</E> version).</Item>
-##  <Item> <C>RunFSR(<A> fsr, elm [, num, pr] </A>)</C> - run <A>fsr</A> for
-##  <A>num</A>/<A>threshold</A> steps, whereby the SAME element <A>elm</A> is
-##  added to the feedback at each step, with/without output
-##  (i.e., <E>external</E> version).</Item>
 ##  <Item> <C>RunFSR(<A> fsr,  ist, elmvec [, pr] </A>)</C> - load <A>fsr</A>
 ##  with <A>ist</A>, then run <A>fsr</A> for <E>Length(<A>elmvec</A>)</E> steps,
 ##   whereby one element of <A>elmvec</A> is added to the feedback at
@@ -578,13 +564,22 @@ DeclareOperation("PrintHeaderRunFSR", [IsFSR, IsRingElement, IsRingElement, IsPo
 
 
 
+########## problem with method selection IsPosInt will always be IsRingElement as well
+# IIIb = I
+# IIIc.= Ia.
+# solution: remove III -> can always use StepFSR instead or make elmvec with equal entries
+# also: if we really want same external all the time we can just change the const term of the poly
+# removed VII for consistency
+
+
+
 # IsPosInt when i want to specify #steps performed 
 # IsBool for the printswitch
 
 # I. just run , assuming allready loaded
 DeclareOperation("RunFSR", [IsFSR, IsPosInt, IsBool]);  	# I.
 DeclareOperation("RunFSR", [IsFSR, IsPosInt]);				# Ia.
-DeclareOperation("RunFSR", [IsFSR, IsBool]);					# Ib.
+DeclareOperation("RunFSR", [IsFSR, IsBool]);				# Ib.
 DeclareOperation("RunFSR", [IsFSR ]);							# Ic.
 
 
@@ -596,10 +591,10 @@ DeclareOperation("RunFSR", [IsFSR, IsRingElementCollection]);							# IIc.
 
 ## external versions
 # III. run for num steps with the same external input on each step 
-DeclareOperation("RunFSR", [IsFSR, IsRingElement, IsPosInt, IsBool]);				# III.
-DeclareOperation("RunFSR", [IsFSR, IsRingElement, IsPosInt]);							# IIIa.
-DeclareOperation("RunFSR", [IsFSR, IsRingElement, IsBool]);							# IIIb.
-DeclareOperation("RunFSR", [IsFSR, IsRingElement]);										# IIIc.
+#DeclareOperation("RunFSR", [IsFSR, IsRingElement, IsPosInt, IsBool]);				# III.
+#DeclareOperation("RunFSR", [IsFSR, IsRingElement, IsPosInt]);							# IIIa.
+#DeclareOperation("RunFSR", [IsFSR, IsRingElement, IsBool]);							# IIIb.
+#DeclareOperation("RunFSR", [IsFSR, IsRingElement]);										# IIIc.
  
 # IV. load and run for num steps with a different external input on each step
 DeclareOperation("RunFSR", [IsFSR, IsRingElementCollection, IsRingElementCollection, IsBool]); # IV.
@@ -617,8 +612,8 @@ DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsBool]);		# VI.
 DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl]);				# VIa.
 
 # VII. run with the same external input on each step 
-DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsRingElement, IsBool]); 	# VII.
-DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsRingElement]);				# VIIa.
+#DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsRingElement, IsBool]); 	# VII.
+#DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsRingElement]);				# VIIa.
 
 # VIII. run with a different external input on each step 
 DeclareOperation("RunFSR", [IsFILFUN, IsRingElementCollColl, IsRingElementCollection, IsBool]);	# VIII.

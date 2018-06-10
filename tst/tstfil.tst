@@ -25,15 +25,6 @@ FILFUN of length 3 over GF(2),
 with basis =[ Z(2)^0 ]
 with current state  =[ Z(2)^0, 0*Z(2), Z(2)^0 ]
 gap> ist := [[One(F),Zero(F),Zero(F)], [One(F),One(F),Zero(F)], [One(F),Zero(F),One(F)]];;
-gap> RunFSR(fil, ist, Z(2)^0, true);                                                      
-using basis B := [ Z(2)^0 ]
-elm     input   ...              with output   
-                [ [ 1 ], [ 0 ], [ 0 ] ]  ->                     [ 1 ]
-                [ [ 1 ], [ 1 ], [ 0 ] ]  ->                     [ 0 ]
-                [ [ 1 ], [ 0 ], [ 1 ] ]  ->                     [ 0 ]
-[ Z(2)^0, 0*Z(2), 0*Z(2) ]
-gap> RunFSR(fil, ist, Z(2)^0);      
-[ Z(2)^0, 0*Z(2), 0*Z(2) ]
 gap> elmvec := [ Z(2)^0, 0*Z(2), 0*Z(2) ];;
 gap> RunFSR(fil, ist, elmvec, true);       
 using basis B := [ Z(2)^0 ]
