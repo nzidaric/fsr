@@ -28,7 +28,7 @@ local K, F, multpol, fieldpol, clist, mlist, m, n, tap, y, mpol, cm,	# for args
 
 if Length(arg)=3 then 
 	if IsField(arg[1]) and IsPolynomial(arg[2]) and IsPosInt(arg[3]) then 	
-			#F   FILFUN( <K>, <mpoly>, <len>  ) 
+			#F   NLFSR( <K>, <mpoly>, <len>  ) 
 			if IsPrimeField(arg[1]) then K:= arg[1];  F := arg[1]; fieldpol := 1;
 			else F := arg[1]; K := PrimeField(F);fieldpol := DefiningPolynomial(F);
 			fi;

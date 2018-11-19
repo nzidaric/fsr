@@ -9,7 +9,7 @@
 
 #############################################################################
 ##
-#F  LFSR( <F> )  . . . . . . . . . .  create an LFSR object 	# len 1 B
+#F  LFSR( <F> )  . . . . . . . . . .  create an LFSR object 	# len 1 B - removed!
 #F  LFSR( <F>, <feedbackpol> )  . . . . . . . . . .  create an LFSR object 	# len 2 B
 #F  LFSR( <F>, <feedbackpol>, <B> )  . . . . . . . . . .  create an LFSR object 	# len 3 B
 #F  LFSR( <K>, <fieldpol>, <feedbackpol>)					# len 3 B
@@ -69,7 +69,7 @@ elif  Length(arg)=3 then
 			# LFSR( <K>, <feedbackpol>, <B> )
 			K := arg[1]; F := arg[1]; fieldpol := 1; feedbackpol := arg[2];	
 			tap := [0];
-			if DegreeOverPrimeField(F) = Length(arg[3]) then 
+			if DegreeOverPrimeField(F) = Length(arg[3]) then # ok for prime field
 				B := arg[3];
 			else 
 				Print("Basis does not match field F!!! using canonical basis instead\n");
@@ -90,7 +90,7 @@ elif  Length(arg)=3 then
 			# LFSR( <F>, <feedbackpol>, <B> )
 		F := arg[1]; K := PrimeField(F); fieldpol := DefiningPolynomial(F); feedbackpol := arg[2];	
 			tap := [0];
-			if DegreeOverPrimeField(F) = Length(arg[3]) then 
+			if UnderlyingLeftModule(arg[3]) = F  then # fix
 				B := arg[3];
 			else 
 				Print("Basis does not match field F!!! using canonical basis instead\n");
@@ -136,7 +136,7 @@ elif  Length(arg)=4 then
 			F := FieldExtension(K,fieldpol); 
 			feedbackpol := arg[3]; tap := [0]; 
 			
-			if DegreeOverPrimeField(F) = Length(arg[4]) then 
+			if  UnderlyingLeftModule(arg[4]) = F then 
 				B := arg[4];
 			else 
 				Print("Basis does not match field F!!! using canonical basis instead\n");
@@ -166,7 +166,7 @@ elif  Length(arg)=4 then
 			#F  LFSR( <K>, <feedbackpol>, <B>,  <tap>)
 			K := arg[1]; F := arg[1]; fieldpol := 1; feedbackpol := arg[2];	
 
-			if DegreeOverPrimeField(F) = Length(arg[3]) then 
+			if  UnderlyingLeftModule(arg[3]) = F  then 
 				B := arg[3];
 			else 
 				Print("Basis does not match field F!!! using canonical basis instead\n");
@@ -185,7 +185,7 @@ elif  Length(arg)=4 then
 			#F  LFSR( <F>, <feedbackpol>, <B>,  <tap>)
 			F := arg[1]; K := PrimeField(F);  fieldpol := DefiningPolynomial(F); feedbackpol := arg[2];	
 	
-			if DegreeOverPrimeField(F) = Length(arg[3]) then 
+			if  UnderlyingLeftModule(arg[3]) = F  then 
 				B := arg[3];
 			else 
 				Print("Basis does not match field F!!! using canonical basis instead\n");
@@ -210,7 +210,7 @@ elif  Length(arg)=5 then
 			F := FieldExtension(K,fieldpol); 
 			feedbackpol := arg[3]; tap := [0]; 
 			
-			if DegreeOverPrimeField(F) = Length(arg[4]) then 
+			if  UnderlyingLeftModule(arg[4]) = F  then 
 				B := arg[4];
 			else 
 				Print("Basis does not match field F!!! using canonical basis instead\n");

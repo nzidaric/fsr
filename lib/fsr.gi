@@ -115,13 +115,14 @@ end);
 InstallMethod(ChangeBasis, "change the basis of underlying field of the FSR",
 [IsFSR,  IsBasis], function(x, B)
 local divs, deg;
-	deg := DegreeOverPrimeField(UnderlyingField(x));
-	divs := DivisorsInt(deg);
-	if not  deg > Length(B) then
+#	deg := DegreeOverPrimeField(UnderlyingField(x));
+#	divs := DivisorsInt(deg);
+#	if not  deg > Length(B) then
 
-		if \in(Length(B),divs) then
+#		if \in(Length(B),divs) then
+	if  UnderlyingLeftModule(B) = UnderlyingField(x) then
 			x!.basis := B;
-		fi;
+#		fi;
 
 	else
 		Error( "basis does not match the field!\n" );		return fail;
@@ -157,8 +158,8 @@ local i, F, tap, seq, scist;
 	fi;
 	F := UnderlyingField(x);
 	for i in [1..Length(ist)] do
-		if not (\in(ist[i], F)) then
-	Error("element at index=",i,"is not an element of the underlying field !!!");
+		if not (IsPolynomial(ist[i]) or \in(ist[i], F)) then #symb
+	Error("element at index=",i," is not an element of the underlying field !!!");
 					return fail;
 		fi;
 	od;
@@ -235,8 +236,8 @@ local fb, st, new, F, i, indlist, xlist, slist, idx;
 		new := Value(MultivarPoly(x), xlist, slist);
 
 	fi;
-
-	if not(\in(new,F)) then
+	if not (IsPolynomial(new) or \in(new, F)) then #symb
+#	if not(\in(new,F)) then
 		Error( "computed feedback is not an element of the underlying field !!!");		
 		return fail;
 	else 
@@ -392,7 +393,7 @@ end);
 
 # I. run for num steps with/without print to shell
 
-Print("\nRunFSR I.\n");
+#Print("\nRunFSR I.\n");
 
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt, IsBool], function(x, num, pr)
 local seq, sequence, nrsteps, treshold, i, B;
@@ -428,20 +429,20 @@ local seq, sequence, nrsteps, treshold, i, B;
 end);
 
 
-Print("RunFSR Ia.\n");
+#Print("RunFSR Ia.\n");
 # Ia. run for num steps without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt], function(x, num)
 	return  RunFSR(x,  num, false);
 end);
 
-Print("RunFSR Ib.\n");
+#Print("RunFSR Ib.\n");
 # Ib. run with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR,   IsBool], function(x, pr)
 	return RunFSR(x, 	 Threshold(x) , pr);
  ## change num to something huge then the called method will set the threshold
 end);
 
-Print("RunFSR Ic.\n");
+#Print("RunFSR Ic.\n");
 # Ic. run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR], function(x)
 	return RunFSR(x, 	Threshold(x) , false);
@@ -529,7 +530,7 @@ end);
 # load + run
 # II. load initial state then run for num-1 steps without/without print to shell
 
-Print("RunFSR II.\n");
+#Print("RunFSR II.\n");
 
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsPosInt, IsBool],
  function(x,ist, num, pr)
@@ -554,14 +555,14 @@ local  i, sequence,treshold , seq, taps, B, m;
 	return sequence;
 end);
 
-Print("RunFSR IIa.\n");
+#Print("RunFSR IIa.\n");
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsPosInt],
 # IIa. load new initial state then run for num-1 steps without print to shell
 function(x, ist, num)
 	return RunFSR(x, ist, num, false);
 end);
 
-Print("RunFSR IIb.\n");
+#Print("RunFSR IIb.\n");
 
 # IIb. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsBool],
@@ -569,7 +570,7 @@ function(x, ist , pr)
 		return RunFSR(x, ist, Threshold(x)   , pr);
 end);
 
-Print("RunFSR IIc.\n");
+#Print("RunFSR IIc.\n");
 
 # IIc. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection], function(x, ist )
@@ -581,68 +582,9 @@ end);
 # EXTERNAL STEP
 # rationale behind copied code is speed: could be a very long sequence, dont want to many functions calling eachother
 
-#Print("RunFSR III.\n");
-
-# III. run for num steps with the same external input on each step and with/without print to shell
-#InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElement, IsPosInt, IsBool],
-# function(x, elm, num, pr)
-#local seq, sequence, nrsteps, treshold, i, B;
-##Print("RunFSR III.\n");
-#		sequence := [];
-## check num
-#		treshold := Threshold(x);
-#	if num > treshold then
-#		nrsteps := treshold;
-#	else 	nrsteps := num;
-#	fi;
-#
-#	if pr then
-#			B := x!.basis;
-#		Print("using basis B := ",BasisVectors(B),"\t\n");
-#	fi;
-#	
-##start run	
-#	for i in [1.. nrsteps] do
-#		seq := StepFSR(x,elm);
-#		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
-##print on every step
-#		if pr then
-#			if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
-#			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
-#			fi;
-#		fi;
-#	od;
-#	if num > treshold then
-#		Print("over the threshold, will only output the first ",treshold);
-#		Print(" elements of the sequence\n");
-#	fi;
-#	return sequence;
-#end);
-
-#Print("RunFSR IIIa.\n");
-
-# IIIa. run for num steps with the same external input on each step without print to shell
-#InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElement, IsPosInt], function(x, elm, num)
-#	return RunFSR(x, elm, num, false);
-#end);
-## change num to something huge then the called method will set the threshold
 
 
-#Print("RunFSR IIIb.\n");
-
-# IIIb. run with the same external input on each step without print to shell
-#InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElement, IsBool], function(x, elm, pr)
-#	return RunFSR(x,  elm,   Threshold(x) , pr); 
-#end);
-
-#Print("RunFSR IIIc.\n");
-# IIIc. run with the same external input on each step without print to shell
-#InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElement], function(x, elm)
-#	return RunFSR(x,  elm,  Threshold(x) , false); 
-#end);
-
-
-Print("RunFSR IV.\n");
+#Print("RunFSR IV.\n");
 # LOAD + RUN
 # IV. load and run for num steps with a different external input on each step with/without print to shell
 InstallMethod(RunFSR, "run FSR",
@@ -690,7 +632,7 @@ local  sequence,  treshold, num, nrsteps, seq , seq0, i, B, m;
 	fi;
 	return sequence;
 end);
-Print("RunFSR IVa.\n");
+#Print("RunFSR IVa.\n");
 
 # IVa. run for num steps with the different external input on each step with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsRingElementCollection],
@@ -699,7 +641,7 @@ InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsRingElementC
 end);
 
 
-Print("RunFSR V.\n");
+#Print("RunFSR V.\n");
 
 
 # V. continue run with the different external input on each step with/without print to shell,
@@ -761,7 +703,7 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
 	return sequence;
 end);
 
-Print("RunFSR Va.\n");
+#Print("RunFSR Va.\n");
 # Va. run for num steps with the different external input on each step with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsRingElementCollection], 
 function(x, z, elmvec)
@@ -771,7 +713,7 @@ end);
 
 #FILFUN RUN
 
-Print("RunFSR VI.\n");
+#Print("RunFSR VI.\n");
 
 
 # VI. run for FILFUN with diff ist on each step (using LoadStepFSR)
@@ -802,7 +744,7 @@ local  i, sequence, seq, taps, B, m;
 	return sequence;
 end);
 
-Print("RunFSR VIa.\n");
+#Print("RunFSR VIa.\n");
 # VIa. run for FILFUN with diff ist on each step (using LoadStepFSR) without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl],
 function(x, ist)
@@ -812,43 +754,9 @@ end);
 
 # EXTERNAL STEP
 
-#Print("RunFSR VII.\n");
-## VII. run for FILFUN with diff ist  but same external elm on each step (using LoadStepFSR)
-#InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl,  IsRingElement, IsBool],
-# function(x, ist, elm, pr)
-#local  i, sequence, seq, taps, B, m;
-##Print("RunFSR VII.\n");
-#	sequence :=[];
-#	if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
-#	else m:= 1;
-#	fi;
-#	if pr then
-#		B := x!.basis;
-#		PrintHeaderRunFSR(x, Zero(UnderlyingField(x)), m);
-#	fi;
-#
-## start run
-#	for i in [1.. Length(ist)] do 
-#		seq := LoadStepFSR(x, ist[i], elm);
-#		Add(sequence, seq);
-#	# print 
-#		if pr then
-#		Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t");  # NOT reversed !!!!
-#		Print("\t\t", IntFFExt(B,seq) , "\n");
-#		fi;				
-#	od;
-#
-#	return sequence;
-#end);
 
-#Print("RunFSR VIIa.\n");
-## VIIa. run for FILFUN with diff ist but the same external elm  on each step (using LoadStepFSR) without print to shell
-#InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl, IsRingElement],
-#function(x, ist, elm)
-#	return RunFSR(x, ist, elm, false);
-#end);
 
-Print("RunFSR VIII.\n");
+#Print("RunFSR VIII.\n");
 
 # VIII. run for FILFUN with diff ist  and diff  external elm on each step (using LoadStepFSR)
 InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl,  IsRingElementCollection, IsBool],
@@ -881,7 +789,7 @@ local  i, sequence, seq, taps, B, m;
 	return sequence;
 end);
 
-Print("RunFSR VIIIa.\n");
+#Print("RunFSR VIIIa.\n");
 # VIIIa. run for FILFUN with diff ist on each step (using LoadStepFSR) without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl, IsRingElementCollection],
 function(x, ist, elmvec)
