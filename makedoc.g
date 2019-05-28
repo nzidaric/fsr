@@ -40,14 +40,17 @@ end;
 
 ###########################################################################
 
-FSRMANUALFILES:=[ 
+FSRMANUALFILES:=[
 "../PackageInfo.g",
 "../lib/fsr.gd",
 "../lib/lfsr.gd",
 "../lib/nlfsr.gd",
+"../lib/filfun.gd",
 "../lib/outfsr.gd",
-"../lib/misc.gd",
 "../lib/outputs.gd",
+"../lib/misc.gd",
+"../lib/drawlfsr.gd",
+"../lib/drawnlfsr.gd",
 ];
 Print(FSRMANUALFILES,"\n");
 
