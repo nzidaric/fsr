@@ -165,7 +165,7 @@ fi;
 	fi;
 	for i in [1..Length(clist)] do
 		if not (\in(clist[i], F)) then
-			Error( "coefficient ",clist[i], "at index=",i,"is not an element of the underlying field !!!" );
+			Error( "coefficient ",clist[i], "at index=",i," is not an element of the underlying field !!!" );
 					return fail;
 		fi;	
 	od;
@@ -177,6 +177,10 @@ fi;
 #	 multpol := clist * mof; 
 
 # fix for whatif1
+	if IsUnivariatePolynomial(clist * mlist) then 
+		Error("Feedback is linear, create an LFSR instead!!!"); 		return fail;
+	 fi;	
+	
 	 multpol := ReduceMonomialsOverField(F, clist * mlist); 
 
 	 lin := (DegreeOfPolynomialOverField(F,multpol)=1);
@@ -240,7 +244,7 @@ ml := SplitCoeffsAndMonomials(F, multpol)[2];
 # new NLFSR :) 
 	fam :=FSRFamily(Characteristic(K));
 	nlfsr := Objectify(NewType(fam, IsFSRRep),   
-			rec(init:=st, state:= st, numsteps := -1, basis := CanonicalBasis(F)));
+			rec(init:=st, state:= st, numsteps := -1, basis := CanonicalBasis(F), sym := false));
 
 	SetFieldPoly(nlfsr,fieldpol);
 	SetUnderlyingField(nlfsr,F);
@@ -262,21 +266,6 @@ return nlfsr;
 end);
 
 
-
-InstallMethod( ConstTermOfNLFSR, "const term of the multivariate polynomial",  	
-	[IsNLFSR], function(x)
-local F, tlist, clist, i, const;
-	F := UnderlyingField(x);
-	const := Zero(F);
-	tlist := MonomialList(x);
-	clist := FeedbackVec(x);
-	for i in [1..Length(tlist)] do
-		if tlist[i] = One(F) then 
-			const := clist[i]; 
-		fi;	 
-	od;
-return const;
-end);
 
 
 

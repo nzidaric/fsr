@@ -26,16 +26,16 @@
 ##  length n"/>
 ##  <Returns>
 ##  An empty <C>LFSR</C> with components <C>init</C>, <C>state</C> ,
-##	 <C>numsteps</C> and <C>basis</C>.
+##	 <C>numsteps</C>, <C>basis</C> and <C>sym</C>.
 ##  </Returns>
 ##  <Description>
-##  Function LFSR provides different ways to create an <C>LFSR</C>  object; the  
+##  Function LFSR provides different ways to create an <C>LFSR</C>  object; the
 ##  main difference is in the
-##  construction of the underlying finite field. The <C>LFSR</C> is uniquely 
-##  described with a feedback polynomial <A>feedbackpoly</A>. The call 
-##  <C>LFSR(p, m, n)</C> will randomly choose a polynomial of degree <A>n</A>, 
-##  which is primitive over the field <M>F_{p^m}</M>, and use it as feedback.    
-##  <P/>
+##  construction of the underlying finite field. The <C>LFSR</C> is uniquely
+##  described with a feedback polynomial <A>feedbackpoly</A>. The call
+##  <C>LFSR(p, m, n)</C> will randomly choose a polynomial of degree <A>n</A>,
+##  which is primitive over the field <M>\mathbb{F}_{p^m}</M>, and use it as
+##  feedback.<P/>
 ##  Inputs:
 ##  <List>
 ##  <Item> <A>F</A> - the underlying finite field (either an extension field or
@@ -45,9 +45,9 @@
 ##  <Item> <A>fieldpoly</A> - the defining polynomial of the extension field
 ##  (must be irreducible).</Item>
 ##  <Item> <A>p</A> - the characteristic.</Item>
-##  <Item> <A>m</A> - the degree of extension 
+##  <Item> <A>m</A> - the degree of extension
 ##  (degree of <A>fieldpoly</A>).</Item>
-##  <Item> <A>n</A> - the length of the <C>LFSR</C> 
+##  <Item> <A>n</A> - the length of the <C>LFSR</C>
 ##  (degree of <A>feedbackpoly</A>).</Item>
 ##  <Item> <A>tap</A> - optional parameter: the output tap (must be a positive
 ##  integer or a list of
@@ -57,14 +57,18 @@
 ##  </List>
 ##  Components:
 ##  <List>
-##  <Item> <C>init</C> - <A>FFE</A> vector of length 
+##  <Item> <C>init</C> - a vector of length
 ##  <M>n=</M>Degree(<A>feedbackpoly</A>),
-##  storing the <E>initial</E> state 
-##  of the <C>LFSR</C>, with indices from <M>n-1, \dots, 0</M>.</Item>
-##  <Item> <C>state</C> - <A>FFE</A> vector of length 
+##  storing the <E>initial</E> state
+##  of the <C>LFSR</C> <M>S_{n-1}, \dots, S_0</M>.
+##  Can be a vector of FFEs and/or symbols <M>s_0,\dots,s_{199}</M>.
+##  </Item>
+##  <Item> <C>state</C> - a vector of length
 ##  <M>n=</M>Degree(<A>feedbackpoly</A>),
-##  storing the <E>current</E> state of the <C>LFSR</C>, 
-##  with indices from <M>n-1, \dots, 0</M>. </Item>
+##  storing the <E>current</E> state of the <C>LFSR</C>
+##  <M>S_{n-1}^{ns}, \dots, S_0^{ns}</M>, where <M>ns</M>=<C>numsteps</C>.
+##  Can be a vector of FFEs and/or symbols <M>s_0,\dots,s_{199}</M>.
+##  </Item>
 ##  <Item> <C>numsteps</C> - the number of steps performed thus far
 ##  (initialized to -1 when created, set to 0 when loaded using
 ##  <Ref Meth="LoadFSR" /> and incremented by 1 with each step (using
@@ -72,20 +76,25 @@
 ##  <Item> <C>basis</C> - basis of F over its prime subfield (if no basis is
 ##  given this component is set to canonical basis of F over its prime subfield)
 ##  .</Item>
+##  <Item> <C>sym</C> - set to <C>false</C> by default. This component is updated
+##  each time the LFSR is loaded or clocked. If a symbol <M>s_k</M> enters the
+##  <C>state</C>, either through loading or an external step, this component is
+##  set <C>true</C>.</Item>
 ##  </List>
 ##  Attributes <Ref Attr="FieldPoly" />, <Ref Attr="UnderlyingField" />,
-##  <Ref Attr="FeedbackPoly" />, <Ref Attr="FeedbackVec" />, 
+##  <Ref Attr="FeedbackPoly" />, <Ref Attr="FeedbackVec" />,
 ##  <Ref Attr="Length" /> and
-##  <Ref Attr="OutputTap" />  and the property <Ref Prop="IsLinearFeedback" /> 
+##  <Ref Attr="OutputTap" />  and the property <Ref Prop="IsLinearFeedback" />
 ##  are set during the construction of an <C>LFSR</C>.
 ##  <P/>
 ##  If there is something wrong with the arguments (e.g. attempting to create
 ##  an extension field using a reducible poynomial), an error message appears
 ##  and the function returns <C>fail</C>.
 ##  <P/>
-##  Example below shows how to create an empty <C>LFSR</C> over <M>F_{2^4}</M>
-##  created as extension of <M>F_2</M>, called <E>test</E>, firstly without a
-##  specified basis (in which case the canonical basis is used), 
+##  Example below shows how to create an empty <C>LFSR</C> over
+##  <M>\mathbb{F}_{2^4}</M> created as extension of
+##   <M>\mathbb{F}_2</M>, called <E>test</E>, firstly without a
+##  specified basis (in which case the canonical basis is used),
 ##  and then with basis <A>B</A>:
 ##  <Example>
 ##  <![CDATA[
@@ -184,11 +193,11 @@ DeclareAttribute( "FeedbackPoly", IsLFSR );
 ##  Properties:
 ##  <List>
 ##  <Item> <C>IsPeriodic</C>: true if constant term of <C>FeedbackPoly</C> != 0
-##  (8.11 lidl, niederreiter).	</Item>
+##  (Theorem 8.11 <Cite Key="lidlbook"/>).	</Item>
 ##  <Item> <C>IsUltPeriodic</C>: true if <C>IsLFSR</C> is true
-##  (8.7 lidl, niederreiter)	</Item>
+##  (Theorem 8.7 <Cite Key="lidlbook"/>)	</Item>
 ##  <Item> <C>IsMaxSeqLFSR</C>: true if <C>FeedbackPoly</C> is primitive
-##  (10.2.36 mullen,panario).	</Item>
+##  (Definition 10.2.36 <Cite Key="Mullen:2013:HFF" />).	</Item>
 ##  </List>
 ##  Attributes:
 ##  <List>
@@ -196,27 +205,28 @@ DeclareAttribute( "FeedbackPoly", IsLFSR );
 ##  </List>
 ##  Methods to compute the period:
 ##  <List>
-##  <Item> <C>PeriodPrimitive</C>: computed as <M>q^n-1</M>, where <M>F_q</M> is
-##  the underlying finite field and 
+##  <Item> <C>PeriodPrimitive</C>: computed as <M>q^n-1</M>, where
+##  <M>\mathbb{F}_q</M> is the underlying finite field and
 ##  <M>n=Degree(</M>FeedbackPoly<M>(</M><A>lfsr</A><M>))</M>. </Item>
-##  <Item> <C>PeriodIrreducible</C>: <M>Order(\omega)</M> where <M>\omega</M> 
-##  is a root of FeedbackPoly(<A>lfsr</A>) (2.1.53 mullen,panario).
-##	 </Item>
+##  <Item> <C>PeriodIrreducible</C>: <M>Order(\omega)</M> where <M>\omega</M>
+##  is a root of FeedbackPoly(<A>lfsr</A>) (Theorem 2.1.53
+##  <Cite Key="Mullen:2013:HFF" />). </Item>
 ##  <Item> <C>PeriodReducible</C>: for FeedbackPoly(<A>lfsr</A>) =
 ##	 <M>a\prod {f_i}^{bi}</M>, the order is given by <M>ep^t</M>,
 ##  where <M>p</M> is the characteristic of the underlying finite field,
 ##  <M>e = Lcm(ord(f_i))</M> and <M>t</M> is the smallest integer such that
-##  <M>p^t\geq max(b_i)</M> (2.1.55 mullen,panario).</Item>
+##  <M>p^t\geq max(b_i)</M> (Theorem 2.1.55   <Cite Key="Mullen:2013:HFF" />).
+##  </Item>
 ##  </List>
 ##  Although the last method should compute the period correctly for all
-##  three cases, it is computationally more demanding, hence the first two 
+##  three cases, it is computationally more demanding, hence the first two
 ##  methods are used when applicable. <P/>
-##  Elxample below shows a LFSR called <C>test</C> using a reducible feedback 
+##  Elxample below shows a LFSR called <C>test</C> using a reducible feedback
 ##  polynomial <M>\ell = y^4 + y + \alpha=(y^2+y+\alpha^7)(y^2+y+\alpha^9)</M>,
 ##  where <M>\alpha = Z(2^4)</M>, with period <M>(2^4)^2 - 1 = 255</M>.
-##  Next, the period of an LFSR <C>test1</C> with a primitive feedback 
-##  polynomial <M>\ell=y^4+y^3+y+\alpha</M>, where <M>\alpha = Z(2^4)</M>, with 
-##  maximum period <M>(2^4)^4-1=65535</M>; the LFSR <C>test1</C> will produce 
+##  Next, the period of an LFSR <C>test1</C> with a primitive feedback
+##  polynomial <M>\ell=y^4+y^3+y+\alpha</M>, where <M>\alpha = Z(2^4)</M>, with
+##  maximum period <M>(2^4)^4-1=65535</M>; the LFSR <C>test1</C> will produce
 ##  an <M>m</M>-sequence.
 ##  <Example>
 ##  <![CDATA[

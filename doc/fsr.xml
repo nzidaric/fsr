@@ -1,5 +1,5 @@
 <Chapter Label="FSR">
-<Heading>FSR (Feedback Shift Register)</Heading>    
+<Heading>FSR (Feedback Shift Register)</Heading>
 
 
 
@@ -9,9 +9,11 @@
 <#Include Label="fsr">
 <#Include Label="IsFSR">
 <#Include Label="FieldPoly">
-<#Include Label="GeneratorOfUnderlyingField">
+<#Include Label="ConstTermOfFSR">
+<!--<#Include Label="GeneratorOfUnderlyingField">-->
 <#Include Label="Length">
 <#Include Label="ChangeBasis">
+<#Include Label="SymbolicFSR">
 <#Include Label="LoadFSR">
 <#Include Label="FeedbackFSR">
 <#Include Label="StepFSR">
@@ -32,14 +34,24 @@
 
 
 <Section Label="XMLnlfsr">
-<Heading>NLFSR specific funcionality</Heading>
-<!--<#Include Label="ChooseField">-->
+<Heading>NLFSR and FILFUN specific funcionality</Heading>
+Since FILFUN can have both linear and nonlinear filtering function, they are
+treated together with NLFSRs because of the structural similarities between the
+NLFSR feedback functions and nonlinear filtering functions.
+
+
+
 <#Include Label="NLFSR">
-<#Include Label="IsNonLinearFeedback">
+<#Include Label="FILFUN">
 <#Include Label="MultivarPoly">
-<#Include Label="ConstTermOfNLFSR">
+<#Include Label="IsNonLinearFeedback">
+<#Include Label="IsFSRFilter">
+
 
 </Section>
+
+
+
 
 
 

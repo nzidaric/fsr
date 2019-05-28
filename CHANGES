@@ -1,4 +1,13 @@
 -------===========-------
+Version 1.2.2: 09.12.2018 
+* some minor fixes 
+* major change: added symbolic state loading:
+- sym component (boolean)
+- modified print and write 
+- longer threshold (to check if the sequence cycles properly )
+- tst file fix for the new threshold
+
+-------===========-------
 Version 1.2.0: 04.06.2018 - 08.06.2018
 * tst==, ISFFE -> IsRingElement, release 
 

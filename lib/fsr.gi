@@ -31,7 +31,7 @@ end );
 #M  GeneratorOfUnderlyingField( <fsr> )    . . . .. get generator of zechs log
 ##
 
-InstallMethod(  GeneratorOfUnderlyingField, "generator of underlying field",  
+InstallMethod(  GeneratorOfUnderlyingField, "generator of underlying field",
 	[IsFSR], function(x)
 	return GeneratorOfField(UnderlyingField(x));
 end);
@@ -39,7 +39,7 @@ end);
 
 #############################################################################
 ##
-#M  FFEextCoefficients( <fsr> )    . . . coefs from ext field and their indices 
+#M  FFEextCoefficients( <fsr> )    . . . coefs from ext field and their indices
 ##
 
 
@@ -65,14 +65,37 @@ return [tlist, idxlist];
 end);
 
 
+#############################################################################
+##
+#M  ConstTermOfFSR( <fsr> )
+##
+InstallMethod( ConstTermOfFSR,
+"const term of the polynomial defining the feedback or filtering function",
+	[IsFSR], function(x)
+local F, tlist, clist, i, const;
+	F := UnderlyingField(x);
+	const := Zero(F);
+	clist := FeedbackVec(x);
 
+	if IsLFSR(x) then
+		const := clist[Length(clist)];
+	else
+		tlist := MonomialList(x);
+		for i in [1..Length(tlist)] do
+			if tlist[i] = One(F) then
+				const := clist[i];
+			fi;
+		od;
+	fi;
+return const;
+end);
 
 
 #############################################################################
 ##
 #A  InternalStateSize( <fsr> )
 ##  still works after the move :)
-InstallMethod(InternalStateSize, "size of FSR's internal state", [IsFSR], 	
+InstallMethod(InternalStateSize, "size of FSR's internal state", [IsFSR],
 	function(x)
 local n, poly, s;
 	n := Length(x);
@@ -92,13 +115,14 @@ end);
 #A  Threshold( <fsr> )
 #(if LFSR and primitive thats one period plus one length of FSR + l)
 #(if NLFSR and primitive thats one max possible period plus one length of FSR )
+# no meaning for filfun, but kept for similarity
 
 InstallMethod(Threshold, "threshold for the length of seq", [IsFSR], function(x)
 local l,t,s;
 	l := Length(x);
 	t := InternalStateSize(x);
 
-	s := Characteristic(x)^t + l;
+	s := 2*Characteristic(x)^t + l;
 
 	SetThreshold(x,s);
 	return s;
@@ -110,20 +134,13 @@ end);
 ##
 #O  ChangeBasis( <fsr>, <B> )
 ##
-##  identical for both lfsr and nlfsr
+##  identical for all thre types: lfsr and nlfsr and filfuns
 ##
 InstallMethod(ChangeBasis, "change the basis of underlying field of the FSR",
 [IsFSR,  IsBasis], function(x, B)
 local divs, deg;
-#	deg := DegreeOverPrimeField(UnderlyingField(x));
-#	divs := DivisorsInt(deg);
-#	if not  deg > Length(B) then
-
-#		if \in(Length(B),divs) then
 	if  UnderlyingLeftModule(B) = UnderlyingField(x) then
 			x!.basis := B;
-#		fi;
-
 	else
 		Error( "basis does not match the field!\n" );		return fail;
 	fi;
@@ -135,7 +152,7 @@ end);
 ##
 #O  WhichBasis( <fsr> )
 ##
-##  identical for both lfsr and nlfsr
+##  identical for all thre types: lfsr and nlfsr and filfuns
 ##
 InstallMethod(WhichBasis, "which basis is currently set ?", [IsFSR], function(x)
 	return x!.basis;
@@ -143,6 +160,11 @@ end);
 
 
 
+InstallMethod(SymbolicFSR, "can thsi FSR do symbolic computation",
+ [IsFSR], function(x)
+ return x!.sym;
+end);
+## TO DO: load with FFEs, then introduce a symbol with external step !!!
 
 #############################################################################
 ##
@@ -152,7 +174,7 @@ end);
 ##
 InstallMethod(LoadFSR, "load FSR with initial state ist",
  [IsFSR,  IsRingElementCollection], function(x, ist)
-local i, F, tap, seq, scist;
+local i, F, tap, seq, scist, symflag;
 	if Length(ist) <> Length(x) then
 		Error( "initial state length doesnt match" );		return fail;
 	fi;
@@ -164,14 +186,22 @@ local i, F, tap, seq, scist;
 		fi;
 	od;
 
+	symflag := false;
+	for i in [1..Length(ist)] do
+		if IsPolynomial(ist[i]) then #symb
+			symflag := true; break;
+		fi;
+	od;
+
 # update fields
 	# NOT reversed !!!!
 	scist := ShallowCopy((ist)); 	# without this the original ist outside here was changing too :(
 	x!.init := Immutable(scist);
 	x!.state := scist;
+	x!.sym := symflag;
 
 	#### LFSR, NLFSR vs FILFUN
-	if not IsFILFUN(x) then 
+	if not IsFILFUN(x) then
 		x!.numsteps := 0; ## load doesnt update numsteps for FILFUN
 			# sequence starts with seq_0, seq_1, ...
 		tap := OutputTap(x);
@@ -183,10 +213,14 @@ local i, F, tap, seq, scist;
 		 		seq[i] :=  ist[Length(x)-tap[i]]; # to get the corresponding index
 		 	od;
 		fi;
+
+	#	return seq;
 	else
-		seq := Zero(F);
+		#seq := Zero(F); not intendet !!!
+		#return;
+		seq := Zero(F); # to break as little as possible ! then for the filfuns: dont use it
 	fi;
-	return seq;	
+		return seq;
 end);
 
 
@@ -203,8 +237,11 @@ end);
 # having a StepFSR(FSR) which would then call StepFSR(LFSR) or StepFSR(NLFSR)
 # also: smaller code in terms of lines of code
 
+
+
+
 InstallMethod(FeedbackFSR, "compute feedback", [IsFSR], function(x )
-local fb, st, new, F, i, indlist, xlist, slist, idx;
+local fb, st, new, F, i, indlist, xtlist, stlist, idx;
 	if x!.numsteps < 0 then
 		Error( "the is NOT loaded !!!\n" );
 		return fail;
@@ -217,30 +254,38 @@ local fb, st, new, F, i, indlist, xlist, slist, idx;
 	# feedback computation
 	if IsLFSR(x) then
 		new := fb * st;
-	else  
-		xlist :=[]; slist :=[];
+	else
+		xtlist :=[]; stlist :=[];
 		indlist := IndetList(x);
 		for i in [1.. Length(indlist)] do
 			idx := indlist[i];
-			Add(xlist,Indeterminate(F,800+idx));
+			Add(xtlist,Indeterminate(F,800+idx));
 		od;
-		if IsNLFSR(x) then 
+
+		if IsNLFSR(x) then
 			for i in [1.. Length(indlist)] do
 				idx := indlist[i];
-				Add(slist,st[Length(x)-idx]); ## because states are DOWNTO !!!
-			od;	
-		elif IsFILFUN(x) then 
-			slist := st;
-		fi;		
-			
-		new := Value(MultivarPoly(x), xlist, slist);
+				Add(stlist,st[Length(x)-idx]); ## because states are DOWNTO !!!
+			od;
 
+		elif IsFILFUN(x) then
+			stlist := st;
+		fi;
+#Print("debug feedbackFSR: ",xtlist,"\n");
+#Print("debug feedbackFSR: ",stlist,"\n");
+
+		new := Value(MultivarPoly(x), xtlist, stlist);
+
+		if x!.sym and IsPolynomial(new) then
+			new := ReduceMonomialsOverField(F, new);
+		fi;
+#Print("debug feedbackFSR: ",new,"\n");
 	fi;
 	if not (IsPolynomial(new) or \in(new, F)) then #symb
 #	if not(\in(new,F)) then
-		Error( "computed feedback is not an element of the underlying field !!!");		
+		Error( "computed feedback is not an element of the underlying field !!!");
 		return fail;
-	else 
+	else
 		return new;
 	fi;
 end);
@@ -254,21 +299,28 @@ end);
 
 
 InstallMethod(StepFSR, "one regular step of FSR", [IsFSR], function(x )
-local fb, st, new, tap, i, seq, n;
+local fb, st, new, tap, i, seq, n, symflag;
 
 	new := FeedbackFSR(x);	# regular step
-	x!.numsteps := x!.numsteps + 1; #update for all three of em 
+	x!.numsteps := x!.numsteps + 1; #update for all three of em
 
 	#### LFSR, NLFSR vs FILFUN
-	if not IsFILFUN(x) then 
+	if not IsFILFUN(x) then
 		# update state
 			n := Length(x);
-			st := x!.state;	
-			RightShiftRowVector(st,1,new);	
+			st := x!.state;
+			RightShiftRowVector(st,1,new);
 			Remove(st, n+1);
 			x!.state := st;
-						# if we didnt use the downto notation then:
-						#	LeftShiftRowVector(st,1);	st[n] := new;	
+      symflag := false;
+    	for i in [1..Length(st)] do
+    		if IsPolynomial(st[i]) then #symb
+    			symflag := true; break;
+    		fi;
+    	od;
+
+		# if we didnt use the downto notation then:
+		#	LeftShiftRowVector(st,1);	st[n] := new;
 		# sequence starts with seq_0, seq_1, ...
 			tap := OutputTap(x);
 			if Length(tap)=1 then
@@ -280,10 +332,10 @@ local fb, st, new, tap, i, seq, n;
 			 	od;
 			fi;
 		return seq;
-	else 
+	else
 		return new; #IsFILFUN
 	fi;
-	
+
 end);
 
 
@@ -292,18 +344,26 @@ end);
 
 InstallMethod(StepFSR, "one external step of FSR", [IsFSR, IsRingElement],
  function(x, elm)
-local fb, st, new, tap,i, seq, F, n, idx, indlist, slist, xlist;
-	
+local fb, st, new, tap,i, seq, F, n, idx, indlist, slist, xlist, symflag, scist;
+
 	new := FeedbackFSR(x) + elm; #external step
 	x!.numsteps := x!.numsteps + 1;
 
-	if not IsFILFUN(x) then 
+	if not IsFILFUN(x) then
 		# update state
 		n := Length(x);
-		st := x!.state;	
-		RightShiftRowVector(st,1,new);	# NOT reversed !!!!  
+		st := x!.state;
+		RightShiftRowVector(st,1,new);	# NOT reversed !!!!
 		Remove(st, n+1);
-		x!.state := st;		
+		x!.state := st;
+    symflag := false;
+  	for i in [1..Length(st)] do
+  		if IsPolynomial(st[i]) then #symb
+  			symflag := true; break;
+  		fi;
+  	od;
+    x!.sym := symflag;
+
 	# sequence starts with seq_0, seq_1, ...
 		tap := OutputTap(x);
 		n := Length(x);
@@ -316,10 +376,16 @@ local fb, st, new, tap,i, seq, F, n, idx, indlist, slist, xlist;
 		 	od;
 		fi;
 		return seq;
-	else 
-		return new;		#IsFILFUN 
-	fi;	
-	
+	else
+    symflag := x!.sym;
+  	if IsPolynomial(elm) then #symb
+  			symflag := true;
+    fi;
+    x!.sym := symflag;
+
+		return new;		#IsFILFUN
+	fi;
+
 end);
 
 
@@ -328,27 +394,27 @@ end);
 #############################################################################
 ##     LoadStepFSR one step at a time !!!!
 
-InstallMethod(LoadStepFSR, "load + 1 regular step", 
+InstallMethod(LoadStepFSR, "load + 1 regular step",
 [IsFSR, IsRingElementCollection],
  function(x, ist)
 local  i,  seq, seqlist;
 
 seqlist := [];
 # load FSR
-	seq := LoadFSR(x,ist); # the seq_0 element
+	seq := LoadFSR(x,ist); # the seq_0 element --- WHY ???
 	Add(seqlist, seq);
 # start run
 	seq := StepFSR(x);
 
 	if IsFILFUN(x) then
 		return seq;
-	else 
+	else
 		Add(seqlist, seq);
 		return seqlist;
 	fi;
 end);
 
-InstallMethod(LoadStepFSR, " load + 1 external step", 
+InstallMethod(LoadStepFSR, " load + 1 external step",
 [IsFSR, IsRingElementCollection, IsRingElement],
  function(x,  ist, elm)
 local  i,  seq, seqlist;
@@ -361,7 +427,7 @@ local  i,  seq, seqlist;
 
 	if IsFILFUN(x) then
 		return seq;
-	else 
+	else
 		Add(seqlist, seq);
 		return seqlist;
 	fi;
@@ -369,7 +435,7 @@ end);
 
 
 
-InstallMethod(LoadStepFSR, "load + 1 regular step", 
+InstallMethod(LoadStepFSR, "load + 1 regular step",
 [IsFSR, IsRingElement],
  function(x, ist)
 return LoadStepFSR(x, [ist]);
@@ -377,7 +443,7 @@ end);
 
 
 
-InstallMethod(LoadStepFSR, "load + 1 external step", 
+InstallMethod(LoadStepFSR, "load + 1 external step",
 [IsFSR, IsRingElement, IsRingElement],
  function(x,  ist, elm)
 
@@ -414,10 +480,15 @@ local seq, sequence, nrsteps, treshold, i, B;
 		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
 
 #print on every step
-		if pr  then
-			Print("\t\t", IntVecFFExt(B, x!.state));  		# NOT reversed !!!!
-			if   Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
-			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+		if pr then
+			if not x!.sym then
+				Print("\t\t", IntVecFFExt(B, x!.state));  		# NOT reversed !!!!
+				if   Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
+				else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+				fi;
+			else
+				Print("\t\t", x!.state);  		# NOT reversed !!!!
+				Print("\t\t", seq , "\n");
 			fi;
 		fi;
 	od;
@@ -432,12 +503,14 @@ end);
 #Print("RunFSR Ia.\n");
 # Ia. run for num steps without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsPosInt], function(x, num)
+#	Print("RunFSR Ia.\n");
 	return  RunFSR(x,  num, false);
 end);
 
 #Print("RunFSR Ib.\n");
 # Ib. run with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR,   IsBool], function(x, pr)
+#	Print("RunFSR Ib.\n");
 	return RunFSR(x, 	 Threshold(x) , pr);
  ## change num to something huge then the called method will set the threshold
 end);
@@ -445,6 +518,7 @@ end);
 #Print("RunFSR Ic.\n");
 # Ic. run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR], function(x)
+#	Print("RunFSR Ic.\n");
 	return RunFSR(x, 	Threshold(x) , false);
   ## change num to something huge then the called method will set the threshold
 end);
@@ -452,7 +526,7 @@ end);
 
 
 
-InstallMethod(PrintHeaderRunFSR, "print header for run FSR", 
+InstallMethod(PrintHeaderRunFSR, "print header for run FSR",
 [IsFSR, IsRingElement, IsPosInt], function(x, seq, m)
 local  i, taps, B;
 		B := x!.basis;
@@ -468,21 +542,32 @@ local  i, taps, B;
 		Print(",0 ]");
 		Print( "  with taps  ",OutputTap(x),"\n");
 
-		Print("\t\t", (IntVecFFExt(B,x!.state)));  				# NOT reversed !!!!
-		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
-		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
+#		Print("\t\t", (IntVecFFExt(B,x!.state)));  				# NOT reversed !!!!
+#		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
+#		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
+#		fi;
+
+		if not x!.sym then
+			Print("\t\t", IntVecFFExt(B, x!.state));  		# NOT reversed !!!!
+			if   Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
+			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+			fi;
+		else
+			Print("\t\t", x!.state);  		# NOT reversed !!!!
+			Print("\t\t", seq , "\n");
 		fi;
-	else 
+
+	else
 		for i in [1..m] do Print("\t"); od;
 		Print("input");
 		for i in [2.. Length(x)-1] do
 			Print("\t...");
-		od;	
+		od;
 		Print("\t\t");
-		Print( " with output   \n");			
-	
+		Print( " with output   \n");
+
 	fi;
-	
+
 return;
 end);
 
@@ -501,29 +586,44 @@ local  i, taps, B;
 		od;
 		Print(",0 ]");
 		Print( "  with taps  ",OutputTap(x),"\n");
-		Print(IntFFExt(B,elm));
-		Print("\t\t", (IntVecFFExt(B,x!.state)));  				# NOT reversed !!!!
-		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
-		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
+
+
+		if not x!.sym then
+			Print(IntFFExt(B,elm));
+			Print("\t\t", IntVecFFExt(B, x!.state));  		# NOT reversed !!!!
+			if   Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
+			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+			fi;
+		else
+			Print(elm);
+			Print("\t\t", x!.state);  		# NOT reversed !!!!
+			Print("\t\t", seq , "\n");
 		fi;
-	else 
+
+
+#		Print(IntFFExt(B,elm));
+#		Print("\t\t", (IntVecFFExt(B,x!.state)));  				# NOT reversed !!!!
+#		if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
+#		else  Print("\t\t",  IntVecFFExt(B,seq) , "\n");
+#		fi;
+	else
 		for i in [1..m] do Print("\t"); od;
 		Print("input");
 		for i in [2.. Length(x)-1] do
 			Print("\t...");
-		od;	
+		od;
 		Print("\t\t");
-		Print( " with output   \n");			
-	
+		Print( " with output   \n");
+
 	fi;
-	
+
 return;
 end);
 
 
 
- 
-# PRIMARY METHOD FOR ALL PRACTICAL PURPOSES: 
+
+# PRIMARY METHOD FOR ALL PRACTICAL PURPOSES:
 # because otherwise u need to handle the seq_0 elm urself
 # load with <ist> then call   RunFSR( FSR, num-1 , pr)
 # Vb. load new initial state then run for num-1 steps with/without print to shell
@@ -533,13 +633,13 @@ end);
 #Print("RunFSR II.\n");
 
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsPosInt, IsBool],
- function(x,ist, num, pr)
+ function(x, ist, num, pr)
 local  i, sequence,treshold , seq, taps, B, m;
 	sequence :=[];
-#Print("RunFSR II.\n");		
+#Print("\nRunFSR II.\n");
 # load FSR
 	seq := LoadFSR(x,ist); # the seq_0 element
-	
+
 # print header, init state and seq_0
 	if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
 	else m:= 1;
@@ -550,8 +650,11 @@ local  i, sequence,treshold , seq, taps, B, m;
 
 # start run
 	sequence := RunFSR(x, num, pr);
-	Add(sequence,seq,1);	# seq_0 at the beginning
 
+	#look at LoadFSR comment "# to break as little as possible ! then for the filfuns: dont use it"
+	if not IsFILFUN(x) then
+		Add(sequence,seq,1);	# seq_0 at the beginning
+	fi;
 	return sequence;
 end);
 
@@ -559,6 +662,7 @@ end);
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsPosInt],
 # IIa. load new initial state then run for num-1 steps without print to shell
 function(x, ist, num)
+#	Print("\nRunFSR IIa.\n");
 	return RunFSR(x, ist, num, false);
 end);
 
@@ -567,6 +671,7 @@ end);
 # IIb. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsBool],
 function(x, ist , pr)
+#		Print("\nRunFSR IIb.\n");
 		return RunFSR(x, ist, Threshold(x)   , pr);
 end);
 
@@ -574,24 +679,27 @@ end);
 
 # IIc. load new initial state then run without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection], function(x, ist )
+#		Print("\nRunFSR IIc.\n");
 		return RunFSR(x, ist, Threshold(x)   , false);
 end);
 
 
 
 # EXTERNAL STEP
-# rationale behind copied code is speed: could be a very long sequence, dont want to many functions calling eachother
+# rationale behind copied code is speed: could be a very long sequence,
+# dont want to many functions calling eachother
 
 
 
 #Print("RunFSR IV.\n");
 # LOAD + RUN
-# IV. load and run for num steps with a different external input on each step with/without print to shell
+# IV. load and run for num steps with a different external input on each step
+# with/without print to shell
 InstallMethod(RunFSR, "run FSR",
 [IsFSR,  IsRingElementCollection, IsRingElementCollection, IsBool],
 function(x,  ist, elmvec, pr)
 local  sequence,  treshold, num, nrsteps, seq , seq0, i, B, m;
-#	Print("RunFSR IV.\n");
+#	Print("\nRunFSR IV.\n");
 	sequence := [];
 	treshold := Threshold(x);
 	num := Length(elmvec);
@@ -599,31 +707,47 @@ local  sequence,  treshold, num, nrsteps, seq , seq0, i, B, m;
 		nrsteps := treshold;
 	else 	nrsteps := num;
 	fi;
-	
+
 # load FSR
 	seq0 := LoadFSR(x,ist); # the seq_0 element
 
 # print header, init state and seq_0
 	if IsPolynomial(FieldPoly(x)) then m:= Degree(FieldPoly(x));
 	else m:= 1;
-	fi;	
+	fi;
 	B := x!.basis;
 	if pr then
 		PrintHeaderRunFSR(x,Zero(UnderlyingField(x)), seq0, m);
-	fi;	
-	
+	fi;
+
 #start run
 	for i in [1.. nrsteps] do
 			seq := StepFSR(x,elmvec[i]);
 			Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
 #print on every step
-			if pr then
+		if pr then
+			if not x!.sym then
 				Print(IntFFExt(B,elmvec[i]),"\t\t");  				# NOT reversed !!!!
-				Print(IntVecFFExt(B,x!.state));  				# NOT reversed !!!!
-				if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
+				Print("\t\t", IntVecFFExt(B, x!.state));  		# NOT reversed !!!!
+				if   Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
 				else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
 				fi;
+			else
+				Print(elmvec[i],"\t\t");
+				Print("\t\t", x!.state);  		# NOT reversed !!!!
+				Print("\t\t", seq , "\n");
 			fi;
+		fi;
+
+
+
+#			if pr then
+#				Print(IntFFExt(B,elmvec[i]),"\t\t");  				# NOT reversed !!!!
+#				Print(IntVecFFExt(B,x!.state));  				# NOT reversed !!!!
+#				if 	Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
+#				else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+#				fi;
+#			fi;
 		od;
 		Add(sequence,seq0,1);	# seq_0 at the beginning
 	if num > treshold then
@@ -637,6 +761,7 @@ end);
 # IVa. run for num steps with the different external input on each step with/without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFSR, IsRingElementCollection, IsRingElementCollection],
  function(x, ist, elmvec)
+# 	Print("RunFSR IVa.\n");
 	return RunFSR(x, ist, elmvec, false);
 end);
 
@@ -674,8 +799,19 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
 		od;
 		Print(",0 ]");
 		Print( "  with taps  ",OutputTap(x),"\n");
-		Print(IntFFExt(B,Zero(UnderlyingField(x))),"\t\t");
-		Print((IntVecFFExt(B,x!.state)),"\n");  				# NOT reversed !!!!
+
+
+		if not x!.sym then
+			Print(IntFFExt(B,Zero(UnderlyingField(x))),"\t\t");
+			Print((IntVecFFExt(B,x!.state)),"\n");  				# NOT reversed !!!!
+		else
+				Print(Zero(UnderlyingField(x)),"\t\t");
+				Print("\t\t", x!.state, "\n");  		# NOT reversed !!!!
+		fi;
+
+
+#		Print(IntFFExt(B,Zero(UnderlyingField(x))),"\t\t");
+#		Print((IntVecFFExt(B,x!.state)),"\n");  				# NOT reversed !!!!
 
 #note: there will be an element missing coz we start output with CURRENT state, without step ...
 #the seq elm that came from step is already in the sequence, we dont want to repeat it
@@ -688,13 +824,32 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
 		seq := StepFSR(x,elmvec[i]);
 		Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
 #print on every step
+
 		if pr then
-			Print(IntFFExt(B,elmvec[i]),"\t\t");  				# NOT reversed !!!!
-			Print(IntVecFFExt(B,x!.state));  				# NOT reversed !!!!
-			if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
-			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+			if not x!.sym then
+				Print(IntFFExt(B,elmvec[i]),"\t\t");  				# NOT reversed !!!!
+				Print(IntVecFFExt(B, x!.state));  		# NOT reversed !!!!
+				if   Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B,seq) , "\n");
+				else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+				fi;
+			else
+				Print(elmvec[i],"\t\t");
+				Print("\t\t", x!.state);  		# NOT reversed !!!!
+				Print("\t\t", seq , "\n");
+
 			fi;
 		fi;
+
+
+
+
+#		if pr then
+#			Print(IntFFExt(B,elmvec[i]),"\t\t");  				# NOT reversed !!!!
+#			Print(IntVecFFExt(B,x!.state));  				# NOT reversed !!!!
+#			if Length(OutputTap(x))=1 then Print("\t\t", IntFFExt(B, seq) , "\n");
+#			else  	Print("\t\t",  IntVecFFExt(B, seq) , "\n");
+#			fi;
+#		fi;
 	od;
 	if num > treshold then
 		Print("over the threshold, will only output the first ",treshold);
@@ -704,9 +859,11 @@ local  sequence,  treshold, num, nrsteps, seq , i, B, m ;
 end);
 
 #Print("RunFSR Va.\n");
-# Va. run for num steps with the different external input on each step with/without print to shell
-InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsRingElementCollection], 
+# Va. run for num steps with the different external input on each step
+# with/without print to shell
+InstallMethod(RunFSR, "run FSR", [IsFSR, IsZero, IsRingElementCollection],
 function(x, z, elmvec)
+#	Print("RunFSR Va.\n");
 	return RunFSR(x, z, elmvec, false);
 end);
 
@@ -726,19 +883,30 @@ local  i, sequence, seq, taps, B, m;
 	else m:= 1;
 	fi;
 	if pr then
+	#	Print("debug here");
 		B := x!.basis;
 		PrintHeaderRunFSR(x, Zero(UnderlyingField(x)), m);
 	fi;
 	B := x!.basis;
 # start run
-	for i in [1.. Length(ist)] do 
+	for i in [1.. Length(ist)] do
 		seq := LoadStepFSR(x, ist[i]);
 		Add(sequence, seq);
-	# print 
+	# print
 		if pr then
-		Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t");  # NOT reversed !!!!
-		Print("\t\t", IntFFExt(B,seq) , "\n");
-		fi;		
+			if not x!.sym then
+				Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t");  # NOT reversed !!!!
+				Print("\t\t", IntFFExt(B,seq) , "\n");
+			else
+				Print("\t\t", x!.state, "\t -> \t");  		# NOT reversed !!!!
+				Print("\t\t", seq , "\n");
+			fi;
+		fi;
+
+#		if pr then
+#		Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t");  # NOT reversed !!!!
+#		Print("\t\t", IntFFExt(B,seq) , "\n");
+#		fi;
 	od;
 
 	return sequence;
@@ -748,6 +916,8 @@ end);
 # VIa. run for FILFUN with diff ist on each step (using LoadStepFSR) without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl],
 function(x, ist)
+#	Print("debug here");
+#	Print("RunFSR VIa.\n");
 	return RunFSR(x, ist, false);
 end);
 
@@ -759,7 +929,8 @@ end);
 #Print("RunFSR VIII.\n");
 
 # VIII. run for FILFUN with diff ist  and diff  external elm on each step (using LoadStepFSR)
-InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl,  IsRingElementCollection, IsBool],
+InstallMethod(RunFSR, "run FSR",
+[IsFILFUN, IsRingElementCollColl,  IsRingElementCollection, IsBool],
  function(x, ist, elmvec, pr)
 local  i, sequence, seq, taps, B, m;
 #Print("RunFSR VIII.\n");
@@ -776,14 +947,25 @@ local  i, sequence, seq, taps, B, m;
 	fi;
 
 # start run
-	for i in [1.. Length(ist)] do 
+	for i in [1.. Length(ist)] do
 		seq := LoadStepFSR(x, ist[i], elmvec[i]);
 		Add(sequence, seq);
-	# print 
+	# print
 		if pr then
-		Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t");  # NOT reversed !!!!
-		Print("\t\t", IntFFExt(B,seq) , "\n");
-		fi;		
+			if not x!.sym then
+				Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t");  # NOT reversed !!!!
+				Print("\t\t", IntFFExt(B,seq) , "\n");
+			else
+				Print("\t\t", x!.state, "\t -> \t");  		# NOT reversed !!!!
+				Print("\t\t", seq , "\n");
+			fi;
+		fi;
+
+#		if pr then
+#		Print("\t\t", (IntVecFFExt(B,x!.state)), "\t -> \t");  # NOT reversed !!!!
+#		Print("\t\t", IntFFExt(B,seq) , "\n");
+#		fi;
+
 	od;
 
 	return sequence;
@@ -793,6 +975,7 @@ end);
 # VIIIa. run for FILFUN with diff ist on each step (using LoadStepFSR) without print to shell
 InstallMethod(RunFSR, "run FSR", [IsFILFUN, IsRingElementCollColl, IsRingElementCollection],
 function(x, ist, elmvec)
+#	Print("RunFSR VIIIa.\n");
 	return RunFSR(x, ist, elmvec, false);
 end);
 

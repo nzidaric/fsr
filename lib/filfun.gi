@@ -46,7 +46,7 @@ elif  Length(arg)=3 then
 elif  Length(arg)=4 then
 	if  IsField(arg[1]) and IsPolynomial(arg[2]) and IsRingElementCollection(arg[3]) 
 			and IsList(arg[4]) then 	
-			#F   NLFSR( <K>, <fieldpol>, <clist>, <mlist> )
+			#F  FILFUN( <K>, <fieldpol>, <clist>, <mlist> )
 			K := arg[1]; fieldpol := arg[2]; 
 			if not IsIrreducibleRingElement(PolynomialRing(K),  fieldpol) then 
 				Error("defining polynomial of the extension field must be irreducible!!!");
@@ -76,23 +76,17 @@ fi;
 	od;
 	
 # get the feedback poly
-
 # whatif1: what if they cancel out !!!
 #	 mof := ReduceMonomialsOverField(F, mlist);
 #	 multpol := clist * mof; 
-
 # fix for whatif1
 	 multpol := ReduceMonomialsOverField(F, clist * mlist); 
-
 	 lin := (DegreeOfPolynomialOverField(F,multpol)=1);
 
 # fix for whatif1
 cl := SplitCoeffsAndMonomials(F, multpol)[1];
 ml := SplitCoeffsAndMonomials(F, multpol)[2];	
 	
-
-
-
 	
 	indlist := []; 
 # get all the indeterminates in all monomials
@@ -127,7 +121,8 @@ ml := SplitCoeffsAndMonomials(F, multpol)[2];
 # new FILFUN :) 
 	fam :=FSRFamily(Characteristic(K));
 	fsrfil := Objectify(NewType(fam, IsFSRRep),   
-			rec(init:=st, state:= st, numsteps := 0, basis := CanonicalBasis(F)));
+			rec(init:=st, state:= st, numsteps := 0, basis := CanonicalBasis(F), sym := false));
+			
 #	fsrfil := Objectify(NewType(fam, IsFSRRep),   
 #	rec(state:= st, numsteps := 0, basis := CanonicalBasis(F)));
 #  without init works just fine, but rather not since there are so many methods 
@@ -159,21 +154,6 @@ return fsrfil;
 end);
 
 
-
-InstallMethod( ConstTermOfFILFUN, "const term of the multivariate polynomial", 
-	 [IsFILFUN], function(x)
-local F, tlist, clist, i, const;
-	F := UnderlyingField(x);
-	const := Zero(F);
-	tlist := MonomialList(x);
-	clist := FeedbackVec(x);
-	for i in [1..Length(tlist)] do
-		if tlist[i] = One(F) then 
-			const := clist[i]; 
-		fi;	 
-	od;
-return const;
-end);
 
 
 

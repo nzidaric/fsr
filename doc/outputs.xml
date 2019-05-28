@@ -1,28 +1,61 @@
 <Chapter Label="Outputs">
-<Heading>Output formatting functions and TEX drawing functions</Heading>
+<Heading>Output formatting functions and writing functions</Heading>
 
-<Section Label="View">
-<Heading>View/Display/Print/PrintAll</Heading>
+
+
+<Section Label="XMLoutputs">
+
+<Heading>Output formatting functions</Heading>
+
+
 <#Include Label="ViewObjFSR">
-</Section>
 
+<#Include Label="IntFFExt">
+<#Include Label="VecToString">
+</Section>
 
 
 
 <Section Label="Writing">
-<Heading>Writing to *.txt or *.tex </Heading>
+
+<Heading>Writing and TEX writing functions</Heading>
+
+<#Include Label="outputs1">
+<#Include Label="outputs2">
+<#Include Label="WriteFFEVector">
+<#Include Label="WriteTEXFF">
+
+<#Include Label="WriteTEXUnivarFFPolyByGenerator">
+<#Include Label="WriteTEXGeneratorWRTDefiningPolynomial">
+
+<#Include Label="outputsEG">
+
+
 <#Include Label="WriteAllFSR">
 <#Include Label="WriteSequenceFSR">
 <#Include Label="WriteRunFSR">
+
+  <#Include Label="dummy1">
+<!-- replace with \clearpage if it exists -->
+
 <#Include Label="WriteTEXRunFSR">
+
+
+
 
 </Section>
 
 
-
-
 <Section Label="Drawing">
-<Heading>TEX drawing functions</Heading>
+<Heading>TEX drawing functions for (N)LFSRs</Heading>
+<#Include Label="drawing1">
+<#Include Label="TikzW_LFSR">
+
+  <#Include Label="drawing1EG">
+
+<#Include Label="TikzW_NLFSR">
+
+  <#Include Label="drawing2EG">
 
 </Section>
 

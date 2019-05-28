@@ -19,43 +19,35 @@ end);
 
 #  non-basis version
 InstallMethod(IntFFExt, "print nicely", [IsRingElement], function(x)
-local F , B, hfv;
+local F , hfv;
 	hfv := [];
 	F := DefaultField(x);
-	if IsPrimeField(F) then
-		hfv := Int(x);
+	if IsPrimeField(F) then 		hfv := Int(x);
 	else
-		B := Basis(F);
-#		Print("IntFFExt using basis :\t",Elements(Basis(F)),"\n");
-		hfv := IntVecFFE(Coefficients(B, x));
+		hfv := IntVecFFE(Coefficients(Basis(F), x));
 	fi;
 	return hfv; # human friendly vector
 end);
 
 # -----------------------------------#
 #O  IntVecFFExt( [<B>,] <vec> )
-InstallMethod(IntVecFFExt, "print nicely", [IsBasis, IsRingElementCollection], function(B, x)
+InstallMethod(IntVecFFExt, "print nicely", [IsBasis, IsRingElementCollection],
+function(B, x)
 local i, F ,  hfv;
 	hfv := [];
 	for i in [1..Length(x)] do
 	 	hfv[i] := IntVecFFE(Coefficients(B, x[i]));
 	od;
-
 	return hfv;			# human friendly vector
 end);
 
-
 #  non-basis version calling the basis version
-
 InstallMethod(IntVecFFExt, "print nicely", [IsRingElementCollection], function(x)
-local  i, F , B, hfv;
+local  i, F , hfv;
 	hfv := [];
 	F := DefaultField(x);
-	if IsPrimeField(F) then
-		hfv := IntVecFFE(x);
-	else
-		B := Basis(F);
-		hfv := IntVecFFExt(B,x);
+	if IsPrimeField(F) then		hfv := IntVecFFE(x);
+	else		hfv := IntVecFFExt(Basis(F),x);
 	fi;
 	return hfv;# human friendly vector
 end);
@@ -77,12 +69,9 @@ local  i, j, F , H, row, hfv;
 	return H;
 end);
 
-
-
 #  non-basis version calling the basis version
-
 InstallMethod(IntMatFFExt, "print nicely", [IsRingElementCollColl], function(x)
-local  i, j, F , B, H, row, hfv;
+local  i,  F ,  H, row, hfv;
 	H := [];
 	F := DefaultFieldOfMatrix(x);
 	if IsPrimeField(F) then
@@ -90,13 +79,10 @@ local  i, j, F , B, H, row, hfv;
 			H[i] := IntVecFFE(x[i]);
 		od;
 	else
-		B := Basis(F);
-#		Print("IntMatFFExt using basis :\t",Elements(Basis(F)),"\n");
-		H := IntMatFFExt(B,x);
+		H := IntMatFFExt(Basis(F),x);
 	fi;
 	return H;
 end);
-
 
 #############################################################################
 ##
@@ -130,7 +116,6 @@ local  vec, i, j, d, F , elm, hfv, str, tmp, temp, H;
 			od;
 		fi;
 
-
 	elif IsRingElement(x) then
 		hfv := IntFFExt(B, x);
 		tmp := List(hfv, String);
@@ -138,28 +123,22 @@ local  vec, i, j, d, F , elm, hfv, str, tmp, temp, H;
 	elif IsRingElementCollection(x) then
 		F := DefaultField(x);
 		if IsPrimeField(F) then
-			hfv := IntVecFFE(x);
+			j := true;
+			for i in x do
+				if not IsInt(i) then j := false;
+				fi;
+			od;
+			if not j then 	hfv := IntVecFFE(x);
+			else hfv := x;
+			fi;
 			tmp := List(hfv, String);
 			str := JoinStringsWithSeparator(hfv, "");
-#			Print(" i ended up IsRingElementCollection(x) PrimeField ....", x, " with string", str, "and ",tmp,"\n");
-
 		else
 			hfv := IntVecFFExt(B, x);
 			for i in [1..Length(hfv)] do
 				tmp := List(hfv[i], String);
 				str[i] := JoinStringsWithSeparator(tmp, "");
 			 od;
-#			Print(" i ended up IsRingElementCollection(x) ....", x, " with string", str,"and ",tmp,"\n");
-#if i want a true string (but thats not practical !!!  i want to be able to get a string for each component ... thats something i can use, if i have a true string i have to parse it at the commas AGAIN )
-#						hfv := IntVecFFExt(B, x);
-#						tmp := List(hfv[1], String);
-#						tmp := JoinStringsWithSeparator(tmp, "");
-#						str := Concatenation(tmp, ",");
-#						for i in [2..Length(hfv)] do
-#							tmp := List(hfv[i], String);
-#							tmp := JoinStringsWithSeparator(tmp, "");
-#							str := Concatenation(str, ",", tmp);
-#						 od;
 		fi;
 	else
 		tmp := List(x, String);
@@ -170,58 +149,41 @@ end);
 
 #new version, getting default basis and calling the basis version
 InstallMethod(VecToString, "print nicely", [IsVector], function(x)
-local  vec, i, j, d, F, B , elm, hfv, str, tmp, temp, H;
+local  F, hfv, str, tmp;
 	str := [];
 	hfv := [];
-
-	if IsMatrix(x) then
-#		Print(" i ended up IsMatrix ....", x, "\n");
-		F := DefaultFieldOfMatrix(x);
-		B := Basis(F);
-		str := VecToString(B, x);
-	elif IsRingElementCollection(x) or IsRingElement(x) then
-#		Print(" i ended up IsRingElementCollection or IsRingElement ....", x, "\n");
-		F := DefaultField(x);
-		B := Basis(F);
-		str := VecToString(B, x);		
-		
-		
-	elif IsInt(x) then
-#		Print(" i ended up IsInt ....", x, "\n");
+	if IsInt(x) then
 		str := String(x);
-
+	elif IsMatrix(x) then
+		F := DefaultFieldOfMatrix(x);
+		str := VecToString(Basis(F), x);
+	elif IsRingElementCollection(x) or IsRingElement(x) then
+		F := DefaultField(x);
+		str := VecToString(Basis(F), x);
 	else
-#		Print(" i ended up here ....", x, "\n");
 		tmp := List(x, String);
 		str := JoinStringsWithSeparator(tmp, "");
 	fi;
 	return str;
 end);
 
-
-
-
 #############################################################################
 ##
 #F  WriteVector( <output>,<B>, <vec> ) . . . . . . . . write vector
 ##
-
-# removed outputstream check coz GAP will do that anyway (AppendTo will)
-# basis version
-InstallGlobalFunction( WriteVector,  function(output, B, vec)
+InstallGlobalFunction( WriteFFEVec,  function(output, B, vec)
 local j, m, str;
 SetPrintFormattingStatus(output, false);
-	if IsBasis(B) then
-		if (IsRowVector(vec) or IsRingElement(vec) or IsInt(vec) or IsRingElementCollColl(vec)) then
-			if IsRingElement(vec) then  # zech log in whatever field
-				vec := IntFFExt(B, vec);
-			fi;
+		if (IsRowVector(vec) or IsRingElement(vec) or IsInt(vec)) then #or IsRingElementCollColl(vec)) then
 			if IsInt(vec) then # prime subfield
 				AppendTo(output, vec); #
 				return;
 			fi;
+			if IsRingElement(vec) and not IsMatrix(vec) then vec := IntFFExt(B, vec);
+			fi;
+
 			str := VecToString(B,vec);
-			if IsString(str) then 	AppendTo(output, str); #
+			if IsString(str) then AppendTo(output, str); #
 			else
 				for j in [1.. Length(str)-1] do
 					AppendTo(output, str[j], ", ");
@@ -232,10 +194,6 @@ SetPrintFormattingStatus(output, false);
 AppendTo(output, "ERROR: ", vec, " is not a vector nor a FFE nor integer!!!! ");
 	Error("argument ", vec, " is not a row vector nor a FFE nor integer !!!!\n");
 		fi;
-	else
-	  Error("B is not a basis !!!! \n");
-	fi;
-
 return;
 end);
 
@@ -246,16 +204,11 @@ end);
 #F  WriteMatrix( <output>, <B>, <M> ) . . . . . . . . write matrix
 ##
 ## for nicely formatted matrix (each row in new line)
-## if u dont care about that u can just call WriteVector/WriteVectorM
+## if u dont care about that u can just call WriteVector
 
-
-
-# basis version
-# removed outputstream check coz GAP will do that anyway (AppendTo will)
-InstallGlobalFunction( WriteMatrix, function(output, B, M)
+InstallGlobalFunction( WriteFFEMatrix, function(output, B, M)
 local i,j,d,str, row, F;
 SetPrintFormattingStatus(output, false);
-	 if IsBasis(B) then
 		 if (IsMatrix(M)) then
 			d := DimensionsMat(M);
 			str := VecToString(B, M);
@@ -282,62 +235,40 @@ SetPrintFormattingStatus(output, false);
 		    Error("M is not a matrix !!!! \n");
 		    AppendTo(output, "ERROR: M is not a matrix !!!! \n", M, "\n");
 		  fi;
-	  else
-	    Error("B is not a basis !!!! \n");
-	  fi;
-
 return;
 end);
-
-
-#############################################################################
-##
-#F  WriteTEXFF( <output>, <F> ) . . . . . . same as PrintAll, but to a file
-##
-##  <#GAPDoc Label="WriteTEXFF">
-##  <ManSection>
-##  <Func Name="WriteTEXFF" Arg="output, F"/>
-##  <Func Name="WriteTEXFFEByGenerator" Arg="output, F, ffe"/> # in case its a subfield elm
-##  <Func Name="WriteTEXUnivarFFPolyByGenerator" Arg="output, F, f, indet"/>
-##  <Func Name="WriteTEXMultivarFFPolyByGenerator" Arg="output, F, f"/>
-##  <Func Name="WriteTEXFieldPolyByGenerator" Arg="output, F"/>
-##  <Func Name="WriteTEXLFSRPolyByGenerator" Arg="output, F, l"/>
-##
-##  <Description>
-##  Equivalent to PrintAll, but it writes to an output stream. NOTE: The basis
-##   switch must be present and if <E>true</E>, the currently set basis of the
-##   <A>fsr</A> is used.
-##  </Description>
-##  </ManSection>
-##  <#/GAPDoc>
-##DeclareGlobalFunction( "WriteTEXFF" );
-##DeclareGlobalFunction( "WriteTEXFFEByGenerator" );
-##DeclareGlobalFunction( "WriteTEXUnivarFFPolyByGenerator" );
-#DeclareGlobalFunction( "WriteTEXMultivarFFPolyByGenerator" ); TO DO (will need indet list)
-##DeclareGlobalFunction( "WriteTEXFieldPolyByGenerator" );
-##DeclareGlobalFunction( "WriteTEXLFSRPolyByGenerator" );
 
 #############################################################################
 ##
 #F  WriteTEXFF( <output>, <F> ) . . . . . .
 ##
 InstallGlobalFunction(  WriteTEXFF, function(output,  F)
-local char, m;
+local char, m, pwrlist, K, i;
 
 SetPrintFormattingStatus(output, false);
-	 if IsField(F) and IsFinite(F) then
 			char := Characteristic(F);
 			m := DegreeOverPrimeField(F);
-			if m=1 then
+			if m=1 then	# prime field
 				AppendTo(output,"$\\mathbb{F}_{",char,"}$");
-			else
+			elif m=Dimension(F) then # one extension
 				AppendTo(output,"$\\mathbb{F}_{{",char,"}^{",m,"}}$");
+			else 	#tower
+				pwrlist := []; K := F;
+				while not IsPrimeField(K) do
+					Add(pwrlist, Dimension(K));
+					K := LeftActingDomain(K);
+				od;
+				pwrlist := Reversed(pwrlist);
+				AppendTo(output,"$\\mathbb{F}_{");
+				for i in [1..Length(pwrlist)-1] do
+							AppendTo(output,"(");
+				od;
+				AppendTo(output,"{",char,"}");
+				for i in [1..Length(pwrlist)-1] do
+							AppendTo(output,"^{",pwrlist[i],"})");
+				od;
+				AppendTo(output,"^{",pwrlist[Length(pwrlist)],"}}$");
 			fi;
-
-		else
-		Error(F," is not a finite field !!!!\n");
-		fi;
-
 	return;
 end);
 
@@ -345,92 +276,45 @@ end);
 ##
 ## WriteTEXFFE
 ##
-InstallGlobalFunction(WriteTEXFFE,
- function(output, B, ffe)
- local F;
- F := UnderlyingLeftModule(B);
-
-SetPrintFormattingStatus(output, false);
-	 if IsField(F) and IsFinite(F) then
-        AppendTo(output,  "$",VecToString(B,ffe),"$");
-		else
-		Error(F," is not a finite field !!!!\n");
-		fi;
-
+InstallGlobalFunction(WriteTEXFFE,  function(output, B, ffe)
+ 	SetPrintFormattingStatus(output, false);
+	AppendTo(output,  "$",VecToString(B,ffe),"$");
 	return;
 end);
-
-
-
 
 #############################################################################
 ##
 ## WriteTEXFFEByGeneratorNC
 ##
-InstallGlobalFunction(WriteTEXFFEByGeneratorNC,
+InstallGlobalFunction(WriteTEXFFEByGenerator,
  function(output,  ffe, strGen, gen)
 local exp;
-
       if IsZero(ffe) then
           AppendTo(output,  "$0$");
       elif IsOne(ffe) then
           AppendTo(output,  "$1$");
       else
          exp := LogFFE(ffe,gen);
-         if exp = 1 then 			 AppendTo(output,  "$\\",strGen,"$");
-         else 		AppendTo(output,  "$\\",strGen,"^{",exp,"}$");
+         if exp = 1 then 	AppendTo(output,  "$\\",strGen,"$");
+         else 						AppendTo(output,  "$\\",strGen,"^{",exp,"}$");
          fi;
       fi;
-
 	return;
 end);
 
-#############################################################################
-##
-## WriteTEXFFEByGeneratorNCM
-##
-InstallGlobalFunction(WriteTEXFFEByGeneratorNCM,
+InstallGlobalFunction(WriteTEXFFEByGeneratorNM,
  function(output,  ffe, strGen, gen)
 local exp;
-
       if IsZero(ffe) then
           AppendTo(output,  "0");
       elif IsOne(ffe) then
           AppendTo(output,  "1");
       else
          exp := LogFFE(ffe,gen);
-         if exp = 1 then 			 AppendTo(output,  "\\",strGen);
-         else 		AppendTo(output,  "\\",strGen,"^{",exp,"}");
+         if exp = 1 then 	AppendTo(output,  "\\",strGen);
+         else 						AppendTo(output,  "\\",strGen,"^{",exp,"}");
          fi;
       fi;
-
-	return;
-end);
-
-#############################################################################
-##
-## WriteTEXFFEByGenerator
-##
-InstallGlobalFunction(WriteTEXFFEByGenerator,
- function(output,  F, ffe, strGen, gen)
-local exp;
-
-SetPrintFormattingStatus(output, false);
-	 if IsField(F) and IsFinite(F) then
-   if IsString(strGen) and  strGen <> "omega" then
-     if Order(gen)=Size(F)-1 then
-
-		 WriteTEXFFEByGeneratorNC(output,  ffe, strGen, gen);
-
-      else
-        Error(gen," is not a generator of ",F,"!!!!\n");
-        fi;
-      else
-      Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
-      fi;
-		else
-		Error(F," is not a finite field !!!!\n");
-		fi;
 	return;
 end);
 
@@ -438,30 +322,20 @@ end);
 ##
 ## WriteTEXFFEVec
 ##
-InstallGlobalFunction(WriteTEXFFEVec,
- function(output, B, vec)
- local F, ffe,j;
- F := UnderlyingLeftModule(B);
-
+InstallGlobalFunction(WriteTEXFFEVec,  function(output, B, vec)
+local ffe , j;
 SetPrintFormattingStatus(output, false);
-	 if IsField(F) and IsFinite(F) then
 	 	if	IsRingElementCollection(vec) then
-			AppendTo(output,  "[ ");
+				AppendTo(output,  "[ ");
 				for j in [1.. Length(vec)] do
 					ffe := vec[j];
-			        AppendTo(output,  "$",VecToString(B,ffe),"$");
-					if j < Length(vec) then
-						AppendTo(output,  ",\\,");
+			    AppendTo(output,  "$",VecToString(B,ffe),"$");
+					if j < Length(vec) then 	AppendTo(output,  ",\\,");
 					fi;
 				od;
 				AppendTo(output,  " ]");
-			else
-				Error(vec," is not a finite field vector!!!!\n");
-			fi;
-		else
-		Error(F," is not a finite field !!!!\n");
+		else	Error(vec," is not a vector!!!!\n");
 		fi;
-
 	return;
 end);
 
@@ -472,79 +346,59 @@ end);
 InstallGlobalFunction(WriteTEXFFEVecByGenerator,
  function(output, F, vec, strGen, gen)
  local  ffe, j;
-
-
 SetPrintFormattingStatus(output, false);
-if IsField(F) and IsFinite(F) then
-	if IsString(strGen) and  strGen <> "omega" then
+
+	if IsString(strGen)  then
 		if Order(gen)=Size(F)-1 then
 	 		if IsRingElementCollection(vec) then
 				AppendTo(output,  "[ ");
 				for j in [1.. Length(vec)] do
 					ffe := vec[j];
-			      	WriteTEXFFEByGeneratorNC(output, ffe, strGen, gen);
-					if j < Length(vec) then
-						AppendTo(output,  ",\\,");
+			   	WriteTEXFFEByGenerator(output, ffe, strGen, gen);
+					if j < Length(vec) then AppendTo(output,  ",\\,");
 					fi;
 				od;
 			AppendTo(output,  " ]");
-			else
-				Error(vec," is not a finite field vector!!!!\n");
+			else  Error(vec," is not a vector!!!!\n");
 			fi;
-		else
-      Error(gen," is not a generator of ",F,"!!!!\n");
+		else 	Error(gen," is not a generator of ",F,"!!!!\n");
     fi;
-  else
-    Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
+  else	Error(strGen," is not a string  !!!!\n");
   fi;
-else
-	Error(F," is not a finite field !!!!\n");
-fi;
-
 	return;
 end);
 
-#############################################################################
+######################################################WriteTEXFFEByGenerator#######################
 ##
 #F  WriteTEXMatrix( <output>, <B>, <M> ) . . . writes the TEX code for  matrix
 ##
 
-InstallGlobalFunction( WriteTEXMatrix, function(output, B, M)
-local d, drows, dcols, i, j, row,  F, ffe;
-
-F := UnderlyingLeftModule(B);
-
+InstallGlobalFunction( WriteTEXFFEMatrix, function(output, B, M)
+local d, drows, dcols, i, j, row,  ffe;
 SetPrintFormattingStatus(output, false);
-
  if (IsMatrix(M) or IsRingElementCollColl(M)) then
-		if IsField(F) and IsFinite(F) then
 		d := DimensionsMat(M);
 		drows := d[1];
 		dcols := d[2];
-
 #			AppendTo(output, "\\begin{displaymath}\\tiny \n");
 			AppendTo(output, "\\left[ \n");
-			AppendTo(output, "\\setcounter{MaxMatrixCols}{", dcols, "} \n\\begin{matrix} \n");
+			AppendTo(output, "\\setcounter{MaxMatrixCols}{", dcols, "} \n");
+			AppendTo(output, "\\begin{matrix} \n");
 			for i in [1..drows] do
 				row := M[i];
 				for j in [1..dcols] do
 					ffe := row[j];
 					AppendTo(output, VecToString(B, ffe));
 					if j<dcols then AppendTo(output, "&");
-					else  AppendTo(output, "\\");
+					else  					AppendTo(output, "\\");
 					fi;
 				od;
 				AppendTo(output, "\\\n");
 			od;
 		AppendTo(output, "\\end{matrix} \\right] \n");
 #		AppendTo(output, "\\end{displaymath} \n");
-	else
-		  Error(M," is not over a finite field !!!!\n");
-	  fi;
-  else
-	    Error("M is not a matrix !!!! \n");
-	  fi;
-
+  else 	Error("M is not a matrix !!!! \n");
+	fi;
 return;
 end);
 
@@ -554,28 +408,25 @@ end);
 #F  WriteTEXMatrixByGenenator. . . writes the TEX code for  matrix
 ##
 
-InstallGlobalFunction( WriteTEXMatrixByGenerator, function(output,F, M, strGen, gen)
+InstallGlobalFunction( WriteTEXFFEMatrixByGenerator, function(output,F, M, strGen, gen)
 local d, drows, dcols, i, j, row, ffe;
 
 SetPrintFormattingStatus(output, false);
- if IsField(F) and IsFinite(F) then
   if (IsMatrix(M) or IsRingElementCollColl(M)) then
-
-	if IsString(strGen) and  strGen <> "omega" then
+	if IsString(strGen) then
 	 if Order(gen)=Size(F)-1 then
 		d := DimensionsMat(M);
 		drows := d[1];
 		dcols := d[2];
-
 #			AppendTo(output, "\\begin{displaymath}\\tiny \n");
 			AppendTo(output, "\\left[ \n");
-			AppendTo(output, "\\setcounter{MaxMatrixCols}{", dcols, "} \n\\begin{matrix} \n");
+			AppendTo(output, "\\setcounter{MaxMatrixCols}{", dcols, "} \n");
+			AppendTo(output, "\\begin{matrix} \n");
 			for i in [1..drows] do
 				row := M[i];
 				for j in [1..dcols] do
 				  ffe := row[j];
-				  WriteTEXFFEByGeneratorNCM(output,  ffe, strGen, gen);
-
+				  WriteTEXFFEByGeneratorNM(output,  ffe, strGen, gen);
 					if j<dcols then AppendTo(output, "&");
 					else  AppendTo(output, "\\");
 					fi;
@@ -584,19 +435,12 @@ SetPrintFormattingStatus(output, false);
 			od;
 		AppendTo(output, "\\end{matrix} \\right] \n");
 #		AppendTo(output, "\\end{displaymath} \n");
-		else
-			Error(gen," is not a generator of ",F,"!!!!\n");
-			fi;
-		else
-		Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
+		else	Error(gen," is not a generator of ",F,"!!!!\n");
 		fi;
-		else
-		    Error("M is not a matrix !!!! \n");
-		  fi;
-	else
-	Error(F," is not a finite field !!!!\n");
+	else 	Error(strGen," is not a string !!!!\n");
 	fi;
-
+ else	Error("M is not a matrix !!!! \n");
+ fi;
 return;
 end);
 
@@ -609,74 +453,55 @@ function(output,  F, f, strIndet, strGen, gen)
 local exp, coeffvec, m, i, ffe;
 
 SetPrintFormattingStatus(output, false);
-	 if IsField(F) and IsFinite(F) then
    if  IsUnivariatePolynomial(f) then
-    if IsString(strGen) and  strGen <> "omega" then
+    if IsString(strGen)  then
      if Order(gen)=Size(F)-1 then
       coeffvec := Reversed(CoefficientsOfUnivariatePolynomial(f));
       m := Degree(f);
-        AppendTo(output,  "$");
+      AppendTo(output,  "$");
 
       for i in [1 .. Length(coeffvec)-2] do
         ffe := coeffvec[i];
-
-
-        if IsZero(ffe) then
-         continue;
-        elif IsOne(ffe) then
-            AppendTo(output, strIndet, "^{",m-(i-1),"}+");
+        if IsZero(ffe) then  continue;
+        elif IsOne(ffe) then AppendTo(output, strIndet, "^{",m-(i-1),"}+");
         else
            exp := LogFFE(ffe,gen);
            if exp = 1 then
-           		 AppendTo(output, "\\",strGen," ", strIndet, "^{",m-(i-1),"}+");
+           		AppendTo(output, "\\",strGen," ", strIndet, "^{",m-(i-1),"}+");
            else
               AppendTo(output, "\\", strGen,"^{",exp,"} ");
               AppendTo(output, strIndet, "^{",m-(i-1),"}+");
-
            fi;
         fi;
       od;
       ffe := coeffvec[ Length(coeffvec)-1];
-      if IsZero(ffe) then
-               AppendTo(output,  " ");
-      elif IsOne(ffe) then
-          AppendTo(output, strIndet, "+");
+      if IsZero(ffe)  then  AppendTo(output,  " ");
+      elif IsOne(ffe) then  AppendTo(output, strIndet, "+");
       else
          exp := LogFFE(ffe,gen);
          if exp = 1 then
-             AppendTo(output, "\\",strGen," ", strIndet, "+");
+            AppendTo(output, "\\",strGen," ", strIndet, "+");
          else
             AppendTo(output, "\\", strGen,"^{",exp,"} ");
             AppendTo(output, strIndet, "+");
-
          fi;
       fi;
 
       ffe := coeffvec[ Length(coeffvec)];
-      if IsOne(ffe) then
-          AppendTo(output,"1");
+      if IsOne(ffe) then  AppendTo(output,"1");
       else
          exp := LogFFE(ffe,gen);
-         if exp = 1 then 			 AppendTo(output, "\\", strGen);
-         else 		 AppendTo(output, "\\", strGen,"^{",exp,"}");
+         if exp = 1 then 	AppendTo(output, "\\", strGen);
+         else 		  			AppendTo(output, "\\", strGen,"^{",exp,"}");
          fi;
       fi;
-
       AppendTo(output,  "$");
-      else
-        Error(gen," is not a generator of ",F,"!!!!\n");
-        fi;
-      else
-      Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
+      else		Error(gen," is not a generator of ",F,"!!!!\n");
       fi;
-      else
-  		Error(f," is not a an univariate polynomial !!!!\n");
-  		fi;
-
-    else
-		Error(F," is not a finite field !!!!\n");
-		fi;
-
+    else	Error(strGen," is not a string   !!!!\n");
+    fi;
+  else	Error(f," is not a an univariate polynomial !!!!\n");
+	fi;
 	return;
 end);
 
@@ -703,89 +528,99 @@ end);
 
 #############################################################################
 ##
-## WriteTEXMultivarFFPolyByGenerator
+## WriteTEXMultivarFFPolyByGenerator    --FIXED for sym :)
 ##
 InstallGlobalFunction(WriteTEXMultivarFFPolyByGenerator,
-function(output,  F, clist, mlist, strGen, gen)
-
-local ffe, i, j,mof, idx, pwr, m, exp;
-# check coeffs and monomials
-	if Length(clist) = Length(mlist) then
-
-	for i in [1..Length(clist)] do
-		if not (\in(clist[i], F)) then
-			Error( "coefficient at index=",i,"is not an element of the underlying field !!!" );
-					return fail;
-		fi;
-	od;
-
- 	mof := ReduceMonomialsOverField(F, mlist);
-	# multpol := clist * mof;
-
+function(output,  F, mpoly, strGen, gen)
+local ffe, i, j,mof, idx, pwr, m, exp, clist, mlist, mofstr, xtrue, strue,
+varstr, varconst;
+	clist := SplitCoeffsAndMonomials(F, mpoly)[1];
+	mlist := SplitCoeffsAndMonomials(F, mpoly)[2];
+ 	mof := ReduceMonomialsOverField(F, mlist); # must reduce BEFORE split!
 AppendTo(output,  "$");
 # get all the indeterminates in all monomials
 	for i in [1 .. Length(mof)] do
 		ffe := clist[i];
-		if IsPolynomial(mof[i]) then # to account for case when we have constants
+		if IsPolynomial(mof[i]) and not IsOne(mof[i])  then # to account for case when we have constants
+			mofstr := SplitString(String(mof[i]), "_", "*");
+			strue :=  \in("s", mofstr);
+			xtrue :=  \in("x", mofstr);
+			if strue and xtrue then
+				Error("only works for monomials with either x_i or s_i");
+				return;
+			elif not (strue or xtrue) then
+				Error("only works for monomials with x_i or s_i");
+				return;
+			elif strue then varstr := "s"; varconst := 3800;
+			else varstr := "x"; varconst := 800;
+			fi;
 			m := LeadingMonomial(mof[i]);
-	#		Print(m,"\n");
-
-			if IsZero(ffe) then
-	 			continue;
+			if IsZero(ffe) then 	 			continue;
 			elif IsOne(ffe) then
 				for j in [1..Length(m)-1] do
 					if IsOddInt(j) then
-						idx := m[j] - 800;
+						idx := m[j] - varconst; # symbols or indeterminates
 						pwr := m[j+1];
-					 if pwr = 1 then 	AppendTo(output, "x_{",idx,"}");
-					 else	AppendTo(output, "x_{",idx,"}^{",pwr,"}");
+					 if   pwr = 1 then 	AppendTo(output, varstr, "_{",idx,"}");
+					 elif pwr = 0 then 	AppendTo(output, "");
+					 else								AppendTo(output, varstr, "_{",idx,"}^{",pwr,"}");
 					 fi;
 					fi;
 				od;
-
 	 		else
 	 			exp := LogFFE(ffe,gen);
-	 			if exp = 1 then
-			 		AppendTo(output, "\\",strGen," ");
-	 			else
-					AppendTo(output, "\\", strGen,"^{",exp,"} ");
+	 			if exp = 1 then			AppendTo(output, "\\",strGen," ");
+	 			else								AppendTo(output, "\\", strGen,"^{",exp,"} ");
 	 			fi;
 				for j in [1..Length(m)-1] do
 					if IsOddInt(j) then
-						idx := m[j] - 800;
+						idx := m[j] - varconst;
 						pwr := m[j+1];
-						if pwr = 1 then 	AppendTo(output, "x_{",idx,"}");
- 					 else	AppendTo(output, "x_{",idx,"}^{",pwr,"}");
- 					 fi;
+						if pwr = 1 then 	AppendTo(output, varstr, "_{",idx,"}");
+					  elif pwr = 0 then	AppendTo(output, "");
+ 					  else							AppendTo(output, varstr, "_{",idx,"}^{",pwr,"}");
+ 					  fi;
 					fi;
 				od;
 			fi;
 	 		else # constant term
-			if IsOne(ffe) then
-					AppendTo(output,"1");
+			if IsOne(ffe) then		AppendTo(output,"1");
 			else
 				 exp := LogFFE(ffe,gen);
-				 if exp = 1 then 			 AppendTo(output, "\\", strGen);
-				 else 		 AppendTo(output, "\\", strGen,"^{",exp,"}");
+				 if exp = 1 then 		AppendTo(output, "\\", strGen);
+				 else 		 					AppendTo(output, "\\", strGen,"^{",exp,"}");
 				 fi;
 			fi;
 		fi;
-			if i<Length(mof) then
-					AppendTo(output, "+");
-			fi;
-
+			if i<Length(mof) then	AppendTo(output, "+");	fi;
 	od;
-
 	AppendTo(output,  "$");
-
-	else
-		Error("coeff and monomial lists must have same length!!!");
-	fi;
-
-
-	 return;
+  return;
  end);
 
+
+
+
+
+ #############################################################################
+ ##
+ ##  WriteTEXSymVecByGenerator - for sym
+ ##
+ InstallGlobalFunction(WriteTEXSymVecByGenerator ,
+ function(output, F, vec, strGen, gen)
+ local j, mv;
+	AppendTo(output,  "[ ");
+	for j in [1.. Length(vec)] do
+		mv := vec[j];
+		AppendTo(output,  "\\;\t");
+		WriteTEXMultivarFFPolyByGenerator(output, F, mv, strGen, gen);
+		if j < Length(vec) then
+			AppendTo(output,  "\n,");
+		fi;
+	od;
+	AppendTo(output, "\\;]\n");
+	return;
+end);
 
 #############################################################################
 ##
@@ -800,11 +635,9 @@ SetPrintFormattingStatus(output, false);
 
 	if IsString(strGen) and  strGen <> "omega" then
 		if Order(gen)=Size(F)-1 then
-
 			if gen = RootOfDefiningPolynomial(F) then
       AppendTo(output, "$\\",strGen," $ is a root of ");
   WriteTEXFieldPolyByGenerator(output,  F, DefiningPolynomial(F), strGen, gen);
-
 			else
 				genvec := Coefficients(Basis(F), gen);
 				plus := false;
@@ -831,144 +664,94 @@ SetPrintFormattingStatus(output, false);
 				fi;
 		AppendTo(output, "$ and $\\omega$ is a root of ");
 WriteTEXFieldPolyByGenerator(output,  F, DefiningPolynomial(F), strGen, gen);
-
 			fi;
-
-		else
-			Error(gen," is not a generator of ",F,"!!!!\n");
+		else	Error(gen," is not a generator of ",F,"!!!!\n");
 		fi;
-
-	else
-		Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
+	else	Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
 	fi;
-
 return;
 end);
 
 
 InstallGlobalFunction(WriteTEXBasisByGenerator,
  function(output, F, B, strGen, gen)
-local  i,j, elms,  tmp,  m, divs, eb, exp, elm, roots;
-
 SetPrintFormattingStatus(output, false);
-
-	 if IsBasis(B) then
-			m:= DegreeOverPrimeField(F);
-							divs := DivisorsInt(m);
-			if m>1 and (not  m > Length(B)) and \in(Length(B),divs) then
-               # basis ok for field
+	 if IsBasis(B) and (Length(B) = Dimension(F)) then
 					AppendTo(output,  "B = [$\\beta_i$] = ");
 					WriteTEXFFEVecByGenerator(output, F, BasisVectors(B), strGen, gen);
-     			else
-     				Error("basis does not match the field!\n" );
-     			fi;
-
-	else
-		Error(B,"is not a basis !!!!\n");
+	else	Error(B,"is not a basis or does not match the field!!!!!\n");
 	fi;
-
-   return;
+ return;
 end);
 
 InstallGlobalFunction(WriteTEXElementTableByGenerator,
  function(output, F, B, strGen, gen)
-local  i,j, elms,  tmp,  m, divs, eb, exp, elm;
+local  i,j, elms,  eb, elm;
 
 SetPrintFormattingStatus(output, false);
-	 if IsField(F) and IsFinite(F) then
-		 if IsBasis(B) then
 			if IsString(strGen) and  strGen <> "omega" then
 				if Order(gen)=Size(F)-1 then
-
-							m:= DegreeOverPrimeField(F);
-							divs := DivisorsInt(m);
-							if m>1 and (not  m > Length(B)) and \in(Length(B),divs) then
-               # basis ok for field
+	 				if IsBasis(B) and (Length(B) = Dimension(F)) then
 								 elms := Elements(F);
 										# starte table
-		AppendTo(output,  "{\\footnotesize\n \\begin{table}[h!]\n	\\begin{center}");
-		AppendTo(output,  "{\\setlength{\\extrarowheight}{0.35em}\n");
-		AppendTo(output,  "\\begin{tabular}{|c|");
-											for i in [1.. Length(B)] do
-												AppendTo(output,  "c");
-											od;
-											AppendTo(output,  "|c");
-											AppendTo(output,  "|} \n\\hline\n");
-AppendTo(output,"elm&\\multicolumn{",Length(B),"}{c|}{given basis B}& \\\\\n");
-											AppendTo(output,  "\\cline{2-",+Length(B)+1,"}\n");
-											AppendTo(output,  "order");
-											for i in [1.. Length(B)] do
-												AppendTo(output,  "&\\,$\\beta_{",i-1,"}$\\,");
-											od;
+								AppendTo(output,  "{\\footnotesize\n \\begin{table}[h!]\n");
+								AppendTo(output,  "\\begin{center}");
+								AppendTo(output,  "{\\setlength{\\extrarowheight}{0.35em}\n");
+								AppendTo(output,  "\\begin{tabular}{|c|");
+								for i in [1.. Length(B)] do
+										AppendTo(output,  "c");
+								od;
+								AppendTo(output,  "|c");
+								AppendTo(output,  "|} \n\\hline\n");
+								AppendTo(output,"elm&\\multicolumn{",Length(B));
+								AppendTo(output,"}{c|}{given basis B}& \\\\\n");
+								AppendTo(output,  "\\cline{2-",+Length(B)+1,"}\n");
+								AppendTo(output,  "order");
+								for i in [1.. Length(B)] do
+									AppendTo(output,  "&\\,$\\beta_{",i-1,"}$\\,");
+								od;
 
-											AppendTo(output,  "&\\,$\\",strGen,"^i$\\,");
-											AppendTo(output,  " \\\\\n");
-											AppendTo(output,  "\\hline\\hline\n");
-											for i in [1.. Length(elms)] do
-												elm := elms[i];
-												if IsZero(elm) then
-													AppendTo(output, "-");
-												else
-													AppendTo(output, Order(elm));
-												fi;
-
-												eb := IntFFExt(B,elm);
-												for j in [1.. Length(B)] do
-														AppendTo(output,  "&\\, ",VecToString(eb[j]),"\\,");
-												od;
-													AppendTo(output,  "&\\,");
-											  WriteTEXFFEByGeneratorNC(output, elm, strGen, gen);
-											AppendTo(output,  " \\\\\n");
-
-											od;
-
-											# end table
-											AppendTo(output,  "\\hline\n");
-											AppendTo(output,  "\\end{tabular}}\n");
-
- AppendTo(output,"\\caption{{\\footnotesize Element table for ");
- WriteTEXFF(output, F);
- AppendTo(output," using basis ");
-WriteTEXBasisByGenerator(output, F, B, strGen, gen);
- AppendTo(output," with generator $\\",strGen,"$\\quad");
-	WriteTEXGeneratorWRTDefiningPolynomial(output, F, strGen, gen);
-										AppendTo(output, ".}}\\label{LABEL}");
-
-										AppendTo(output,  "\\end{center}\n\\end{table}\n}");
-
-
-# AppendTo(output,  "\n\n \n\nThe generator $\\",strGen);
-#            if gen=RootOfDefiningPolynomial(F) then
-#AppendTo(output,  "$ is a root of defining polynomial ");
-#WriteTEXFieldPolyByGenerator(output,  F, DefiningPolynomial(F), strGen, gen);
-#            else
-#AppendTo(output,  "=$");
-#WriteTEXGeneratorWRTDefiningPolynomial(output, F, strGen, gen);
-#AppendTo(output,  ", where $\\omega$ is a root of defining polynomial ");
-#WriteTEXFieldPolyByGenerator(output,  F, DefiningPolynomial(F), strGen, gen);
-
-#fi;
-
-									   AppendTo(output,  " \n");
-							else
-							Error("basis does not match the field!\n" );
-							fi;
-						else
-						Error(gen," is not a generator of ",F,"!!!!\n");
-						fi;
-					else
-					Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
-					fi;
-				else
-				Error(B,"is not a basis !!!!\n");
+								AppendTo(output,  "&\\,$\\",strGen,"^i$\\,");
+								AppendTo(output,  " \\\\\n");
+								AppendTo(output,  "\\hline\\hline\n");
+								for i in [1.. Length(elms)] do
+									elm := elms[i];
+									if IsZero(elm) then 	AppendTo(output, "-");
+									else									AppendTo(output, Order(elm));
+									fi;
+									eb := IntFFExt(B,elm);
+									for j in [1.. Length(B)] do
+											if IsZero(eb[j]) then
+												AppendTo(output, "&\\, ",VecToString(eb[j]),"\\,");
+											else
+												AppendTo(output,  "	&\\, ",VecToString(eb[j]),"\\,");
+											fi;
+									od;
+									AppendTo(output,  "&\\,");
+									WriteTEXFFEByGenerator(output, elm, strGen, gen);
+									AppendTo(output,  " \\\\\n");
+								od;
+								# end table
+								AppendTo(output, "\\hline\n");
+								AppendTo(output, "\\end{tabular}}\n");
+ 								AppendTo(output, "\\caption{{\\footnotesize ");
+ 								AppendTo(output, "Element table for ");
+ 				WriteTEXFF(output, F);
+ 								AppendTo(output," using basis ");
+				WriteTEXBasisByGenerator(output, F, B, strGen, gen);
+ 								AppendTo(output," with generator $\\",strGen,"$\\quad");
+				WriteTEXGeneratorWRTDefiningPolynomial(output, F, strGen, gen);
+								AppendTo(output, ".}}\\label{LABEL}");
+								AppendTo(output,  "\\end{center}\n\\end{table}\n}");
+							  AppendTo(output,  " \n");
+					 else	Error(B,"is not a basis or does not match the field!!!!!\n");
+					 fi;
+				else 	Error(gen," is not a generator of ",F,"!!!!\n");
 				fi;
-			else
-			Error(F,"is not a finite field !!!!\n");
+			else	Error(strGen," is not a string  or is equal to \"omega\" !!!!\n");
 			fi;
-
 	return ;
 end);
-
 
 
 Print("outputs.gi OK,\t");

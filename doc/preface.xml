@@ -1,55 +1,58 @@
 <Chapter Label="Preface">
-<Heading>Preface</Heading>    
+<Heading>Preface</Heading>
 
-The &GAP; package &FSR; implements Feedback Shift Registers. 
-Feedeback shift registers play an important role in stream cipher design. 
-A well known early example of an LFSRs based stream cipher is A5/1, 
-intended for securing GSM voice and data. A5/1 is built from three LFSRs 
-with different periods and a stop-and-go majority function controlling their 
-clocks. The A5/1 output is computed as <C>XOR</C> of outputs from all three 
-LFSRs. A milestone in stream cipher design is the eSTREAM project \cite{estr}, 
-launched in 2004. All 3 hardware portfolio ciphers, Grain, MICKEY (using 
-Galois-style feedback) and Trivium, as well as the software portfolio cipher 
-Sosemanuk, use FSRs. Grain is presented in section \ref{grt}. 
-The stream cipher ACORN <!-- <Cite Key="something" />-->
-
-
-
-\cite{acorn}, a remaining round 3 CAESAR candidate 
-\cite{caesar}, is based on 6 LFSRs. Last but not least, both stream ciphers 
-used for encryption and integrity of communications in mobile networks, 
-Snow3G and ZUC, use LFSRs over an extension field. <P/>
+The &GAP; package &FSR; implements Feedback Shift Registers.
+Feedeback shift registers play an important role in stream cipher design.
+A well known early example of an LFSRs based stream cipher is A5/1,
+intended for securing GSM voice and data. A5/1 is built from three LFSRs
+with different periods and a stop-and-go majority function controlling their
+clocks. The A5/1 output is computed as <C>XOR</C> of outputs from all three
+LFSRs. A milestone in stream cipher design is the eSTREAM project
+<Cite Key="Robshaw:2008" />,
+<Cite Key="estreampage" />,
+launched in 2004. All 3 hardware portfolio ciphers, Grain, MICKEY (using
+Galois-style feedback) and Trivium, as well as the software portfolio cipher
+Sosemanuk, use FSRs. <!--Grain is presented in section \ref{grt}.-->
+The stream cipher ACORN
+<Cite Key="Wu16" />, a CAESAR candidate <Cite Key="caesarpage" />,
+that made it to the final portfolio, is based on 6 LFSRs.
+Last but not least, both stream ciphers
+used for encryption and integrity of communications in mobile networks,
+Snow3G <Cite Key="snow3gpp" /> and ZUC <Cite Key="zuc3gpp" />,
+use LFSRs over an extension field. <P/>
 
 Another application area for LFSRs are the cyclic redundancy codes (CRC) used in
  many communication and data storage devices for error-detection. The LFSRs have
   been used as counters in applications where the order of the sequence does not
-  matter, for example Xilinx proposed the use of LFSR counters to address the 
-  RAM \cite{xilinxLFSR} (by now declared obsolete).  Furthermore, LFSRs are used
+  matter, for example Xilinx proposed the use of LFSR counters to address the
+  RAM <Cite Key="xilinxLFSR"/> (by now declared obsolete).  Furthermore, LFSRs are used
    for pattern generation in built-in self testing for electronic circuits.
-% NOTE: Peterson, W. W.; Brown, D. T. (January 1961). "Cyclic Codes for Error Detection. 
+ <!--<Cite Key="Peterson:1961" /> -->
+
 <P/>
-Less noticeable is the use of LFSRs in algorithms for finite field arithmetic. 
+Less noticeable is the use of LFSRs in algorithms for finite field arithmetic.
 For example, a serial circuit that requires multiplication by <M>x</M>, followed
- by reduction modulo the field defining polynomial, can be implemented as an 
- LFSR with the defining polynomial as feedback \cite{AHlec}. 
-<P/>
- <Br/>
-  
-  <Section Label="intro">  
-<Heading>Some basic concepts</Heading>   
-An <M>n</M>-stage shift register over a finite field <M>\mathcal{F}</M> is an 
-array of <M>n</M> registers (denoted <M>S_t</M>, <M>t=n-1, \ldots,0</M>), and 
-each stage holds a value from the underlying finite field <M>\mathcal{F}</M>. 
-<M>n</M> is also referred to as the length of the FSR. This memory array is 
-shifted with each step <M>S_t \rightarrow S_{t-1}</M> for <M>t=n-1, \dots,1</M>, 
-and the vacant register <M>S_{n-1}</M> is updated with a new value obtained from 
-the feedback function, hence the name <C>feedback shift register</C> (FSR). 
-One of the stages is used to generate the output and each time the FSR is 
-clocked. The chosen stage produces a new element <M>s_i\in\mathcal{F}</M>. 
+ by reduction modulo the field defining polynomial, can be implemented as an
+ LFSR with the defining polynomial as feedback <Cite Key="AHlec"/>. <P/>
+
+
+
+
+  <Section Label="intro">
+<Heading>Some basic concepts</Heading>
+An <M>n</M>-stage shift register over a finite field <M>\mathcal{F}</M> is an
+array of <M>n</M> registers (denoted <M>S_t</M>, <M>t=n-1, \ldots,0</M>), and
+each stage holds a value from the underlying finite field <M>\mathcal{F}</M>.
+<M>n</M> is also referred to as the length of the FSR. This memory array is
+shifted with each step <M>S_t \rightarrow S_{t-1}</M> for <M>t=n-1, \dots,1</M>,
+and the vacant register <M>S_{n-1}</M> is updated with a new value obtained from
+the feedback function, hence the name <C>feedback shift register</C> (FSR).
+One of the stages is used to generate the output and each time the FSR is
+clocked. The chosen stage produces a new element <M>s_i\in\mathcal{F}</M>.
 In this way, the FSR produces a sequence of elements:<Br/>
 <M>\underline{s}=\{s_k\}= s_0,s_1,s_2,\dots</M><Br/>
-A simple schematic of an <M>n</M>-stage FSR shown in figure below produces the 
-output sequence from stage <M>S_0</M>. 
+A simple schematic of an <M>n</M>-stage FSR shown in figure below produces the
+output sequence from stage <M>S_0</M>.
 <P/>
 
 
@@ -59,7 +62,7 @@ output sequence from stage <M>S_0</M>.
 <P/>
 
 
-The feedback function is a polynomial function in <M>n</M> variables 
+The feedback function is a polynomial function in <M>n</M> variables
 (that correspond to the stages, i.e. variable <M>x_t</M> takes its value
 from the stage <M>S_t</M>):<Br/>
 <M>f:\,\mathcal{F}^n \rightarrow \,\mathcal{F}\,</M><Br/>
@@ -67,75 +70,76 @@ from the stage <M>S_t</M>):<Br/>
 \in Z_q^n}c_{i_0,i_1,\dots,i_{n-1}}x_0^{i_0}
 x_1^{i_1}\dots x_{n-1}^{i_{n-1}}</M><Br/>
 
-with coefficients <M>c_{i_0,i_1,\dots,i_{n-1}}\in\mathcal{F}=\mathbb{F}_q</M> 
-and where 
-<M>i_t\in \mathbb{Z}_q</M> and <M>q</M> is a prime or a prime power and 
-<M>t\in \mathbb{Z}_n</M>. 
-The sum in the equation above runs over 
-all possible monomials 
+with coefficients <M>c_{i_0,i_1,\dots,i_{n-1}}\in\mathcal{F}=\mathbb{F}_q</M>
+and where
+<M>i_t\in \mathbb{Z}_q</M> and <M>q</M> is a prime or a prime power and
+<M>t\in \mathbb{Z}_n</M>.
+The sum in the equation above runs over
+all possible monomials
 <M> x_0^{i_0}x_1^{i_1}\dots x_{n-1}^{i_{n-1}}</M>.<P/>
 
 
- The degree of a monomial is defined as the sum of all its powers 
+ The degree of a monomial is defined as the sum of all its powers
   and the degree of
- the polynomial as the maximum degree of all its monomials. 
- For readability, notation <M>m_{i_0,i_1,\dots,i_{n-1}}</M> is introduced for 
+ the polynomial as the maximum degree of all its monomials.
+ For readability, notation <M>m_{i_0,i_1,\dots,i_{n-1}}</M> is introduced for
  monomials:
 <M>m_{i_0,i_1,\dots,i_{n-1}}=m(x_0,x_1,\dots,x_{n-1})=x_0^{i_0}x_1^{i_1}
-\dots x_{n-1}^{i_{n-1}}</M>. 
- 
+\dots x_{n-1}^{i_{n-1}}</M>.
+
 <P/>
 
 
 
 <M>{\rm Degree}(m(x_0,x_1,\dots,x_{n-1}))=\sum\limits_{t=0}^{n-1}i_t</M><P/>
-<M>{\rm Degree}(f(x_0,x_1,\dots,x_{n-1}))=\max\limits_{\forall 
+<M>{\rm Degree}(f(x_0,x_1,\dots,x_{n-1}))=\max\limits_{\forall
 (i_0,i_1,\dots,i_{n-1})\in Z_q^n}
 \left\{{\rm Degree}(m_{i_0,i_1,\dots,i_{n-1}})\right\}</M>
 <P/>
 
 
-Based on the degree of the feedback polynomial, distinction is made between 
-<C>linear</C> (<Ref Func="LFSR" />) and <C>nonlianear</C> 
-(<Ref Func="NLFSR" />) feedback shift registers. 
-For the linear case, the degree of the feedback polynomial is 1. 
+Based on the degree of the feedback polynomial, distinction is made between
+<C>linear</C> (<Ref Func="LFSR" />) and <C>nonlianear</C>
+(<Ref Func="NLFSR" />) feedback shift registers.
+For the linear case, the degree of the feedback polynomial is 1.
 <P/>
 <P/>
 <P/>
- 
- At any given moment, the contents of the FSR hold <M>n</M> values from the 
+
+ At any given moment, the contents of the FSR hold <M>n</M> values from the
  underlying finite field, and can be written as a vector of length <M>n</M>:
-  <M>(s_0,s_1,\dots,s_{n-1})\in\mathcal{F}^n</M>. This vector is called the 
+  <M>(s_0,s_1,\dots,s_{n-1})\in\mathcal{F}^n</M>. This vector is called the
   <C>state</C> of the FSR, and the state right after loading the
    <C>initial state</C>. The output sequence <M>\underline{s}</M> is completely
-    determined by the feedback polynomial and the initial state. 
-<P/>    
-In case of <M>q=2</M>, <M>\mathcal{F}=\mathbb{F}_2</M>, function <M>f</M> is a 
-boolean function and the FSR produces a binary sequence. In all other 
-cases, the sequence is referred to as a <M>q</M>-arry sequence. 
+    determined by the feedback polynomial and the initial state.
 <P/>
- 
- 
- 
-To keep the chapter short, details will be omitted and the reader can refer to 
-a number of sources such as {\cite sdgc,GGbook,lidl}. 
+In case of <M>q=2</M>, <M>\mathcal{F}=\mathbb{F}_2</M>, function <M>f</M> is a
+boolean function and the FSR produces a binary sequence. In all other
+cases, the sequence is referred to as a <M>q</M>-arry sequence.
 <P/>
+
+
+
+To keep the chapter short, details will be omitted and the reader can refer to
+a number of sources such as <Cite Key="sdgc"/>,<Cite Key="GGbook"/>,
+<Cite Key="lidlbook"/>.<P/>
 
 
 </Section>
 
-<Section Label="overview">  
-<Heading>Overview</Heading>   
+<Section Label="overview">
+<Heading>Overview</Heading>
 
 
-The FSR package allows creation, initialization and running of FSRs, and can 
-compute some of their properties, such as length or internal state size. 
-A third object called FILFUN, short for ``filtering function'' was added. 
-A filtering function is simply a multivariate function. Because of the 
-similarities between filtering functions and NLFSR feedbacks, the FILFUN is 
-created as an FSR object, which allows the reuse of most NLFSR methods.
+The FSR package allows creation, initialization and running of FSRs, and can
+compute some of their properties, such as length or internal state size.
+A third object called FILFUN, short for ``filtering function'' was added.
+A filtering function is simply a multivariate function. Because of the
+similarities between filtering functions and NLFSR feedbacks, the FILFUN is
+created as an FSR object, which allows the reuse of most NLFSR methods
+(see <Cite Key="NZwaifi:2018"/> for details).
 
-The core functionality is organized into four basic parts: 
+The core functionality is organized into four basic parts:
 <List>
 <Item> common functionality for FSRs</Item>
 <Item> LFSR specific functionality</Item>
@@ -145,64 +149,67 @@ The core functionality is organized into four basic parts:
 
 
 
-The category of FSR objects is defined, and the FSRs can created  as LFSRs, 
-NLFSRs or FILFUNs. They are created through a function call with various 
-possibilities 
- for the arguments, and will return an object with four components, 
- and some (case specific) attributes and properties. 
- Only the values that can change during the FSRs lifetime are implemented as 
- components: 
+The category of FSR objects is defined, and the FSRs can be created  as LFSRs,
+NLFSRs or FILFUNs. They are created through a function call with various
+possibilities
+ for the arguments, and will return an object with five components,
+ and some (case specific) attributes and properties.
+ Only the values that can change during the FSRs lifetime are implemented as
+ components:
 <List>
 <Item> <C>init</C> - initial state of the FSR </Item>
-<Item> <C>state</C> - the current state of the FSR</Item> 
-<Item> <C>numsteps</C> - number of steps since object was created</Item> 
-<Item> <C>basis</C> - the basis used for representation of the field elements
-</Item>
+<Item> <C>state</C> - the current state of the FSR</Item>
+<Item> <C>numsteps</C> - number of steps since object was created</Item>
+<Item> <C>basis</C> - the basis used for representation of the field elements</Item>
+<Item> <C>sym</C> - the state contains symbols </Item>
 </List>
 
 
-Initial state is kept as a component because we want the ability to reload and 
-run the same FSR without creating a new instance. Field <C>init</C> is empty 
-when the FSR is created and is updated when its loaded. The component 
-<C>state</C> 
-is updated with each FSR step. Field <C>numsteps</C> keeps track of the FRS: 
-when created its set to -1, when loaded to 0, and then increments with each 
-step. It is used for coding purposes to prevent an attempt of running an empty 
+Initial state is kept as a component because we want the ability to reload and
+run the same FSR without creating a new instance. Field <C>init</C> is empty
+when the FSR is created and is updated when its loaded. The component
+<C>state</C>
+is updated with each FSR step. Field <C>numsteps</C> keeps track of the FRS:
+when created its set to -1, when loaded to 0, and then increments with each
+step. It is used for coding purposes to prevent an attempt of running an empty
 FRS and to stop the FRS once a certain threshold is reached, preventing it from
- looping indefinitely. The <C>basis</C> field holds the current basis used for 
- representation of elements and can be chained when needed.
+ looping indefinitely. The <C>basis</C> field holds the current basis used for
+ representation of elements and can be chained when needed. The field <C>sym</C>
+ is only set to true when symbolic computation is performed. The first example
+ of symbolic FSR  is shown in the
+ example for <Ref Meth="LoadFSR" />.
 <Br/>
- 
-Please note that there is no concept of shifting and updating 
-of the state for the FILFUNS: the components <C>init</C> and <C>state</C>
- are loaded with same initial state, which is then used to evaluate the 
- multivariate function, i.e. compute the ``feedback''. The computed value is the 
- output of the FILFUN. Furthermore, <C>state</C> and <C>numsteps</C>  are not 
+
+Please note that there is no concept of shifting and updating
+of the state for the FILFUNs: the components <C>init</C> and <C>state</C>
+ are loaded with same initial state, which is then used to evaluate the
+ multivariate function, i.e. compute the ``feedback''. The computed value is the
+ output of the FILFUN. Furthermore, <C>state</C> and <C>numsteps</C>  are not
  updated.
 <Br/>
 
-The behavior of an FSR is captured with 
-three methods: 
+The behavior of an FSR is captured with
+three methods:
 <List>
-	<Item> <C>LoadFSR</C> - loads the initial state </Item>
+	<Item> <C>LoadFSR</C> - loads the initial state, sets <C>sym</C> if needed. </Item>
 	<Item> <C>StepFSR</C> - computes the feedback value and <Br/>
-	(i.) shifts stages, updates 
-	the vacant stage  <M>S_{n-1}</M> and outputs the new sequence element in case 	
-	of an (N)LFSR and <Br/>
+	(i.) shifts stages  <M>S_{j}\rightarrow S_{j-1}</M>, <M>j=1,\dots, n-1</M>,
+	updates 	the vacant stage  <M>S_{n-1}</M> and outputs the new sequence
+   element in case of an (N)LFSR and <Br/>
 	(ii.) outputs the computed feedback in case of a FILFUN. </Item>
-	<Item> <C>RunFSR</C> - a sequence of <C>StepFSR</C> calls (with options 
+	<Item> <C>RunFSR</C> - a sequence of <C>StepFSR</C> calls (with options
 	such as run, load and run, run for number of steps, ... available) </Item>
 </List>
 
 <C>StepFSR</C> comes in two versions, and both are inherited by the
- <C>RunFSR</C> as well:  
+ <C>RunFSR</C> as well:
 	<List>
 		<Item> regular step - FSR self-contained </Item>
-		<Item> external step - adds an external element to the 
+		<Item> external step - adds an external element to the
 		computed feedback value </Item>
 	</List>
-The external step and run are implemented because of their common use in 
-cryptography. 
+The external step and run are implemented because of their common use in
+cryptography.
 <Br/>
 
 
@@ -210,17 +217,58 @@ cryptography.
 
 
 
-Remainder of the FSR package consists of helper functions 
-(for example to compute the degree of the feedback polynomial), 
-writing functions (for example to print out a sequence of LFSR steps including 
-the state changes to a *.txt file or directly as *.tex file) 
-and drawing functions (generating the tikz for *.tex) as is shown in figure 
-below. 
+Remainder of the FSR package consists of helper functions
+(for example to compute the degree of the feedback polynomial),
+writing functions (for example to print out a sequence of LFSR steps including
+the state changes to a *.txt file or directly as *.tex file)
+and drawing functions (generating the tikz for *.tex) as is shown in figure
+below.
 
- 
-<Alt Only="LaTeX">\begin{figure}\centering\includegraphics[scale=0.55]{testLFSRtikz.pdf}\caption{Example of an LFSR schematic produces by &FSR;}\end{figure}</Alt>
-<Alt Only="HTML">&lt;img src="testLFSRtikz.jpg" align="center" /></Alt>
+
+<Alt Only="LaTeX">\begin{figure}\centering\includegraphics[scale=0.9]{DrawLFSR3.pdf}\caption{Example of an LFSR schematic produces by &FSR;}\end{figure}</Alt>
+<Alt Only="HTML">&lt;img src="drawLFSR3.jpg" align="center" /></Alt>
 <Alt Only="Text">/See diagrams in HTML and PDF versions of the manual/</Alt>
 
 </Section>
+
+
+<Section Label="symb">
+<Heading>Symbolic FSR</Heading>
+When the FSR package is loaded, two sets of global variables are created as
+finite field indeterminates and bound, namely <M>x_0, \dots, x_{199}</M> and
+<M>s_0,\dots,s_{199}</M>. The <M>x_k</M> indeterminates are intended for the
+entry of the multivariate polynomials used to define the FSR objects. Given 200
+  indeterminates, e.g. a 200 stage NLFSR can be created.
+  The <M>s_k</M> indeterminates are intended for symbolic computation with the
+  FSRs: we create the FSR normally, but then load with initial state containing
+  the indeterminates <M>s_k</M>, which we call symbols. Then, the FSR can be
+  run to obtain the symbollic sequence. The symbolic sequence allows for
+  additional analysis, e.g. for finding the degree of the sequence elements or
+   for finding the symbolic period of the sequence. Below is a simple explample
+   of an NLFSR loaded with symbolic initial state and run for 10 steps.
+   <Example>
+   <![CDATA[
+ gap> K := GF(2);; f := x_0*x_1+x_2;; nl := NLFSR(K, f, 3);
+ < empty NLFSR of length 3 over GF(2),
+  given by MultivarPoly = x_0*x_1+x_2>
+ gap> ist := [s_2, s_1, s_0];; seq:=  RunFSR(nl,ist,10);
+ [ s_0, s_1, s_2, s_0*s_1+s_2, s_0*s_1+s_1*s_2+s_2, s_0*s_1*s_2+s_0*s_1+s_1*s_2,
+   s_2, s_0*s_1+s_2, s_0*s_1+s_1*s_2+s_2, s_0*s_1*s_2+s_0*s_1+s_1*s_2, s_2 ]
+   ]]>
+  </Example>
+  NOTE: if the mixed symbols/FFE list is to be used in <Ref Meth="LoadFSR" />,
+  <Ref Meth="LoadStepFSR" /> and <Ref Meth="RunFSR" />) in place of <A>ist</A>
+  or  <C>elmvec</C>, the list must be multiplied with <A>One(s_0)</A>, e.g.:
+  <Example>
+  <![CDATA[
+  gap> ist := [s_2, s_1, Z(2)^0]*One(s_0);; seq:=  RunFSR(nl,ist,10);
+  [ Z(2)^0, s_1, s_2, s_1+s_2, s_1*s_2+s_1+s_2, s_1, s_2, s_1+s_2,
+    s_1*s_2+s_1+s_2, s_1, s_2 ]
+  ]]>
+ </Example>
+
+
+</Section>
+
+
 </Chapter>

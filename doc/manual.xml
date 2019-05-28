@@ -5,14 +5,14 @@
 <!DOCTYPE Book SYSTEM "gapdoc.dtd"
     [
       <!ENTITY FSR "<Package>FSR</Package>">
-      <#Include Label="PKGVERSIONDATA">      
+      <#Include Label="PKGVERSIONDATA">
     ] >
 
 <Book Name="fsr">
 
 <TitlePage>
   <Title>&FSR;</Title>
-  <Subtitle>...</Subtitle>
+  <Subtitle>Feedback Shift Register Package</Subtitle>
   <Version>Version &VERSION;</Version>
 
   <Author>Nusa Zidaric
@@ -23,7 +23,7 @@
           <Email>maagaard@uwaterloo.ca</Email>
 	      <Homepage>http://</Homepage>
   </Author>
-  
+
     <Author>Guang Gong
           <Email>ggong@uwaterloo.ca</Email>
 	      <Homepage>http://</Homepage>
@@ -35,18 +35,34 @@
 
 <Abstract>
 
-<Index Key="FSR package">&FSR; package</Index> 
+<Index Key="FSR package">&FSR; package</Index>
 
-The &GAP; package &FSR; ...
+The &GAP; package &FSR; can be used to implement arbitrary
+ LFSR, NLFSR and FILFUN objects, where FILFUN stands for ``filtering functions'.
+ This package was designed based on modular
+ thinking, inherent to hardware designs, and recognition and
+ exploitation of structural similarities between LFSRs, NLFSRs and
+ filters, from both mathematical and hardware perspectives.
+ Conventional feedback functions are modelled as
+ univariate or multivariate polynomials.  More complex functions can be modelled
+as  FILFUNs.  Complex primitives,
+such as Grain stream cipher, can be implemented
+with  a set of (N)LFSRs and FILFUN filters.
+ The generality of the FSR package enables the
+FSRs to be used directly
+as building blocks for many cryptographic modules, e.g. random number generators.
+These can be executed in GAP and can
+generate traces w.r.t. different bases for testbenching purposes.
+
 
 </Abstract>
 
 <Copyright>
   &copyright; 2017-&RELEASEYEAR; by Nusa Zidaric, Mark Aagaard, Guang Gong<P/>
 
-  &FSR; is free software; you can redistribute it and/or modify it 
-  under the terms of the GNU General Public License as published by 
-  the Free Software Foundation; either version 2 of the License, or 
+  &FSR; is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version. For details, see the FSF's own site
   <URL>http://www.gnu.org/licenses/gpl.html</URL>.
   <P/>
@@ -59,12 +75,13 @@ The &GAP; package &FSR; ...
   &FSR;, please cite it in the following form:
   <P/>
 
-  N. Zidaric.
-  ...
+ Zidaric, N., Aagaard, M. and Gong, G., FSR, Feedback Shift Register Package, Version 1.2.2 (2019)
+
 </Copyright>
-  
+
 <Acknowledgements>
-...
+The authors would like to thank Dr. Alexander Konovalov from
+ University of St. Andrews for his advice during the FSR package implementation.
 </Acknowledgements>
 
 </TitlePage>
@@ -76,11 +93,13 @@ The &GAP; package &FSR; ...
 <#Include SYSTEM "preface.xml">
 
 <#Include SYSTEM "fsr.xml">
-<!--
-<#Include SYSTEM "outputs.xml">
 
-<#Include SYSTEM "misc.xml">
+<#Include SYSTEM "outputs.xml">
+<!--
+
 -->
+<#Include SYSTEM "misc.xml">
+
 
 
 

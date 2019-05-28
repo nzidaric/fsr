@@ -48,7 +48,7 @@ gap> F := GF(2);; mpoly := x_0*x_2 + 1;;
 gap> fil := FILFUN(F, mpoly); 
 < FILFUN of length 2 over GF(2),
   with the MultivarPoly = x_0*x_2+Z(2)^0> 
-gap> ConstTermOfFILFUN(fil);
+gap> ConstTermOfFSR(fil);
 Z(2)^0
 gap> F := GF(2^4);; mpoly := Z(2^4)*x_0^3+Z(2^4)^7;                      
 Z(2^4)*x_0^3+Z(2^4)^7
@@ -63,7 +63,7 @@ gap> LoadStepFSR(fil, Z(2^4)^3);
 Z(2^4)^6
 gap> LoadStepFSR(fil, Z(2^4)^3, One(F));
 Z(2^4)^13
-gap> ConstTermOfFILFUN(fil);
+gap> ConstTermOfFSR(fil);
 Z(2^4)^7
 gap> GeneratorOfField(F);
 Z(2^4)

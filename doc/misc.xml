@@ -6,32 +6,15 @@
 
 
 <Section Label="XMLmisc">
-<Heading>miscellaneous - helper functions</Heading>
+<Heading>Miscellaneous - helper functions</Heading>
+
 
 <#Include Label="MonomialsOverField">
-<#Include Label="DegreeOfPolynomial">
+<#Include Label="DegreeOfPolynomialOverField">
 
 <#Include Label="GeneratorOfField">
 
 
-
-</Section>
-
-<Section Label="XMLoutputs">
-
-<Heading>Output formatting functions and writing functions</Heading>
-
-<#Include Label="outputs">
-
-<#Include Label="IntFFExt">
-<#Include Label="VecToString">
-<#Include Label="WriteVector">
-<#Include Label="WriteTEXFF">
-
-<#Include Label="WriteTEXUnivarFFPolyByGenerator">
-<#Include Label="WriteTEXGeneratorWRTDefiningPolynomial">
-
-  <#Include Label="outputsEG">
 
 </Section>
 

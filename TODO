@@ -1,11 +1,7 @@
                              The FSR package - TODO list  
                              
-ver 1.0.2
-* start NLFSR 
-* MOVED TO GAP4.8.5 !!! (from GAP 4.8.3)
-
-- period for reducible charPoly (for attribute Period , see lfsr.gi)
-                             
+ver 1.2.2
+* fix the drawing functions                       
 
 ver 1.0.1 (05.05.2016) 
 LFSR - TO DOs
