@@ -3,13 +3,13 @@
                                       [1X[5XFSR[105X[101X
   
   
-                                      [1X...[101X
+                        [1XFeedback Shift Register Package[101X
   
   
-                                 Version 1.2.1
+                                 Version 1.2.2
   
   
-                                  08 june 2018
+                                09 december 2018
   
   
                                   Nusa Zidaric
@@ -32,7 +32,18 @@
   
   -------------------------------------------------------
   [1XAbstract[101X
-  [33X[0;0YThe [5XGAP[105X package [5XFSR[105X ...[133X
+  [33X[0;0YThe  [5XGAP[105X  package  [5XFSR[105X  can  be  used to implement arbitrary LFSR, NLFSR and
+  FILFUN objects, where FILFUN stands for ``filtering functions'. This package
+  was  designed  based  on modular thinking, inherent to hardware designs, and
+  recognition  and  exploitation  of  structural  similarities  between LFSRs,
+  NLFSRs  and  filters,  from  both  mathematical  and  hardware perspectives.
+  Conventional  feedback  functions are modelled as univariate or multivariate
+  polynomials.  More  complex  functions  can  be modelled as FILFUNs. Complex
+  primitives,  such  as  Grain stream cipher, can be implemented with a set of
+  (N)LFSRs  and  FILFUN filters. The generality of the FSR package enables the
+  FSRs  to be used directly as building blocks for many cryptographic modules,
+  e.g. random number generators. These can be executed in GAP and can generate
+  traces w.r.t. different bases for testbenching purposes.[133X
   
   
   -------------------------------------------------------
@@ -51,12 +62,14 @@
   [33X[0;0YIf  you publish a result which was partially obtained with the usage of [5XFSR[105X,
   please cite it in the following form:[133X
   
-  [33X[0;0YN. Zidaric. ...[133X
+  [33X[0;0YZidaric, N., Aagaard, M. and Gong, G., FSR, Feedback Shift Register Package,
+  Version 1.2.2 (2019)[133X
   
   
   -------------------------------------------------------
   [1XAcknowledgements[101X
-  [33X[0;0Y...[133X
+  [33X[0;0YThe  authors  would like to thank Dr. Alexander Konovalov from University of
+  St. Andrews for his advice during the FSR package implementation.[133X
   
   
   -------------------------------------------------------
@@ -67,28 +80,53 @@
   1 [33X[0;0YPreface[133X
     1.1 [33X[0;0YSome basic concepts[133X
     1.2 [33X[0;0YOverview[133X
+    1.3 [33X[0;0YSymbolic FSR[133X
   2 [33X[0;0YFSR (Feedback Shift Register)[133X
     2.1 [33X[0;0YCommon functionality[133X
       2.1-1 IsFSR
       2.1-2 FieldPoly
-      2.1-3 GeneratorOfUnderlyingField
+      2.1-3 ConstTermOfFSR
       2.1-4 Length
       2.1-5 ChangeBasis
-      2.1-6 LoadFSR
-      2.1-7 FeedbackFSR
-      2.1-8 StepFSR
-      2.1-9 LoadStepFSR
-      2.1-10 RunFSR
+      2.1-6 SymbolicFSR
+      2.1-7 LoadFSR
+      2.1-8 FeedbackFSR
+      2.1-9 StepFSR
+      2.1-10 LoadStepFSR
+      2.1-11 RunFSR
     2.2 [33X[0;0YLFSR specific funcionality[133X
       2.2-1 LFSR
       2.2-2 IsLinearFeedback
       2.2-3 FeedbackPoly
       2.2-4 IsPeriodic
-    2.3 [33X[0;0YNLFSR specific funcionality[133X
+    2.3 [33X[0;0YNLFSR and FILFUN specific funcionality[133X
       2.3-1 NLFSR
-      2.3-2 IsNonLinearFeedback
+      2.3-2 FILFUN
       2.3-3 MultivarPoly
-      2.3-4 ConstTermOfNLFSR
+      2.3-4 IsNonLinearFeedback
+      2.3-5 IsFSRFilter
+  3 [33X[0;0YOutput formatting functions and writing functions[133X
+    3.1 [33X[0;0YOutput formatting functions[133X
+      3.1-1 ViewObj
+      3.1-2 IntFFExt
+      3.1-3 VecToString
+    3.2 [33X[0;0YWriting and TEX writing functions[133X
+      3.2-1 WriteFFEVec
+      3.2-2 WriteTEXFF
+      3.2-3 WriteTEXUnivarFFPolyByGenerator
+      3.2-4 WriteTEXGeneratorWRTDefiningPolynomial
+      3.2-5 WriteAllFSR
+      3.2-6 WriteSequenceFSR
+      3.2-7 WriteRunFSR
+      3.2-8 WriteTEXRunFSR
+    3.3 [33X[0;0YTEX drawing functions for (N)LFSRs[133X
+      3.3-1 TikzW_LFSR
+      3.3-2 TikzW_NLFSR
+  4 [33X[0;0YMiscellaneous[133X
+    4.1 [33X[0;0YMiscellaneous - helper functions[133X
+      4.1-1 SplitCoeffsAndMonomials
+      4.1-2 DegreeOfPolynomialOverField
+      4.1-3 GeneratorOfField
   
   
   [32X

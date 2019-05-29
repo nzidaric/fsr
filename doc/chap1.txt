@@ -7,29 +7,26 @@
   voice  and data. A5/1 is built from three LFSRs with different periods and a
   stop-and-go  majority  function controlling their clocks. The A5/1 output is
   computed  as  [10XXOR[110X  of  outputs  from  all three LFSRs. A milestone in stream
-  cipher  design  is  the eSTREAM project \cite{estr}, launched in 2004. All 3
+  cipher  design is the eSTREAM project [RB08], [Est], launched in 2004. All 3
   hardware  portfolio ciphers, Grain, MICKEY (using Galois-style feedback) and
-  Trivium, as well as the software portfolio cipher Sosemanuk, use FSRs. Grain
-  is  presented  in section \ref{grt}. The stream cipher ACORN \cite{acorn}, a
-  remaining  round 3 CAESAR candidate \cite{caesar}, is based on 6 LFSRs. Last
-  but  not  least,  both  stream  ciphers used for encryption and integrity of
-  communications  in  mobile  networks,  Snow3G  and  ZUC,  use  LFSRs over an
-  extension field.[133X
+  Trivium,  as  well as the software portfolio cipher Sosemanuk, use FSRs. The
+  stream  cipher  ACORN  [Wu],  a  CAESAR candidate [Cae], that made it to the
+  final  portfolio,  is  based  on  6  LFSRs.  Last but not least, both stream
+  ciphers  used  for  encryption  and  integrity  of  communications in mobile
+  networks, Snow3G [sno] and ZUC [zuc], use LFSRs over an extension field.[133X
   
   [33X[0;0YAnother  application  area  for  LFSRs are the cyclic redundancy codes (CRC)
   used in many communication and data storage devices for error-detection. The
   LFSRs  have  been  used  as  counters in applications where the order of the
   sequence  does  not  matter,  for  example  Xilinx  proposed the use of LFSR
-  counters  to  address  the RAM \cite{xilinxLFSR} (by now declared obsolete).
-  Furthermore,  LFSRs are used for pattern generation in built-in self testing
-  for  electronic  circuits.  %  NOTE:  Peterson, W. W.; Brown, D. T. (January
-  1961). "Cyclic Codes for Error Detection.[133X
+  counters  to  address the RAM [Alf] (by now declared obsolete). Furthermore,
+  LFSRs  are  used  for  pattern  generation  in  built-in  self  testing  for
+  electronic circuits.[133X
   
   [33X[0;0YLess  noticeable  is  the  use  of  LFSRs  in  algorithms  for  finite field
   arithmetic. For example, a serial circuit that requires multiplication by [22Xx[122X,
   followed   by  reduction  modulo  the  field  defining  polynomial,  can  be
-  implemented   as   an   LFSR   with  the  defining  polynomial  as  feedback
-  \cite{AHlec}.[133X
+  implemented as an LFSR with the defining polynomial as feedback [Has18].[133X
   
   
   [1X1.1 [33X[0;0YSome basic concepts[133X[101X
@@ -86,7 +83,7 @@
   as a [22Xq[122X-arry sequence.[133X
   
   [33X[0;0YTo  keep the chapter short, details will be omitted and the reader can refer
-  to a number of sources such as {\cite sdgc,GGbook,lidl}.[133X
+  to a number of sources such as [GG05],[CG12], [LN97].[133X
   
   
   [1X1.2 [33X[0;0YOverview[133X[101X
@@ -96,8 +93,9 @@
   third  object  called  FILFUN, short for ``filtering function'' was added. A
   filtering  function  is  simply  a  multivariate  function.  Because  of the
   similarities  between filtering functions and NLFSR feedbacks, the FILFUN is
-  created  as an FSR object, which allows the reuse of most NLFSR methods. The
-  core functionality is organized into four basic parts:[133X
+  created  as an FSR object, which allows the reuse of most NLFSR methods (see
+  [ZAG18]  for  details).  The core functionality is organized into four basic
+  parts:[133X
   
   [30X    [33X[0;6Ycommon functionality for FSRs[133X
   
@@ -107,9 +105,9 @@
   
   [30X    [33X[0;6YFILFUN specific functionality[133X
   
-  [33X[0;0YThe  category  of FSR objects is defined, and the FSRs can created as LFSRs,
-  NLFSRs  or  FILFUNs.  They  are created through a function call with various
-  possibilities  for  the  arguments,  and  will  return  an  object with four
+  [33X[0;0YThe  category  of  FSR  objects  is  defined, and the FSRs can be created as
+  LFSRs,  NLFSRs  or  FILFUNs.  They  are created through a function call with
+  various possibilities for the arguments, and will return an object with five
   components,  and  some  (case  specific) attributes and properties. Only the
   values  that  can  change  during  the  FSRs  lifetime  are  implemented  as
   components:[133X
@@ -122,6 +120,8 @@
   
   [30X    [33X[0;6Y[10Xbasis[110X - the basis used for representation of the field elements[133X
   
+  [30X    [33X[0;6Y[10Xsym[110X - the state contains symbols[133X
+  
   [33X[0;0YInitial  state  is kept as a component because we want the ability to reload
   and  run  the  same FSR without creating a new instance. Field [10Xinit[110X is empty
   when  the FSR is created and is updated when its loaded. The component [10Xstate[110X
@@ -130,19 +130,21 @@
   It is used for coding purposes to prevent an attempt of running an empty FRS
   and  to stop the FRS once a certain threshold is reached, preventing it from
   looping  indefinitely.  The  [10Xbasis[110X  field  holds  the current basis used for
-  representation of elements and can be chained when needed.[133X
+  representation  of elements and can be chained when needed. The field [10Xsym[110X is
+  only  set  to true when symbolic computation is performed. The first example
+  of symbolic FSR is shown in the example for [2XLoadFSR[102X ([14X2.1-7[114X).[133X
   [33X[0;0YPlease  note  that there is no concept of shifting and updating of the state
-  for  the FILFUNS: the components [10Xinit[110X and [10Xstate[110X are loaded with same initial
+  for  the FILFUNs: the components [10Xinit[110X and [10Xstate[110X are loaded with same initial
   state,  which  is  then  used  to  evaluate  the multivariate function, i.e.
   compute  the  ``feedback''.  The computed value is the output of the FILFUN.
   Furthermore, [10Xstate[110X and [10Xnumsteps[110X are not updated.[133X
   [33X[0;0YThe behavior of an FSR is captured with three methods:[133X
   
-  [30X    [33X[0;6Y[10XLoadFSR[110X - loads the initial state[133X
+  [30X    [33X[0;6Y[10XLoadFSR[110X - loads the initial state, sets [10Xsym[110X if needed.[133X
   
   [30X    [33X[0;6Y[10XStepFSR[110X - computes the feedback value and[133X
-        [33X[0;6Y(i.) shifts stages, updates the vacant stage [22XS_n-1[122X and outputs the new
-        sequence element in case of an (N)LFSR and[133X
+        [33X[0;6Y(i.) shifts stages [22XS_j→ S_j-1[122X, [22Xj=1,dots, n-1[122X, updates the vacant stage
+        [22XS_n-1[122X and outputs the new sequence element in case of an (N)LFSR and[133X
         [33X[0;6Y(ii.) outputs the computed feedback in case of a FILFUN.[133X
   
   [30X    [33X[0;6Y[10XRunFSR[110X  -  a sequence of [10XStepFSR[110X calls (with options such as run, load
@@ -163,4 +165,45 @@
   a  *.txt  file  or directly as *.tex file) and drawing functions (generating
   the  tikz  for *.tex) as is shown in figure below. /See diagrams in HTML and
   PDF versions of the manual/[133X
+  
+  
+  [1X1.3 [33X[0;0YSymbolic FSR[133X[101X
+  
+  [33X[0;0YWhen  the FSR package is loaded, two sets of global variables are created as
+  finite   field  indeterminates  and  bound,  namely  [22Xx_0,  dots,  x_199[122X  and
+  [22Xs_0,dots,s_199[122X.  The  [22Xx_k[122X  indeterminates  are intended for the entry of the
+  multivariate   polynomials  used  to  define  the  FSR  objects.  Given  200
+  indeterminates,   e.g.   a   200   stage  NLFSR  can  be  created.  The  [22Xs_k[122X
+  indeterminates  are  intended  for  symbolic  computation  with the FSRs: we
+  create  the  FSR  normally,  but then load with initial state containing the
+  indeterminates  [22Xs_k[122X,  which  we  call  symbols.  Then, the FSR can be run to
+  obtain  the  symbollic sequence. The symbolic sequence allows for additional
+  analysis,  e.g.  for  finding  the  degree  of  the sequence elements or for
+  finding  the symbolic period of the sequence. Below is a simple explample of
+  an NLFSR loaded with symbolic initial state and run for 10 steps.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X   [128X[104X
+    [4X[28X gap> K := GF(2);; f := x_0*x_1+x_2;; nl := NLFSR(K, f, 3);[128X[104X
+    [4X[28X < empty NLFSR of length 3 over GF(2),[128X[104X
+    [4X[28X  given by MultivarPoly = x_0*x_1+x_2>[128X[104X
+    [4X[28X gap> ist := [s_2, s_1, s_0];; seq:=  RunFSR(nl,ist,10);[128X[104X
+    [4X[28X [ s_0, s_1, s_2, s_0*s_1+s_2, s_0*s_1+s_1*s_2+s_2, s_0*s_1*s_2+s_0*s_1+s_1*s_2,[128X[104X
+    [4X[28X   s_2, s_0*s_1+s_2, s_0*s_1+s_1*s_2+s_2, s_0*s_1*s_2+s_0*s_1+s_1*s_2, s_2 ][128X[104X
+    [4X[28X   [128X[104X
+    [4X[28X  [128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YNOTE:  if  the  mixed  symbols/FFE  list  is  to be used in [2XLoadFSR[102X ([14X2.1-7[114X),
+  [2XLoadStepFSR[102X  ([14X2.1-10[114X)  and  [2XRunFSR[102X  ([14X2.1-11[114X)) in place of [3Xist[103X or [10Xelmvec[110X, the
+  list must be multiplied with [3XOne(s_0)[103X, e.g.:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X  [128X[104X
+    [4X[28X  gap> ist := [s_2, s_1, Z(2)^0]*One(s_0);; seq:=  RunFSR(nl,ist,10);[128X[104X
+    [4X[28X  [ Z(2)^0, s_1, s_2, s_1+s_2, s_1*s_2+s_1+s_2, s_1, s_2, s_1+s_2,[128X[104X
+    [4X[28X    s_1*s_2+s_1+s_2, s_1, s_2 ][128X[104X
+    [4X[28X  [128X[104X
+    [4X[28X [128X[104X
+  [4X[32X[104X
   

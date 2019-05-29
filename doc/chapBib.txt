@@ -1,2 +1,55 @@
-  BIB
-  -----------
+  
+  
+  [1XReferences[101X
+  
+  [[20XAlf[120X]  [16XAlfke,  P.[116X,  [17XEfficient  Shift  Registers,  LFSR  Counters,  and  Long
+  Pseudo-Random  Sequence  Generators,  XAPP  052  July  7,1996 (Version 1.1)[117X,
+  ((\url{https://www.xilinx.com/support/documentation/application\_notes/xapp052.pdf})).
+  
+  [[20XCae[120X]      [17XCAESAR:     Competition     for     Authenticated     Encryption[117X,
+  ((\url{https://competitions.cr.yp.to/caesar.html})).
+  
+  [[20XCG12[120X]   [16XChen,   L.   and   Gong,   G.[116X,   [17XCommunication   System   Security[117X,
+  STRING-NOT-KNOWN: crc-press (2012).
+  
+  [[20XEst[120X]      [17XeSTREAM:      the      ECRYPT      Stream     Cipher     Project[117X,
+  ((\url{https://competitions.cr.yp.to/estream.html})).
+  
+  [[20XGG05[120X]  [16XGolomb,  S.  W.  and  Gong,  G.[116X, [17XSignal Design for Good Correlation[117X,
+  STRING-NOT-KNOWN: springer (2005).
+  
+  [[20XHas18[120X] [16XHasan, M. A.[116X, [17XECE 720 Topic 2 - Cryptographic Computations - Lecture
+  Notes[117X (2018).
+  
+  [[20XLN97[120X]  [16XLidl,  R.  and  Niederreiter,  H.[116X,  [17XFinite  Fields  (Encyclopedia of
+  Mathematics  and its Applications), 2nd Edition[117X, Cambridge University Press,
+  New York, NY, USA (1997).
+  
+  [[20XMP13[120X]  [16XMullen, G. L. and Panario, D.[116X, [17XHandbook of Finite Fields[117X, Chapman \&
+  Hall/CRC, 1st edition (2013).
+  
+  [[20XRB08[120X]  ([1m[31mRobshaw,  M. and Billet, O.[15X, Eds.), [17XThe eSTREAM Project[117X, New Stream
+  Cipher  Designs:  The  eSTREAM Finalists, Springer Berlin Heidelberg (2008),
+  ((\url{https://doi.org/10.1007/978-3-540-68351-3_1})).
+  
+  [[20Xsno[120X]  [17XETSI/SAGE  Specification  version  1.1:  Specification  of  the  3GPP
+  Confidentiality  and  Integrity Algorithms UEA2 \& UIA2. Document 2: SNOW 3G
+  Specification[117X.
+  
+  [[20XWu[120X]   [16XWu,   H.[116X,   [17XACORN:   A   Lightweight   Authenticated   Cipher   (v3)[117X,
+  ((\url{https://competitions.cr.yp.to/round3/acornv3.pdf},
+  institution={CAESAR Competition}, year={2016}, )).
+  
+  [[20XZAG18[120X]   [16XZidaric,   N.,  Aagaard,  M.  and  Gong,  G.[116X  ([1m[31mBudaghyan,  L.  and
+  Rodr{\'i}guez-Henr{\'i}quez,   F.[15X,   Eds.),   [17XRapid   Hardware   Design  for
+  Cryptographic Modules with Filtering Structures over Small Finite Fields[117X, in
+  Arithmetic of Finite Fields, Springer International Publishing, Cham (2018),
+  128--145.
+  
+  [[20Xzuc[120X]  [17X  ETSI/SAGE  Specification  version  1.6:  Specification  of the 3GPP
+  Confidentiality  and  Integrity Algorithms 128-EEA3 \& 128-EIA3. Document 2:
+  ZUC Specification[117X.
+  
+  
+  
+  [32X

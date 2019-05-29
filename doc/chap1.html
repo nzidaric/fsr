@@ -15,7 +15,7 @@
 <body class="chap1"  onload="jscontent()">
 
 
-<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
 
 <div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap0.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap2.html">[Next Chapter]</a>&nbsp;  </div>
 
@@ -28,17 +28,18 @@
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1.html#X8389AD927B74BA4A">1.2 <span class="Heading">Overview</span></a>
 </span>
 </div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1.html#X833915448621571C">1.3 <span class="Heading">Symbolic FSR</span></a>
+</span>
+</div>
 </div>
 
 <h3>1 <span class="Heading">Preface</span></h3>
 
-<p>The <strong class="pkg">GAP</strong> package <strong class="pkg">FSR</strong> implements Feedback Shift Registers. Feedeback shift registers play an important role in stream cipher design. A well known early example of an LFSRs based stream cipher is A5/1, intended for securing GSM voice and data. A5/1 is built from three LFSRs with different periods and a stop-and-go majority function controlling their clocks. The A5/1 output is computed as <code class="code">XOR</code> of outputs from all three LFSRs. A milestone in stream cipher design is the eSTREAM project \cite{estr}, launched in 2004. All 3 hardware portfolio ciphers, Grain, MICKEY (using Galois-style feedback) and Trivium, as well as the software portfolio cipher Sosemanuk, use FSRs. Grain is presented in section \ref{grt}. The stream cipher ACORN \cite{acorn}, a remaining round 3 CAESAR candidate \cite{caesar}, is based on 6 LFSRs. Last but not least, both stream ciphers used for encryption and integrity of communications in mobile networks, Snow3G and ZUC, use LFSRs over an extension field.</p>
+<p>The <strong class="pkg">GAP</strong> package <strong class="pkg">FSR</strong> implements Feedback Shift Registers. Feedeback shift registers play an important role in stream cipher design. A well known early example of an LFSRs based stream cipher is A5/1, intended for securing GSM voice and data. A5/1 is built from three LFSRs with different periods and a stop-and-go majority function controlling their clocks. The A5/1 output is computed as <code class="code">XOR</code> of outputs from all three LFSRs. A milestone in stream cipher design is the eSTREAM project <a href="chapBib.html#biBRobshaw:2008">[RB08]</a>, <a href="chapBib.html#biBestreampage">[Est]</a>, launched in 2004. All 3 hardware portfolio ciphers, Grain, MICKEY (using Galois-style feedback) and Trivium, as well as the software portfolio cipher Sosemanuk, use FSRs. The stream cipher ACORN <a href="chapBib.html#biBWu16">[Wu]</a>, a CAESAR candidate <a href="chapBib.html#biBcaesarpage">[Cae]</a>, that made it to the final portfolio, is based on 6 LFSRs. Last but not least, both stream ciphers used for encryption and integrity of communications in mobile networks, Snow3G <a href="chapBib.html#biBsnow3gpp">[sno]</a> and ZUC <a href="chapBib.html#biBzuc3gpp">[zuc]</a>, use LFSRs over an extension field.</p>
 
-<p>Another application area for LFSRs are the cyclic redundancy codes (CRC) used in many communication and data storage devices for error-detection. The LFSRs have been used as counters in applications where the order of the sequence does not matter, for example Xilinx proposed the use of LFSR counters to address the RAM \cite{xilinxLFSR} (by now declared obsolete). Furthermore, LFSRs are used for pattern generation in built-in self testing for electronic circuits. % NOTE: Peterson, W. W.; Brown, D. T. (January 1961). "Cyclic Codes for Error Detection.</p>
+<p>Another application area for LFSRs are the cyclic redundancy codes (CRC) used in many communication and data storage devices for error-detection. The LFSRs have been used as counters in applications where the order of the sequence does not matter, for example Xilinx proposed the use of LFSR counters to address the RAM <a href="chapBib.html#biBxilinxLFSR">[Alf]</a> (by now declared obsolete). Furthermore, LFSRs are used for pattern generation in built-in self testing for electronic circuits.</p>
 
-<p>Less noticeable is the use of LFSRs in algorithms for finite field arithmetic. For example, a serial circuit that requires multiplication by <span class="SimpleMath">x</span>, followed by reduction modulo the field defining polynomial, can be implemented as an LFSR with the defining polynomial as feedback \cite{AHlec}.</p>
-
-<p><br /></p>
+<p>Less noticeable is the use of LFSRs in algorithms for finite field arithmetic. For example, a serial circuit that requires multiplication by <span class="SimpleMath">x</span>, followed by reduction modulo the field defining polynomial, can be implemented as an LFSR with the defining polynomial as feedback <a href="chapBib.html#biBAHlec">[Has18]</a>.</p>
 
 <p><a id="X7CBF0EF883C0F5AE" name="X7CBF0EF883C0F5AE"></a></p>
 
@@ -62,13 +63,13 @@
 
 <p>In case of <span class="SimpleMath">q=2</span>, <span class="SimpleMath">mathcalF=F_2</span>, function <span class="SimpleMath">f</span> is a boolean function and the FSR produces a binary sequence. In all other cases, the sequence is referred to as a <span class="SimpleMath">q</span>-arry sequence.</p>
 
-<p>To keep the chapter short, details will be omitted and the reader can refer to a number of sources such as {\cite sdgc,GGbook,lidl}.</p>
+<p>To keep the chapter short, details will be omitted and the reader can refer to a number of sources such as <a href="chapBib.html#biBsdgc">[GG05]</a>,<a href="chapBib.html#biBGGbook">[CG12]</a>, <a href="chapBib.html#biBlidlbook">[LN97]</a>.</p>
 
 <p><a id="X8389AD927B74BA4A" name="X8389AD927B74BA4A"></a></p>
 
 <h4>1.2 <span class="Heading">Overview</span></h4>
 
-<p>The FSR package allows creation, initialization and running of FSRs, and can compute some of their properties, such as length or internal state size. A third object called FILFUN, short for ``filtering function'' was added. A filtering function is simply a multivariate function. Because of the similarities between filtering functions and NLFSR feedbacks, the FILFUN is created as an FSR object, which allows the reuse of most NLFSR methods. The core functionality is organized into four basic parts:</p>
+<p>The FSR package allows creation, initialization and running of FSRs, and can compute some of their properties, such as length or internal state size. A third object called FILFUN, short for ``filtering function'' was added. A filtering function is simply a multivariate function. Because of the similarities between filtering functions and NLFSR feedbacks, the FILFUN is created as an FSR object, which allows the reuse of most NLFSR methods (see <a href="chapBib.html#biBNZwaifi:2018">[ZAG18]</a> for details). The core functionality is organized into four basic parts:</p>
 
 
 <ul>
@@ -85,7 +86,7 @@
 
 </li>
 </ul>
-<p>The category of FSR objects is defined, and the FSRs can created as LFSRs, NLFSRs or FILFUNs. They are created through a function call with various possibilities for the arguments, and will return an object with four components, and some (case specific) attributes and properties. Only the values that can change during the FSRs lifetime are implemented as components:</p>
+<p>The category of FSR objects is defined, and the FSRs can be created as LFSRs, NLFSRs or FILFUNs. They are created through a function call with various possibilities for the arguments, and will return an object with five components, and some (case specific) attributes and properties. Only the values that can change during the FSRs lifetime are implemented as components:</p>
 
 
 <ul>
@@ -101,15 +102,18 @@
 <li><p><code class="code">basis</code> - the basis used for representation of the field elements</p>
 
 </li>
+<li><p><code class="code">sym</code> - the state contains symbols</p>
+
+</li>
 </ul>
-<p>Initial state is kept as a component because we want the ability to reload and run the same FSR without creating a new instance. Field <code class="code">init</code> is empty when the FSR is created and is updated when its loaded. The component <code class="code">state</code> is updated with each FSR step. Field <code class="code">numsteps</code> keeps track of the FRS: when created its set to -1, when loaded to 0, and then increments with each step. It is used for coding purposes to prevent an attempt of running an empty FRS and to stop the FRS once a certain threshold is reached, preventing it from looping indefinitely. The <code class="code">basis</code> field holds the current basis used for representation of elements and can be chained when needed. <br /> Please note that there is no concept of shifting and updating of the state for the FILFUNS: the components <code class="code">init</code> and <code class="code">state</code> are loaded with same initial state, which is then used to evaluate the multivariate function, i.e. compute the ``feedback''. The computed value is the output of the FILFUN. Furthermore, <code class="code">state</code> and <code class="code">numsteps</code> are not updated. <br /> The behavior of an FSR is captured with three methods:</p>
+<p>Initial state is kept as a component because we want the ability to reload and run the same FSR without creating a new instance. Field <code class="code">init</code> is empty when the FSR is created and is updated when its loaded. The component <code class="code">state</code> is updated with each FSR step. Field <code class="code">numsteps</code> keeps track of the FRS: when created its set to -1, when loaded to 0, and then increments with each step. It is used for coding purposes to prevent an attempt of running an empty FRS and to stop the FRS once a certain threshold is reached, preventing it from looping indefinitely. The <code class="code">basis</code> field holds the current basis used for representation of elements and can be chained when needed. The field <code class="code">sym</code> is only set to true when symbolic computation is performed. The first example of symbolic FSR is shown in the example for <code class="func">LoadFSR</code> (<a href="chap2.html#X7F800DCF810E2532"><span class="RefLink">2.1-7</span></a>). <br /> Please note that there is no concept of shifting and updating of the state for the FILFUNs: the components <code class="code">init</code> and <code class="code">state</code> are loaded with same initial state, which is then used to evaluate the multivariate function, i.e. compute the ``feedback''. The computed value is the output of the FILFUN. Furthermore, <code class="code">state</code> and <code class="code">numsteps</code> are not updated. <br /> The behavior of an FSR is captured with three methods:</p>
 
 
 <ul>
-<li><p><code class="code">LoadFSR</code> - loads the initial state</p>
+<li><p><code class="code">LoadFSR</code> - loads the initial state, sets <code class="code">sym</code> if needed.</p>
 
 </li>
-<li><p><code class="code">StepFSR</code> - computes the feedback value and <br /> (i.) shifts stages, updates the vacant stage <span class="SimpleMath">S_n-1</span> and outputs the new sequence element in case of an (N)LFSR and <br /> (ii.) outputs the computed feedback in case of a FILFUN.</p>
+<li><p><code class="code">StepFSR</code> - computes the feedback value and <br /> (i.) shifts stages <span class="SimpleMath">S_j→ S_j-1</span>, <span class="SimpleMath">j=1,dots, n-1</span>, updates the vacant stage <span class="SimpleMath">S_n-1</span> and outputs the new sequence element in case of an (N)LFSR and <br /> (ii.) outputs the computed feedback in case of a FILFUN.</p>
 
 </li>
 <li><p><code class="code">RunFSR</code> - a sequence of <code class="code">StepFSR</code> calls (with options such as run, load and run, run for number of steps, ... available)</p>
@@ -127,13 +131,42 @@
 
 </li>
 </ul>
-<p>The external step and run are implemented because of their common use in cryptography. <br /> Remainder of the FSR package consists of helper functions (for example to compute the degree of the feedback polynomial), writing functions (for example to print out a sequence of LFSR steps including the state changes to a *.txt file or directly as *.tex file) and drawing functions (generating the tikz for *.tex) as is shown in figure below. <img src="testLFSRtikz.jpg" align="center" /></p>
+<p>The external step and run are implemented because of their common use in cryptography. <br /> Remainder of the FSR package consists of helper functions (for example to compute the degree of the feedback polynomial), writing functions (for example to print out a sequence of LFSR steps including the state changes to a *.txt file or directly as *.tex file) and drawing functions (generating the tikz for *.tex) as is shown in figure below. <img src="drawLFSR3.jpg" align="center" /></p>
+
+<p><a id="X833915448621571C" name="X833915448621571C"></a></p>
+
+<h4>1.3 <span class="Heading">Symbolic FSR</span></h4>
+
+<p>When the FSR package is loaded, two sets of global variables are created as finite field indeterminates and bound, namely <span class="SimpleMath">x_0, dots, x_199</span> and <span class="SimpleMath">s_0,dots,s_199</span>. The <span class="SimpleMath">x_k</span> indeterminates are intended for the entry of the multivariate polynomials used to define the FSR objects. Given 200 indeterminates, e.g. a 200 stage NLFSR can be created. The <span class="SimpleMath">s_k</span> indeterminates are intended for symbolic computation with the FSRs: we create the FSR normally, but then load with initial state containing the indeterminates <span class="SimpleMath">s_k</span>, which we call symbols. Then, the FSR can be run to obtain the symbollic sequence. The symbolic sequence allows for additional analysis, e.g. for finding the degree of the sequence elements or for finding the symbolic period of the sequence. Below is a simple explample of an NLFSR loaded with symbolic initial state and run for 10 steps.</p>
+
+
+<div class="example"><pre>
+   
+ gap&gt; K := GF(2);; f := x_0*x_1+x_2;; nl := NLFSR(K, f, 3);
+ &lt; empty NLFSR of length 3 over GF(2),
+  given by MultivarPoly = x_0*x_1+x_2&gt;
+ gap&gt; ist := [s_2, s_1, s_0];; seq:=  RunFSR(nl,ist,10);
+ [ s_0, s_1, s_2, s_0*s_1+s_2, s_0*s_1+s_1*s_2+s_2, s_0*s_1*s_2+s_0*s_1+s_1*s_2,
+   s_2, s_0*s_1+s_2, s_0*s_1+s_1*s_2+s_2, s_0*s_1*s_2+s_0*s_1+s_1*s_2, s_2 ]
+   
+  </pre></div>
+
+<p>NOTE: if the mixed symbols/FFE list is to be used in <code class="func">LoadFSR</code> (<a href="chap2.html#X7F800DCF810E2532"><span class="RefLink">2.1-7</span></a>), <code class="func">LoadStepFSR</code> (<a href="chap2.html#X859AED2E829CE73F"><span class="RefLink">2.1-10</span></a>) and <code class="func">RunFSR</code> (<a href="chap2.html#X86AAB63D8781648A"><span class="RefLink">2.1-11</span></a>)) in place of <var class="Arg">ist</var> or <code class="code">elmvec</code>, the list must be multiplied with <var class="Arg">One(s_0)</var>, e.g.:</p>
+
+
+<div class="example"><pre>
+  
+  gap&gt; ist := [s_2, s_1, Z(2)^0]*One(s_0);; seq:=  RunFSR(nl,ist,10);
+  [ Z(2)^0, s_1, s_2, s_1+s_2, s_1*s_2+s_1+s_2, s_1, s_2, s_1+s_2,
+    s_1*s_2+s_1+s_2, s_1, s_2 ]
+  
+ </pre></div>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap0.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap2.html">[Next Chapter]</a>&nbsp;  </div>
 
 
-<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
 
 <hr />
 <p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>

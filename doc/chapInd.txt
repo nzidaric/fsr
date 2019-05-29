@@ -3,50 +3,110 @@
   [1XIndex[101X
   
   [2XChangeBasis[102X 2.1-5 
-  [2XConstTermOfNLFSR[102X 2.3-4 
-  [2XFeedbackFSR[102X 2.1-7 
+  [2XConstTermOfFSR[102X 2.1-3 
+  [2XDegreeOfPolynomialOverField[102X 4.1-2 
+      for clist/mlist rep 4.1-2 
+  drawing 3.3 
+  [2XFeedbackFSR[102X 2.1-8 
   [2XFeedbackPoly[102X 2.2-3 
   [2XFeedbackVec[102X 2.1-2 
   [2XFieldPoly[102X 2.1-2 
+  [2XFILFUN[102X 2.3-2 
+      with clist and mlist 2.3-2 
+      with field defining polynomial 2.3-2 
   fsr 2.1 
   [5XFSR[105X package .-1 
-  [2XGeneratorOfUnderlyingField[102X 2.1-3 
+  [2XGeneratorOfField[102X 4.1-3 
+  [2XGeneratorWRTDefiningPolynomial[102X 4.1-3 
   [2XIndetList[102X 2.3-3 
   [2XInternalStateSize[102X 2.1-4 
+  [2XIntFFExt[102X 3.1-2 
+  [2XIntMatFFExt[102X 3.1-2 
+  [2XIntVecFFExt[102X 3.1-2 
+  [2XIsFILFUN[102X 2.3-5 
   [2XIsFSR[102X 2.1-1 
+  [2XIsFSRFilter[102X 2.3-5 
   [2XIsLFSR[102X 2.2-2 
   [2XIsLinearFeedback[102X 2.2-2 
+  [2XIsLinearFSRFilter[102X 2.3-5 
   [2XIsMaxSeqLFSR[102X 2.2-4 
-  [2XIsNLFSR[102X 2.3-2 
-  [2XIsNonLinearFeedback[102X 2.3-2 
+  [2XIsNLFSR[102X 2.3-4 
+  [2XIsNonLinearFeedback[102X 2.3-4 
+  [2XIsNonLinearFSRFilter[102X 2.3-5 
   [2XIsPeriodic[102X 2.2-4 
   [2XIsUltPeriodic[102X 2.2-4 
+  [2XLeadingMonomialOverField[102X 4.1-1 
+  [2XLeadingTermOverField[102X 4.1-1 
   [2XLength[102X 2.1-4 
   [2XLFSR[102X 2.2-1 
       as ext. field with LFSR of
   length n 2.2-1 
       with field defining polynomial 2.2-1 
-  [2XLoadFSR[102X 2.1-6 
-  [2XLoadStepFSR[102X 2.1-9 
+  [2XLoadFSR[102X 2.1-7 
+  [2XLoadStepFSR[102X 2.1-10 
   [2XMonomialList[102X 2.3-3 
   [2XMultivarPoly[102X 2.3-3 
   [2XNLFSR[102X 2.3-1 
       with clist and mlist 2.3-1 
       with field defining polynomial 2.3-1 
       with field defining polynomial  2.3-1 
+  outputs 3.2 
   [2XOutputTap[102X 2.1-2 
   [2XPeriod[102X 2.2-4 
   [2XPeriodIrreducible[102X 2.2-4 
   [2XPeriodPrimitive[102X 2.2-4 
   [2XPeriodReducible[102X 2.2-4 
-  [2XRunFSR[102X 2.1-10 
-      load and run with different external input 2.1-10 
-      run with different external input 2.1-10 
-      with same external input 2.1-10 
-  [2XStepFSR[102X 2.1-8 
+  [2XPrintAll[102X 3.1-1 
+  [2XPrintObj[102X 3.1-1 
+  [2XReduceMonomialsOverField[102X 4.1-1 
+      for mlist rep 4.1-1 
+  [2XRunFSR[102X 2.1-11 
+      load and run with different external input 2.1-11 
+      run filfun with different initial state and external input 2.1-11 
+      run with different external input 2.1-11 
+  [2XSplitCoeffsAndMonomials[102X 4.1-1 
+  [2XStepFSR[102X 2.1-9 
+  [2XSymbolicFSR[102X 2.1-6 
   [2XThreshold[102X 2.1-4 
+  [2XTikzN_extLFSR[102X 3.3-1 
+  [2XTikzN_extNLFSR[102X 3.3-2 
+  [2XTikzN_LFSR[102X 3.3-1 
+  [2XTikzN_NLFSR[102X 3.3-2 
+  [2XTikzW_extLFSR[102X 3.3-1 
+  [2XTikzW_extNLFSR[102X 3.3-2 
+  [2XTikzW_LFSR[102X 3.3-1 
+  [2XTikzW_NLFSR[102X 3.3-2 
   [2XUnderlyingField[102X 2.1-2 
+  [2XVecToString[102X 3.1-3 
+  [2XViewObj[102X 3.1-1 
   [2XWhichBasis[102X 2.1-5 
+  [2XWriteAllFSR[102X 3.2-5 
+  [2XWriteExternalRunFSR[102X 3.2-7 
+  [2XWriteFFEMatrix[102X 3.2-1 
+  [2XWriteFFEVec[102X 3.2-1 
+  [2XWriteRunFSR[102X 3.2-7 
+  [2XWriteSequenceFSR[102X 3.2-6 
+  [2XWriteTBSequenceFSR[102X 3.2-6 
+  [2XWriteTEXAllFSR[102X 3.2-5 
+  [2XWriteTEXBasisByGenerator[102X 3.2-4 
+  [2XWriteTEXElementTableByGenerator[102X 3.2-4 
+  [2XWriteTEXFF[102X 3.2-2 
+  [2XWriteTEXFFE[102X 3.2-2 
+  [2XWriteTEXFFEByGenerator[102X 3.2-2 
+  [2XWriteTEXFFEMatrix[102X 3.2-2 
+  [2XWriteTEXFFEMatrixByGnerator[102X 3.2-2 
+  [2XWriteTEXFFEVec[102X 3.2-2 
+  [2XWriteTEXFFEVecByGenerator[102X 3.2-2 
+  [2XWriteTEXFieldPolyByGenerator[102X 3.2-3 
+  [2XWriteTEXGeneratorWRTDefiningPolynomial[102X 3.2-4 
+  [2XWriteTEXLFSRPolyByGenerator[102X 3.2-3 
+  [2XWriteTEXMultivarFFPolyByGenerator[102X 3.2-3 
+  [2XWriteTEXRunFSR[102X 3.2-8 
+  [2XWriteTEXRunFSRByGenerator[102X 3.2-8 
+  [2XWriteTEXSequence[102X 3.2-6 
+  [2XWriteTEXSequenceByGenerator[102X 3.2-6 
+  [2XWriteTEXSymVecByGenerator[102X 3.2-2 
+  [2XWriteTEXUnivarFFPolyByGenerator[102X 3.2-3 
   
   
   -------------------------------------------------------

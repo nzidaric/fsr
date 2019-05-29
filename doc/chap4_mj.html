@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<title>GAP (fsr) - Chapter 4: Miscellaneous</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
+</head>
+<body class="chap4"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0_mj.html">Top</a>  <a href="chap1_mj.html">1</a>  <a href="chap2_mj.html">2</a>  <a href="chap3_mj.html">3</a>  <a href="chap4_mj.html">4</a>  <a href="chapBib_mj.html">Bib</a>  <a href="chapInd_mj.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap3_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapBib_mj.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chap4.html">[MathJax off]</a></p>
+<p><a id="X7C5563A37D566DA5" name="X7C5563A37D566DA5"></a></p>
+<div class="ChapSects"><a href="chap4_mj.html#X7C5563A37D566DA5">4 <span class="Heading">Miscellaneous</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap4_mj.html#X7B85195982A7F4EA">4.1 <span class="Heading">Miscellaneous - helper functions</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4_mj.html#X8134C25D7B93C755">4.1-1 SplitCoeffsAndMonomials</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4_mj.html#X780944F87A5D402A">4.1-2 DegreeOfPolynomialOverField</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4_mj.html#X8720E303858985A1">4.1-3 GeneratorOfField</a></span>
+</div></div>
+</div>
+
+<h3>4 <span class="Heading">Miscellaneous</span></h3>
+
+<p><a id="X7B85195982A7F4EA" name="X7B85195982A7F4EA"></a></p>
+
+<h4>4.1 <span class="Heading">Miscellaneous - helper functions</span></h4>
+
+<p><a id="X8134C25D7B93C755" name="X8134C25D7B93C755"></a></p>
+
+<h5>4.1-1 SplitCoeffsAndMonomials</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SplitCoeffsAndMonomials</code>( <var class="Arg">F</var>, <var class="Arg">poly</var> )</td><td class="tdright">(&nbsp;method&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReduceMonomialsOverField</code>( <var class="Arg">F</var>, <var class="Arg">poly</var> )</td><td class="tdright">(&nbsp;method&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReduceMonomialsOverField</code>( <var class="Arg">F</var>, <var class="Arg">mlist</var> )</td><td class="tdright">(&nbsp;method&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; LeadingTermOverField</code>( <var class="Arg">F</var>, <var class="Arg">poly</var> )</td><td class="tdright">(&nbsp;method&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; LeadingMonomialOverField</code>( <var class="Arg">F</var>, <var class="Arg">poly</var> )</td><td class="tdright">(&nbsp;method&nbsp;)</td></tr></table></div>
+<p>All methods in this section work for both, univariate and multivariate polynomials. Caution is required with univariate polynomials when the exponents of the variable are reduced w.r.t. <var class="Arg">F</var>, for example with methods <code class="code">ReduceMonomialsOverField</code>, <code class="code">LeadingTermOverField</code> and <code class="code">LeadingMonomialOverField</code>. For example, when an univariate polynomail is used to create an LFSR, we do not wish to reduce its expoenents.</p>
+
+<p><code class="code">SplitCoeffsAndMonomials</code> takes a finite field <var class="Arg">F</var> over which the polynomail <var class="Arg">poly</var> is defined and returns a with the list of coefficients <code class="code">clist</code> that correspond to the monomials in the second list <code class="code">mlist</code>. That is, for the polynomial <span class="SimpleMath">\(\sum_{i=0}^{n-1}c_im_i\)</span>, the method returns <span class="SimpleMath">\([[c_{n-1}, \dots, c_0], [m_{n-1},\dots, m_0]]\)</span>, with coefficients <span class="SimpleMath">\(c_i\in F\)</span>. The monomials <span class="SimpleMath">\(m_i\)</span> can contain one or more variables, i.e., the method works for both, univariate and multivariate polynomials. In case <span class="SimpleMath">\(c_i\notin F\)</span> an error is triggered and the method returns <code class="code">fail</code>. The exponents of the monomials are not reduced w.r.t. <var class="Arg">F</var>.</p>
+
+<p><code class="code">ReduceMonomialsOverField</code> takes a polynomial <var class="Arg">poly</var> or a list of monomials <var class="Arg">mlist</var> and reduces all the exponents modulo (Size(<var class="Arg">F</var>)-1) for a given field <var class="Arg">F</var>. If a constant FFE is a part of the list, it will stay untouched. For <span class="SimpleMath">\(\mathbb{F}_2\)</span> all the exponents are set to 1.</p>
+
+<p><code class="code">LeadingTermOverField</code> first reduces exponents in all terms modulo (Size(<var class="Arg">F</var>)-1) for a given field <var class="Arg">F</var> (using <code class="func">ReduceMonomialsOverField</code>), then returns the leading term of the remaining polynomial.</p>
+
+<p><code class="code">LeadingMonomialOverField</code> first reduces exponents in all terms modulo (Size(<var class="Arg">F</var>)-1) for a given field <var class="Arg">F</var>, then returns the leading monomial of the remaining polynomial. ### nusa: check the example !!!!</p>
+
+
+<div class="example"><pre>
+
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">K := GF(2);;  y := X(K, "y");; F := GF(2^2);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">poly := [  Z(2^2)*y^3 + y + Z(2^2)^2,</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">              Z(2^2)*y^7 + y + Z(2^2)^2,</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">              Z(2^2)*x_0*x_1*x_9 + x_3^7*x_12 + Z(2^2)^2*x_5];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput"> for p in poly do  Display(SplitCoeffsAndMonomials(F, p)); od;</span>
+[ [ Z(2^2), Z(2)^0, Z(2^2)^2 ], [ y^3, y, Z(2)^0 ] ]
+[ [ Z(2^2), Z(2)^0, Z(2^2)^2 ], [ y^7, y, Z(2)^0 ] ]
+[ [ Z(2)^0, Z(2^2), Z(2^2)^2 ], [ x_3^7*x_12, x_0*x_1*x_9, x_5 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput"> for p in poly do  Display(ReduceMonomialsOverField(F, p)); od;</span>
+y+Z(2)^0
+Z(2^2)^2*y+Z(2^2)^2
+Z(2^2)*x_0*x_1*x_9+x_3*x_12+Z(2^2)^2*x_5
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">Display(ReduceMonomialsOverField(F,SplitCoeffsAndMonomials(F, p)[2])); od;</span>
+[ Z(2)^0, y, Z(2)^0 ]
+[ y, y, Z(2)^0 ]
+[ x_3*x_12, x_0*x_1*x_9, x_5 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput"> for p in poly do  Display(LeadingTermOverField(F, p)); od;</span>
+y
+Z(2^2)^2*y
+Z(2^2)*x_0*x_1*x_9
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput"> for p in poly do  Display(LeadingMonomialOverField(F, p)); od;</span>
+y
+y
+x_0*x_1*x_9
+
+
+</pre></div>
+
+<p><a id="X780944F87A5D402A" name="X780944F87A5D402A"></a></p>
+
+<h5>4.1-2 DegreeOfPolynomialOverField</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DegreeOfPolynomialOverField</code>( <var class="Arg">F</var>, <var class="Arg">poly</var> )</td><td class="tdright">(&nbsp;method&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DegreeOfPolynomialOverField</code>( <var class="Arg">F</var>, <var class="Arg">clist</var>, <var class="Arg">mlist</var> )</td><td class="tdright">(&nbsp;method&nbsp;)</td></tr></table></div>
+<p><code class="code">DegreeOfPolynomialOverField</code> works for both, univariate and multivariate polynomials. Be cautious with univariate polynomials, (the exponents of the indeterminates are reduced w.r.t. <var class="Arg">F</var>).</p>
+
+<p><code class="code">DegreeOfPolynomialOverField</code> calls <code class="func">ReduceMonomialsOverField</code> (<a href="chap4_mj.html#X8134C25D7B93C755"><span class="RefLink">4.1-1</span></a>) and returns the degree of the leading term of the reduced polynomial <var class="Arg">poly</var> or <span class="SimpleMath">\(clist \ cdot mlist\)</span></p>
+
+
+<div class="example"><pre>
+
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">for p in poly do  Display(DegreeOfPolynomialOverField(F, p)); od;</span>
+1
+1
+3
+
+</pre></div>
+
+<p><a id="X8720E303858985A1" name="X8720E303858985A1"></a></p>
+
+<h5>4.1-3 GeneratorOfField</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorOfField</code>( <var class="Arg">F</var> )</td><td class="tdright">(&nbsp;method&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorWRTDefiningPolynomial</code>( <var class="Arg">F</var> )</td><td class="tdright">(&nbsp;method&nbsp;)</td></tr></table></div>
+<p><code class="code">GeneratorOfField</code> returns the root of the defining polynomial if the root is also a generator, otherwise it returns the first element <span class="SimpleMath">\(\ni: order(x)=Size(F)-1\)</span>.</p>
+
+<p><code class="code">GeneratorWRTDefiningPolynomial</code> returns the the coefficient vector of the element returned by the <code class="code">GeneratorOfField</code> call w.r.t polynomial basis given by the root of the defining polynomial of the field.</p>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap3_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapBib_mj.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0_mj.html">Top</a>  <a href="chap1_mj.html">1</a>  <a href="chap2_mj.html">2</a>  <a href="chap3_mj.html">3</a>  <a href="chap4_mj.html">4</a>  <a href="chapBib_mj.html">Bib</a>  <a href="chapInd_mj.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>

@@ -1,0 +1,109 @@
+  
+  [1X4 [33X[0;0YMiscellaneous[133X[101X
+  
+  
+  [1X4.1 [33X[0;0YMiscellaneous - helper functions[133X[101X
+  
+  [1X4.1-1 SplitCoeffsAndMonomials[101X
+  
+  [33X[1;0Y[29X[2XSplitCoeffsAndMonomials[102X( [3XF[103X, [3Xpoly[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XReduceMonomialsOverField[102X( [3XF[103X, [3Xpoly[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XReduceMonomialsOverField[102X( [3XF[103X, [3Xmlist[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XLeadingTermOverField[102X( [3XF[103X, [3Xpoly[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XLeadingMonomialOverField[102X( [3XF[103X, [3Xpoly[103X ) [32X method[133X
+  
+  [33X[0;0YAll  methods  in  this  section  work  for both, univariate and multivariate
+  polynomials.  Caution  is  required  with  univariate  polynomials  when the
+  exponents  of  the  variable  are reduced w.r.t. [3XF[103X, for example with methods
+  [10XReduceMonomialsOverField[110X, [10XLeadingTermOverField[110X and [10XLeadingMonomialOverField[110X.
+  For  example, when an univariate polynomail is used to create an LFSR, we do
+  not wish to reduce its expoenents.[133X
+  
+  [33X[0;0Y[10XSplitCoeffsAndMonomials[110X  takes  a  finite  field [3XF[103X over which the polynomail
+  [3Xpoly[103X  is  defined  and  returns  a  with the list of coefficients [10Xclist[110X that
+  correspond  to  the  monomials  in  the  second list [10Xmlist[110X. That is, for the
+  polynomial   [22X∑_i=0^n-1c_im_i[122X,   the  method  returns  [22X[[c_n-1,  dots,  c_0],
+  [m_n-1,dots,  m_0]][122X, with coefficients [22Xc_i∈ F[122X. The monomials [22Xm_i[122X can contain
+  one  or  more  variables,  i.e.,  the  method works for both, univariate and
+  multivariate  polynomials.  In  case  [22Xc_i∉  F[122X  an error is triggered and the
+  method  returns  [10Xfail[110X. The exponents of the monomials are not reduced w.r.t.
+  [3XF[103X.[133X
+  
+  [33X[0;0Y[10XReduceMonomialsOverField[110X  takes  a  polynomial  [3Xpoly[103X  or a list of monomials
+  [3Xmlist[103X  and reduces all the exponents modulo (Size([3XF[103X)-1) for a given field [3XF[103X.
+  If a constant FFE is a part of the list, it will stay untouched. For [22XF_2[122X all
+  the exponents are set to 1.[133X
+  
+  [33X[0;0Y[10XLeadingTermOverField[110X first reduces exponents in all terms modulo (Size([3XF[103X)-1)
+  for  a  given  field  [3XF[103X  (using  [2XReduceMonomialsOverField[102X), then returns the
+  leading term of the remaining polynomial.[133X
+  
+  [33X[0;0Y[10XLeadingMonomialOverField[110X   first  reduces  exponents  in  all  terms  modulo
+  (Size([3XF[103X)-1)  for  a  given field [3XF[103X, then returns the leading monomial of the
+  remaining polynomial. ### nusa: check the example !!!![133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XK := GF(2);;  y := X(K, "y");; F := GF(2^2);;[127X[104X
+    [4X[25Xgap>[125X [27Xpoly := [  Z(2^2)*y^3 + y + Z(2^2)^2,[127X[104X
+    [4X[25X>[125X [27X              Z(2^2)*y^7 + y + Z(2^2)^2,[127X[104X
+    [4X[25X>[125X [27X              Z(2^2)*x_0*x_1*x_9 + x_3^7*x_12 + Z(2^2)^2*x_5];;[127X[104X
+    [4X[25Xgap>[125X [27X for p in poly do  Display(SplitCoeffsAndMonomials(F, p)); od;[127X[104X
+    [4X[28X[ [ Z(2^2), Z(2)^0, Z(2^2)^2 ], [ y^3, y, Z(2)^0 ] ][128X[104X
+    [4X[28X[ [ Z(2^2), Z(2)^0, Z(2^2)^2 ], [ y^7, y, Z(2)^0 ] ][128X[104X
+    [4X[28X[ [ Z(2)^0, Z(2^2), Z(2^2)^2 ], [ x_3^7*x_12, x_0*x_1*x_9, x_5 ] ][128X[104X
+    [4X[25Xgap>[125X [27X for p in poly do  Display(ReduceMonomialsOverField(F, p)); od;[127X[104X
+    [4X[28Xy+Z(2)^0[128X[104X
+    [4X[28XZ(2^2)^2*y+Z(2^2)^2[128X[104X
+    [4X[28XZ(2^2)*x_0*x_1*x_9+x_3*x_12+Z(2^2)^2*x_5[128X[104X
+    [4X[25X>[125X [27XDisplay(ReduceMonomialsOverField(F,SplitCoeffsAndMonomials(F, p)[2])); od;[127X[104X
+    [4X[28X[ Z(2)^0, y, Z(2)^0 ][128X[104X
+    [4X[28X[ y, y, Z(2)^0 ][128X[104X
+    [4X[28X[ x_3*x_12, x_0*x_1*x_9, x_5 ][128X[104X
+    [4X[25Xgap>[125X [27X for p in poly do  Display(LeadingTermOverField(F, p)); od;[127X[104X
+    [4X[28Xy[128X[104X
+    [4X[28XZ(2^2)^2*y[128X[104X
+    [4X[28XZ(2^2)*x_0*x_1*x_9[128X[104X
+    [4X[25Xgap>[125X [27X for p in poly do  Display(LeadingMonomialOverField(F, p)); od;[127X[104X
+    [4X[28Xy[128X[104X
+    [4X[28Xy[128X[104X
+    [4X[28Xx_0*x_1*x_9[128X[104X
+    [4X[28X[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [1X4.1-2 DegreeOfPolynomialOverField[101X
+  
+  [33X[1;0Y[29X[2XDegreeOfPolynomialOverField[102X( [3XF[103X, [3Xpoly[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XDegreeOfPolynomialOverField[102X( [3XF[103X, [3Xclist[103X, [3Xmlist[103X ) [32X method[133X
+  
+  [33X[0;0Y[10XDegreeOfPolynomialOverField[110X  works  for  both,  univariate  and multivariate
+  polynomials.  Be cautious with univariate polynomials, (the exponents of the
+  indeterminates are reduced w.r.t. [3XF[103X).[133X
+  
+  [33X[0;0Y[10XDegreeOfPolynomialOverField[110X   calls   [2XReduceMonomialsOverField[102X  ([14X4.1-1[114X)  and
+  returns  the  degree  of  the leading term of the reduced polynomial [3Xpoly[103X or
+  [22Xclist cdot mlist[122X[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27Xfor p in poly do  Display(DegreeOfPolynomialOverField(F, p)); od;[127X[104X
+    [4X[28X1[128X[104X
+    [4X[28X1[128X[104X
+    [4X[28X3[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [1X4.1-3 GeneratorOfField[101X
+  
+  [33X[1;0Y[29X[2XGeneratorOfField[102X( [3XF[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XGeneratorWRTDefiningPolynomial[102X( [3XF[103X ) [32X method[133X
+  
+  [33X[0;0Y[10XGeneratorOfField[110X  returns the root of the defining polynomial if the root is
+  also   a   generator,   otherwise   it   returns   the   first   element  [22X∋:
+  order(x)=Size(F)-1[122X.[133X
+  
+  [33X[0;0Y[10XGeneratorWRTDefiningPolynomial[110X  returns  the  the  coefficient vector of the
+  element  returned  by the [10XGeneratorOfField[110X call w.r.t polynomial basis given
+  by the root of the defining polynomial of the field.[133X
+  
