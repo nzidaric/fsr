@@ -9,8 +9,8 @@ Version := "1.2.2",
 Date := "15/05/2019",
 ##  <#GAPDoc Label="PKGVERSIONDATA">
 ##  <!ENTITY VERSION "1.2.2">
-##  <!ENTITY RELEASEDATE "09 december 2018">
-##  <!ENTITY RELEASEYEAR "2018">
+##  <!ENTITY RELEASEDATE "15 may 2019">
+##  <!ENTITY RELEASEYEAR "2019">
 ##  <#/GAPDoc>
 
 Persons := [
