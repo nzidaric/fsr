@@ -9,7 +9,7 @@
                                  Version 1.2.2
   
   
-                                09 december 2018
+                                  15 may 2019
   
   
                                   Nusa Zidaric
@@ -22,13 +22,10 @@
   
   Nusa Zidaric
       Email:    [7Xmailto:nzidaric@uwaterloo.ca[107X
-      Homepage: [7Xhttp://[107X
   Mark Aagaard
       Email:    [7Xmailto:maagaard@uwaterloo.ca[107X
-      Homepage: [7Xhttp://[107X
   Guang Gong
       Email:    [7Xmailto:ggong@uwaterloo.ca[107X
-      Homepage: [7Xhttp://[107X
   
   -------------------------------------------------------
   [1XAbstract[101X
@@ -48,7 +45,7 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y© 2017-2018 by Nusa Zidaric, Mark Aagaard, Guang Gong[133X
+  [33X[0;0Y© 2017-2019 by Nusa Zidaric, Mark Aagaard, Guang Gong[133X
   
   [33X[0;0Y[5XFSR[105X  is  free  software;  you can redistribute it and/or modify it under the
   terms  of  the  GNU General Public License as published by the Free Software
