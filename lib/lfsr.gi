@@ -363,7 +363,7 @@ end);
 
 
 
-InstallMethod(Period, "period of the LFSR", [IsLFSR], function(x)
+InstallMethod(PeriodOfLFSR, "period of the LFSR", [IsLFSR], function(x)
 local  l, period,  F;
 
 	l := FeedbackPoly(x);
@@ -383,7 +383,7 @@ local  l, period,  F;
 				SetIsMaxSeqLFSR(x,false);
 	fi;
 
-	SetPeriod(x,period);
+	SetPeriodOfLFSR(x,period);
 	return period;
 end);
 

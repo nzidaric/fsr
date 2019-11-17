@@ -65,7 +65,7 @@ gap> f := x^2 + x + 1;; F := FieldExtension(K, f);; B := Basis(F);;
 gap> y := X(F, "y");; l :=  y^4+y^3+y+Z(2^2) ;;
 gap> t10 := LFSR(K, f, l);
 < empty LFSR over GF(2^2)  given by FeedbackPoly = y^4+y^3+y+Z(2^2) >
-gap> ist :=[s_3, s_2, s_1, s_0 ];; len := Period(t10);;
+gap> ist :=[s_3, s_2, s_1, s_0 ];; len := PeriodOfLFSR(t10);;
 gap> seq := RunFSR(t10,ist, 2*len);;
 gap> for i in [1.. len] do Print(i,": ",seq[i]," -> ",seq[i]=seq[i+len],"\n"); od;
 1: s_0 -> true

@@ -182,7 +182,7 @@ DeclareAttribute( "FeedbackPoly", IsLFSR );
 ##  <Prop Name="IsPeriodic" Arg='lfsr' />
 ##  <Prop Name="IsUltPeriodic" Arg='lfsr' />
 ##  <Prop Name="IsMaxSeqLFSR" Arg='lfsr'/>
-##  <Attr Name="Period" Arg='lfsr' />
+##  <Attr Name="PeriodOfLFSR" Arg='lfsr' />
 ##  <Meth Name="PeriodPrimitive" Arg='lfsr' />
 ##  <Meth Name="PeriodIrreducible" Arg='lfsr' />
 ##  <Meth Name="PeriodReducible" Arg='lfsr' />
@@ -201,7 +201,7 @@ DeclareAttribute( "FeedbackPoly", IsLFSR );
 ##  </List>
 ##  Attributes:
 ##  <List>
-##  <Item> <C>Period</C>: holds the period of the LFSR. </Item>
+##  <Item> <C>PeriodOfLFSR</C>: holds the period of the LFSR. </Item>
 ##  </List>
 ##  Methods to compute the period:
 ##  <List>
@@ -232,12 +232,12 @@ DeclareAttribute( "FeedbackPoly", IsLFSR );
 ##  <![CDATA[
 ##  gap> l := y^4 + y + Z(2^4);; test := LFSR(K, f, l);
 ##  < empty LFSR over GF(2^4) given by FeedbackPoly = y^4+y+Z(2^4) >
-##  gap> Period(test); IsMaxSeqLFSR(test);
+##  gap> PeriodOfLFSR(test); IsMaxSeqLFSR(test);
 ##  255
 ##  false
 ##  gap> l := y^4 + y^3 + y + Z(2^4);; test1 := LFSR(K, f, l, B);
 ##  < empty LFSR over GF(2^4) given by FeedbackPoly = y^4+y^3+y+Z(2^4) >
-##  gap> Period(test1); IsMaxSeqLFSR(test1);
+##  gap> PeriodOfLFSR(test1); IsMaxSeqLFSR(test1);
 ##  65535
 ##  true
 ##  ]]>
@@ -258,7 +258,7 @@ DeclareProperty("IsMaxSeqLFSR",  IsLFSR);
 DeclareOperation("PeriodPrimitive",  [IsField, IsUnivariatePolynomial]);
 DeclareOperation("PeriodIrreducible",  [IsField, IsUnivariatePolynomial]);
 DeclareOperation("PeriodReducible",  [IsField, IsUnivariatePolynomial]);
-DeclareAttribute("Period", IsLFSR );
+DeclareAttribute("PeriodOfLFSR", IsLFSR );
 
 
 

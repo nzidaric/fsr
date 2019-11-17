@@ -698,7 +698,7 @@ gap> t6 := LFSR(F, l, B);
 < empty LFSR over GF(2^4)  given by FeedbackPoly = y^4+y+Z(2^4) >
 gap> IsPeriodic(t6);
 true
-gap> Period(t6);
+gap> PeriodOfLFSR(t6);
 warning: the polynomial is reducible !!!
 255
 gap> K := GF(2);; x := X(K, "x");; f := x^4 + x^3 + 1;;
@@ -706,14 +706,14 @@ gap> F := FieldExtension(K, f);; B := Basis(F);;
 gap> gen := Z(2^4);; strGen := "alpha";;
 gap> y := X(F, "y");; l := y^4 + y + gen;;
 gap> test := LFSR(K, f, l);;
-gap> Period(test);
+gap> PeriodOfLFSR(test);
 warning: the polynomial is reducible !!!
 255
 gap> IsMaxSeqLFSR(test);
 false
 gap> K := GF(2);; x := X(K, "x");;test := LFSR(K, x^3 + 1);
 < empty LFSR over GF(2)  given by FeedbackPoly = x^3+Z(2)^0 >
-gap> Period(test);
+gap> PeriodOfLFSR(test);
 warning: the polynomial is reducible !!!
 3
 gap> K := GF(2);; x := X(K, "x");;
@@ -738,15 +738,15 @@ gap> K := GF(2);; x := X(K, "x");;
 gap> f := x^4 + x^3 + 1;; F := FieldExtension(K, f);; B := Basis(F);;
 gap> y := X(F, "y");; l := y^4 + y^3 + y + Z(2^4);;
 gap> test := LFSR(K, f, l);;
-gap> Period(test);
+gap> PeriodOfLFSR(test);
 65535
 gap> test  := LFSR (F, x^13+x^12+x^10+x^9+Z(2)^0);;
-gap> Period(test);
+gap> PeriodOfLFSR(test);
 warning: the polynomial is irreducible !!!
 8191
 gap> K := GF(2);; x := X(K, "x");;
 gap> test  := LFSR (K, x^14+x^11+x^10+x^9+x^7+x^5+x^4+x+Z(2)^0);;
-gap> Period(test);
+gap> PeriodOfLFSR(test);
 warning: the polynomial is irreducible !!!
 5461
 gap> K := GF(2);;  y := X(K, "y");; B := Basis(K);;

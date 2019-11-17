@@ -753,7 +753,7 @@ SetPrintFormattingStatus(output, false);
 		AppendTo(output,  " \\\\\n");
 
 	# RUNNING (ie all other steps)
-		for j in [1.. num-1] do
+		for j in [1.. num-1] do #NOTE: inconsistent!!! should change num-1 --> num 
 			seq := StepFSR(x);
 			Add(sequence, seq); #append at the end of the list: seq_0,seq_1,seq_2, ...
 			state :=  x!.state ;

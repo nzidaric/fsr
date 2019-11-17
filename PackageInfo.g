@@ -6,10 +6,10 @@ SetPackageInfo( rec(
 PackageName := "FSR",
 Subtitle := "Feedback Shift Register Package",
 Version := "1.2.2",
-Date := "15/05/2019",
+Date := "17/11/2019",
 ##  <#GAPDoc Label="PKGVERSIONDATA">
 ##  <!ENTITY VERSION "1.2.2">
-##  <!ENTITY RELEASEDATE "15 may 2019">
+##  <!ENTITY RELEASEDATE "17 November 2019">
 ##  <!ENTITY RELEASEYEAR "2019">
 ##  <#/GAPDoc>
 
