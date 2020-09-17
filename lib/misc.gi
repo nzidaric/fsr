@@ -278,15 +278,17 @@ local term;
 	return SplitCoeffsAndMonomials(K, term)[2][1];
 end);
 
+
 InstallMethod( DegreeOfPolynomialOverField, "degree of polynomial",
  [IsField, IsPolynomial], function( K, mon)
  local rmon, lmon, lmlist, d, i;
-	rmon := ReduceMonomialsOverField(K, mon); #exponents w.r.t. K
+
 	d := 0;
- 	if IsConstantRationalFunction(rmon) then
+ 	if IsConstantRationalFunction(mon) then
 	#if \in(rmon, K) then # reduces to a constant
 		return d;
 	else
+    rmon := ReduceMonomialsOverField(K, mon); #exponents w.r.t. K
 		lmon := LeadingMonomialOverField(K, rmon);
 		lmlist := LeadingMonomial(lmon);
 		for i in [1..Length(lmlist)] do
@@ -297,6 +299,7 @@ InstallMethod( DegreeOfPolynomialOverField, "degree of polynomial",
 		return d;
 	fi;
 end);
+
 
 InstallMethod( DegreeOfPolynomialOverField, "degree of multivariate polynomial",
  [IsField, IsRingElementCollection, IsList], function(F, clist, mlist)
