@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.org/nzidaric/fsr.svg?branch=master)](https://travis-ci.org/nzidaric/fsr)
+[![Build Status](https://github.com/nzidaric/fsr/workflows/CI/badge.svg?branch=master)](https://github.com/nzidaric/fsr/actions?query=workflow%3ACI+branch%3Amaster)
 [![Code Coverage](https://codecov.io/github/nzidaric/fsr/coverage.svg?branch=master&token=)](https://codecov.io/gh/nzidaric/fsr)
+
 
 # The FSR package for GAP
 
